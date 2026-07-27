@@ -71,6 +71,23 @@ strong, em, .highlight, .color-text {
   transform: translateY(-3px); /* 上に3pxふんわり浮き上がる */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 少し影をつけて立体的にする */
   transition: all 0.2s ease; /* 動きをなめらかにする */
+} 
+
+/* 下からふんわり現れるアニメーションの定義 */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;                  /* 最初は透明 */
+    transform: translateY(20px); /* 少し下（20px）の位置からスタート */
+  }
+  100% {
+    opacity: 1;                  /* くっきり表示 */
+    transform: translateY(0);    /* 当初の位置に収まる */
+  }
+}
+
+/* フェードインさせたいクラスを作る */
+.fade-in-section {
+  animation: fadeInUp 1.0s ease-out; /* 1秒かけてふんわり表示させる */
 }        
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLE1X4CE6D"></script>
@@ -184,7 +201,7 @@ strong, em, .highlight, .color-text {
   <h2 id="guide"></h2>       
         
  <h2 id="guide" style="font-size: 32px;">ご利用ガイド＆料金・コースメニュー</h2>
-    <img src="スクリーンショット 2026-07-26 091419.png" alt="日曜限定メニュー・料金" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 20px auto; border-radius: 8px;">
+    <img src="スクリーンショット 2026-07-26 091419.png" alt="日曜限定メニュー・料金"class="fade-in-section" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 20px auto; border-radius: 8px;">
 </div>       
 
 <div class="セクション" style="text-align: center;">
