@@ -180,6 +180,20 @@ img {
   max-width: 100%;
   height: auto;
 } 
+
+/* ふんわり浮かび上がるアニメーションの設定 */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.0s ease-out, transform 1.0s ease-out;
+}
+
+/* 画面に現れたときに浮かび上がらせるクラス */
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+    
     
 </style>
 <meta name="description" content="名古屋駅周辺エリアで出張メンズエステ【皓一部屋】。（ふくらはぎ・足裏）や（腕・肩）などの日々の疲労回復まで、あなたの身体の悩みに合わせたオーダーメイド施術をご提供。ホテルの部屋の中で、リラックスして施術を受けられます。ご予約・空き状況はこちらから。">
@@ -232,7 +246,7 @@ img {
 
         <div class="hero-box">
             <h2>名古屋市周辺の出張メンズリラク</h2>
-<img src="シャワーシーン.png" alt="メイン写真"class="fade-in-section" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 20px auto; border-radius: 8px;">            
+<img src="シャワシーン.png" alt="メイン写真" class="fade-in-section" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 20px auto; border-radius: 8px;">        
             <p>体型や疲れ具合を気にせず、素直にほぐしてもらえる時間です。<br>どうぞ安心してお任せください。</p>
         </div>
 <div style="position: relative; width: 100%; padding-top: 56.25%; margin-bottom: 20px;">
