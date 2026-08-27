@@ -629,24 +629,17 @@ img {
    
 
     
- <!-- 画面右下に常時固定表示する「予約ボタン」と「トップへ戻るボタン」のセット -->
+<!-- 画面右下に常時固定表示（右側に予約ボタン、左側にトップへ戻る） -->
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; gap: 8px; align-items: center;">
     
-    <!-- 点滅する予約ボタン -->
-    <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">
-        今すぐ予約
-    </a>
-
-    <!-- ページトップへもどるボタン -->
+    <!-- ページトップへもどるボタン（左側に移動） -->
     <a href="#" class="back-to-top" style="position: static; box-shadow: 0 2px 5px rgba(0,0,0,0.15); margin: 0;">
         ▲ トップへ
     </a>
 
-</div>
+    <!-- 点滅する予約ボタン（右側に移動して親指で押しやすく） -->
+    <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">
+        今すぐ予約
+    </a>
 
-<div class="footer">
-    <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
 </div>
-
-</body>
-</html>
