@@ -28,8 +28,7 @@
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #fcfbfa; }
         .header { background-color: #ffffff; text-align: center; padding: 30px 20px 20px; border-bottom: 1px solid #eaeaea; }
-        .header h1 { margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
         
         .menu-list { margin: 15px 0; }
         .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; margin: 0; }
@@ -37,21 +36,18 @@
         .menu-list a:hover { background-color: #eee; }
         .menu-list a.active { background-color: #7a6b60; color: #fff; border-color: #7a6b60; }
 
-        .section { background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
-        .section-title { font-size: 24px; color: #eb0e0e; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eb0e0e; padding-bottom: 5px; }
+        .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; text-align: center; }
 
         @keyframes flash {
             0% { opacity: 1; }
             50% { opacity: 0.3; }
             100% { opacity: 1; }
         }
-        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; }
-        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 15px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; margin: 0 auto; transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; }
+        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 15px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; margin: 0 auto; }
 
         @media screen and (max-width: 768px) {
             body, p, span, li, td, div { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
-            .header h1 { font-size: 32px !important; }
-            .section-title { font-size: 28px !important; }
         }
 
         .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; }
@@ -61,7 +57,7 @@
 <body>
 
 <div class="header">
-    <h1>保有資格・修了証明</h1>
+    <h1 style="margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold;">保有資格・修了証明</h1>
     <nav class="menu-list">
       <ul>
         <li><a href="index.html">トップ</a></li>
@@ -77,30 +73,95 @@
 <div class="container">
 
     <div class="section">
-        <div class="section-title">安心の技術と知識の証明</div>
-        <p style="margin-bottom: 20px;">
-            「皓一部屋」では、お客様に安全で質の高いリラクゼーションをご提供するため、専門講座の修了認定を取得しております。
-        </p>
         
-        <div style="text-align: center; margin-bottom: 20px;">
-            <p style="font-weight: bold; margin-bottom: 10px;">【リフレクソロジー修了証】</p>
-            <a href="リフレクソロジー.png" target="_blank">
-                <img src="リフレクソロジー.png" alt="リフレクソロジー認定証" style="width: 100%; max-width: 450px; height: auto; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <!-- 保有資格タイトル（赤文字・下線付き） -->
+        <div style="text-align: center; margin: 20px auto 25px;">
+            <p style="font-size: 18px; color:#eb0e0e; font-weight: bold; line-height: 1.6; display: inline-block; border-bottom: 2px solid #b83d2a; padding-bottom: 5px; margin: 0;">
+                学び続ける姿勢が、お客様の安心に。当店の保有資格
+            </p>
+        </div>    
+            
+        <!-- ディプロマ4枚入りスクショ画像エリア -->
+        <div style="text-align: center; margin: 30px auto; padding: 0 10px;">
+            <a href="資格 (新).png" target="_blank">
+                <img src="資格 (新).png" alt="保有資格・修復課程 ディプロマ一覧" class="fade-in-section" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; cursor: pointer; display: block; margin: 0 auto;">
             </a>
         </div>
+            
+        <!-- 詳細説明テキスト -->
+        <div style="max-width: 650px; margin: 35px auto; padding: 0 15px; font-family: sans-serif; color: #333333; line-height: 1.8; text-align: center;">
+
+            <div style="text-align: center; margin-bottom: 25px;">
+                <p style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">【保有資格・修了課程】</p>
+                <p>①リラクゼーションセラピスト（国際ホリスティックセラピー協会認定）</p>
+                <p>②カルサイネイザン（タイの伝統的な専門技術課程修了）</p>
+                <p>③四肢トリートメント（国際ホリスティックセラピー協会認定）</p>
+                <p>④リフレクソロジスト（国際ホリスティックセラピー協会認定）</p>
+            </div>
+                
+            <!-- 皓一部屋のお約束 -->
+            <div style="margin: 30px auto; border: 2px solid #83c788; border-radius: 8px; padding: 20px 15px; background-color: #f9fff9; font-size: 18px; text-align: center; max-width: 550px;">
+                <strong style="font-size: 1.2em; color: #2e7d32; display: block; margin-bottom: 10px;">✅ 皓一部屋のお約束</strong>
+                当店のサービスは、リラクゼーションを目的とした癒やしの提供であり、医療行為や治療を目的とするものではございません。<br><br>
+                <span style="font-size: 0.9em; color: #555;">初めての方も安心してリラックスしていただける空間を大切にしております。</span>
+            </div>
+
+            <!-- 注記 -->
+            <p style="margin-bottom: 30px; font-size: 13px; color: #777777; text-align: center;">
+                （※個人情報保護のため、氏名部分は伏せておりますが、技術の証としてここに掲示いたします）
+            </p>
+
+        </div>
+
+        <!-- ご予約案内メッセージ -->
+        <div style="text-align: center; margin: 35px auto; font-family: sans-serif; color: #333333; line-height: 1.8;">
+            <p style="font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+                初めての方も安心してご利用いただけます<br> 早めのご予約がおすすめです
+            </p>
+        </div>
+
+        <!-- 案内画像 -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="スクリーンショット 2026-07-12 090032.png" target="_blank">
+                <img src="スクリーンショット 2026-07-12 090032.png" alt="初めての方も安心してご利用いただけます" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; cursor: pointer; border-radius: 8px;">
+            </a>
+        </div>
+
+           <!-- 初めての方へエリア -->
+
+<div style="text-align: center; margin: 30px 0;">
+
+    <h2 id="reserve" style="font-size: 32px; color: #d9534f; font-weight: bold; margin-bottom: 15px;">初めての方へ</h2>
+
+    <div style="font-size: 15px; line-height: 1.8; color: #333333;">
+
+        ご予約はグーグルカレンダーよりお願いします <br><br>
+
+        お問合せ・ご相談・質問はオールマイリンクのサイト内のグーグルフォームからお願いします <br><br>
+
+        当日予約は基本的にお受けできません<br><br>
+
+        前日の12時間前までにご予約をお願いします
+
+        
+
     </div>
 
-    <div style="text-align: center; margin: 30px 0;">
-        <div style="margin-bottom: 15px;">
-            <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn-reserve">
-                今すぐ予約する
-            </a>
+
+        <!-- 予約・お問合せボタンエリア -->
+        <div style="text-align: center; margin: 30px 0; border: none !important; width: 100%;">
+            <div style="margin-bottom: 15px; text-align: center;">
+                <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn-reserve">
+                    今すぐ予約する
+                </a>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" class="btn-contact">
+                    お問合せ●ご相談●質問はこちらから
+                </a>
+            </div>
         </div>
-        <div>
-            <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" class="btn-contact">
-                お問合せ●ご相談●質問はこちらから
-            </a>
-        </div>
+
     </div>
 
 </div>
