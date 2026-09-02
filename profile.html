@@ -28,8 +28,7 @@
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #fcfbfa; }
         .header { background-color: #ffffff; text-align: center; padding: 30px 20px 20px; border-bottom: 1px solid #eaeaea; }
-        .header h1 { margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
         
         .menu-list { margin: 15px 0; }
         .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; margin: 0; }
@@ -37,21 +36,17 @@
         .menu-list a:hover { background-color: #eee; }
         .menu-list a.active { background-color: #7a6b60; color: #fff; border-color: #7a6b60; }
 
-        .section { background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
-        .section-title { font-size: 24px; color: #eb0e0e; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eb0e0e; padding-bottom: 5px; }
+        .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; text-align: center; }
 
         @keyframes flash {
             0% { opacity: 1; }
             50% { opacity: 0.3; }
             100% { opacity: 1; }
         }
-        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; }
-        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 15px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; margin: 0 auto; transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; }
 
         @media screen and (max-width: 768px) {
             body, p, span, li, td, div { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
-            .header h1 { font-size: 32px !important; }
-            .section-title { font-size: 28px !important; }
         }
 
         .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; }
@@ -61,7 +56,7 @@
 <body>
 
 <div class="header">
-    <h1>プロフィール・セラピスト紹介</h1>
+    <h1 style="margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold;">プロフィール紹介</h1>
     <nav class="menu-list">
       <ul>
         <li><a href="index.html">トップ</a></li>
@@ -76,44 +71,84 @@
 
 <div class="container">
 
-    <div class="section" style="text-align: center;">
-        <div class="section-title">セラピスト紹介</div>
-        <div style="margin-bottom: 20px;">
-            <img src="私 (2).png" alt="吹井皓一 プロフィール写真" style="width: 180px; height: 180px; object-fit: cover; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 3px solid #fff;">
-        </div>
-        <h3 style="margin: 10px 0 5px 0; font-size: 22px;">吹井 皓一（フキイ コウイチ）</h3>
-        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">出張セラピスト / ボディケア技術者</p>
-        
-        <p style="text-align: left; line-height: 1.9;">
-            はじめまして。皓一部屋の吹井皓一です。<br>
-            日頃の仕事や出張で溜まった疲労、頭重感、脚のむくみなど、お一人おひとりの身体のお悩みに寄り添い、丁寧で心地よい施術をご提供いたします。
-        </p>
-        <p style="text-align: left; line-height: 1.9;">
-            ご宿泊先のホテルでリラックスしてお過ごしいただけるよう、礼儀と誠実さを大切に対応いたします。
-        </p>
-    </div>
-
     <div class="section">
-        <div class="section-title">得意な施術・手技</div>
-        <ul style="padding-left: 20px; line-height: 2;">
-            <li>全身ほぐし・もみほぐしケア</li>
-            <li>足つぼ・リフレクソロジー（脚のむくみ改善）</li>
-            <li>ヘッドマッサージ（頭痛・目の疲れ緩和）</li>
-            <li>ストレッチ＆関節可動域ケア</li>
-        </ul>
+        
+        <!-- 顔写真エリア -->
+        <div style="text-align: center; margin: 20px 0;">
+            <h3 style="border: none !important; padding-left: 0; font-size: 22px; font-weight: bold; margin-bottom: 15px;">吹井皓一の顔写真紹介</h3>
+            <a href="私.png" target="_blank">
+                <img src="私.png" alt="吹井皓一 顔写真紹介" class="fade-in-section" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important;">
+            </a>
+        </div>
+
+        <!-- 施術風景エリア -->
+        <div style="text-align: center; margin-top: 30px;">
+            <h3 style="border: none !important; padding-left: 0; font-size: 22px; font-weight: bold; margin-bottom: 15px;">リフレクソロジー施術風景</h3> 
+            <a href="リフレクソロジー.png" target="_blank">
+                <img src="リフレクソロジー.png" alt="リフレクソロジー施術風景" class="fade-in-section" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important;">
+            </a>
+        </div>
+
+        <!-- プロフィールテキストエリア -->
+        <div style="padding: 0 15px; margin: 30px 0; text-align: center; line-height: 1.8;">
+            <p style="font-size: 18px;"><strong>吹井 皓一（ふきい こういち）</strong></p>
+            <p>施術歴5年、対応実績1000名超。</p>
+            <p>得意は腕・ふくらはぎ。</p>
+            <p>末端から整えるアプローチを大切にしています。</p>
+            <br>
+            <p>肩や腰のコリの原因は、手先や足先の末端にあることが多いです。</p>
+            <p>指先から腕へ、足先から腿へと、筋肉の歩みに沿ってオイルでほほぐします。</p>
+            <p>ちょうどいい圧で深部まで刺激を入れ、血流とリンパの流れを進めます。</p>
+        </div>
+
+        <!-- お悩み共感エリア -->
+        <div style="border: 2px solid #333333; padding: 20px 15px; margin: 30px auto; width: 100%; max-width: 500px; box-sizing: border-box; text-align: center; border-radius: 8px;">
+            <p style="font-size: 15px; color: #333333; line-height: 2; margin-bottom: 20px;">
+                ①長時間のデスクワークやPC作業で、肩や首がガチガチに固まっている方
+            </p>
+            <p style="font-size: 15px; color: #333333; line-height: 2; margin-bottom: 20px;">
+                ②出張や移動続きで、足のむくみや重だるさが取れない方
+            </p>
+            <p style="font-size: 15px; color: #333333; line-height: 2; margin: 0;">
+                ③「とにかくどこかが辛いけれど、どこが悪いのか自分でも分からない」ほどお疲れの方
+            </p>
+        </div>
+
+           <!-- 初めての方へエリア -->
+
+<div style="text-align: center; margin: 30px 0;">
+
+    <h2 id="reserve" style="font-size: 32px; color: #d9534f; font-weight: bold; margin-bottom: 15px;">初めての方へ</h2>
+
+    <div style="font-size: 15px; line-height: 1.8; color: #333333;">
+
+        ご予約はグーグルカレンダーよりお願いします <br><br>
+
+        お問合せ・ご相談・質問はオールマイリンクのサイト内のグーグルフォームからお願いします <br><br>
+
+        当日予約は基本的にお受けできません<br><br>
+
+        前日の12時間前までにご予約をお願いします
+
+        
+
     </div>
 
-    <div style="text-align: center; margin: 30px 0;">
-        <div style="margin-bottom: 15px;">
+
+        <!-- 予約ボタンエリア -->
+        <div style="text-align: center; margin: 35px auto; padding: 0 15px; width: 100%; box-sizing: border-box;">
             <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn-reserve">
                 今すぐ予約する
             </a>
-        </div>
-        <div>
-            <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" class="btn-contact">
-                お問合せ●ご相談●質問はこちらから
+        </div>        
+
+        <!-- LINE友だち追加ボタン -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer">
+                <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0" style="display: inline-block;">
             </a>
         </div>
+
     </div>
 
 </div>
