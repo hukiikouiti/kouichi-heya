@@ -28,8 +28,7 @@
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #fcfbfa; }
         .header { background-color: #ffffff; text-align: center; padding: 30px 20px 20px; border-bottom: 1px solid #eaeaea; }
-        .header h1 { margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
         
         .menu-list { margin: 15px 0; }
         .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; margin: 0; }
@@ -37,20 +36,19 @@
         .menu-list a:hover { background-color: #eee; }
         .menu-list a.active { background-color: #7a6b60; color: #fff; border-color: #7a6b60; }
 
-        .section { background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
-        .section-title { font-size: 24px; color: #eb0e0e; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eb0e0e; padding-bottom: 5px; }
+        .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; text-align: center; }
+        .section-title { font-size: 24px; color: #eb0e0e; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eb0e0e; padding-bottom: 5px; display: inline-block; }
 
         @keyframes flash {
             0% { opacity: 1; }
             50% { opacity: 0.3; }
             100% { opacity: 1; }
         }
-        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; }
-        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 15px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; margin: 0 auto; }
+        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 15px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; margin: 0 auto; }
 
         @media screen and (max-width: 768px) {
             body, p, span, li, td, div { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
-            .header h1 { font-size: 32px !important; }
             .section-title { font-size: 28px !important; }
         }
 
@@ -61,7 +59,7 @@
 <body>
 
 <div class="header">
-    <h1>初めての方へ・お店の思い</h1>
+    <h1 style="margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold;">初めての方へ・お店の思い</h1>
     <nav class="menu-list">
       <ul>
         <li><a href="index.html">トップ</a></li>
@@ -77,24 +75,56 @@
 <div class="container">
 
     <div class="section">
-        <div class="section-title">隠れ家出張ケアのこだわり</div>
-        <p>
+        <div><span class="section-title">隠れ家出張ケアのこだわり</span></div>
+        <p style="text-align: center; margin-bottom: 15px;">
             「皓一部屋」は、忙しい日々を送るお客様のために、ご宿泊先のホテルやお部屋でゆったりとお寛ぎいただける完全出張型のリラクゼーションサービスです。
         </p>
-        <p>
+        <p style="text-align: center;">
             周りの目を一切気にすることなく、プライベートな空間で心身ともに深くリフレッシュしていただける時間を提供いたします。
         </p>
     </div>
 
     <div class="section">
-        <div class="section-title">安心・安全への取り組み</div>
-        <ul style="padding-left: 20px; line-height: 2;">
-            <li>丁寧なカウンセリングで一人ひとりに合わせた施術を提供</li>
-            <li>明朗会計（後からの不当な追加料金は一切ありません）</li>
-            <li>衛生管理・身だしなみの徹底</li>
-            <li>ディプロマ取得済みのセラピストによる安心の施術</li>
+        <div><span class="section-title">安心・安全への取り組み</span></div>
+        <ul style="list-style: none; padding: 0; margin: 0 auto; text-align: center; line-height: 2;">
+            <li>・ 丁寧なカウンセリングで一人ひとりに合わせた施術を提供</li>
+            <li>・ 明朗会計（後からの不当な追加料金は一切ありません）</li>
+            <li>・ 衛生管理・身だしなみの徹底</li>
+            <li>・ ディプロマ取得済みのセラピストによる安心の施術</li>
         </ul>
     </div>
+
+    <div style="text-align: center; margin: 30px 0; width: 100%;">
+        <div style="margin-bottom: 15px; text-align: center;">
+            <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn-reserve">
+                今すぐ予約する
+            </a>
+        </div>
+        <div style="text-align: center;">
+            <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" class="btn-contact">
+                お問合せ●ご相談●質問はこちらから
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
+</div>
+
+<!-- 右下固定ボタン -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+    <a href="#" class="back-to-top" style="position: static; margin: 0;">▲ トップへ</a>
+    <div style="display: flex; gap: 6px; align-items: center;">
+        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">LINE</a>
+        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">問合せ</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); animation: flash 1.5s infinite;">今すぐ予約</a>
+    </div>
+</div>
+
+</body>
+</html>
 
     <!-- 初めての方へエリア -->
 
