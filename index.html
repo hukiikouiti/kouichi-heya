@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,21 +65,24 @@
         .fade-in-section { animation: fadeInUp 1.0s ease-out; }        
     </style>
 
-    <!-- Google Tag Manager (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLE1X4CE6D"></script>
+    <!-- Google Tag Manager (gtag.js) - defer属性を追加して遅延読み込み -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-PLE1X4CE6D"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-PLE1X4CE6D');
     </script>
-    <!-- Microsoft Clarity -->
+
+    <!-- Microsoft Clarity - 読み込み優先度を下げる調整 -->
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "x3h2808h49");
+        window.addEventListener('DOMContentLoaded', function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "x3h2808h49");
+        });
     </script>
 </head>
 <body>
