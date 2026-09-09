@@ -17,14 +17,14 @@
         .menu-list a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; display: block; background-color: #f9f9f9; }
         .menu-list a:hover { background-color: #eee; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: all 0.2s ease; }
 
+        .faq-item { background: #ffffff; border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid #eaeaea; box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; }
+        .faq-q { font-weight: bold; color: #d9534f; font-size: 16px; outline: none; }
+        .faq-a { color: #555; font-size: 15px; line-height: 1.7; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
+
         /* 初めての方へエリア */
         .info-box { text-align: center; margin: 30px 0; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .info-box h2 { font-size: 28px; color: #d9534f; font-weight: bold; margin-bottom: 15px; margin-top: 0; }
         .info-text { font-size: 15px; line-height: 1.8; color: #333333; }
-
-        .faq-item { background: #ffffff; border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid #eaeaea; box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; }
-        .faq-q { font-weight: bold; color: #d9534f; font-size: 16px; outline: none; }
-        .faq-a { color: #555; font-size: 15px; line-height: 1.7; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
 
         .back-to-top { background-color: #ffffff; color: #333333; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .btn-back { display: block; text-align: center; margin: 30px auto 10px; padding: 12px 20px; background-color: #7a6b60; color: #fff; text-decoration: none; border-radius: 6px; width: 200px; font-weight: bold; }
@@ -63,18 +63,7 @@
 
 <div class="container">
 
-    <!-- 初めての方へ エリア -->
-    <div class="info-box">
-        <h2>初めての方へ</h2>
-        <div class="info-text">
-            ご予約はグーグルカレンダーよりお願いします <br><br>
-            お問合せ・ご相談・質問はオールマイリンクのサイト内のグーグルフォームからお願いします <br><br>
-            当日予約は基本的にお受けできません<br><br>
-            前日の12時間前までにご予約をお願いします
-        </div>
-    </div>
-
-    <!-- FAQアコーディオン エリア -->
+    <!-- 1. FAQアコーディオン エリア -->
     <details class="faq-item">
         <summary class="faq-q">初めて利用するのですが、準備するものはありますか？</summary>
         <div class="faq-a">特別な準備は必要ありません。出張先（ご自宅やホテル）でリラックスできる服装でお待ちください。</div>
@@ -90,8 +79,20 @@
         <div class="faq-a">名古屋・栄・金山エリア周辺を中心に各種ホテルやご自宅へ伺います。</div>
     </details>
 
+    <!-- 2. 初めての方へ エリア（アコーディオンの下に移動） -->
+    <div class="info-box">
+        <h2>初めての方へ</h2>
+        <div class="info-text">
+            ご予約はグーグルカレンダーよりお願いします <br><br>
+            お問合せ・ご相談・質問はオールマイリンクのサイト内のグーグルフォームからお願いします <br><br>
+            当日予約は基本的にお受けできません<br><br>
+            前日の12時間前までにご予約をお願いします
+        </div>
+    </div>
+
  
 
+    <!-- 4. フッター（著作権表示） -->
     <div class="footer">
         <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
     </div>
@@ -108,5 +109,4 @@
 </div>
 
 </body>
-</html>
 </html>
