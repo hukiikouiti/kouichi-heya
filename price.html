@@ -53,6 +53,79 @@
 
         .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; }
         .footer { text-align: center; padding: 20px; background-color: #ffffff; border-top: 1px solid #eaeaea; font-size: 14px; margin-top: 30px; }
+
+        /* コースカードのクリック対応 */
+        .course-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+        }
+        .click-hint {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            display: block;
+            margin-top: 5px;
+            text-decoration: underline;
+        }
+
+        /* モーダル（ポップアップ画面）スタイル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-content {
+            background: #111827;
+            color: #ffffff;
+            border: 2px solid #60a5fa;
+            border-radius: 16px;
+            padding: 30px 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-btn {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(180deg, #f39800 0%, #e67200 100%);
+            color: #ffffff !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            padding: 14px 0;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -74,29 +147,26 @@
 
 <div class="container">
 
-    <section id="price" class="section">
-        
-
-      
-    </section>   
-
 <section class="price-section">
   <h2 class="title">日曜限定メニュー・料金</h2>
-  <p class="sub-title">「しっかり解して、ちゃんと楽になる。」</p>
+  <p class="sub-title">「しっかり解して、ちゃんと楽になる。」<br><small style="font-size:0.8rem; color:#60a5fa;">（タップで詳細を表示）</small></p>
 
-  <div class="course-card">
+  <div class="course-card" onclick="openModal('c60')">
     <h3>60分コース <span class="price">10,000円</span></h3>
     <p>全身を軽く整える基本コース<br><span class="note">（お試しにもおすすめ）</span></p>
+    <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
-  <div class="course-card highlight">
+  <div class="course-card highlight" onclick="openModal('c90')">
     <h3>90分コース <span class="price">13,000円</span></h3>
     <p>コリをしっかり解しながら<br>ゆっくりリラックスしたい方に<br><span class="note">（おすすめ）</span></p>
+    <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
-  <div class="course-card">
+  <div class="course-card" onclick="openModal('c120')">
     <h3>120分コース <span class="price">15,000円</span></h3>
     <p>深いコリまでしっかりアプローチ<br>全身をじっくり解したい方に<br><span class="note">（1番人気）</span></p>
+    <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
   <p class="location-info">出張費込みの料金（名古屋市内）</p>
@@ -179,7 +249,7 @@
         <p style="font-size:0.9rem; color:#555; text-align: center;">
             ※料金は税込です。<br>
             ※交通費は名古屋駅・栄・金山周辺を目安に2,000円です。上料金表ページは交通費込み価格です。<br>エリア外は実費を別途ご相談ください。<br>
-            ※施術前に現金またはPayPay（ペイペイ）でお支払いください。
+            ※施術前に現金またはPayPay等の各種QRコード決済でお支払いください。
         </p>    
 
     <div class="section" style="text-align: center;">
@@ -204,7 +274,7 @@
             <img src="財布.png" alt="お支払い方法" style="width: 140px; height: 140px; object-fit: contain; display: block; margin: 0 auto 15px;">
             <h4 style="font-size: 18px; color: #333333; margin-bottom: 15px;">お支払い方法</h4>
             <p style="font-size: 14px; color: #555555; line-height: 1.6; text-align: left;">
-                現金、またはPayPay（ペイペイ）がご利用いただけます。施術前にお支払いをお願いいたします。
+                現金、またはPayPay等の各種QRコード決済がご利用いただけます。施術前にお支払いをお願いいたします。
             </p>
         </div>    
         
@@ -287,6 +357,53 @@
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3);">今すぐ予約</a>
     </div>
 </div>
+
+<!-- 拡大用ポップアップ画面（モーダル） -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+        <span class="modal-close" onclick="forceCloseModal()">&times;</span>
+        <h2 id="modalTitle" style="color: #93c5fd; font-size: 1.8rem; margin-bottom: 10px;"></h2>
+        <p id="modalPrice" style="font-size: 1.6rem; font-weight: bold; color: #ffffff; margin-bottom: 15px;"></p>
+        <p id="modalDesc" style="font-size: 1.1rem; line-height: 1.6; color: #d1d5db; margin-bottom: 20px;"></p>
+        <p style="font-size: 0.9rem; color: #9ca3af; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">※出張費込み（名古屋市内）/ 税込</p>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="modal-btn">このコースで予約する</a>
+    </div>
+</div>
+
+<script>
+function openModal(courseType) {
+    var overlay = document.getElementById('modalOverlay');
+    var title = document.getElementById('modalTitle');
+    var price = document.getElementById('modalPrice');
+    var desc = document.getElementById('modalDesc');
+
+    if (courseType === 'c60') {
+        title.innerText = '60分コース';
+        price.innerText = '10,000円（税込）';
+        desc.innerHTML = '全身を軽く整える基本コースです。<br>まずはお試しで体験してみたい方や、短時間で疲労をリセットしたい方におすすめです。';
+    } else if (courseType === 'c90') {
+        title.innerText = '90分コース（おすすめ）';
+        price.innerText = '13,000円（税込）';
+        desc.innerHTML = 'コリをしっかり解しながらゆっくりリラックスしたい方に最適なコースです。<br>全身のお疲れ部位を中心に重点的なケアを行います。';
+    } else if (courseType === 'c120') {
+        title.innerText = '120分コース（1番人気）';
+        price.innerText = '15,000円（税込）';
+        desc.innerHTML = '深いコリまでしっかりアプローチするフルサポートコースです。<br>全身をすみずみまでじっくり解し、極上の癒やしを提供いたします。';
+    }
+
+    overlay.style.display = 'flex';
+}
+
+function closeModal(e) {
+    if (e.target.id === 'modalOverlay') {
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
+}
+
+function forceCloseModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
