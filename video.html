@@ -16,7 +16,7 @@
       gtag('config', 'G-PLE1X4CE6D');
     </script>
 
-    <!-- Microsoft Clarity (新しいIDに更新済み) -->
+    <!-- Microsoft Clarity -->
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -48,24 +48,18 @@
             line-height: 1.3;
         }
 
-        /* スマホ対応動画レスポンシブ枠 */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 700px;
-            padding-top: 56.25%; /* 16:9 アスペクト比 */
-            margin: 20px auto;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        /* 直接埋め込み動画のスタイル枠 */
+        .direct-video-box {
+            max-width: 100%;
+            width: 500px;
+            margin: 0 auto 25px auto;
+            text-align: center;
         }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .direct-video-box video {
             width: 100%;
-            height: 100%;
-            border: none;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         @keyframes flash {
@@ -110,24 +104,28 @@
             施術の流れ動画
         </h2>
 
-        <!-- 動画1（遅延読み込み追加） -->
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/JK6C10Wh460" title="【名古屋】限界まで頑張るあなたへ。心と身体を解き放つ、大人のための極上の休息。" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- 動画1 -->
+        <div class="direct-video-box">
+            <video controls playsinline preload="metadata">
+                <source src="review1.mp4" type="video/mp4">
+                お使いのブラウザは動画再生に対応していません。
+            </video>
         </div>
 
-        <!-- 動画2（遅延読み込み追加） -->
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/_Vi2xrhKp3w" title="毎日のデスクワークでお疲れのあなたへ。大人のための極上の休息を届けます" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- 動画2 -->
+        <div class="direct-video-box">
+            <video controls playsinline preload="metadata">
+                <source src="review2.mp4" type="video/mp4">
+                お使いのブラウザは動画再生に対応していません。
+            </video>
         </div>
 
-        <!-- 動画3（遅延読み込み追加） -->
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/HRUeHkB_zso?si=gVxMQbyGJBq6mHyM" title="YouTube video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-
-        <!-- 動画4（遅延読み込み追加） -->
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/9TL0LFj4h5M" title="忙しい日常の合間に、極上の寛ぎを。出張型ボディケア「皓一部屋」" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- 動画3 -->
+        <div class="direct-video-box">
+            <video controls playsinline preload="metadata">
+                <source src="review3.mp4" type="video/mp4">
+                お使いのブラウザは動画再生に対応していません。
+            </video>
         </div>
 
         <!-- リフレッシュ（イメージ図） -->
@@ -159,16 +157,15 @@
             <h2 class="section-title-large" style="color: #eb0e0e; font-size: 36px; font-weight: bold; text-align: center; margin-bottom: 15px;">
                 アハ動画
             </h2>
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/lomxgD4MwGA" title="アハ画像" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div class="video-wrapper" style="position: relative; width: 100%; max-width: 700px; padding-top: 56.25%; margin: 20px auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <iframe src="https://www.youtube.com/embed/lomxgD4MwGA" title="アハ画像" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
 
-        <!-- note・ブログセクション（画像を除去して青文字テキスト化） -->
+        <!-- note・ブログセクション -->
         <div style="margin: 40px auto 20px;">
             <h2 id="blog" style="display: none;">ブログ</h2>
             
-            <!-- 重かったスクショ画像を排除し、軽量なHTMLテキストへ変更 -->
             <div class="note-title-blue">
                 note（ノート）の人気記事
             </div>
