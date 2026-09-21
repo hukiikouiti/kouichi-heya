@@ -30,11 +30,6 @@
         .faq-q { font-weight: bold; color: #d9534f; font-size: 16px; outline: none; }
         .faq-a { color: #555; font-size: 15px; line-height: 1.7; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
 
-        /* 初めての方へエリア */
-        .info-box { text-align: center; margin: 30px 0; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .info-box h2 { font-size: 28px; color: #d9534f; font-weight: bold; margin-bottom: 15px; margin-top: 0; }
-        .info-text { font-size: 15px; line-height: 1.8; color: #333333; }
-
         /* Googleフォーム用ボタンのスタイル */
         .btn-form { display: inline-block; margin: 15px auto 5px; padding: 12px 24px; background-color: #704780; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 25px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: all 0.2s ease; }
         .btn-form:hover { background-color: #593766; transform: translateY(-2px); }
@@ -52,7 +47,6 @@
         @media screen and (max-width: 768px) {
             body, p, div, summary { font-size: 18px !important; }
             .header h1 { font-size: 26px !important; }
-            .info-box h2 { font-size: 32px !important; }
         }
     </style>
 </head>
@@ -156,18 +150,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="faq-a">A. 可能です。できるだけ早めにご連絡ください。直前のキャンセルは次回受付をお断りする場合があります。</div>
     </details>
 
-   <!-- 2. 初めての方へ エリア -->
-    <div class="info-box">
-        <h2>初めての方へ</h2>
-        <div class="info-text">
-            ご予約はグーグルカレンダーよりお願いします <br><br>
-            <!-- 黒いGoogleフォーム用ボタン -->
-            <a href="https://forms.gle/vdpciPEqmU3n63Hp7" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin: 5px auto; padding: 12px 24px; background-color: #333333; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 25px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: all 0.2s ease;">
-                ✉ その他のご質問・ご相談はこちらから
-            </a> <br><br>
-            当日予約は基本的にお受けできません<br><br>
-            前日の12時間前までにご予約をお願いします
+    <!-- 2. 初めての方へ エリア（アコーディオン改修部分） -->
+    <div style="margin: 30px 0;">
+      <details style="cursor: pointer; border: 1px solid #ffccd5; border-radius: 12px; padding: 18px; background-color: #fff5f6;">
+        <summary style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e53935; padding-bottom: 10px; list-style: none;">
+          <span style="font-size: 24px; font-weight: bold; color: #e53935;">
+            初めての方へ <span style="font-size: 16px; color: #666; font-weight: normal;">👏 (タップでメッセージ表示)</span>
+          </span>
+          <span style="font-size: 14px; color: #fff; background-color: #e53935; padding: 4px 10px; border-radius: 20px; font-weight: bold; white-space: nowrap;">
+            ▼ 開く
+          </span>
+        </summary>
+        <div style="padding-top: 15px; text-align: center; font-size: 16px; line-height: 1.8; color: #333;">
+          <p style="font-size: 18px; font-weight: bold; color: #e53935; margin-bottom: 10px;">
+            ❓ 「こんなこと聞いても大丈夫？」も大歓迎！
+          </p>
+          <p style="margin: 0 0 15px 0;">
+            ページ内に載っていない細かい質問や個別のご相談も、気兼ねなくお寄せください。<br>
+            ご予約はグーグルカレンダーよりお願いいたします！
+          </p>
+          <div style="text-align: center; margin: 15px 0;">
+            <a href="https://forms.gle/vdpciPEqmU3n63Hp7" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 12px 24px; background-color: #333333; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 25px; box-shadow: 0 3px 6px rgba(0,0,0,0.15);">
+              ✉ その他のご質問・ご相談はこちらから
+            </a>
+          </div>
+          <div style="border-top: 1px dashed #ffccd5; padding-top: 12px; font-size: 14px; color: #555;">
+            ※当日予約は基本的にお受けできません（前日12時間前までにご予約をお願いします）
+          </div>
         </div>
+      </details>
     </div>
 
     <!-- 4. フッター -->
