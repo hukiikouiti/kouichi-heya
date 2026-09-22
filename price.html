@@ -125,6 +125,10 @@
             padding: 12px 10px;
             margin-bottom: 20px;
             text-align: center;
+            transition: transform 0.1s ease-in-out;
+        }
+        .first-time-badge:active {
+            transform: scale(0.98);
         }
         .first-time-title {
             color: #f39800;
@@ -137,6 +141,12 @@
             font-size: 0.95rem;
             margin: 0;
             line-height: 1.4;
+        }
+
+        /* ふわっと表示用アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -168,10 +178,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2 class="title">日曜限定メニュー・料金</h2>
   <p class="sub-title">「しっかり解して、ちゃんと楽になる。」<br><small style="font-size:0.8rem; color:#60a5fa;">（タップで詳細を表示）</small></p>
 
-  <!-- ★初回限定特典エリアを追加★ -->
-  <div class="first-time-badge">
-    <p class="first-time-title">🎁 初回限定サービス</p>
+  <!-- ★初回限定特典エリア（タップで予約ボタン出現）★ -->
+  <div class="first-time-badge" onclick="toggleReserveBtn()" style="cursor: pointer;">
+    <p class="first-time-title">🎁 初回限定サービス <span style="font-size: 0.8rem; font-weight: normal; color: #ffeb3b;">(タップで予約)</span></p>
     <p class="first-time-text">お身体の状態をしっかり把握するため<br><strong style="color: #60a5fa; font-size: 1.05rem;">【施術時間 ＋15分 無料延長中！】</strong></p>
+  </div>
+
+  <!-- ★デッドクリックで飛び出す予約ボタン★ -->
+  <div id="hiddenReserveBtn" style="display: none; text-align: center; margin: 15px auto 25px; animation: fadeIn 0.4s ease-in-out;">
+    <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; margin: 0 auto;">
+      今すぐ予約する
+    </a>
   </div>
 
   <div class="course-card" onclick="openModal('c60')">
@@ -411,6 +428,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
+function toggleReserveBtn() {
+    var btn = document.getElementById('hiddenReserveBtn');
+    if (btn.style.display === 'none' || btn.style.display === '') {
+        btn.style.display = 'block';
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        btn.style.display = 'none';
+    }
+}
+
 function openModal(courseType) {
     var overlay = document.getElementById('modalOverlay');
     var title = document.getElementById('modalTitle');
