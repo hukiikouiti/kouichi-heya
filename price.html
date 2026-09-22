@@ -116,6 +116,28 @@
             margin-top: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
+
+        /* 初回特典バナー用スタイル */
+        .first-time-badge {
+            background: rgba(243, 152, 0, 0.15);
+            border: 2px solid #f39800;
+            border-radius: 8px;
+            padding: 12px 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .first-time-title {
+            color: #f39800;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+        }
+        .first-time-text {
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -146,21 +168,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2 class="title">日曜限定メニュー・料金</h2>
   <p class="sub-title">「しっかり解して、ちゃんと楽になる。」<br><small style="font-size:0.8rem; color:#60a5fa;">（タップで詳細を表示）</small></p>
 
+  <!-- ★初回限定特典エリアを追加★ -->
+  <div class="first-time-badge">
+    <p class="first-time-title">🎁 初回限定サービス</p>
+    <p class="first-time-text">お身体の状態をしっかり把握するため<br><strong style="color: #60a5fa; font-size: 1.05rem;">【施術時間 ＋15分 無料延長中！】</strong></p>
+  </div>
+
   <div class="course-card" onclick="openModal('c60')">
     <h3>60分コース <span class="price">10,000円</span></h3>
-    <p>全身を軽く整える基本コース<br><span class="note">（お試しにもおすすめ）</span></p>
+    <p>全身を軽く整える基本コース<br><span class="note">（初回の方は＋15分サービス）</span></p>
     <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
   <div class="course-card highlight" onclick="openModal('c90')">
     <h3>90分コース <span class="price">13,000円</span></h3>
-    <p>コリをしっかり解しながら<br>ゆっくりリラックスしたい方に<br><span class="note">（おすすめ）</span></p>
+    <p>コリをしっかり解しながら<br>ゆっくりリラックスしたい方に<br><span class="note">（おすすめ / 初回＋15分付き）</span></p>
     <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
   <div class="course-card" onclick="openModal('c120')">
     <h3>120分コース <span class="price">15,000円</span></h3>
-    <p>深いコリまでしっかりアプローチ<br>全身をじっくり解したい方に<br><span class="note">（1番人気）</span></p>
+    <p>深いコリまでしっかりアプローチ<br>全身をじっくり解したい方に<br><span class="note">（1番人気 / 初回＋15分付き）</span></p>
     <span class="click-hint">タップして詳細を見る 🔍</span>
   </div>
 
@@ -377,7 +405,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 id="modalTitle" style="color: #93c5fd; font-size: 1.8rem; margin-bottom: 10px;"></h2>
         <p id="modalPrice" style="font-size: 1.6rem; font-weight: bold; color: #ffffff; margin-bottom: 15px;"></p>
         <p id="modalDesc" style="font-size: 1.1rem; line-height: 1.6; color: #d1d5db; margin-bottom: 20px;"></p>
-        <p style="font-size: 0.9rem; color: #9ca3af; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">※出張費込み（名古屋市内）/ 税込</p>
+        <p style="font-size: 0.9rem; color: #9ca3af; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">※出張費込み（名古屋市内）/ 税込<br><span style="color:#f39800; font-weight:bold;">※初回のご利用は＋15分無料サービス付き！</span></p>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="modal-btn">このコースで予約する</a>
     </div>
 </div>
@@ -390,17 +418,17 @@ function openModal(courseType) {
     var desc = document.getElementById('modalDesc');
 
     if (courseType === 'c60') {
-        title.innerText = '60分コース';
+        title.innerText = '60分コース（初回75分）';
         price.innerText = '10,000円（税込）';
-        desc.innerHTML = '全身を軽く整える基本コースです。<br>まずはお試しで体験してみたい方や、短時間で疲労をリセットしたい方におすすめです。';
+        desc.innerHTML = '全身を軽く整える基本コースです。<br>まずはお試しで体験してみたい方や、短時間で疲労をリセットしたい方におすすめです。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
     } else if (courseType === 'c90') {
-        title.innerText = '90分コース（おすすめ）';
+        title.innerText = '90分コース（初回105分 / おすすめ）';
         price.innerText = '13,000円（税込）';
-        desc.innerHTML = 'コリをしっかり解しながらゆっくりリラックスしたい方に最適なコースです。<br>全身のお疲れ部位を中心に重点的なケアを行います。';
+        desc.innerHTML = 'コリをしっかり解しながらゆっくりリラックスしたい方に最適なコースです。<br>全身のお疲れ部位を中心に重点的なケアを行います。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
     } else if (courseType === 'c120') {
-        title.innerText = '120分コース（1番人気）';
+        title.innerText = '120分コース（初回135分 / 1番人気）';
         price.innerText = '15,000円（税込）';
-        desc.innerHTML = '深いコリまでしっかりアプローチするフルサポートコースです。<br>全身をすみずみまでじっくり解し、極上の癒やしを提供いたします。';
+        desc.innerHTML = '深いコリまでしっかりアプローチするフルサポートコースです。<br>全身をすみずみまでじっくり解し、極上の癒やしを提供いたします。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
     }
 
     overlay.style.display = 'flex';
