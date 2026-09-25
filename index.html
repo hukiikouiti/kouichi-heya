@@ -162,6 +162,337 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="hero-box">
           <h2>名古屋市周辺の出張メンズリラク</h2>
 
+          <!-- 写真クリックで拡大表示＆シャワー音再生機能 -->
+          <div style="text-align: center; margin: 30px auto; padding: 0 10px;">
+              <a href="javascript:void(0);" onclick="openModalAndPlaySound('shower-modal', 'shower-sound');" style="text-decoration: none; display: inline-block;">
+                  <img src="シャワーシーン9.9.png" alt="シャワーシーン" class="fade-in-section" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                  <p style="font-size: 13px; color: #888; margin-top: 6px;">タップで写真を拡大＆音声を再生 🔊</p>
+              </a>
+          </div>        
+          
+          <p>体型や疲れ具合を気にせず、素直にほぐしてもらえる時間です。<br>どうぞ安心してお任せください。</p>
+      </div>
+  </div>
+
+  <!-- 【お支払い方法・出張エリア・営業時間 エリア】 -->
+  <div class="container" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; margin-top: 20px;">
+      
+      <!-- お支払い方法 -->
+      <div style="flex: 1; min-width: 250px; background-color: #fff; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <a href="javascript:void(0);" onclick="openModalAndPlaySound('pay-modal', 'pay-sound');" style="text-decoration: none; display: inline-block;">
+              <img src="コンプレックス.png" alt="お支払い方法" style="max-width: 120px; height: auto; cursor: pointer; border-radius: 8px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <p style="font-size: 12px; color: #888; margin: 4px 0 10px 0;">タップで拡大 🔊</p>
+          </a>
+          <h3 style="font-size: 18px; color: #4a3b32; margin: 10px 0;">お支払い方法</h3>
+          <p style="font-size: 14px; color: #555;">現金、またはPayPayのQRコード決済がご利用いただけます。施術前にお支払いをお願いいたします。</p>
+          <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center;">
+              <span style="font-weight: bold; color: #ff0033; font-size: 14px;">PayPay</span>
+              <span style="font-size: 12px; color: #00a0e9;">支 | Alipay+</span>
+          </div>
+      </div>
+
+      <!-- 営業時間 -->
+      <div style="flex: 1; min-width: 250px; background-color: #fff; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <a href="javascript:void(0);" onclick="openModalAndPlaySound('clock-modal', 'clock-sound');" style="text-decoration: none; display: inline-block;">
+              <img src="カルサイネイザン.png" alt="営業時間" style="max-width: 120px; height: auto; cursor: pointer; border-radius: 8px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <p style="font-size: 12px; color: #888; margin: 4px 0 10px 0;">タップで拡大 🔊</p>
+          </a>
+          <h3 style="font-size: 18px; color: #4a3b32; margin: 10px 0;">営業時間</h3>
+          <p style="font-size: 14px; color: #555;">【日曜日限定】12:00～19:00（最終受付）。<br>週末の疲れをリセットし、最高の月曜日を迎えましょう。</p>
+      </div>
+
+  </div>
+
+  <!-- 口コミ案内エリア -->
+  <div style="max-width: 600px; margin: 35px auto 20px auto; padding: 20px 15px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+    
+    <h3 style="font-size: 20px; font-weight: bold; color: #4a3b32; margin: 0 0 10px 0;">
+      【お客様へのお願い】
+    </h3>
+    <p style="font-size: 15px; line-height: 1.7; color: #555; margin-bottom: 15px;">
+      当サロンをご利用いただきありがとうございます！<br>
+      今後のサービス向上と励みのため、Googleでのクチコミ評価にご協力いただけると大変嬉しいです。<br>
+      <strong style="color: #e53935; font-size: 16px;">文章なしの「星だけの評価」でも大歓迎です（30秒で完了します）。</strong><br>
+      施術を受けられた感想やお気づきの点がございましたら、ぜひ一言ご評価をお願いいたします。
+    </p>
+
+    <!-- 口コミ案内動画 -->
+    <div style="max-width: 100%; width: 500px; margin: 0 auto 15px auto;">
+      <video controls playsinline preload="metadata" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+        <source src="review.mp4.mp4" type="video/mp4">
+        お使いのブラウザは動画再生に対応していません。
+      </video>
+    </div>
+
+    <!-- Google口コミボタン -->
+    <div style="margin-top: 20px;">
+      <a href="https://g.page/r/CXqvApozgSbMEAI/review" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #4285F4; color: #ffffff; padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 3px 8px rgba(0,0,0,0.2);">
+        ★ Googleで星だけの評価（30秒）感想をお願いします
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer" style="padding-bottom: 80px;">
+      <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
+  </div>
+</div>
+
+<!-- 固定表示ボタンセット -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+    <a href="#" class="back-to-top" style="position: static; box-shadow: 0 2px 5px rgba(0,0,0,0.15); margin: 0; padding: 6px 12px; font-size: 12px;">
+        ▲ トップへ
+    </a>
+
+    <div style="display: flex; gap: 6px; align-items: center;">
+        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">
+            LINE
+        </a>
+
+        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">
+            問合せ
+        </a>
+
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">
+            今すぐ予約
+        </a>
+    </div>
+</div>
+
+<!-- 【拡大表示用ポップアップ（シャワー）】 -->
+<div id="shower-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeAllModals();">
+    <div style="position: relative; max-width: 90%; max-height: 90%; text-align: center;">
+        <img src="シャワーシーン9.9.png" alt="拡大シャワーシーン" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 25px rgba(255,255,255,0.2);">
+        <p style="color: #ffffff; margin-top: 15px; font-size: 16px; font-weight: bold;">画面のどこかをタップすると閉じます ✖</p>
+    </div>
+</div>
+
+<!-- 【拡大表示用ポップアップ（お支払い方法）】 -->
+<div id="pay-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeAllModals();">
+    <div style="position: relative; max-width: 90%; max-height: 90%; text-align: center;">
+        <img src="コンプレックス.png" alt="拡大お支払い方法" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 25px rgba(255,255,255,0.2);">
+        <p style="color: #ffffff; margin-top: 15px; font-size: 16px; font-weight: bold;">画面のどこかをタップすると閉じます ✖</p>
+    </div>
+</div>
+
+<!-- 【拡大表示用ポップアップ（営業時間）】 -->
+<div id="clock-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeAllModals();">
+    <div style="position: relative; max-width: 90%; max-height: 90%; text-align: center;">
+        <img src="カルサイネイザン.png" alt="拡大営業時間" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 25px rgba(255,255,255,0.2);">
+        <p style="color: #ffffff; margin-top: 15px; font-size: 16px; font-weight: bold;">画面のどこかをタップすると閉じます ✖</p>
+    </div>
+</div>
+
+<!-- 【音源データの設定】 -->
+<audio id="shower-sound" src="お風呂でシャワー.mp3" preload="auto"></audio>
+<audio id="pay-sound" src="お金を落とす1.mp3" preload="auto"></audio>
+<audio id="clock-sound" src="振り子時計.mp3" preload="auto"></audio>
+
+<!-- 【動作させるJavaScript処理】 -->
+<script>
+    // 指定したモーダルを開いて音を鳴らす関数
+    function openModalAndPlaySound(modalId, soundId) {
+        closeAllModals(); // 他のモーダルや音を一旦すべて止める
+        
+        var modal = document.getElementById(modalId);
+        var sound = document.getElementById(soundId);
+        
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(function(e) {
+                console.log("再生エラー:", e);
+            });
+        }
+    }
+
+    // すべてのモーダルを閉じて音を止める関数
+    function closeAllModals() {
+        var modalIds = ['shower-modal', 'pay-modal', 'clock-modal'];
+        var soundIds = ['shower-sound', 'pay-sound', 'clock-sound'];
+
+        modalIds.forEach(function(id) {
+            var m = document.getElementById(id);
+            if (m) m.style.display = 'none';
+        });
+
+        soundIds.forEach(function(id) {
+            var s = document.getElementById(id);
+            if (s) {
+                s.pause();
+                s.currentTime = 0;
+            }
+        });
+    }
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="dJgePv4VDJ048DpmX80yC0E-bhZaycp6L4xszXIXupQ" />
+    
+    <!-- SEO最適化タイトル -->
+    <title>名古屋 ゲイマッサージ～【皓一部屋】～｜男性セラピストによる出張オイル＆疲労回復もみほぐし</title>
+    
+    <!-- SEO最適化メタ説明文 -->
+    <meta name="description" content="名古屋・栄・伏見・丸の内・金山・上前津エリアのホテルやご自宅へ出張する日曜限定サロン「皓一部屋」。男性セラピストによるオールハンド施術で、日頃の疲労をしっかりほぐします。男性同士の安心できる空間で、ゲイの方も多くご利用いただいています。">
+    
+    <!-- OGP（SNS表示用）タグ -->
+    <meta property="og:title" content="名古屋 ゲイマッサージ～【皓一部屋】～｜出張メンズリラクゼーション">
+    <meta property="og:description" content="名古屋・栄・金山周辺対応。日曜限定・1日2名様のみ。男性セラピストによるオールハンド出張ボディケア。">
+    <meta property="og:image" content="https://hukiikouiti.github.io/kouichi-heya/KF%20(1).png">
+    <meta property="og:url" content="https://hukiikouiti.github.io/kouichi-heya/">
+
+    <link rel="icon" href="KF (1).png" type="image/png">
+
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #fcfbfa; }
+        .header { background-color: #ffffff; text-align: center; padding: 40px 20px; border-bottom: 1px solid #eaeaea; }
+        .header h1 { margin: 0; font-size: 28px; color: #4a3b32; letter-spacing: 2px; }
+        .header p { margin: 10px 0 0 0; font-size: 14px; color: #8c7b70; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; width: 100%; box-sizing: border-box; }
+        .hero-box { background-color: #f4efe9; border-radius: 12px; padding: 30px 20px; text-align: center; margin-bottom: 30px; border: 1px solid #e2dacd; }
+        .hero-box h2 { margin: 0 0 15px 0; font-size: 20px; color: #5a4b40; }
+        .hero-box p { margin: 0; font-size: 15px; color: #6b5b50; }
+        .section { background-color: #ffffff; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
+        .section h3 { margin: 0 0 15px 0; font-size: 18px; color: #4a3b32; border-left: 4px solid #c2b2a2; padding-left: 10px; }
+        .btn-reserve { display: block; background-color: #7a6b60; color: #ffffff; text-align: center; padding: 15px 20px; font-weight: bold; border-radius: 8px; text-decoration: none; margin-top: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: background 0.3s; }
+        
+        .menu-list { margin: 20px 0; list-style: none; padding: 0; }
+        .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0; }
+        .menu-list a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; display: block; background-color: #f9f9f9; }
+        .menu-list a:hover { background-color: #eee; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: all 0.2s ease; }
+
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 10px 15px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; transition: all 0.2s ease; }
+        .back-to-top:hover { transform: translateY(-3px); background-color: #f8f8f8; }
+
+        img { max-width: 100%; height: auto; }
+
+        strong, em, .highlight, .color-text { color: #eb0e0e !important; }
+
+        @media screen and (max-width: 768px) {
+          body, p, span, li, td, div { font-size: 22px !important; font-weight: 600 !important; line-height: 1.9 !important; }
+          .header h1 { font-size: 38px !important; font-weight: bold !important; line-height: 1.4 !important; }
+          .hero-box h2, .section h3 { font-size: 28px !important; font-weight: bold !important; margin-bottom: 20px !important; }
+          .profile-name { font-size: 42px !important; }
+        }
+
+        .profile-name { font-size: 48px; font-weight: 900; display: block; line-height: 1.3; margin-bottom: 15px; }
+
+        @keyframes flash {
+          0% { opacity: 1; }
+          50% { opacity: 0.3; }
+          100% { opacity: 1; }
+        }  
+
+        @keyframes fadeInUp {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-section { animation: fadeInUp 1.0s ease-out; }        
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="menu-list">
+  <ul>
+    <li><a href="price.html">ご利用ガイド&料金</a></li>
+    <li><a href="concept.html">初めての方へ</a></li>
+    <li><a href="profile.html">プロフィール</a></li>
+    <li><a href="qualification.html">保有資格</a></li>
+    <li><a href="video.html">動画案内</a></li>
+    <li><a href="faq.html">よくある質問</a></li>  
+  </ul>
+</nav>
+
+<div class="header" id="top">
+  <!-- メイン見出し -->
+  <h1 style="color: red; font-size: 2.4rem; font-weight: bold; text-align: center; line-height: 1.4; margin-bottom: 10px;">
+  名古屋 ゲイマッサージ
+  </h1>
+          
+  <h1 style="color: red; font-size: 3.0rem; font-weight: bold; text-align: center; line-height: 1.4;">
+    ～【皓一部屋】 ～
+  </h1>
+
+  <p style="font-size: 1.6rem; color: #ff0000; font-weight: bold; text-align: center; line-height: 1.5; margin-bottom: 20px;">
+  日曜限定・1日2名様のみ<br>
+  男性専用 出張メンズリラクゼーション
+  </p>
+
+  <!-- サブ説明 -->
+  <p style="font-size: 1.5rem; font-weight: bold; text-align: center; line-height: 1.6; margin-bottom: 15px;">
+  初めてでも安心<br>
+ 名古屋・栄・伏見・丸の内・金山・上前津の周辺対応<br>
+ オールハンドの丁寧なオイル＆もみほぐしで、日頃の疲労をしっかり解消します
+  </p>
+
+  <p style="font-size: 1.4rem; color: #ff0000; font-weight: bold; text-align: center; line-height: 1.5;">
+  「男性同士の安心できる空間」<br>
+  「ゲイの方も多くご利用いただいています」
+  </p>
+
+  <!-- 初めての方へエリア -->
+  <div style="max-width: 600px; margin: 30px auto; padding: 0 10px;">
+    <details style="cursor: pointer; border: 1px solid #ffccd5; border-radius: 12px; padding: 18px; background-color: #fff5f6;">
+      <summary style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e53935; padding-bottom: 10px; list-style: none;">
+        <span style="font-size: 24px; font-weight: bold; color: #e53935;">
+          初めての方へ <span style="font-size: 16px; color: #666; font-weight: normal;">👏 (タップでメッセージ表示)</span>
+        </span>
+        <span style="font-size: 14px; color: #fff; background-color: #e53935; padding: 4px 10px; border-radius: 20px; font-weight: bold; white-space: nowrap;">
+          ▼ 開く
+        </span>
+      </summary>
+      <div style="padding-top: 15px; text-align: center; font-size: 16px; line-height: 1.8; color: #333;">
+        <p style="font-size: 18px; font-weight: bold; color: #e53935; margin-bottom: 10px;">
+          🎉 見つけてくれてありがとうございます！
+        </p>
+        <p style="margin: 0 0 15px 0;">
+          「本当に男性同士で気兼ねなく寛げる場所かな…？」と不安な方も大丈夫。<br>
+          当サロンは完全プライベートな貸切空間です。<br>
+          前日12時間前までの完全予約制ですので、まずはカレンダーの空きをチェックしてみてくださいね！
+        </p>
+        <div style="border-top: 1px dashed #ffccd5; padding-top: 12px; font-size: 14px; color: #555;">
+          ご予約はグーグルカレンダーよりお願いします<br>
+          お問合せ・ご相談・質問はオールマイリンクのサイト内のグーグルフォームからお願いします<br>
+          ※当日予約は基本的にお受けできません（前日12時間前まで）
+        </div>
+      </div>
+    </details>
+  </div>
+        
+  <!-- 立体オレンジ予約ボタン -->
+  <div style="text-align: center; margin: 35px auto; padding: 0 15px;">
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; animation: flash 1.5s infinite;">
+          今すぐ予約する
+      </a>
+  </div>        
+  
+  <a href="https://lin.ee/NNtARDE"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0" loading="lazy"></a>
+      
+  <div class="container">
+      <div class="hero-box">
+          <h2>名古屋市周辺の出張メンズリラク</h2>
+
           <!-- 写真クリックで拡大表示＆シャワー音再生機能を追加したエリア -->
           <div style="text-align: center; margin: 30px auto; padding: 0 10px;">
               <a href="javascript:void(0);" onclick="openModalAndPlaySound();" style="text-decoration: none; display: inline-block;">
