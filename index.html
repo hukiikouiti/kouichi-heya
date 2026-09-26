@@ -162,11 +162,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="hero-box">
           <h2>名古屋市周辺の出張メンズリラク</h2>
 
-          <!-- 写真クリックで拡大表示＆シャワー音再生機能を追加したエリア -->
+          <!-- タップで動画（シャワー演出＆ナレーション）がポップアップ再生するエリア -->
           <div style="text-align: center; margin: 30px auto; padding: 0 10px;">
-              <a href="javascript:void(0);" onclick="openModalAndPlaySound();" style="text-decoration: none; display: inline-block;">
+              <a href="javascript:void(0);" onclick="openShowerModal();" style="text-decoration: none; display: inline-block;">
                   <img src="シャワーシーン9.9.png" alt="シャワーシーン" class="fade-in-section" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                  <p style="font-size: 13px; color: #888; margin-top: 6px;">タップで写真を拡大＆音声を再生 🔊</p>
+                  <p style="font-size: 13px; color: #888; margin-top: 6px;">タップで動画をポップアップ再生 🎬🔊</p>
               </a>
           </div>        
           
@@ -230,43 +230,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-<!-- 【拡大表示用のポップアップモーダル】 -->
-<div id="shower-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeModal();">
-    <div style="position: relative; max-width: 90%; max-height: 90%; text-align: center;">
-        <img src="シャワーシーン9.9.png" alt="拡大シャワーシーン" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 25px rgba(255,255,255,0.2);">
-        <p style="color: #ffffff; margin-top: 15px; font-size: 16px; font-weight: bold;">画面のどこかをタップすると閉じます ✖</p>
+<!-- 【拡大動画再生用のポップアップモーダル】 -->
+<div id="shower-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeShowerModal();">
+    <div style="position: relative; max-width: 90%; max-height: 90%; text-align: center;" onclick="event.stopPropagation();">
+        <!-- ※Canvaで書き出した動画ファイル名（例：shower-video.mp4 など）を指定します -->
+        <video id="shower-video" src="shower-video.mp4" controls playsinline style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 25px rgba(255,255,255,0.2);"></video>
+        <p style="color: #ffffff; margin-top: 15px; font-size: 16px; font-weight: bold; cursor: pointer;" onclick="closeShowerModal();">画面外またはここをタップで閉じる ✖</p>
     </div>
 </div>
 
-<!-- 【シャワー音データの設定】 -->
-<audio id="shower-sound" src="お風呂でシャワー.mp3" preload="auto"></audio>
-
 <!-- 【動作させるJavaScript処理】 -->
 <script>
-    function openModalAndPlaySound() {
+    function openShowerModal() {
         var modal = document.getElementById('shower-modal');
-        var sound = document.getElementById('shower-sound');
+        var video = document.getElementById('shower-video');
         
         if (modal) {
             modal.style.display = 'flex';
         }
-        if (sound) {
-            sound.currentTime = 0;
-            sound.play().catch(function(e) {
+        if (video) {
+            video.currentTime = 0;
+            video.play().catch(function(e) {
                 console.log("再生エラー:", e);
             });
         }
     }
 
-    function closeModal() {
+    function closeShowerModal() {
         var modal = document.getElementById('shower-modal');
-        var sound = document.getElementById('shower-sound');
+        var video = document.getElementById('shower-video');
         
         if (modal) {
             modal.style.display = 'none';
         }
-        if (sound) {
-            sound.pause();
+        if (video) {
+            video.pause();
         }
     }
 </script>
