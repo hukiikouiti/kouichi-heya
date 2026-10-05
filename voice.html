@@ -24,7 +24,7 @@
         .container { max-width: 600px; margin: 20px auto; padding: 0 15px; box-sizing: border-box; }
         
         .menu-list { margin: 20px 0; list-style: none; padding: 0; }
-        .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; }
+        .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; margin: 0; }
         .menu-list a { text-decoration: none; color: #333; font-weight: bold; padding: 8px 12px; border: 1px solid #ccc; border-radius: 5px; display: block; background-color: #f9f9f9; font-size: 14px; }
         .menu-list a:hover { background-color: #eee; }
 
@@ -35,6 +35,10 @@
 
         .back-to-top { background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; }
         @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        
+        /* 右下固定ボタン用の点滅アニメーション設定 */
+        @keyframes blink-anime { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .blink-target { animation: blink-anime 1.2s infinite; }
     </style>
 </head>
 <body>
@@ -110,12 +114,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </div>
 
-<!-- フローティングボタン -->
+<!-- フローティングボタン（右下固定） -->
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
     <a href="#top" class="back-to-top">▲ トップへ</a>
     <div style="display: flex; gap: 6px; align-items: center;">
-        <a href="https://lin.ee/NNtARDE" target="_blank" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 10px; border-radius: 8px; text-decoration: none;">LINE</a>
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" style="background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #fff; font-size: 13px; font-weight: bold; padding: 10px 12px; border-radius: 20px; text-decoration: none;">今すぐ予約</a>
+        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 10px; border-radius: 8px; text-decoration: none;">LINE</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #fff; font-size: 13px; font-weight: bold; padding: 10px 12px; border-radius: 20px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3);">今すぐ予約</a>
     </div>
 </div>
 
