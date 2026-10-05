@@ -18,10 +18,12 @@
     
     <meta property="og:title" content="名古屋 ゲイマッサージ～【皓一部屋】～｜出張メンズリラクゼーション">
     <meta property="og:description" content="名古屋・栄・金山周辺対応。日曜限定・1日2名様のみ。男性セラピストによるオールハンド出張ボディケア。">
-    <meta property="og:image" content="https://hukiikouiti.github.io/kouichi-heya/KF%20(1).png">
+    <meta property="og:image" content="https://hukiikouiti.github.io/kouichi-heya/favicon.png">
     <meta property="og:url" content="https://hukiikouiti.github.io/kouichi-heya/">
 
-    <link rel="icon" href="KF (1).png" type="image/png">
+    <!-- Google検索結果用ファビコン指定（最適化済み） -->
+    <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <style>
         html { scroll-behavior: smooth; }
@@ -63,6 +65,10 @@
           50% { opacity: 0.3; }
           100% { opacity: 1; }
         }  
+
+        /* 右下固定追従ボタン用の点滅アニメーション */
+        @keyframes blink-anime { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .blink-target { animation: blink-anime 1.2s infinite; }
 
         @keyframes fadeInUp {
           0% { opacity: 0; transform: translateY(20px); }
@@ -134,7 +140,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
         
   <div style="text-align: center; margin: 35px auto; padding: 0 15px;">
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; animation: flash 1.5s infinite;">
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em;">
           今すぐ予約する
       </a>
   </div>        
@@ -190,7 +196,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div style="display: flex; gap: 6px; align-items: center;">
         <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">LINE</a>
         <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">問合せ</a>
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">今すぐ予約</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif;">今すぐ予約</a>
     </div>
 </div>
 
