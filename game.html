@@ -172,16 +172,16 @@
     const avatar = document.getElementById('avatar');
     const statusText = document.getElementById('status-text');
 
-    if (score > 35) {
-      avatar.innerText = '😆✨';
-      statusText.innerText = 'めちゃくちゃ軽やか！';
-    } else if (score > 15) {
-      avatar.innerText = '😌';
-      statusText.innerText = '少しほぐれてきた！';
-    } else if (score > 5) {
-      avatar.innerText = '🙂';
-      statusText.innerText = '効いてる…！';
-    }
+  if (score > 150) {
+  avatar.innerText = '😆✨';
+  statusText.innerText = 'めちゃくちゃ軽やか！';
+} else if (score > 80) {
+  avatar.innerText = '😌';
+  statusText.innerText = '少しほぐれてきた！';
+} else if (score > 30) {
+  avatar.innerText = '🙂';
+  statusText.innerText = '効いてる…！';
+}
   }
 
   function endGame() {
@@ -193,16 +193,16 @@
     let recommendText = "";
 
     // スコアに応じた判定の分岐
-    if (score <= 15) {
-      judgeTitle = "【お疲れ度100%（超カチコチ）】";
-      recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
-    } else if (score <= 35) {
-      judgeTitle = "【お疲れ度60%（標準）】";
-      recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
-    } else {
-      judgeTitle = "【連打しすぎて指が限界】";
-      recommendText = "驚異の連打力！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
-    }
+    if (score <= 50) {
+  judgeTitle = "【お疲れ度100%（超カチコチ）】";
+  recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
+} else if (score <= 150) {
+  judgeTitle = "【お疲れ度60%（標準）】";
+  recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
+} else {
+  judgeTitle = "【連打しすぎて指が限界】";
+  recommendText = "200回に迫る神連打！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
+}
 
     const resultMessage = document.getElementById('result-message');
     resultMessage.innerHTML = `20秒で <b>${score} 回</b> ほぐせました！<br><span style="font-size:0.85rem; color:#e67e22; font-weight:bold;">${judgeTitle}</span><br><br>${recommendText}`;
