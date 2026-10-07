@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+  <!-- End Google Tag Manager -->
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>20秒リフレッシュゲーム | 皓一部屋</title>
@@ -105,6 +113,11 @@
 </head>
 <body>
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 <div class="game-card">
   <h1>💆‍♂️ 20秒さすり体験</h1>
   <p>丸印の中を指でなでて（連打して）<br>凝りをほぐしてあげよう！</p>
@@ -172,16 +185,16 @@
     const avatar = document.getElementById('avatar');
     const statusText = document.getElementById('status-text');
 
-  if (score > 100) {
-  avatar.innerText = '😆✨';
-  statusText.innerText = 'めちゃくちゃ軽やか！';
-} else if (score > 50) {
-  avatar.innerText = '😌';
-  statusText.innerText = '少しほぐれてきた！';
-} else if (score > 30) {
-  avatar.innerText = '🙂';
-  statusText.innerText = '効いてる…！';
-}
+    if (score > 100) {
+      avatar.innerText = '😆✨';
+      statusText.innerText = 'めちゃくちゃ軽やか！';
+    } else if (score > 50) {
+      avatar.innerText = '😌';
+      statusText.innerText = '少しほぐれてきた！';
+    } else if (score > 30) {
+      avatar.innerText = '🙂';
+      statusText.innerText = '効いてる…！';
+    }
   }
 
   function endGame() {
@@ -194,15 +207,15 @@
 
     // スコアに応じた判定の分岐
     if (score <= 30) {
-  judgeTitle = "【お疲れ度100%（超カチコチ）】";
-  recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
-} else if (score <= 50) {
-  judgeTitle = "【お疲れ度60%（標準）】";
-  recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
-} else {
-  judgeTitle = "【連打しすぎて指が限界】";
-  recommendText = "100回に迫る神連打！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
-}
+      judgeTitle = "【お疲れ度100%（超カチコチ）】";
+      recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
+    } else if (score <= 50) {
+      judgeTitle = "【お疲れ度60%（標準）】";
+      recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
+    } else {
+      judgeTitle = "【連打しすぎて指が限界】";
+      recommendText = "100回に迫る神連打！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
+    }
 
     const resultMessage = document.getElementById('result-message');
     resultMessage.innerHTML = `20秒で <b>${score} 回</b> ほぐせました！<br><span style="font-size:0.85rem; color:#e67e22; font-weight:bold;">${judgeTitle}</span><br><br>${recommendText}`;
