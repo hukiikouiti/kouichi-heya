@@ -58,6 +58,7 @@
       -webkit-user-select: none;
       box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
       transition: transform 0.1s ease;
+      touch-action: manipulation; /* スマホ連打時の勝手なダブルタップ拡大を防止 */
     }
     .massage-area:active {
       transform: scale(0.95);
@@ -87,6 +88,11 @@
       background-color: #3498db;
       color: #fff;
     }
+    .share-btn {
+      background-color: #000000; /* Xブランドカラー（黒） */
+      color: #fff;
+      margin-top: 15px;
+    }
     .reserve-btn {
       background-color: #2ecc71;
       color: #fff;
@@ -109,7 +115,7 @@
 
   <div id="game-screen" class="hidden">
     <div class="timer-box">残り <span id="timer">20</span> 秒</div>
-    <div class="massage-area" onclick="rub()" ontouchstart="rub()">
+    <div class="massage-area" onclick="rub()" ontouchstart="rub(event)">
       <div class="avatar" id="avatar">😫</div>
       <div class="status-text" id="status-text">カチコチ…</div>
     </div>
@@ -119,6 +125,10 @@
   <div id="result-screen" class="hidden">
     <h2 style="color: #27ae60;">✨ スッキリ完了！</h2>
     <p id="result-message"></p>
+    
+    <!-- X（Twitter）シェアボタン -->
+    <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
+
     <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 カレンダーから今すぐ予約する</a>
     <a href="game.html" style="display:block; margin-top:15px; color:#888; font-size:0.85rem; text-decoration:none;">もう一度あそぶ</a>
     <a href="index.html" style="display:block; margin-top:10px; color:#3498db; font-size:0.85rem; text-decoration:none;">トップページへ戻る</a>
@@ -138,6 +148,8 @@
     timeLeft = 20;
     document.getElementById('score').innerText = score;
     document.getElementById('timer').innerText = timeLeft;
+    document.getElementById('avatar').innerText = '😫';
+    document.getElementById('status-text').innerText = 'カチコチ…';
 
     timerInterval = setInterval(() => {
       timeLeft--;
@@ -148,7 +160,11 @@
     }, 1000);
   }
 
-  function rub() {
+  // スマホのマルチタッチや重複カウントを防ぐためのイベントハンドラ
+  function rub(event) {
+    if (event && event.type === 'touchstart') {
+      event.preventDefault(); // タップ時の遅延やズームを防止
+    }
     if (timeLeft <= 0) return;
     score++;
     document.getElementById('score').innerText = score;
@@ -156,10 +172,10 @@
     const avatar = document.getElementById('avatar');
     const statusText = document.getElementById('status-text');
 
-    if (score > 40) {
-      avatar.innerText = '😆✨🥛';
+    if (score > 35) {
+      avatar.innerText = '😆✨';
       statusText.innerText = 'めちゃくちゃ軽やか！';
-    } else if (score > 20) {
+    } else if (score > 15) {
       avatar.innerText = '😌';
       statusText.innerText = '少しほぐれてきた！';
     } else if (score > 5) {
@@ -173,8 +189,31 @@
     document.getElementById('game-screen').classList.add('hidden');
     document.getElementById('result-screen').classList.remove('hidden');
 
+    let judgeTitle = "";
+    let recommendText = "";
+
+    // スコアに応じた判定の分岐
+    if (score <= 15) {
+      judgeTitle = "【お疲れ度100%（超カチコチ）】";
+      recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
+    } else if (score <= 35) {
+      judgeTitle = "【お疲れ度60%（標準）】";
+      recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
+    } else {
+      judgeTitle = "【連打しすぎて指が限界】";
+      recommendText = "驚異の連打力！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
+    }
+
     const resultMessage = document.getElementById('result-message');
-    resultMessage.innerHTML = `20秒で <b>${score} 回</b> ほぐせました！<br>画面の上でも効果抜群ですが、本物の施術はもっとスッキリしますよ👍`;
+    resultMessage.innerHTML = `20秒で <b>${score} 回</b> ほぐせました！<br><span style="font-size:0.85rem; color:#e67e22; font-weight:bold;">${judgeTitle}</span><br><br>${recommendText}`;
+
+    // X（Twitter）用のシェア文章とURL生成
+    const shareText = encodeURIComponent(`20秒ゲームで顔のコリを ${score} 回さすりました！\n判定：${judgeTitle}\n\nあなたは何回ほぐせる？やってみてね👇`);
+    const shareUrl = encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/');
+    const hashtags = encodeURIComponent('皓一部屋,名古屋ゲイマッサージ');
+
+    const twitterShareLink = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=${hashtags}`;
+    document.getElementById('share-link').href = twitterShareLink;
   }
 </script>
 
