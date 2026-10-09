@@ -147,7 +147,7 @@
       padding: 0 10px;
     }
 
-    /* 筋肉順押しゲーム用のグリッドパネル（文字を少し大きく見やすく） */
+    /* 筋肉順押しゲーム用のグリッドパネル */
     .rhythm-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -240,7 +240,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 2. リズム・順押し系タブメニュー -->
   <div class="tab-menu" id="tab-rhythm">
     <button class="tab-btn" id="tab-shoulder" onclick="switchTab('shoulder')">💪 肩首ほぐし</button>
-    <button class="tab-btn" id="tab-back" onclick="switchTab('back')">🦴 腰背中順延</button>
+    <button class="tab-btn" id="tab-back" onclick="switchTab('back')">🦴 背中・腰ほぐし</button>
     <button class="tab-btn" id="tab-hand" onclick="switchTab('hand')">✋ 手のひら</button>
   </div>
 
@@ -310,7 +310,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 4. 肩首ほぐし（筋肉順押しゲーム：後頭下筋・斜角筋・棘上筋・菱形筋） -->
+  <!-- 4. 肩首ほぐしゲーム -->
   <div id="game-sec-shoulder" class="game-section">
     <h1>💪 肩首ほぐし</h1>
     <p>光るコリの筋肉を順番（1➔2➔3➔4）にタップ！</p>
@@ -334,23 +334,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 5. 腰・背中 背骨順ストレッチ -->
+  <!-- 5. 背中・腰ほぐしゲーム（菱形筋・広背筋・腰方形筋・大殿筋） -->
   <div id="game-sec-back" class="game-section">
-    <h1>🦴 背骨・腰 順ストレッチ</h1>
-    <p>上から下へ（1➔2➔3➔4）順にテンポよく押そう！</p>
+    <h1>🦴 背中・腰ほぐし</h1>
+    <p>光る背中・腰の筋肉を順番（1➔2➔3➔4）にタップ！</p>
     <div id="back-start-screen"><button class="btn start-btn" style="background-color:#16a085;" onclick="startBackGame()">スタート！</button></div>
     <div id="back-game-screen" class="hidden">
       <div class="timer-box">残り <span id="back-timer">20</span> 秒</div>
       <div class="rhythm-grid">
-        <div class="rhythm-panel" id="b-panel-0" onclick="tapBack(0)">① 首下</div>
-        <div class="rhythm-panel" id="b-panel-1" onclick="tapBack(1)">② 背中</div>
-        <div class="rhythm-panel" id="b-panel-2" onclick="tapBack(2)">③ 腰椎</div>
-        <div class="rhythm-panel" id="b-panel-3" onclick="tapBack(3)">④ 骨盤</div>
+        <div class="rhythm-panel" id="b-panel-0" onclick="tapBack(0)">① 菱形筋<br><span style="font-size:0.65rem; font-weight:normal;">(背中中央)</span></div>
+        <div class="rhythm-panel" id="b-panel-1" onclick="tapBack(1)">② 広背筋<br><span style="font-size:0.65rem; font-weight:normal;">(背中サイド)</span></div>
+        <div class="rhythm-panel" id="b-panel-2" onclick="tapBack(2)">③ 腰方形筋<br><span style="font-size:0.65rem; font-weight:normal;">(腰の深層)</span></div>
+        <div class="rhythm-panel" id="b-panel-3" onclick="tapBack(3)">④ 大殿筋<br><span style="font-size:0.65rem; font-weight:normal;">(お尻の筋肉)</span></div>
       </div>
-      <p>ストレッチ成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
+      <p>筋肉ほぐし成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
     </div>
     <div id="back-result-screen" class="hidden">
-      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 伸びやか完了！</h2>
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 背中・腰ほぐし完了！</h2>
       <p id="back-result-message"></p>
       <a id="back-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
       <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
@@ -554,7 +554,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
   }
 
-  // --- 4. 肩首ほぐし（筋肉順押しゲーム） ---
+  // --- 4. 肩首ほぐしゲーム ---
   var shoulderTimeLeft = 20, shoulderScore = 0, shoulderTimer = null, currentShoulderTarget = 0;
   function startShoulderGame() {
     document.getElementById('shoulder-start-screen').classList.add('hidden');
@@ -592,7 +592,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'shoulder_rhythm', 'score': shoulderScore});
   }
 
-  // --- 5. 腰・背中ストレッチゲーム ---
+  // --- 5. 背中・腰ほぐしゲーム（菱形筋・広背筋・腰方形筋・大殿筋） ---
   var backTimeLeft = 20, backScore = 0, backTimer = null, currentBackTarget = 0;
   function startBackGame() {
     document.getElementById('back-start-screen').classList.add('hidden');
@@ -623,9 +623,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     clearInterval(backTimer);
     document.getElementById('back-game-screen').classList.add('hidden');
     document.getElementById('back-result-screen').classList.remove('hidden');
-    var judge = backScore <= 15 ? "【サビつき猫背】" : backScore <= 30 ? "【スッと伸びた背中】" : "【柔軟性プロ級】";
-    document.getElementById('back-result-message').innerHTML = '20秒で <b>' + backScore + ' 回</b> 背骨ストレッチ！<br><span style="font-size:0.8rem; color:#16a085; font-weight:bold;">' + judge + '</span><br><br>重だるい腰や背中をプロの施術でスッキリ！';
-    var text = encodeURIComponent('背骨・腰ストレッチゲームで ' + backScore + ' 回伸ばしました！\n判定：' + judge + '\n\nあなたの背中、サビついてない？👇');
+    var judge = backScore <= 15 ? "【背中・腰ガチガチ】" : backScore <= 30 ? "【標準ほぐれ背中腰】" : "【背面リリースプロ】";
+    document.getElementById('back-result-message').innerHTML = '20秒で <b>' + backScore + ' 箇所</b> の背面筋肉を解放！<br><span style="font-size:0.8rem; color:#16a085; font-weight:bold;">' + judge + '</span><br><br>広背筋や腰方形筋、大殿筋までしっかりケア！';
+    var text = encodeURIComponent('背中・腰ほぐしゲームで ' + backScore + ' 箇所の筋肉をほぐしました！\n判定：' + judge + '\n\nあなたの背中・腰、凝ってない？👇');
     document.getElementById('back-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,ボディケア';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'back_stretch', 'score': backScore});
   }
