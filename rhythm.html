@@ -90,62 +90,82 @@
       margin: 10px 0;
     }
 
-    /* 画像ステージ */
+    /* 画像ステージの修正 */
     .image-stage {
       width: 100%;
-      height: 280px;
+      height: 280px; /* 高さを固定 */
       background-color: #ffffff;
-      background-size: contain;
+      /* 背景画像の調整：中央配置、拡大縮小して枠に収める */
+      background-position: center center;
       background-repeat: no-repeat;
-      background-position: center;
+      background-size: cover; /* 枠いっぱいに綺麗に収める */
       border: 2px solid #e2e8f0;
       border-radius: 16px;
       position: relative;
       margin: 0 auto 15px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       overflow: hidden;
+      /* 白飛び防止用のオーバーレイを個別に設定するため、ここでの rgba は削除 */
     }
 
-    .shoulder-bg {
-      background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80');
-    }
-    .back-bg {
-      background-image: url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=400&q=80');
-    }
-    .hand-bg {
-      background-image: url('https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=400&q=80');
-    }
+    /* 各ゲームの背景画像URL */
+    .shoulder-bg { background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80'); }
+    .back-bg { background-image: url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=400&q=80'); }
+    .hand-bg { background-image: url('https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=400&q=80'); }
 
+    /* 白飛び防止とボタン視認性向上のためのオーバーレイ */
     .stage-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background-color: rgba(255, 255, 255, 0.78);
+      /* 背景画像の上に薄い白のフィルターをかける（値を調整して見やすく） */
+      background-color: rgba(255, 255, 255, 0.6); 
+      z-index: 1; /* 画像とボタンの間 */
     }
 
-    /* 光る丸ボタン */
+    /* 光る丸ボタンの修正（z-indexを上げてオーバーレイの上に表示） */
     .spot-btn {
       position: absolute;
       width: 44px;
       height: 44px;
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: rgba(255, 255, 255, 0.9);
       border: 3px solid #3498db;
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
       transition: all 0.15s ease;
       user-select: none;
       touch-action: manipulation;
+      z-index: 10; /* オーバーレイより手前に配置 */
     }
     .spot-btn.active-target {
       background-color: #fef08a;
       border-color: #eab308;
       transform: scale(1.25);
-      box-shadow: 0 0 20px rgba(234, 179, 8, 0.9);
+      box-shadow: 0 0 15px rgba(234, 179, 8, 0.8);
       z-index: 20;
     }
     .spot-btn:active {
       transform: scale(0.9);
     }
+
+    /* ボタン位置の再調整（背景が綺麗に収まった前提） */
+    /* 1. 肩首 (shoulder) */
+    #s-spot-0 { top: 65px; left: 165px; } /* 上 */
+    #s-spot-1 { top: 118px; left: 105px; } /* 左 */
+    #s-spot-2 { top: 118px; left: 221px; } /* 右 */
+    #s-spot-3 { top: 175px; left: 165px; } /* 下 */
+
+    /* 2. 背中・腰 (back) */
+    #b-spot-0 { top: 50px; left: 165px; } /* 上 */
+    #b-spot-1 { top: 100px; left: 165px; } /* 中上 */
+    #b-spot-2 { top: 150px; left: 165px; } /* 中下 */
+    #b-spot-3 { top: 200px; left: 165px; } /* 下 */
+
+    /* 3. 手のひら (hand) */
+    #h-spot-0 { top: 75px; left: 120px; } /* 左 */
+    #h-spot-1 { top: 75px; left: 206px; } /* 右 */
+    #h-spot-2 { top: 130px; left: 165px; } /* 中 */
+    #h-spot-3 { top: 185px; left: 165px; } /* 下 */
 
     .btn {
       display: inline-block;
@@ -210,10 +230,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="timer-box">残り <span id="shoulder-timer">20</span> 秒</div>
       <div class="image-stage shoulder-bg">
         <div class="stage-overlay"></div>
-        <button class="spot-btn" id="s-spot-0" style="top:70px; left:168px;" onclick="tapShoulder(0)"></button>
-        <button class="spot-btn" id="s-spot-1" style="top:125px; left:110px;" onclick="tapShoulder(1)"></button>
-        <button class="spot-btn" id="s-spot-2" style="top:125px; left:226px;" onclick="tapShoulder(2)"></button>
-        <button class="spot-btn" id="s-spot-3" style="top:180px; left:168px;" onclick="tapShoulder(3)"></button>
+        <button class="spot-btn" id="s-spot-0" onclick="tapShoulder(0)"></button>
+        <button class="spot-btn" id="s-spot-1" onclick="tapShoulder(1)"></button>
+        <button class="spot-btn" id="s-spot-2" onclick="tapShoulder(2)"></button>
+        <button class="spot-btn" id="s-spot-3" onclick="tapShoulder(3)"></button>
       </div>
       <p>ほぐし成功: <span id="shoulder-score" style="font-weight:bold; font-size:1.1rem; color:#d35400;">0</span> 回</p>
     </div>
@@ -235,10 +255,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="timer-box">残り <span id="back-timer">20</span> 秒</div>
       <div class="image-stage back-bg">
         <div class="stage-overlay"></div>
-        <button class="spot-btn" id="b-spot-0" style="top:55px; left:168px;" onclick="tapBack(0)"></button>
-        <button class="spot-btn" id="b-spot-1" style="top:105px; left:168px;" onclick="tapBack(1)"></button>
-        <button class="spot-btn" id="b-spot-2" style="top:155px; left:168px;" onclick="tapBack(2)"></button>
-        <button class="spot-btn" id="b-spot-3" style="top:205px; left:168px;" onclick="tapBack(3)"></button>
+        <button class="spot-btn" id="b-spot-0" onclick="tapBack(0)"></button>
+        <button class="spot-btn" id="b-spot-1" onclick="tapBack(1)"></button>
+        <button class="spot-btn" id="b-spot-2" onclick="tapBack(2)"></button>
+        <button class="spot-btn" id="b-spot-3" onclick="tapBack(3)"></button>
       </div>
       <p>ほぐし成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
     </div>
@@ -260,10 +280,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="timer-box">残り <span id="hand-timer">20</span> 秒</div>
       <div class="image-stage hand-bg">
         <div class="stage-overlay"></div>
-        <button class="spot-btn" id="h-spot-0" style="top:80px; left:125px;" onclick="tapHand(0)"></button>
-        <button class="spot-btn" id="h-spot-1" style="top:80px; left:210px;" onclick="tapHand(1)"></button>
-        <button class="spot-btn" id="h-spot-2" style="top:135px; left:168px;" onclick="tapHand(2)"></button>
-        <button class="spot-btn" id="h-spot-3" style="top:190px; left:168px;" onclick="tapHand(3)"></button>
+        <button class="spot-btn" id="h-spot-0" onclick="tapHand(0)"></button>
+        <button class="spot-btn" id="h-spot-1" onclick="tapHand(1)"></button>
+        <button class="spot-btn" id="h-spot-2" onclick="tapHand(2)"></button>
+        <button class="spot-btn" id="h-spot-3" onclick="tapHand(3)"></button>
       </div>
       <p>反射区刺激成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
     </div>
