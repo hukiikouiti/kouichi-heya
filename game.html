@@ -147,7 +147,7 @@
       padding: 0 10px;
     }
 
-    /* 筋肉順押しゲーム用のグリッドパネル */
+    /* 順押しゲーム用のグリッドパネル */
     .rhythm-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -241,7 +241,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="tab-menu" id="tab-rhythm">
     <button class="tab-btn" id="tab-shoulder" onclick="switchTab('shoulder')">💪 肩首ほぐし</button>
     <button class="tab-btn" id="tab-back" onclick="switchTab('back')">🦴 背中・腰ほぐし</button>
-    <button class="tab-btn" id="tab-hand" onclick="switchTab('hand')">✋ 手のひら</button>
+    <button class="tab-btn" id="tab-hand" onclick="switchTab('hand')">✋ 手のひら反射区</button>
   </div>
 
   <!-- 1. 顔・手指さすりゲーム -->
@@ -334,7 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 5. 背中・腰ほぐしゲーム（菱形筋・広背筋・腰方形筋・大殿筋） -->
+  <!-- 5. 背中・腰ほぐしゲーム -->
   <div id="game-sec-back" class="game-section">
     <h1>🦴 背中・腰ほぐし</h1>
     <p>光る背中・腰の筋肉を順番（1➔2➔3➔4）にタップ！</p>
@@ -358,23 +358,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 6. 手のひら反射区タッピング -->
+  <!-- 6. 手のひら反射区ゲーム（手の画像＋首・肩・胃・生殖器） -->
   <div id="game-sec-hand" class="game-section">
-    <h1>✋ 手のひら反射区リズム</h1>
-    <p>光る手のツボをリズムよく順番にタップ！</p>
+    <h1>✋ 手のひら反射区</h1>
+    <p>手のひらの反射区を順番（1➔2➔3➔4）にタップ！</p>
     <div id="hand-start-screen"><button class="btn start-btn" style="background-color:#2980b9;" onclick="startHandGame()">スタート！</button></div>
     <div id="hand-game-screen" class="hidden">
       <div class="timer-box">残り <span id="hand-timer">20</span> 秒</div>
       <div class="rhythm-grid">
-        <div class="rhythm-panel" id="h-panel-0" onclick="tapHand(0)">① 親指根</div>
-        <div class="rhythm-panel" id="h-panel-1" onclick="tapHand(1)">② 手の平中央</div>
-        <div class="rhythm-panel" id="h-panel-2" onclick="tapHand(2)">③ 小指下</div>
-        <div class="rhythm-panel" id="h-panel-3" onclick="tapHand(3)">④ 手首ツボ</div>
+        <div class="rhythm-panel" id="h-panel-0" onclick="tapHand(0)">🖐️① 首反射区<br><span style="font-size:0.65rem; font-weight:normal;">(親指の付け根)</span></div>
+        <div class="rhythm-panel" id="h-panel-1" onclick="tapHand(1)">🖐️② 肩反射区<br><span style="font-size:0.65rem; font-weight:normal;">(指の付け根下)</span></div>
+        <div class="rhythm-panel" id="h-panel-2" onclick="tapHand(2)">🖐️③ 胃反射区<br><span style="font-size:0.65rem; font-weight:normal;">(手のひら中央)</span></div>
+        <div class="rhythm-panel" id="h-panel-3" onclick="tapHand(3)">🖐️④ 生殖器区<br><span style="font-size:0.65rem; font-weight:normal;">(手首中央下部)</span></div>
       </div>
-      <p>デトックス成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
+      <p>反射区刺激成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
     </div>
     <div id="hand-result-screen" class="hidden">
-      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ デトックス完了！</h2>
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 反射区リフレッシュ完了！</h2>
       <p id="hand-result-message"></p>
       <a id="hand-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
       <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
@@ -592,7 +592,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'shoulder_rhythm', 'score': shoulderScore});
   }
 
-  // --- 5. 背中・腰ほぐしゲーム（菱形筋・広背筋・腰方形筋・大殿筋） ---
+  // --- 5. 背中・腰ほぐしゲーム ---
   var backTimeLeft = 20, backScore = 0, backTimer = null, currentBackTarget = 0;
   function startBackGame() {
     document.getElementById('back-start-screen').classList.add('hidden');
@@ -630,7 +630,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'back_stretch', 'score': backScore});
   }
 
-  // --- 6. 手のひら反射区ゲーム ---
+  // --- 6. 手のひら反射区ゲーム（首・肩・胃・生殖器） ---
   var handTimeLeft = 20, handScore = 0, handTimer = null, currentHandTarget = 0;
   function startHandGame() {
     document.getElementById('hand-start-screen').classList.add('hidden');
@@ -661,9 +661,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     clearInterval(handTimer);
     document.getElementById('hand-game-screen').classList.add('hidden');
     document.getElementById('hand-result-screen').classList.remove('hidden');
-    var judge = handScore <= 15 ? "【スマホ指お疲れ】" : handScore <= 30 ? "【スッキリ反射区】" : "【神タッピング】";
-    document.getElementById('hand-result-message').innerHTML = '20秒で <b>' + handScore + ' 回</b> ツボ押し完了！<br><span style="font-size:0.8rem; color:#2980b9; font-weight:bold;">' + judge + '</span><br><br>手のひらから全身の疲れをリフレッシュ！';
-    var text = encodeURIComponent('手のひら反射区ゲームで ' + handScore + ' 回ツボ押ししました！\n判定：' + judge + '\n\nスマホで疲れた手に！👇');
+    var judge = handScore <= 15 ? "【お疲れモードの手】" : handScore <= 30 ? "【スッキリ反射区】" : "【反射区マスター】";
+    document.getElementById('hand-result-message').innerHTML = '20秒で <b>' + handScore + ' 箇所</b> の反射区を刺激！<br><span style="font-size:0.8rem; color:#2980b9; font-weight:bold;">' + judge + '</span><br><br>手のひらから首・胃・生殖器の調子を整えよう！';
+    var text = encodeURIComponent('手のひら反射区ゲームで ' + handScore + ' 回反射区を刺激しました！\n判定：' + judge + '\n\n手のツボですっきり癒やされよう！👇');
     document.getElementById('hand-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,リフレクソロジー';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'hand_reflex', 'score': handScore});
   }
