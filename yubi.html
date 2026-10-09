@@ -78,12 +78,12 @@
             to { transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        /* 座標の微調整（手の画像にあわせて調整してください） */
-        #btn-boshi { top: 62%; left: 24%; }
-        #btn-jishi { top: 22%; left: 43%; }
-        #btn-cyuushi { top: 15%; left: 53%; }
-        #btn-kanshi { top: 18%; left: 63%; }
-        #btn-syoushi { top: 28%; left: 74%; }
+        /* 左右反転した手の画像に合わせた座標調整（左から小指〜親指） */
+        #btn-syoushi { top: 30%; left: 28%; }
+        #btn-kanshi  { top: 20%; left: 38%; }
+        #btn-cyuushi { top: 16%; left: 49%; }
+        #btn-jishi   { top: 20%; left: 60%; }
+        #btn-boshi   { top: 34%; left: 74%; }
 
         .score-board {
             margin-top: 15px;
@@ -133,11 +133,12 @@
     <div class="game-container">
         <img src="pa-hando.png" alt="手のパー">
         
-        <div id="btn-boshi" class="finger-btn" data-finger="boshi"></div>
-        <div id="btn-jishi" class="finger-btn" data-finger="jishi"></div>
-        <div id="btn-cyuushi" class="finger-btn" data-finger="cyuushi"></div>
-        <div id="btn-kanshi" class="finger-btn" data-finger="kanshi"></div>
+        <!-- 左から小指、環指、中指、示指、母指の順番に配置 -->
         <div id="btn-syoushi" class="finger-btn" data-finger="syoushi"></div>
+        <div id="btn-kanshi" class="finger-btn" data-finger="kanshi"></div>
+        <div id="btn-cyuushi" class="finger-btn" data-finger="cyuushi"></div>
+        <div id="btn-jishi" class="finger-btn" data-finger="jishi"></div>
+        <div id="btn-boshi" class="finger-btn" data-finger="boshi"></div>
     </div>
 
     <div class="score-board">
@@ -146,7 +147,7 @@
 
     <button class="btn-start" id="startBtn" onclick="startGame()">ゲームスタート</button>
     <br>
-    <a href="index.html" class="back-link">🏠 ホームに戻る</a>
+    <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 
     <!-- 音声ファイルの読み込み -->
     <audio id="sound-boshi" src="boshi.wav" preload="auto"></audio>
