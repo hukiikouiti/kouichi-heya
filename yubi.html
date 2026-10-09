@@ -95,12 +95,12 @@
             transform: translate(-50%, -50%) scale(0.9);
         }
 
-        /* 写真の位置に合わせて調整した座標 */
-        #btn-syoushi { top: 35%; left: 38%; } /* 小指 */
-        #btn-kanshi  { top: 22%; left: 45%; } /* 薬指 */
-        #btn-cyuushi { top: 18%; left: 53%; } /* 中指 */
-        #btn-jishi   { top: 21%; left: 61%; } /* 人差し指 */
-        #btn-boshi   { top: 43%; left: 70%; } /* 親指 */
+        /* 写真の位置に合わせて指先にピタッと合わせるよう再調整した座標 */
+        #btn-syoushi { top: 37%; left: 29%; } /* 小指 */
+        #btn-kanshi  { top: 22%; left: 39%; } /* 薬指 */
+        #btn-cyuushi { top: 16%; left: 49%; } /* 中指 */
+        #btn-jishi   { top: 21%; left: 59%; } /* 人差し指 */
+        #btn-boshi   { top: 40%; left: 73%; } /* 親指 */
 
         .btn {
             display: inline-block;
@@ -235,6 +235,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             next = fingers[Math.floor(Math.random() * fingers.length)];
         } while (next === currentTarget);
 
+        currentTarget = next;
+        document.getElementById('btn-' + currentTarget).classList.add('active-target');
     }
 
     function tapFinger(fingerName) {
@@ -285,10 +287,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'yubi_game', 'score': score});
         }
-    }
-
-    function resetGroup() {
-        // 修正用に保持
     }
 
     function resetGame() {
