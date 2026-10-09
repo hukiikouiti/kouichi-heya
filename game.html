@@ -18,7 +18,7 @@
       background-color: #f7f9fc;
       color: #333;
       margin: 0;
-      padding: 20px 10px;
+      padding: 15px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -28,34 +28,62 @@
     }
     .game-card {
       background: #ffffff;
-      padding: 24px;
+      padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      max-width: 380px;
+      max-width: 400px;
       width: 100%;
       box-sizing: border-box;
     }
-    
-    /* タブ切替メニュー */
-    .tab-menu {
+
+    /* 大分類モード切り替えボタン */
+    .mode-selector {
       display: flex;
-      gap: 6px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: #eef2f5;
+      color: #666;
+    }
+    .mode-btn.active {
+      background-color: #3498db;
+      color: white;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+
+    /* タブ切替メニュー（非表示時は隠す） */
+    .tab-menu {
+      display: none; /* 初期状態は非表示 */
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 15px;
       background: #eef2f5;
       padding: 4px;
       border-radius: 12px;
     }
+    .tab-menu.active {
+      display: grid; /* モード選択時に表示 */
+    }
     .tab-btn {
-      flex: 1;
-      padding: 10px 4px;
+      padding: 8px 2px;
       border: none;
       border-radius: 8px;
       background: transparent;
       color: #666;
       font-weight: bold;
-      font-size: 0.8rem;
+      font-size: 0.7rem; /* スマホ用に少し小さく */
       cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
     .tab-btn.active {
       background: #ffffff;
@@ -72,25 +100,26 @@
     }
 
     h1 {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
       color: #2c3e50;
     }
     p {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #666;
       margin-top: 0;
+      margin-bottom: 12px;
     }
     .timer-box {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: #e74c3c;
-      margin: 15px 0;
+      margin: 10px 0;
     }
     .massage-area {
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 20px;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 15px;
       background-color: #eef2f5;
       border-radius: 50%;
       display: flex;
@@ -108,25 +137,61 @@
       transform: scale(0.95);
     }
     .avatar {
-      font-size: 4rem;
+      font-size: 3.5rem;
       line-height: 1;
     }
     .status-text {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #555;
-      margin-top: 8px;
+      margin-top: 6px;
       padding: 0 10px;
     }
+
+    /* 順番押しゲーム用のグリッドパネル */
+    .rhythm-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 260px;
+      margin: 0 auto 15px;
+    }
+    .rhythm-panel {
+      background-color: #eef2f5;
+      border: 3px solid #d0d7de;
+      border-radius: 15px;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.1s ease;
+    }
+    .rhythm-panel.active-target {
+      background-color: #ffeaa7;
+      border-color: #f1c40f;
+      color: #d35400;
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(241, 196, 15, 0.6);
+    }
+    .rhythm-panel:active {
+      transform: scale(0.95);
+    }
+
     .btn {
       display: inline-block;
       width: 100%;
-      padding: 14px 0;
+      padding: 12px 0;
       border-radius: 30px;
       font-weight: bold;
       text-decoration: none;
       border: none;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
       box-sizing: border-box;
     }
     .start-btn {
@@ -136,12 +201,12 @@
     .share-btn {
       background-color: #000000;
       color: #fff;
-      margin-top: 15px;
+      margin-top: 12px;
     }
     .reserve-btn {
       background-color: #2ecc71;
       color: #fff;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .hidden {
       display: none !important;
@@ -156,353 +221,292 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-  <!-- 部位切り替えタブ -->
-  <div class="tab-menu">
+
+  <!-- 大分類モード切り替えボタン（NEW） -->
+  <div class="mode-selector">
+    <button class="mode-btn active" id="mode-tap" onclick="switchMode('tap')">💆‍♂️ 連打でほぐす</button>
+    <button class="mode-btn" id="mode-rhythm" onclick="switchMode('rhythm')">⚡ リズムで整える</button>
+  </div>
+
+  <!-- 1. タップ連打系タブメニュー（id="tab-tap"を追加） -->
+  <div class="tab-menu active" id="tab-tap">
     <button class="tab-btn active" id="tab-face" onclick="switchTab('face')">💆‍♂️ 顔・手指</button>
     <button class="tab-btn" id="tab-leg" onclick="switchTab('leg')">🦵 足ポンプ</button>
     <button class="tab-btn" id="tab-belly" onclick="switchTab('belly')">🧘 お腹ガード</button>
   </div>
 
-  <!-- ==================== 1. 顔・手指さすりゲーム ==================== -->
+  <!-- 2. リズム・順押し系タブメニュー（id="tab-rhythm"を追加、非表示） -->
+  <div class="tab-menu" id="tab-rhythm">
+    <button class="tab-btn" id="tab-shoulder" onclick="switchTab('shoulder')">💪 肩首順押し</button>
+    <button class="tab-btn" id="tab-back" onclick="switchTab('back')">🦴 腰背中順延</button>
+    <button class="tab-btn" id="tab-hand" onclick="switchTab('hand')">✋ 手のひら</button>
+  </div>
+
+  <!-- ==================== 各ゲームセクション ==================== -->
+  
+  <!-- 1. 顔・手指さすりゲーム -->
   <div id="game-sec-face" class="game-section active">
     <h1>💆‍♂️ 20秒さすり体験</h1>
-    <p>丸印の中を指でなでて（連打して）<br>凝りをほぐしてあげよう！</p>
-
-    <div id="face-start-screen">
-      <button class="btn start-btn" onclick="startFaceGame()">スタート！</button>
-    </div>
-
+    <p>丸印の中を指でなでて凝りをほぐそう！</p>
+    <div id="face-start-screen"><button class="btn start-btn" onclick="startFaceGame()">スタート！</button></div>
     <div id="face-game-screen" class="hidden">
       <div class="timer-box">残り <span id="face-timer">20</span> 秒</div>
       <div class="massage-area" onclick="rubFace(event)">
         <div class="avatar" id="face-avatar">😫</div>
         <div class="status-text" id="face-status-text">カチコチ…</div>
       </div>
-      <p>さすった回数: <span id="face-score" style="font-weight:bold; font-size:1.2rem; color:#3498db;">0</span> 回</p>
+      <p>さすった回数: <span id="face-score" style="font-weight:bold; font-size:1.1rem; color:#3498db;">0</span> 回</p>
     </div>
-
     <div id="face-result-screen" class="hidden">
-      <h2 style="color: #27ae60;">✨ スッキリ完了！</h2>
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ スッキリ完了！</h2>
       <p id="face-result-message"></p>
-      
       <a id="face-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 カレンダーから今すぐ予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('face')" style="display:block; margin-top:15px; color:#888; font-size:0.85rem; text-decoration:none;">もう一度あそぶ</a>
-      <a href="index.html" style="display:block; margin-top:10px; color:#3498db; font-size:0.85rem; text-decoration:none;">トップページへ戻る</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('face')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
     </div>
   </div>
 
-  <!-- ==================== 2. 足のポンプゲーム ==================== -->
+  <!-- 2. 足のポンプゲーム -->
   <div id="game-sec-leg" class="game-section">
     <h1>🦵 20秒ふくらはぎポンプ</h1>
-    <p>丸印の中をリズムよく連打して<br>下半身の血流をポンプアップ！</p>
-
-    <div id="leg-start-screen">
-      <button class="btn start-btn" style="background-color:#27ae60;" onclick="startLegGame()">スタート！</button>
-    </div>
-
+    <p>丸印の中をリズムよく連打して血流アップ！</p>
+    <div id="leg-start-screen"><button class="btn start-btn" style="background-color:#27ae60;" onclick="startLegGame()">スタート！</button></div>
     <div id="leg-game-screen" class="hidden">
       <div class="timer-box">残り <span id="leg-timer">20</span> 秒</div>
       <div class="massage-area" style="background-color:#e8f8f5;" onclick="pumpLeg(event)">
         <div class="avatar" id="leg-avatar">🦶</div>
         <div class="status-text" id="leg-status-text">血流が滞り中…</div>
       </div>
-      <p>ポンプ回数: <span id="leg-score" style="font-weight:bold; font-size:1.2rem; color:#27ae60;">0</span> 回</p>
+      <p>ポンプ回数: <span id="leg-score" style="font-weight:bold; font-size:1.1rem; color:#27ae60;">0</span> 回</p>
     </div>
-
     <div id="leg-result-screen" class="hidden">
-      <h2 style="color: #27ae60;">✨ ポンプ完了！</h2>
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ ポンプ完了！</h2>
       <p id="leg-result-message"></p>
-
       <a id="leg-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 カレンダーから今すぐ予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('leg')" style="display:block; margin-top:15px; color:#888; font-size:0.85rem; text-decoration:none;">もう一度あそぶ</a>
-      <a href="index.html" style="display:block; margin-top:10px; color:#3498db; font-size:0.85rem; text-decoration:none;">トップページへ戻る</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('leg')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
     </div>
   </div>
 
-  <!-- ==================== 3. お腹のストレスガードゲーム ==================== -->
+  <!-- 3. お腹のストレスガードゲーム -->
   <div id="game-sec-belly" class="game-section">
-    <h1>🧘 20秒お腹ストレスガード</h1>
-    <p>次々襲いかかるストレスを<br>お腹の連打で弾き返そう！</p>
-
-    <div id="belly-start-screen">
-      <button class="btn start-btn" style="background-color:#8e44ad;" onclick="startBellyGame()">スタート！</button>
-    </div>
-
+    <h1>🧘 お腹ストレスガード</h1>
+    <p>襲いかかるストレスをお腹連打で弾き返せ！</p>
+    <div id="belly-start-screen"><button class="btn start-btn" style="background-color:#8e44ad;" onclick="startBellyGame()">スタート！</button></div>
     <div id="belly-game-screen" class="hidden">
       <div class="timer-box">残り <span id="belly-timer">20</span> 秒</div>
       <div class="massage-area" style="background-color:#f4ecf7;" onclick="guardBelly(event)">
-        <div class="avatar" id="belly-avatar">🌀</div>
+        <div class="avatar" id="belly-avatar">🛡️</div>
         <div class="status-text" id="belly-status-text">準備完了</div>
       </div>
-      <p>ガード回数: <span id="belly-score" style="font-weight:bold; font-size:1.2rem; color:#8e44ad;">0</span> 回</p>
+      <p>ガード回数: <span id="belly-score" style="font-weight:bold; font-size:1.1rem; color:#8e44ad;">0</span> 回</p>
     </div>
-
     <div id="belly-result-screen" class="hidden">
-      <h2 style="color: #27ae60;">✨ ガード完了！</h2>
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ ガード完了！</h2>
       <p id="belly-result-message"></p>
-
       <a id="belly-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 カレンダーから今すぐ予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('belly')" style="display:block; margin-top:15px; color:#888; font-size:0.85rem; text-decoration:none;">もう一度あそぶ</a>
-      <a href="index.html" style="display:block; margin-top:10px; color:#3498db; font-size:0.85rem; text-decoration:none;">トップページへ戻る</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('belly')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+    </div>
+  </div>
+
+  <!-- 4. 肩・首 ツボ順押しゲーム -->
+  <div id="game-sec-shoulder" class="game-section">
+    <h1>💪 肩首コリツボ順押し</h1>
+    <p>光るツボを 1 ➔ 2 ➔ 3 ➔ 4 の順番にタップ！</p>
+    <div id="shoulder-start-screen"><button class="btn start-btn" style="background-color:#d35400;" onclick="startShoulderGame()">スタート！</button></div>
+    <div id="shoulder-game-screen" class="hidden">
+      <div class="timer-box">残り <span id="shoulder-timer">20</span> 秒</div>
+      <div class="rhythm-grid">
+        <div class="rhythm-panel" id="s-panel-0" onclick="tapShoulder(0)">① 首付け根</div>
+        <div class="rhythm-panel" id="s-panel-1" onclick="tapShoulder(1)">② 左肩先</div>
+        <div class="rhythm-panel" id="s-panel-2" onclick="tapShoulder(2)">③ 右肩先</div>
+        <div class="rhythm-panel" id="s-panel-3" onclick="tapShoulder(3)">④ 肩甲骨</div>
+      </div>
+      <p>ほぐし成功: <span id="shoulder-score" style="font-weight:bold; font-size:1.1rem; color:#d35400;">0</span> 回</p>
+    </div>
+    <div id="shoulder-result-screen" class="hidden">
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 順押し完了！</h2>
+      <p id="shoulder-result-message"></p>
+      <a id="shoulder-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('shoulder')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+    </div>
+  </div>
+
+  <!-- 5. 腰・背中 背骨順ストレッチ -->
+  <div id="game-sec-back" class="game-section">
+    <h1>🦴 背骨・腰 順ストレッチ</h1>
+    <p>上から下へ（1➔2➔3➔4）順にテンポよく押そう！</p>
+    <div id="back-start-screen"><button class="btn start-btn" style="background-color:#16a085;" onclick="startBackGame()">スタート！</button></div>
+    <div id="back-game-screen" class="hidden">
+      <div class="timer-box">残り <span id="back-timer">20</span> 秒</div>
+      <div class="rhythm-grid">
+        <div class="rhythm-panel" id="b-panel-0" onclick="tapBack(0)">① 首下</div>
+        <div class="rhythm-panel" id="b-panel-1" onclick="tapBack(1)">② 背中</div>
+        <div class="rhythm-panel" id="b-panel-2" onclick="tapBack(2)">③ 腰椎</div>
+        <div class="rhythm-panel" id="b-panel-3" onclick="tapBack(3)">④ 骨盤</div>
+      </div>
+      <p>ストレッチ成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
+    </div>
+    <div id="back-result-screen" class="hidden">
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 伸びやか完了！</h2>
+      <p id="back-result-message"></p>
+      <a id="back-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('back')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+    </div>
+  </div>
+
+  <!-- 6. 手のひら反射区タッピング -->
+  <div id="game-sec-hand" class="game-section">
+    <h1>✋ 手のひら反射区リズム</h1>
+    <p>光る手のツボをリズムよく順番にタップ！</p>
+    <div id="hand-start-screen"><button class="btn start-btn" style="background-color:#2980b9;" onclick="startHandGame()">スタート！</button></div>
+    <div id="hand-game-screen" class="hidden">
+      <div class="timer-box">残り <span id="hand-timer">20</span> 秒</div>
+      <div class="rhythm-grid">
+        <div class="rhythm-panel" id="h-panel-0" onclick="tapHand(0)">① 親指根</div>
+        <div class="rhythm-panel" id="h-panel-1" onclick="tapHand(1)">② 手の平中央</div>
+        <div class="rhythm-panel" id="h-panel-2" onclick="tapHand(2)">③ 小指下</div>
+        <div class="rhythm-panel" id="h-panel-3" onclick="tapHand(3)">④ 手首ツボ</div>
+      </div>
+      <p>デトックス成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
+    </div>
+    <div id="hand-result-screen" class="hidden">
+      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ デトックス完了！</h2>
+      <p id="hand-result-message"></p>
+      <a id="hand-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+      <a href="javascript:void(0)" onclick="resetGame('hand')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
     </div>
   </div>
 
 </div>
 
 <script>
-  // --- タブ切り替え処理（修正済み） ---
+  // --- 大分類モード切り替え処理（NEW） ---
+  function switchMode(mode) {
+    // モードボタンのアクティブ状態切替
+    document.getElementById('mode-tap').classList.remove('active');
+    document.getElementById('mode-rhythm').classList.remove('active');
+    document.getElementById('mode-' + mode).classList.add('active');
+
+    // タブメニューの表示切替
+    document.getElementById('tab-tap').classList.remove('active');
+    document.getElementById('tab-rhythm').classList.remove('active');
+    document.getElementById('tab-' + mode).classList.add('active');
+
+    // ゲームセクションとタブのアクティブ状態をリセット（初期化）
+    if (mode === 'tap') {
+      switchTab('face'); // タップモード時は「顔」をデフォルトに
+    } else {
+      switchTab('shoulder'); // リズムモード時は「肩首」をデフォルトに
+    }
+  }
+
+  // --- タブ切り替え処理（モード切り替えと連動するように修正） ---
   function switchTab(type) {
+    // すべてのタブボタンの非アクティブ化
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    // すべてのゲームセクションの非表示化
     document.querySelectorAll('.game-section').forEach(function(s) { s.classList.remove('active'); });
 
-    document.getElementById('tab-' + type).classList.add('active');
-    document.getElementById('game-sec-' + type).classList.add('active');
+    // 選択されたタブとセクションのアクティブ化
+    var targetTab = document.getElementById('tab-' + type);
+    if (targetTab) targetTab.classList.add('active');
+    
+    var targetSection = document.getElementById('game-sec-' + type);
+    if (targetSection) targetSection.classList.add('active');
 
-    // リセット処理
+    // 全ゲームのリセット（タイマークリア、スタート画面へ戻す）
+    resetAllGames();
+  }
+
+  // --- 全ゲームリセット処理（ヘルパー関数） ---
+  function resetAllGames() {
     resetGame('face');
     resetGame('leg');
     resetGame('belly');
+    resetGame('shoulder');
+    resetGame('back');
+    resetGame('hand');
   }
 
   function resetGame(type) {
-    if (type === 'face') {
-      if (faceTimer) clearInterval(faceTimer);
-      document.getElementById('face-start-screen').classList.remove('hidden');
-      document.getElementById('face-game-screen').classList.add('hidden');
-      document.getElementById('face-result-screen').classList.add('hidden');
-    } else if (type === 'leg') {
-      if (legTimer) clearInterval(legTimer);
-      document.getElementById('leg-start-screen').classList.remove('hidden');
-      document.getElementById('leg-game-screen').classList.add('hidden');
-      document.getElementById('leg-result-screen').classList.add('hidden');
-    } else if (type === 'belly') {
-      if (bellyTimer) clearInterval(bellyTimer);
-      document.getElementById('belly-start-screen').classList.remove('hidden');
-      document.getElementById('belly-game-screen').classList.add('hidden');
-      document.getElementById('belly-result-screen').classList.add('hidden');
-    }
+    if (type === 'face') { if (faceTimer) clearInterval(faceTimer); document.getElementById('face-start-screen').classList.remove('hidden'); document.getElementById('face-game-screen').classList.add('hidden'); document.getElementById('face-result-screen').classList.add('hidden'); }
+    else if (type === 'leg') { if (legTimer) clearInterval(legTimer); document.getElementById('leg-start-screen').classList.remove('hidden'); document.getElementById('leg-game-screen').classList.add('hidden'); document.getElementById('leg-result-screen').classList.add('hidden'); }
+    else if (type === 'belly') { if (bellyTimer) clearInterval(bellyTimer); document.getElementById('belly-start-screen').classList.remove('hidden'); document.getElementById('belly-game-screen').classList.add('hidden'); document.getElementById('belly-result-screen').classList.add('hidden'); }
+    else if (type === 'shoulder') { if (shoulderTimer) clearInterval(shoulderTimer); document.getElementById('shoulder-start-screen').classList.remove('hidden'); document.getElementById('shoulder-game-screen').classList.add('hidden'); document.getElementById('shoulder-result-screen').classList.add('hidden'); }
+    else if (type === 'back') { if (backTimer) clearInterval(backTimer); document.getElementById('back-start-screen').classList.remove('hidden'); document.getElementById('back-game-screen').classList.add('hidden'); document.getElementById('back-result-screen').classList.add('hidden'); }
+    else if (type === 'hand') { if (handTimer) clearInterval(handTimer); document.getElementById('hand-start-screen').classList.remove('hidden'); document.getElementById('hand-game-screen').classList.add('hidden'); document.getElementById('hand-result-screen').classList.add('hidden'); }
   }
 
-  // ==================== 1. 顔・手指さすりプログラム ====================
-  var faceTimeLeft = 20;
-  var faceScore = 0;
-  var faceTimer = null;
-
+  // --- 各ゲームのロジック（変更なし） ---
+  // （中略：前回のコードの rubFace, startFaceGame, tapShoulder などの関数がそのまま入ります）
+// --- 1. 顔ゲーム ---
+  var faceTimeLeft = 20, faceScore = 0, faceTimer = null;
   function startFaceGame() {
     document.getElementById('face-start-screen').classList.add('hidden');
     document.getElementById('face-game-screen').classList.remove('hidden');
-    
-    faceScore = 0;
-    faceTimeLeft = 20;
+    faceScore = 0; faceTimeLeft = 20;
     document.getElementById('face-score').innerText = faceScore;
     document.getElementById('face-timer').innerText = faceTimeLeft;
-    document.getElementById('face-avatar').innerText = '😫';
-    document.getElementById('face-status-text').innerText = 'カチコチ…';
-
     faceTimer = setInterval(function() {
-      faceTimeLeft--;
-      document.getElementById('face-timer').innerText = faceTimeLeft;
-      if (faceTimeLeft <= 0) {
-        endFaceGame();
-      }
+      faceTimeLeft--; document.getElementById('face-timer').innerText = faceTimeLeft;
+      if (faceTimeLeft <= 0) endFaceGame();
     }, 1000);
   }
-
   function rubFace(e) {
     if (e && e.cancelable) e.preventDefault();
     if (faceTimeLeft <= 0) return;
-    
     faceScore++;
     document.getElementById('face-score').innerText = faceScore;
-
-    var avatar = document.getElementById('face-avatar');
-    var statusText = document.getElementById('face-status-text');
-
-    if (faceScore > 100) {
-      avatar.innerText = '😆✨';
-      statusText.innerText = 'めちゃくちゃ軽やか！';
-    } else if (faceScore > 50) {
-      avatar.innerText = '😌';
-      statusText.innerText = '少しほぐれてきた！';
-    } else if (faceScore > 30) {
-      avatar.innerText = '🙂';
-      statusText.innerText = '効いてる…！';
-    }
+    var avatar = document.getElementById('face-avatar'), statusText = document.getElementById('face-status-text');
+    if (faceScore > 100) { avatar.innerText = '😆✨'; statusText.innerText = 'めちゃくちゃ軽やか！'; }
+    else if (faceScore > 50) { avatar.innerText = '😌'; statusText.innerText = '少しほぐれてきた！'; }
+    else if (faceScore > 30) { avatar.innerText = '🙂'; statusText.innerText = '効いてる…！'; }
   }
-
   function endFaceGame() {
     clearInterval(faceTimer);
     document.getElementById('face-game-screen').classList.add('hidden');
     document.getElementById('face-result-screen').classList.remove('hidden');
-
-    var judgeTitle = "";
-    var recommendText = "";
-
-    if (faceScore <= 30) {
-      judgeTitle = "【お疲れ度100%（超カチコチ）】";
-      recommendText = "指先までコリ固まっています…！サロンでじっくりほぐされるのがおすすめです👍";
-    } else if (faceScore <= 50) {
-      judgeTitle = "【お疲れ度60%（標準）】";
-      recommendText = "程よくほぐれました！本格的なオールハンド施術でさらにスッキリしませんか？✨";
-    } else {
-      judgeTitle = "【連打しすぎて指が限界】";
-      recommendText = "100回に迫る神連打！画面上でもすごいですが、本物の施術はもっと気持ちいいですよ😆";
-    }
-
-    document.getElementById('face-result-message').innerHTML = '20秒で <b>' + faceScore + ' 回</b> ほぐせました！<br><span style="font-size:0.85rem; color:#e67e22; font-weight:bold;">' + judgeTitle + '</span><br><br>' + recommendText;
-
-    var shareText = encodeURIComponent('20秒ゲームで顔と手指のコリを ' + faceScore + ' 回さすりました！\n判定：' + judgeTitle + '\n\nあなたは何回ほぐせる？やってみてね👇');
-    var shareUrl = encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/');
-    var hashtags = encodeURIComponent('皓一部屋,名古屋ゲイマッサージ');
-
-    document.getElementById('face-share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + shareUrl + '&hashtags=' + hashtags;
-
+    var judge = faceScore <= 30 ? "【カチコチ度100%】" : faceScore <= 50 ? "【標準ほぐれ】" : "【神連打マスター】";
+    document.getElementById('face-result-message').innerHTML = '20秒で <b>' + faceScore + ' 回</b> ほぐせました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>プロの施術でさらにスッキリしませんか？';
+    var text = encodeURIComponent('20秒ゲームで顔と手指を ' + faceScore + ' 回さすりました！\n判定：' + judge + '\n\nあなたは何回ほぐせる？👇');
+    document.getElementById('face-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'face_rub', 'score': faceScore});
   }
 
-  // ==================== 2. 足のポンププログラム ====================
-  var legTimeLeft = 20;
-  var legScore = 0;
-  var legTimer = null;
-
+  // --- 2. 足ゲーム ---
+  var legTimeLeft = 20, legScore = 0, legTimer = null;
   function startLegGame() {
     document.getElementById('leg-start-screen').classList.add('hidden');
     document.getElementById('leg-game-screen').classList.remove('hidden');
-
-    legScore = 0;
-    legTimeLeft = 20;
+    legScore = 0; legTimeLeft = 20;
     document.getElementById('leg-score').innerText = legScore;
     document.getElementById('leg-timer').innerText = legTimeLeft;
-    document.getElementById('leg-avatar').innerText = '🦶';
-    document.getElementById('leg-status-text').innerText = '血流が滞り中…';
-
     legTimer = setInterval(function() {
-      legTimeLeft--;
-      document.getElementById('leg-timer').innerText = legTimeLeft;
-      if (legTimeLeft <= 0) {
-        endLegGame();
-      }
+      legTimeLeft--; document.getElementById('leg-timer').innerText = legTimeLeft;
+      if (legTimeLeft <= 0) endLegGame();
     }, 1000);
   }
-
   function pumpLeg(e) {
     if (e && e.cancelable) e.preventDefault();
     if (legTimeLeft <= 0) return;
-
     legScore++;
     document.getElementById('leg-score').innerText = legScore;
-
-    var avatar = document.getElementById('leg-avatar');
-    var statusText = document.getElementById('leg-status-text');
-
-    if (legScore > 80) {
-      avatar.innerText = '🏃‍♂️💨';
-      statusText.innerText = '強烈ポンプ発動！';
-    } else if (legScore > 40) {
-      avatar.innerText = '🚶‍♂️';
-      statusText.innerText = '血流がめぐり始めた！';
-    }
   }
-
   function endLegGame() {
     clearInterval(legTimer);
     document.getElementById('leg-game-screen').classList.add('hidden');
     document.getElementById('leg-result-screen').classList.remove('hidden');
-
-    var judgeTitle = "";
-    var recommendText = "";
-
-    if (legScore <= 40) {
-      judgeTitle = "【お疲れ気味ポンプ（むくみ注意）】";
-      recommendText = "スネや足裏の動きが重めです。脛骨・腓骨まわりをゆるめて血流を流しましょう！";
-    } else if (legScore <= 80) {
-      judgeTitle = "【標準ポンプ（夕方重め）】";
-      recommendText = "順調にポンプできました！足首やふくらはぎの疲労をスッキリ整えるのがおすすめ。";
-    } else {
-      judgeTitle = "【超強力ポンプ級】";
-      recommendText = "圧巻の連打！脚を駆使した後は、プロのオイルボディワークで脚全体を癒やしてあげてください✨";
-    }
-
-    document.getElementById('leg-result-message').innerHTML = '20秒で <b>' + legScore + ' 回</b> ポンプできました！<br><span style="font-size:0.85rem; color:#e67e22; font-weight:bold;">' + judgeTitle + '</span><br><br>' + recommendText;
-
-    var shareText = encodeURIComponent('20秒足ポンプゲームで ' + legScore + ' 回血流を流しました！\n判定：' + judgeTitle + '\n\nあなたの脚はむくんでない？やってみてね👇');
-    var shareUrl = encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/');
-    var hashtags = encodeURIComponent('皓一部屋,オイルマッサージ,名古屋ゲイマッサージ');
-
-    document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + shareUrl + '&hashtags=' + hashtags;
-
+    var judge = legScore <= 40 ? "【むくみ要注意】" : legScore <= 80 ? "【標準ポンプ】" : "【超強力ポンプ級】";
+    document.getElementById('leg-result-message').innerHTML = '20秒で <b>' + legScore + ' 回</b> ポンプできました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>オイルボディワークで脚全体を癒やそう！';
+    var text = encodeURIComponent('20秒足ポンプで ' + legScore + ' 回血流を流しました！\n判定：' + judge + '\n\nあなたの脚はむくんでない？👇');
+    document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,オイルマッサージ';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'leg_pump', 'score': legScore});
   }
 
-  // ==================== 3. お腹のストレスガードプログラム ====================
-  var bellyTimeLeft = 20;
-  var bellyScore = 0;
-  var bellyTimer = null;
-  var stressList = ["💻 デスクワークの圧", "🥶 冷え・自律神経", "📧 鳴りやまない通知", "🧠 無意識の腹圧緊張", "💦 慢性的なストレス"];
-
-  function startBellyGame() {
-    document.getElementById('belly-start-screen').classList.add('hidden');
-    document.getElementById('belly-game-screen').classList.remove('hidden');
-
-    bellyScore = 0;
-    bellyTimeLeft = 20;
-    document.getElementById('belly-score').innerText = bellyScore;
-    document.getElementById('belly-timer').innerText = bellyTimeLeft;
-    document.getElementById('belly-avatar').innerText = '🛡️';
-    document.getElementById('belly-status-text').innerText = '撃退中 ➔ 💻 デスクワークの圧';
-
-    bellyTimer = setInterval(function() {
-      bellyTimeLeft--;
-      document.getElementById('belly-timer').innerText = bellyTimeLeft;
-      if (bellyTimeLeft <= 0) {
-        endBellyGame();
-      }
-    }, 1000);
-  }
-
-  function guardBelly(e) {
-    if (e && e.cancelable) e.preventDefault();
-    if (bellyTimeLeft <= 0) return;
-
-    bellyScore++;
-    document.getElementById('belly-score').innerText = bellyScore;
-
-    if (bellyScore % 5 === 0) {
-      var randomStress = stressList[Math.floor(Math.random() * stressList.length)];
-      document.getElementById('belly-status-text').innerText = '撃退中 ➔ ' + randomStress;
-    }
-  }
-
-  function endBellyGame() {
-    clearInterval(bellyTimer);
-    document.getElementById('belly-game-screen').classList.add('hidden');
-    document.getElementById('belly-result-screen').classList.remove('hidden');
-
-    var judgeTitle = "";
-    var recommendText = "";
-
-    if (bellyScore <= 40) {
-      judgeTitle = "【ストレス蓄積腹（ガチガチお腹）】";
-      recommendText = "日常のストレスでお腹の奥が固まっていませんか？カルサイネイザンでお腹の緊張を解放しましょう。";
-    } else {
-      judgeTitle = "【鉄壁のお腹ガード】";
-      recommendText = "見事にストレスを弾き返しました！力を入れ続けたお腹をゆったり深呼吸でほぐすケアが効果的です。";
-    }
-
-    document.getElementById('belly-result-message').innerHTML = '20秒で <b>' + bellyScore + ' 回</b> ストレスをガード！<br><span style="font-size:0.85rem; color:#8e44ad; font-weight:bold;">' + judgeTitle + '</span><br><br>' + recommendText;
-
-    var shareText = encodeURIComponent('20秒お腹ゲームでストレスを ' + bellyScore + ' 回ガード！\n判定：' + judgeTitle + '\n\nあなたのお腹は固まってない？挑戦してみてね👇');
-    var shareUrl = encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/');
-    var hashtags = encodeURIComponent('皓一部屋,カルサイネイザン,名古屋ゲイマッサージ');
-
-    document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + shareUrl + '&hashtags=' + hashtags;
-
-    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
-  }
-</script>
-
-</body>
-</html>
+  // --- 3. お腹ゲーム ---
+  var bellyTimeLeft = 20, bellyScore =
