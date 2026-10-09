@@ -11,7 +11,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>20秒リフレッシュゲーム部屋 | 皓一部屋</title>
+  <title>20秒連打リフレッシュ | 皓一部屋</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -36,51 +36,24 @@
       box-sizing: border-box;
     }
 
-    /* 大分類モード切り替えボタン */
-    .mode-selector {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-    .mode-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background-color: #eef2f5;
-      color: #666;
-    }
-    .mode-btn.active {
-      background-color: #3498db;
-      color: white;
-      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-    }
-
-    /* タブ切替メニュー */
+    /* タブ切替メニュー（連打3つ） */
     .tab-menu {
-      display: none;
+      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-      margin-bottom: 15px;
+      gap: 6px;
+      margin-bottom: 20px;
       background: #eef2f5;
       padding: 4px;
       border-radius: 12px;
     }
-    .tab-menu.active {
-      display: grid;
-    }
     .tab-btn {
-      padding: 8px 2px;
+      padding: 8px 4px;
       border: none;
       border-radius: 8px;
       background: transparent;
       color: #666;
       font-weight: bold;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
@@ -147,51 +120,6 @@
       padding: 0 10px;
     }
 
-    /* 大きく見やすいイラストステージ */
-    .body-visual-stage {
-      width: 100%;
-      height: 280px;
-      background-color: #f0f4f8;
-      border-radius: 16px;
-      position: relative;
-      margin: 0 auto 15px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .body-base-icon {
-      font-size: 11rem; /* アイコンを大きく表示して体の中にボタンが収まるようにする */
-      opacity: 0.35;
-      position: absolute;
-    }
-
-    /* 体の中に綺麗に収まる光る丸ボタン */
-    .spot-btn {
-      position: absolute;
-      width: 44px;
-      height: 44px;
-      background-color: rgba(255, 255, 255, 0.75);
-      border: 3px solid #cbd5e1;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      transition: all 0.15s ease;
-      user-select: none;
-      touch-action: manipulation;
-    }
-    .spot-btn.active-target {
-      background-color: #fef08a;
-      border-color: #eab308;
-      transform: scale(1.25);
-      box-shadow: 0 0 20px rgba(234, 179, 8, 0.9);
-      z-index: 10;
-    }
-    .spot-btn:active {
-      transform: scale(0.9);
-    }
-
     .btn {
       display: inline-block;
       width: 100%;
@@ -221,6 +149,13 @@
     .hidden {
       display: none !important;
     }
+    .back-link {
+      display: block;
+      margin-top: 15px;
+      color: #3498db;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -232,24 +167,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
 
-  <!-- 大分類モード切り替えボタン -->
-  <div class="mode-selector">
-    <button class="mode-btn active" id="mode-tap" onclick="switchMode('tap')">💆‍♂️ 連打でほぐす</button>
-    <button class="mode-btn" id="mode-rhythm" onclick="switchMode('rhythm')">⚡ リズムで整える</button>
-  </div>
-
-  <!-- 1. タップ連打系タブメニュー -->
-  <div class="tab-menu active" id="tab-tap">
+  <!-- タブメニュー（3つの連打ゲーム切り替え） -->
+  <div class="tab-menu">
     <button class="tab-btn active" id="tab-face" onclick="switchTab('face')">💆‍♂️ 顔・手指</button>
     <button class="tab-btn" id="tab-leg" onclick="switchTab('leg')">🦵 足ポンプ</button>
     <button class="tab-btn" id="tab-belly" onclick="switchTab('belly')">🧘 お腹ガード</button>
-  </div>
-
-  <!-- 2. リズム・順押し系タブメニュー -->
-  <div class="tab-menu" id="tab-rhythm">
-    <button class="tab-btn active" id="tab-shoulder" onclick="switchTab('shoulder')">💪 肩首ほぐし</button>
-    <button class="tab-btn" id="tab-back" onclick="switchTab('back')">🦴 背中・腰ほぐし</button>
-    <button class="tab-btn" id="tab-hand" onclick="switchTab('hand')">✋ 手のひら反射区</button>
   </div>
 
   <!-- 1. 顔・手指さすりゲーム -->
@@ -318,102 +240,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 4. 肩首ほぐしゲーム（人物画像を大きくして体の中にボタン配置） -->
-  <div id="game-sec-shoulder" class="game-section">
-    <h1>💪 肩首ほぐし</h1>
-    <p>体の中の光るポイントを順番（1➔2➔3➔4）にタップ！</p>
-    <div id="shoulder-start-screen"><button class="btn start-btn" style="background-color:#d35400;" onclick="startShoulderGame()">スタート！</button></div>
-    <div id="shoulder-game-screen" class="hidden">
-      <div class="timer-box">残り <span id="shoulder-timer">20</span> 秒</div>
-      <div class="body-visual-stage">
-        <div class="body-base-icon" style="font-size: 13rem;">👤</div>
-        <button class="spot-btn" id="s-spot-0" style="top:26%; left:43%;" onclick="tapShoulder(0)"></button>
-        <button class="spot-btn" id="s-spot-1" style="top:42%; left:26%;" onclick="tapShoulder(1)"></button>
-        <button class="spot-btn" id="s-spot-2" style="top:42%; right:26%;" onclick="tapShoulder(2)"></button>
-        <button class="spot-btn" id="s-spot-3" style="bottom:22%; left:43%;" onclick="tapShoulder(3)"></button>
-      </div>
-      <p>ほぐし成功: <span id="shoulder-score" style="font-weight:bold; font-size:1.1rem; color:#d35400;">0</span> 回</p>
-    </div>
-    <div id="shoulder-result-screen" class="hidden">
-      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 肩首ほぐし完了！</h2>
-      <p id="shoulder-result-message"></p>
-      <a id="shoulder-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('shoulder')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
-    </div>
-  </div>
-
-  <!-- 5. 背中・腰ほぐしゲーム（上半身・背中の画像に変更し、背中にボタンを配置） -->
-  <div id="game-sec-back" class="game-section">
-    <h1>🦴 背中・腰ほぐし</h1>
-    <p>背中の中の光るポイントを順番（1➔2➔3➔4）にタップ！</p>
-    <div id="back-start-screen"><button class="btn start-btn" style="background-color:#16a085;" onclick="startBackGame()">スタート！</button></div>
-    <div id="back-game-screen" class="hidden">
-      <div class="timer-box">残り <span id="back-timer">20</span> 秒</div>
-      <div class="body-visual-stage">
-        <!-- 上半身・背中専用の大きなアイコンに差し替え -->
-        <div class="body-base-icon" style="font-size: 13rem;">🧍‍♂️</div>
-        <button class="spot-btn" id="b-spot-0" style="top:25%; left:43%;" onclick="tapBack(0)"></button>
-        <button class="spot-btn" id="b-spot-1" style="top:42%; left:30%;" onclick="tapBack(1)"></button>
-        <button class="spot-btn" id="b-spot-2" style="bottom:30%; left:43%;" onclick="tapBack(2)"></button>
-        <button class="spot-btn" id="b-spot-3" style="bottom:15%; left:43%;" onclick="tapBack(3)"></button>
-      </div>
-      <p>ほぐし成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
-    </div>
-    <div id="back-result-screen" class="hidden">
-      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 背中・腰ほぐし完了！</h2>
-      <p id="back-result-message"></p>
-      <a id="back-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('back')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
-    </div>
-  </div>
-
-  <!-- 6. 手のひら反射区ゲーム（手のひらをデカくし、手のひらの中にボタンを配置） -->
-  <div id="game-sec-hand" class="game-section">
-    <h1>✋ 手のひら反射区</h1>
-    <p>手のひらの光るポイントを順番（1➔2➔3➔4）にタップ！</p>
-    <div id="hand-start-screen"><button class="btn start-btn" style="background-color:#2980b9;" onclick="startHandGame()">スタート！</button></div>
-    <div id="hand-game-screen" class="hidden">
-      <div class="timer-box">残り <span id="hand-timer">20</span> 秒</div>
-      <div class="body-visual-stage">
-        <div class="body-base-icon" style="font-size: 13rem;">✋</div>
-        <button class="spot-btn" id="h-spot-0" style="top:34%; left:33%;" onclick="tapHand(0)"></button>
-        <button class="spot-btn" id="h-spot-1" style="top:24%; right:28%;" onclick="tapHand(1)"></button>
-        <button class="spot-btn" id="h-spot-2" style="top:50%; left:43%;" onclick="tapHand(2)"></button>
-        <button class="spot-btn" id="h-spot-3" style="bottom:15%; left:43%;" onclick="tapHand(3)"></button>
-      </div>
-      <p>反射区刺激成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
-    </div>
-    <div id="hand-result-screen" class="hidden">
-      <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 反射区リフレッシュ完了！</h2>
-      <p id="hand-result-message"></p>
-      <a id="hand-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
-      <a href="javascript:void(0)" onclick="resetGame('hand')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
-    </div>
-  </div>
+  <a href="index.html" class="back-link">🏠 ホームに戻る</a>
 
 </div>
 
 <script>
-  // --- モード切り替え処理 ---
-  function switchMode(mode) {
-    document.getElementById('mode-tap').classList.remove('active');
-    document.getElementById('mode-rhythm').classList.remove('active');
-    document.getElementById('mode-' + mode).classList.add('active');
-
-    document.getElementById('tab-tap').classList.remove('active');
-    document.getElementById('tab-rhythm').classList.remove('active');
-    document.getElementById('tab-' + mode).classList.add('active');
-
-    if (mode === 'tap') {
-      switchTab('face');
-    } else {
-      switchTab('shoulder');
-    }
-  }
-
   // --- タブ切り替え処理 ---
   function switchTab(type) {
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -432,18 +263,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     resetGame('face');
     resetGame('leg');
     resetGame('belly');
-    resetGame('shoulder');
-    resetGame('back');
-    resetGame('hand');
   }
 
   function resetGame(type) {
     if (type === 'face') { if (faceTimer) clearInterval(faceTimer); document.getElementById('face-start-screen').classList.remove('hidden'); document.getElementById('face-game-screen').classList.add('hidden'); document.getElementById('face-result-screen').classList.add('hidden'); }
     else if (type === 'leg') { if (legTimer) clearInterval(legTimer); document.getElementById('leg-start-screen').classList.remove('hidden'); document.getElementById('leg-game-screen').classList.add('hidden'); document.getElementById('leg-result-screen').classList.add('hidden'); }
     else if (type === 'belly') { if (bellyTimer) clearInterval(bellyTimer); document.getElementById('belly-start-screen').classList.remove('hidden'); document.getElementById('belly-game-screen').classList.add('hidden'); document.getElementById('belly-result-screen').classList.add('hidden'); }
-    else if (type === 'shoulder') { if (shoulderTimer) clearInterval(shoulderTimer); document.getElementById('shoulder-start-screen').classList.remove('hidden'); document.getElementById('shoulder-game-screen').classList.add('hidden'); document.getElementById('shoulder-result-screen').classList.add('hidden'); }
-    else if (type === 'back') { if (backTimer) clearInterval(backTimer); document.getElementById('back-start-screen').classList.remove('hidden'); document.getElementById('back-game-screen').classList.add('hidden'); document.getElementById('back-result-screen').classList.add('hidden'); }
-    else if (type === 'hand') { if (handTimer) clearInterval(handTimer); document.getElementById('hand-start-screen').classList.remove('hidden'); document.getElementById('hand-game-screen').classList.add('hidden'); document.getElementById('hand-result-screen').classList.add('hidden'); }
   }
 
   // --- 1. 顔ゲーム ---
@@ -564,120 +389,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var text = encodeURIComponent('20秒お腹ゲームでストレスを ' + bellyScore + ' 回ガード！\n判定：' + judge + '\n\nあなたのお腹は固まってない？👇');
     document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,カルサイネイザン';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
-  }
-
-  // --- 4. 肩首ほぐしゲーム ---
-  var shoulderTimeLeft = 20, shoulderScore = 0, shoulderTimer = null, currentShoulderTarget = 0;
-  function startShoulderGame() {
-    document.getElementById('shoulder-start-screen').classList.add('hidden');
-    document.getElementById('shoulder-game-screen').classList.remove('hidden');
-    shoulderScore = 0; shoulderTimeLeft = 20;
-    document.getElementById('shoulder-score').innerText = shoulderScore;
-    document.getElementById('shoulder-timer').innerText = shoulderTimeLeft;
-    setNewShoulderTarget();
-    shoulderTimer = setInterval(function() {
-      shoulderTimeLeft--; document.getElementById('shoulder-timer').innerText = shoulderTimeLeft;
-      if (shoulderTimeLeft <= 0) endShoulderGame();
-    }, 1000);
-  }
-  function setNewShoulderTarget() {
-    for(let i=0; i<4; i++) document.getElementById('s-spot-' + i).classList.remove('active-target');
-    currentShoulderTarget = Math.floor(Math.random() * 4);
-    document.getElementById('s-spot-' + currentShoulderTarget).classList.add('active-target');
-  }
-  function tapShoulder(index) {
-    if (shoulderTimeLeft <= 0) return;
-    if (index === currentShoulderTarget) {
-      shoulderScore++;
-      document.getElementById('shoulder-score').innerText = shoulderScore;
-      setNewShoulderTarget();
-    }
-  }
-  function endShoulderGame() {
-    clearInterval(shoulderTimer);
-    document.getElementById('shoulder-game-screen').classList.add('hidden');
-    document.getElementById('shoulder-result-screen').classList.remove('hidden');
-    var judge = shoulderScore <= 15 ? "【ガチガチ肩首】" : shoulderScore <= 30 ? "【スッキリ肩首】" : "【肩首リリースマスター】";
-    document.getElementById('shoulder-result-message').innerHTML = '20秒で <b>' + shoulderScore + ' 箇所</b> ほぐしました！<br><span style="font-size:0.8rem; color:#d35400; font-weight:bold;">' + judge + '</span><br><br>プロの施術で肩首の重だるさを解消しましょう！';
-    var text = encodeURIComponent('肩首ほぐしゲームで ' + shoulderScore + ' 箇所ほぐしました！\n判定：' + judge + '\n\nあなたの肩首、お疲れじゃない？👇');
-    document.getElementById('shoulder-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
-    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'shoulder_rhythm', 'score': shoulderScore});
-  }
-
-  // --- 5. 背中・腰ほぐしゲーム ---
-  var backTimeLeft = 20, backScore = 0, backTimer = null, currentBackTarget = 0;
-  function startBackGame() {
-    document.getElementById('back-start-screen').classList.add('hidden');
-    document.getElementById('back-game-screen').classList.remove('hidden');
-    backScore = 0; backTimeLeft = 20;
-    document.getElementById('back-score').innerText = backScore;
-    document.getElementById('back-timer').innerText = backTimeLeft;
-    setNewBackTarget();
-    backTimer = setInterval(function() {
-      backTimeLeft--; document.getElementById('back-timer').innerText = backTimeLeft;
-      if (backTimeLeft <= 0) endBackGame();
-    }, 1000);
-  }
-  function setNewBackTarget() {
-    for(let i=0; i<4; i++) document.getElementById('b-spot-' + i).classList.remove('active-target');
-    currentBackTarget = Math.floor(Math.random() * 4);
-    document.getElementById('b-spot-' + currentBackTarget).classList.add('active-target');
-  }
-  function tapBack(index) {
-    if (backTimeLeft <= 0) return;
-    if (index === currentBackTarget) {
-      backScore++;
-      document.getElementById('back-score').innerText = backScore;
-      setNewBackTarget();
-    }
-  }
-  function endBackGame() {
-    clearInterval(backTimer);
-    document.getElementById('back-game-screen').classList.add('hidden');
-    document.getElementById('back-result-screen').classList.remove('hidden');
-    var judge = backScore <= 15 ? "【背中・腰ガチガチ】" : backScore <= 30 ? "【スッキリ背中腰】" : "【背面リリースプロ】";
-    document.getElementById('back-result-message').innerHTML = '20秒で <b>' + backScore + ' 箇所</b> ほぐしました！<br><span style="font-size:0.8rem; color:#16a085; font-weight:bold;">' + judge + '</span><br><br>重だるい背中や腰をすっきりケア！';
-    var text = encodeURIComponent('背中・腰ほぐしゲームで ' + backScore + ' 箇所ほぐしました！\n判定：' + judge + '\n\nあなたの背中・腰、お疲れじゃない？👇');
-    document.getElementById('back-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,ボディケア';
-    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'back_stretch', 'score': backScore});
-  }
-
-  // --- 6. 手のひら反射区ゲーム ---
-  var handTimeLeft = 20, handScore = 0, handTimer = null, currentHandTarget = 0;
-  function startHandGame() {
-    document.getElementById('hand-start-screen').classList.add('hidden');
-    document.getElementById('hand-game-screen').classList.remove('hidden');
-    handScore = 0; handTimeLeft = 20;
-    document.getElementById('hand-score').innerText = handScore;
-    document.getElementById('hand-timer').innerText = handTimeLeft;
-    setNewHandTarget();
-    handTimer = setInterval(function() {
-      handTimeLeft--; document.getElementById('hand-timer').innerText = handTimeLeft;
-      if (handTimeLeft <= 0) endHandGame();
-    }, 1000);
-  }
-  function setNewHandTarget() {
-    for(let i=0; i<4; i++) document.getElementById('h-spot-' + i).classList.remove('active-target');
-    currentHandTarget = Math.floor(Math.random() * 4);
-    document.getElementById('h-spot-' + currentHandTarget).classList.add('active-target');
-  }
-  function tapHand(index) {
-    if (handTimeLeft <= 0) return;
-    if (index === currentHandTarget) {
-      handScore++;
-      document.getElementById('hand-score').innerText = handScore;
-      setNewHandTarget();
-    }
-  }
-  function endHandGame() {
-    clearInterval(handTimer);
-    document.getElementById('hand-game-screen').classList.add('hidden');
-    document.getElementById('hand-result-screen').classList.remove('hidden');
-    var judge = handScore <= 15 ? "【お疲れモードの手】" : handScore <= 30 ? "【スッキリ反射区】" : "【反射区マスター】";
-    document.getElementById('hand-result-message').innerHTML = '20秒で <b>' + handScore + ' 箇所</b> 刺激しました！<br><span style="font-size:0.8rem; color:#2980b9; font-weight:bold;">' + judge + '</span><br><br>手のひらから全身をリフレッシュ！';
-    var text = encodeURIComponent('手のひら反射区ゲームで ' + handScore + ' 箇所刺激しました！\n判定：' + judge + '\n\n手のツボで癒やされよう！👇');
-    document.getElementById('hand-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,リフレクソロジー';
-    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'hand_reflex', 'score': handScore});
   }
 </script>
 
