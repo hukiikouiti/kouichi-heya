@@ -147,40 +147,36 @@
       padding: 0 10px;
     }
 
-    /* 完全にすっきり見やすいエリアステージ */
-    .clean-stage {
+    /* 大きく見やすいイラストステージ */
+    .body-visual-stage {
       width: 100%;
-      height: 240px;
-      background-color: #f8fafc;
-      border: 2px solid #e2e8f0;
+      height: 280px;
+      background-color: #f0f4f8;
       border-radius: 16px;
       position: relative;
       margin: 0 auto 15px;
       overflow: hidden;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
-    /* エリアを示すクリアな背景文字 */
-    .stage-label {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #cbd5e1;
-      letter-spacing: 2px;
-      user-select: none;
+    .body-base-icon {
+      font-size: 11rem; /* アイコンを大きく表示して体の中にボタンが収まるようにする */
+      opacity: 0.35;
+      position: absolute;
     }
 
-    /* 光る丸ボタン */
+    /* 体の中に綺麗に収まる光る丸ボタン */
     .spot-btn {
       position: absolute;
-      width: 52px;
-      height: 52px;
-      background-color: rgba(255, 255, 255, 0.95);
-      border: 3px solid #64748b;
+      width: 44px;
+      height: 44px;
+      background-color: rgba(255, 255, 255, 0.75);
+      border: 3px solid #cbd5e1;
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       transition: all 0.15s ease;
       user-select: none;
       touch-action: manipulation;
@@ -188,9 +184,9 @@
     .spot-btn.active-target {
       background-color: #fef08a;
       border-color: #eab308;
-      transform: scale(1.2);
+      transform: scale(1.25);
       box-shadow: 0 0 20px rgba(234, 179, 8, 0.9);
-      z-index: 20;
+      z-index: 10;
     }
     .spot-btn:active {
       transform: scale(0.9);
@@ -322,19 +318,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 4. 肩首ほぐしゲーム -->
+  <!-- 4. 肩首ほぐしゲーム（人物画像を大きくして体の中にボタン配置） -->
   <div id="game-sec-shoulder" class="game-section">
     <h1>💪 肩首ほぐし</h1>
-    <p>光るポイントを順番（1➔2➔3➔4）にタップ！</p>
+    <p>体の中の光るポイントを順番（1➔2➔3➔4）にタップ！</p>
     <div id="shoulder-start-screen"><button class="btn start-btn" style="background-color:#d35400;" onclick="startShoulderGame()">スタート！</button></div>
     <div id="shoulder-game-screen" class="hidden">
       <div class="timer-box">残り <span id="shoulder-timer">20</span> 秒</div>
-      <div class="clean-stage">
-        <div class="stage-label">【 肩 ・ 首 エリア 】</div>
-        <button class="spot-btn" id="s-spot-0" style="top:35px; left:165px;" onclick="tapShoulder(0)"></button>
-        <button class="spot-btn" id="s-spot-1" style="top:100px; left:80px;" onclick="tapShoulder(1)"></button>
-        <button class="spot-btn" id="s-spot-2" style="top:100px; left:250px;" onclick="tapShoulder(2)"></button>
-        <button class="spot-btn" id="s-spot-3" style="top:165px; left:165px;" onclick="tapShoulder(3)"></button>
+      <div class="body-visual-stage">
+        <div class="body-base-icon" style="font-size: 13rem;">👤</div>
+        <button class="spot-btn" id="s-spot-0" style="top:26%; left:43%;" onclick="tapShoulder(0)"></button>
+        <button class="spot-btn" id="s-spot-1" style="top:42%; left:26%;" onclick="tapShoulder(1)"></button>
+        <button class="spot-btn" id="s-spot-2" style="top:42%; right:26%;" onclick="tapShoulder(2)"></button>
+        <button class="spot-btn" id="s-spot-3" style="bottom:22%; left:43%;" onclick="tapShoulder(3)"></button>
       </div>
       <p>ほぐし成功: <span id="shoulder-score" style="font-weight:bold; font-size:1.1rem; color:#d35400;">0</span> 回</p>
     </div>
@@ -347,19 +343,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 5. 背中・腰ほぐしゲーム -->
+  <!-- 5. 背中・腰ほぐしゲーム（上半身・背中の画像に変更し、背中にボタンを配置） -->
   <div id="game-sec-back" class="game-section">
     <h1>🦴 背中・腰ほぐし</h1>
-    <p>光るポイントを順番（1➔2➔3➔4）にタップ！</p>
+    <p>背中の中の光るポイントを順番（1➔2➔3➔4）にタップ！</p>
     <div id="back-start-screen"><button class="btn start-btn" style="background-color:#16a085;" onclick="startBackGame()">スタート！</button></div>
     <div id="back-game-screen" class="hidden">
       <div class="timer-box">残り <span id="back-timer">20</span> 秒</div>
-      <div class="clean-stage">
-        <div class="stage-label">【 背 中 ・ 腰 エリア 】</div>
-        <button class="spot-btn" id="b-spot-0" style="top:30px; left:165px;" onclick="tapBack(0)"></button>
-        <button class="spot-btn" id="b-spot-1" style="top:85px; left:165px;" onclick="tapBack(1)"></button>
-        <button class="spot-btn" id="b-spot-2" style="top:140px; left:165px;" onclick="tapBack(2)"></button>
-        <button class="spot-btn" id="b-spot-3" style="top:195px; left:165px;" onclick="tapBack(3)"></button>
+      <div class="body-visual-stage">
+        <!-- 上半身・背中専用の大きなアイコンに差し替え -->
+        <div class="body-base-icon" style="font-size: 13rem;">🧍‍♂️</div>
+        <button class="spot-btn" id="b-spot-0" style="top:25%; left:43%;" onclick="tapBack(0)"></button>
+        <button class="spot-btn" id="b-spot-1" style="top:42%; left:30%;" onclick="tapBack(1)"></button>
+        <button class="spot-btn" id="b-spot-2" style="bottom:30%; left:43%;" onclick="tapBack(2)"></button>
+        <button class="spot-btn" id="b-spot-3" style="bottom:15%; left:43%;" onclick="tapBack(3)"></button>
       </div>
       <p>ほぐし成功: <span id="back-score" style="font-weight:bold; font-size:1.1rem; color:#16a085;">0</span> 回</p>
     </div>
@@ -372,19 +369,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 6. 手のひら反射区ゲーム -->
+  <!-- 6. 手のひら反射区ゲーム（手のひらをデカくし、手のひらの中にボタンを配置） -->
   <div id="game-sec-hand" class="game-section">
     <h1>✋ 手のひら反射区</h1>
-    <p>光るポイントを順番（1➔2➔3➔4）にタップ！</p>
+    <p>手のひらの光るポイントを順番（1➔2➔3➔4）にタップ！</p>
     <div id="hand-start-screen"><button class="btn start-btn" style="background-color:#2980b9;" onclick="startHandGame()">スタート！</button></div>
     <div id="hand-game-screen" class="hidden">
       <div class="timer-box">残り <span id="hand-timer">20</span> 秒</div>
-      <div class="clean-stage">
-        <div class="stage-label">【 手 の ひ ら 】</div>
-        <button class="spot-btn" id="h-spot-0" style="top:60px; left:110px;" onclick="tapHand(0)"></button>
-        <button class="spot-btn" id="h-spot-1" style="top:60px; left:220px;" onclick="tapHand(1)"></button>
-        <button class="spot-btn" id="h-spot-2" style="top:120px; left:165px;" onclick="tapHand(2)"></button>
-        <button class="spot-btn" id="h-spot-3" style="top:180px; left:165px;" onclick="tapHand(3)"></button>
+      <div class="body-visual-stage">
+        <div class="body-base-icon" style="font-size: 13rem;">✋</div>
+        <button class="spot-btn" id="h-spot-0" style="top:34%; left:33%;" onclick="tapHand(0)"></button>
+        <button class="spot-btn" id="h-spot-1" style="top:24%; right:28%;" onclick="tapHand(1)"></button>
+        <button class="spot-btn" id="h-spot-2" style="top:50%; left:43%;" onclick="tapHand(2)"></button>
+        <button class="spot-btn" id="h-spot-3" style="bottom:15%; left:43%;" onclick="tapHand(3)"></button>
       </div>
       <p>反射区刺激成功: <span id="hand-score" style="font-weight:bold; font-size:1.1rem; color:#2980b9;">0</span> 回</p>
     </div>
