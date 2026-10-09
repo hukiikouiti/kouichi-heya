@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>指の名前あてゲーム - 皓一部屋</title>
+    <title>指の名前記憶ゲーム - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -68,11 +68,11 @@
             overflow: hidden;
             background-image: url('pa-hando.png');
         }
-        /* 各指のタップボタン（位置をしっかり修正） */
+        /* 各指のタップボタン */
         .spot-btn {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             background-color: rgba(255, 255, 255, 0.6);
             border: 3px solid #7a6b60;
             border-radius: 50%;
@@ -95,12 +95,12 @@
             transform: translate(-50%, -50%) scale(0.9);
         }
 
-        /* 画像の指の先端位置に合わせた座標の微調整 */
-        #btn-syoushi { top: 38%; left: 24%; } /* 小指 */
-        #btn-kanshi  { top: 25%; left: 35%; } /* 環指（薬指） */
-        #btn-cyuushi { top: 21%; left: 49%; } /* 中指 */
-        #btn-jishi   { top: 25%; left: 63%; } /* 示指（人差し指） */
-        #btn-boshi   { top: 41%; left: 78%; } /* 母指（親指） */
+        /* 写真の位置に合わせて調整した座標 */
+        #btn-syoushi { top: 35%; left: 38%; } /* 小指 */
+        #btn-kanshi  { top: 22%; left: 45%; } /* 薬指 */
+        #btn-cyuushi { top: 18%; left: 53%; } /* 中指 */
+        #btn-jishi   { top: 21%; left: 61%; } /* 人差し指 */
+        #btn-boshi   { top: 43%; left: 70%; } /* 親指 */
 
         .btn {
             display: inline-block;
@@ -148,7 +148,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>✋ 指の名前あてゲーム</h1>
+    <h1>✋ 指の名前記憶ゲーム</h1>
     <p>光る指を素早くタップしてね！（星野青龍の音声が出るよ）</p>
 
     <!-- スタート画面 -->
@@ -171,7 +171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 指の名前あてゲーム完了！</h2>
+        <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 指の名前記憶ゲーム完了！</h2>
         <p id="result-message"></p>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
@@ -208,7 +208,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-play-screen').classList.remove('hidden');
         document.getElementById('game-result-screen').classList.add('hidden');
 
-        // GTMへゲーム開始イベント送信
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_start', 'game_name': 'yubi_game'});
         }
@@ -236,8 +235,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             next = fingers[Math.floor(Math.random() * fingers.length)];
         } while (next === currentTarget);
 
-        currentTarget = next;
-        document.getElementById('btn-' + currentTarget).classList.add('active-target');
     }
 
     function tapFinger(fingerName) {
@@ -279,15 +276,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-play-screen').classList.add('hidden');
         document.getElementById('game-result-screen').classList.remove('hidden');
 
-        var judge = score <= 15 ? "【指先お疲れモード】" : score <= 30 ? "【スッキリ指の名前あて】" : "【指の名前マスター】";
-        document.getElementById('result-message').innerHTML = '20秒で <b>' + score + ' 回</b> 正解しました！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>星野青龍のボイスと指先刺激で全身リフレッシュ！';
+        var judge = score <= 15 ? "【指の名前お疲れモード】" : score <= 30 ? "【スッキリ指の名前記憶】" : "【指の名前記憶マスター】";
+        document.getElementById('result-message').innerHTML = '20秒で <b>' + score + ' 回</b> 正解しました！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>星野青龍のボイスと指の名前記憶で頭もスッキリ！';
 
-        var text = encodeURIComponent('指の名前あてゲームで ' + score + ' 回正解しました！\n判定：' + judge + '\n\n星野青龍のボイス付き指先ゲームで癒やされよう！👇');
+        var text = encodeURIComponent('指の名前記憶ゲームで ' + score + ' 回正解しました！\n判定：' + judge + '\n\n星野青龍のボイス付き指の記憶ゲームで癒やされよう！👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'yubi_game', 'score': score});
         }
+    }
+
+    function resetGroup() {
+        // 修正用に保持
     }
 
     function resetGame() {
