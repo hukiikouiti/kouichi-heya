@@ -1,1 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指先反射区ゲーム - 皓一部屋</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #fcfbfa;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #4a3b32;
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 1rem;
+            color: #6b5b50;
+            margin-bottom: 15px;
+        }
+        .timer {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #e53935;
+            margin-bottom: 10px;
+        }
+        /* ゲームエリアのコンテナ */
+        .game-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .game-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        /* 各指のタップボタン */
+        .finger-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 3px solid #7a6b60;
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .finger-btn:active {
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+        /* 光っている時のスタイル */
+        .finger-btn.active {
+            background-color: rgba(241, 196, 15, 0.9);
+            border-color: #f39c12;
+            box-shadow: 0 0 15px #f1c40f;
+            animation: pulse 0.6s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: translate(-50%, -50%) scale(1); }
+            to { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* 座標の微調整（手の画像にあわせて調整してください） */
+        #btn-boshi { top: 62%; left: 24%; }
+        #btn-jishi { top: 22%; left: 43%; }
+        #btn-cyuushi { top: 15%; left: 53%; }
+        #btn-kanshi { top: 18%; left: 63%; }
+        #btn-syoushi { top: 28%; left: 74%; }
+
+        .score-board {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4a3b32;
+        }
+        .btn-start {
+            margin-top: 15px;
+            background: linear-gradient(180deg, #f39800 0%, #e67200 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-start:hover {
+            opacity: 0.9;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #7a6b60;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <h1>✋ 指先反射区ゲーム</h1>
+    <p>光る指を素早くタップしてね！（音声が出るよ）</p>
+
+    <div class="timer" id="timer">残り 20 秒</div>
+
+    <div class="game-container">
+        <img src="pa-hando.png" alt="手のパー">
+        
+        <div id="btn-boshi" class="finger-btn" data-finger="boshi"></div>
+        <div id="btn-jishi" class="finger-btn" data-finger="jishi"></div>
+        <div id="btn-cyuushi" class="finger-btn" data-finger="cyuushi"></div>
+        <div id="btn-kanshi" class="finger-btn" data-finger="kanshi"></div>
+        <div id="btn-syoushi" class="finger-btn" data-finger="syoushi"></div>
+    </div>
+
+    <div class="score-board">
+        正解数: <span id="score">0</span> 回
+    </div>
+
+    <button class="btn-start" id="startBtn" onclick="startGame()">ゲームスタート</button>
+    <br>
+    <a href="index.html" class="back-link">🏠 ホームに戻る</a>
+
+    <!-- 音声ファイルの読み込み -->
+    <audio id="sound-boshi" src="boshi.wav" preload="auto"></audio>
+    <audio id="sound-jishi" src="jishi.wav" preload="auto"></audio>
+    <audio id="sound-cyuushi" src="cyuushi.wav" preload="auto"></audio>
+    <audio id="sound-kanshi" src="kanshi.wav" preload="auto"></audio>
+    <audio id="sound-syoushi" src="syoushi.wav" preload="auto"></audio>
+
+    <script>
+        const fingers = ['boshi', 'jishi', 'cyuushi', 'kanshi', 'syoushi'];
+        let currentTarget = null;
+        let score = 0;
+        let timeLeft = 20;
+        let timerInterval = null;
+        let isPlaying = false;
+
+        const scoreEl = document.getElementById('score');
+        const timerEl = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const buttons = document.querySelectorAll('.finger-btn');
+
+        function startGame() {
+            if (isPlaying) return;
+            isPlaying = true;
+            score = 0;
+            timeLeft = 20;
+            scoreEl.textContent = score;
+            timerEl.textContent = `残り ${timeLeft} 秒`;
+            startBtn.style.display = 'none';
+
+            // GTMへゲーム開始イベントを送信
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'game_start',
+                'game_name': 'yubi_game'
+            });
+
+            nextTarget();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = `残り ${timeLeft} 秒`;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function nextTarget() {
+            if (!isPlaying) return;
+            let next;
+            do {
+                next = fingers[Math.floor(Math.random() * fingers.length)];
+            } while (next === currentTarget);
+
+            currentTarget = next;
+
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.finger === currentTarget) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!isPlaying) return;
+
+                const clickedFinger = btn.dataset.finger;
+                if (clickedFinger === currentTarget) {
+                    playSound(clickedFinger);
+                    score++;
+                    scoreEl.textContent = score;
+
+                    // GTMへ正解タップイベントを送信
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'finger_correct',
+                        'finger_type': clickedFinger,
+                        'current_score': score
+                    });
+
+                    nextTarget();
+                }
+            });
+        });
+
+        function playSound(fingerName) {
+            const audio = document.getElementById(`sound-${fingerName}`);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("音声再生エラー:", e));
+            }
+        }
+
+        function endGame() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            buttons.forEach(btn => btn.classList.remove('active'));
+            timerEl.textContent = `ゲーム終了！ スコア: ${score}回`;
+            startBtn.style.display = 'inline-block';
+            startBtn.textContent = 'もう一度プレイ';
+
+            // GTMへゲーム終了・スコア送信
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'game_end',
+                'game_name': 'yubi_game',
+                'final_score': score
+            });
+        }
+    </script>
+</body>
+</html>
