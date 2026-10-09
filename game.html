@@ -440,6 +440,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     faceScore = 0; faceTimeLeft = 20;
     document.getElementById('face-score').innerText = faceScore;
     document.getElementById('face-timer').innerText = faceTimeLeft;
+    document.getElementById('face-avatar').innerText = '😫';
+    document.getElementById('face-status-text').innerText = 'カチコチ…';
     faceTimer = setInterval(function() {
       faceTimeLeft--; document.getElementById('face-timer').innerText = faceTimeLeft;
       if (faceTimeLeft <= 0) endFaceGame();
@@ -466,7 +468,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'face_rub', 'score': faceScore});
   }
 
-  // --- 2. 足ゲーム ---
+  // --- 2. 足ゲーム（演出復活！） ---
   var legTimeLeft = 20, legScore = 0, legTimer = null;
   function startLegGame() {
     document.getElementById('leg-start-screen').classList.add('hidden');
@@ -474,6 +476,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     legScore = 0; legTimeLeft = 20;
     document.getElementById('leg-score').innerText = legScore;
     document.getElementById('leg-timer').innerText = legTimeLeft;
+    document.getElementById('leg-avatar').innerText = '🦶';
+    document.getElementById('leg-status-text').innerText = '血流が滞り中…';
     legTimer = setInterval(function() {
       legTimeLeft--; document.getElementById('leg-timer').innerText = legTimeLeft;
       if (legTimeLeft <= 0) endLegGame();
@@ -484,6 +488,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (legTimeLeft <= 0) return;
     legScore++;
     document.getElementById('leg-score').innerText = legScore;
+
+    var avatar = document.getElementById('leg-avatar');
+    var statusText = document.getElementById('leg-status-text');
+
+    if (legScore > 80) {
+      avatar.innerText = '🏃‍♂️💨';
+      statusText.innerText = '強烈ポンプ発動！';
+    } else if (legScore > 40) {
+      avatar.innerText = '🚶‍♂️';
+      statusText.innerText = '血流がめぐり始めた！';
+    }
   }
   function endLegGame() {
     clearInterval(legTimer);
@@ -496,14 +511,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'leg_pump', 'score': legScore});
   }
 
-  // --- 3. お腹ゲーム ---
+  // --- 3. お腹ゲーム（演出復活！） ---
   var bellyTimeLeft = 20, bellyScore = 0, bellyTimer = null;
+  var stressList = ["💻 デスクワークの圧", "🥶 冷え・自律神経", "📧 鳴りやまない通知", "🧠 無意識の腹圧緊張", "💦 慢性的なストレス"];
   function startBellyGame() {
     document.getElementById('belly-start-screen').classList.add('hidden');
     document.getElementById('belly-game-screen').classList.remove('hidden');
     bellyScore = 0; bellyTimeLeft = 20;
     document.getElementById('belly-score').innerText = bellyScore;
     document.getElementById('belly-timer').innerText = bellyTimeLeft;
+    document.getElementById('belly-avatar').innerText = '🛡️';
+    document.getElementById('belly-status-text').innerText = '撃退中 ➔ 💻 デスクワークの圧';
     bellyTimer = setInterval(function() {
       bellyTimeLeft--; document.getElementById('belly-timer').innerText = bellyTimeLeft;
       if (bellyTimeLeft <= 0) endBellyGame();
@@ -514,6 +532,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (bellyTimeLeft <= 0) return;
     bellyScore++;
     document.getElementById('belly-score').innerText = bellyScore;
+
+    if (bellyScore % 5 === 0) {
+      var randomStress = stressList[Math.floor(Math.random() * stressList.length)];
+      document.getElementById('belly-status-text').innerText = '撃退中 ➔ ' + randomStress;
+    }
   }
   function endBellyGame() {
     clearInterval(bellyTimer);
