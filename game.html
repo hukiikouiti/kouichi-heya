@@ -11,7 +11,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>20秒ゲーム選択 | 皓一部屋</title>
+  <title>ゲーム・解剖学クイズ道場 | 皓一部屋</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -26,14 +26,15 @@
       min-height: 100vh;
       text-align: center;
     }
-    .menu-card {
+    .menu-card, .quiz-card {
       background: #ffffff;
       padding: 25px 20px;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      max-width: 420px;
+      max-width: 480px;
       width: 100%;
       box-sizing: border-box;
+      margin-bottom: 20px;
     }
     h1 {
       font-size: 1.2rem;
@@ -58,6 +59,8 @@
       box-sizing: border-box;
       box-shadow: 0 3px 10px rgba(0,0,0,0.06);
       transition: transform 0.1s ease, box-shadow 0.1s ease;
+      cursor: pointer;
+      border: none;
     }
     .game-link-btn:active {
       transform: scale(0.97);
@@ -70,9 +73,13 @@
       background: linear-gradient(135deg, #e67e22, #d35400);
       color: #fff;
     }
-    /* 新規追加の指先ゲーム用スタイル */
     .yubi-btn-style {
       background: linear-gradient(135deg, #8e44ad, #732d91);
+      color: #fff;
+    }
+    /* クイズ専用ボタン用スタイル */
+    .quiz-btn-style {
+      background: linear-gradient(135deg, #27ae60, #219653);
       color: #fff;
     }
     .btn-desc {
@@ -89,6 +96,31 @@
       font-size: 0.85rem;
       text-decoration: none;
     }
+    
+    /* クイズ画面用スタイル */
+    .hidden { display: none !important; }
+    .quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+    .question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+    .question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+    .choice-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #f1f3f5;
+      color: #333;
+      text-align: left;
+      border: 1px solid #dcdde1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    .choice-btn:hover { background: #e4e7eb; }
+    .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+    .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+    .explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+    .next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
   </style>
 </head>
 <body>
@@ -98,30 +130,678 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<div class="menu-card">
-  <h1>🎮 20秒リフレッシュゲーム</h1>
+<!-- 1. ゲーム選択メニュー画面 -->
+<div class="menu-card" id="menu-container">
+  <h1>🎮 20秒リフレッシュゲーム＆道場</h1>
   <p>お好みのコースを選んで、日頃の凝りをスッキリ解消しよう！</p>
 
-  <!-- 1. タップ系ゲームへのリンク -->
   <a href="tap.html" class="game-link-btn tap-btn-style">
     💆‍♂️ 連打でほぐすコース
     <span class="btn-desc">（顔・手指 / 足ポンプ / お腹ガード）</span>
   </a>
 
-  <!-- 2. リズム系ゲームへのリンク -->
   <a href="rhythm.html" class="game-link-btn rhythm-btn-style">
     ✨ リズムで整えるコース
     <span class="btn-desc">（肩首ほぐし / 背中・腰 / 手のひら反射区）</span>
   </a>
 
-  <!-- 3. 新規追加：指先パー＆ボイス付きゲームへのリンク -->
   <a href="yubi.html" class="game-link-btn yubi-btn-style">
     ✋ 指の名前記憶ボイスゲーム
     <span class="btn-desc">（母指・示指・中指・環指・小指をタップ！）</span>
   </a>
 
+  <!-- 新規追加：プロ仕様解剖学クイズへの切り替えボタン -->
+  <button onclick="startQuiz()" class="game-link-btn quiz-btn-style">
+    🧠 本格解剖学・足の構造クイズ道場
+    <span class="btn-desc">（100問プールから毎回ランダム5問出題！）</span>
+  </button>
+
   <a href="index.html" class="back-link">🏠 ホームに戻る</a>
 </div>
+
+<!-- 2. クイズ出題画面（最初は隠れています） -->
+<div class="quiz-card hidden" id="quiz-container">
+  <div id="category-title" class="quiz-title">解剖学クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <button onclick="backToMenu()" style="background: #95a5a6; margin-top: 15px;" class="next-btn">メニューに戻る</button>
+</div>
+
+<!-- 3. クイズ結果発表画面（最初は隠れています） -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; margin-bottom: 10px;">X（旧Twitter）で結果をシェアする</button>
+  <button onclick="startQuiz()" class="game-link-btn quiz-btn-style" style="margin-bottom: 10px;">もう一度挑戦する（別の5問）</button>
+  <button onclick="backToMenu()" class="game-link-btn" style="background: #95a5a6; color: #fff;">メニューに戻る</button>
+</div>
+
+<script>
+// 100問のデータプール（骨格・筋肉・神経生理学）
+const allQuestions = [
+  {
+    category: "骨格・アーチ",
+    question: "成人における片足の骨の数として、種子骨を含めない一般的な標準数はいくつか？",
+    options: ["24個", "26個", "28個", "30個"],
+    answer: 1,
+    explanation: "成人片足の骨は足根骨7個、中足骨5個、趾骨14個の合計26個で構成されます（種子骨除く）。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足根骨の中で、最も近位に位置し、下腿の骨（脛骨・腓骨）と足関節を形成する骨はどれ？",
+    options: ["踵骨", "距骨", "舟状骨", "立方骨"],
+    answer: 1,
+    explanation: "距骨は足根骨の一つで上方にあり、下腿の脛骨・腓骨と噛み合って足関節（距腿関節）を構成します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足部の3つのアーチのうち、最も高い高さを維持し、バネとしての衝撃吸収に最も寄与するのはどれ？",
+    options: ["内側縦アーチ", "外側縦アーチ", "横アーチ", "足底 transverse アーチ"],
+    answer: 0,
+    explanation: "内側縦アーチは最も高く、歩行時の衝撃を吸収する「足のバネ」として最も重要な役割を果たします。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足根骨のうち、全体の中で最も大きく、体重の負荷を地面に伝える役割を持つ「かかとの骨」はどれ？",
+    options: ["距骨", "舟状骨", "踵骨", "立方骨"],
+    answer: 2,
+    explanation: "踵骨（しょうこつ）は足根骨最大の骨であり、立位や歩行時に全体重の大部分を受け止めます。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の母趾（親指）の裏側に通常2つ存在し、腱の摩擦を防ぐ小さな骨の名称はどれ？",
+    options: ["種子骨", "支帯骨", "種実骨", "結節骨"],
+    answer: 0,
+    explanation: "短母趾屈筋腱などの下にある種子骨は、荷重時の摩擦軽減やテコとしての効率を高める役割があります。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "ショパール関節（横足根関節）を構成する2つの骨の組み合わせとして正しいものはどれ？",
+    options: ["距骨と踵骨、および舟状骨と立方骨", "脛骨と腓骨、および距骨", "内側・中間・外側楔状骨と舟状骨", "中足骨と基節骨"],
+    answer: 0,
+    explanation: "ショパール関節は、距骨-舟状骨関節と踵骨-立方骨関節の総称で、足部の回内外の動きに関与します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "リスフラン関節（足根中足関節）が位置している場所として正しいものはどれ？",
+    options: ["足関節と足根骨の間", "足根骨と中足骨の間", "中足骨と趾骨の間", "かかとと足首の間"],
+    answer: 1,
+    explanation: "リスフラン関節は足根骨（楔状骨・立方骨）と5本の中足骨を結ぶ関節で、足の剛性を高める要です。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の外側縦アーチを主に構成し、地面に接する際に安定性をもたらす足根骨はどれ？",
+    options: ["舟状骨", "内側楔状骨", "立方骨", "距骨"],
+    answer: 2,
+    explanation: "立方骨は外側縦アーチの要であり、外側縁の安定や歩行時の体重移動を支えています。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の舟状骨の粗面に停止し、内側縦アーチの低下（扁平足）を防ぐ重要な筋肉の腱はどれ？",
+    options: ["前脛骨筋腱", "後脛骨筋腱", "長腓骨筋腱", "ヒラメ筋腱"],
+    answer: 1,
+    explanation: "後脛骨筋は足裏を通って舟状骨等に付着し、内側縦アーチを吊り上げる最も重要なインナーマッスルです。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "距骨下関節（サブタラー関節）で主に起こる複合的な動きはどれ？",
+    options: ["屈曲と伸展", "回外と回内", "外転と内転のみ", "回旋のみ"],
+    answer: 1,
+    explanation: "距骨下関節は距骨と踵骨の間で動き、足部の回内（内側への倒れ込み）と回外の軸となります。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の指（趾骨）の数について、片足あたり合計いくつあるか？",
+    options: ["10個", "12個", "14個", "16個"],
+    answer: 2,
+    explanation: "母趾は2節（基節骨・末節骨）、第2〜5趾は3節（基節・中節・末節骨）で、片足合計14個あります。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の中足骨は何本あるか？",
+    options: ["4本", "5本", "7本", "14本"],
+    answer: 1,
+    explanation: "足の中足骨は内側から第1〜第5まで5本が存在し、足の横幅や前方のアーチを作ります。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "楔状骨（けいじょうこつ）は足根骨にいくつ存在するか？",
+    options: ["1個", "2個", "3個", "4個"],
+    answer: 2,
+    explanation: "内側、中間、外側の3つの楔状骨があり、足の横アーチの前方部を支えています。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足底のアーチを支える硬い結合組織の帯で、かかとから足の指の付け根にかけて走るものはどれ？",
+    options: ["アキレス腱", "足底腱膜", "屈筋支帯", "腓骨筋腱"],
+    answer: 1,
+    explanation: "足底腱膜は、踵骨から趾の付け根へ扇状に広がり、ウィンドラス機構によってアーチを保持します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "歩行の際、つま先が地面から離れる直前に足底腱膜が緊張し、アーチが高くなる現象を何というか？",
+    options: ["トス機構", "ウィンドラス機構", "ポンプ機構", "トラス機構"],
+    answer: 1,
+    explanation: "MP関節が背屈することで足底腱膜が巻き上げられ、足が硬いレバー構造になる仕組みをウィンドラス機構と呼びます。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足の横アーチを支える筋肉のうち、中足骨の間に位置し、指を寄せたり広げたりする筋肉はどれ？",
+    options: ["骨間筋（背側・底側）", "ヒラメ筋", "長母趾屈筋", "前脛骨筋"],
+    answer: 0,
+    explanation: "足の骨間筋は中足骨の間にあり、横アーチの形状保持や微細な指のコントロールを行います。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "扁平足になると、歩行時にどの部分へ過剰なストレスがかかりやすくなるか？",
+    options: ["足の内側縦アーチや後脛骨筋、膝の内側", "足の甲の表面のみ", "膝の外側と外側側副靭帯のみ", "鎖骨周辺"],
+    answer: 0,
+    explanation: "扁平足は足が内側に倒れ込む（過剰回内）ため、後脛骨筋や内側縦アーチ、膝や股関節に負担が波及します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "ハイアーチ（高足出）の最大の特徴・デメリットはどれ？",
+    options: ["衝撃吸収能力（クッション性）が低下する", "足の筋肉が一切疲れない", "足底腱膜炎になりにくい", "体重が均等に分散される"],
+    answer: 0,
+    explanation: "ハイアーチはアーチが硬すぎてしならないため、地面からの衝撃を吸収できず、足や膝に衝撃が直撃します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "距骨の滑車面は、どちら側の方が広い形状をしているか？",
+    options: ["前方", "後方", "内側", "外側"],
+    answer: 0,
+    explanation: "距骨滑車は前方が広く、足首を背屈したときに足関節が最も安定する構造になっています。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "踵骨の後面に付着し、人体で最も強力な腱とされるものはどれ？",
+    options: ["膝蓋腱", "アキレス腱（跟骨腱）", "半膜様肌腱", "長腓骨筋腱"],
+    answer: 1,
+    explanation: "下腿三頭筋の移行部であるアキレス腱は、踵骨後面に付着し、立位や歩行で強力な張力を発揮します。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "立方骨の外側を通る、足の横アーチを支える重要な筋肉の腱はどれ？",
+    options: ["長腓骨筋腱", "前脛骨筋腱", "短趾屈筋腱", "虫様筋腱"],
+    answer: 0,
+    explanation: "長腓骨筋腱は足底を斜めに横切って第1中足骨・内側楔状骨に付着し、横アーチのハンモックの役割をします。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足根管を通る神経・血管・筋肉の配列で、最も後方（アキレス腱側）に位置するのはどれ？",
+    options: ["脛骨神経", "後脛骨動脈", "長母趾屈筋腱", "後脛骨筋腱"],
+    answer: 2,
+    explanation: "足根管内は前から「後脛骨筋腱、長趾屈筋腱、後脛骨動脈、脛骨神経、長母趾屈筋腱」の順に通っています。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "足部の骨のうち、体重を直接受け止める「足関節の天井」の真下に位置して支えるキー骨はどれ？",
+    options: ["距骨", "立方骨", "第1中足骨", "種子骨"],
+    answer: 0,
+    explanation: "距骨は下腿からの荷重を最初に受け止め、前後の足根骨へ分散させるキーストーン（要石）の役割を持ちます。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "外反母趾の進行に伴い、変形が顕著になりやすい第1中足骨の動きはどれ？",
+    options: ["内反（内側への開き）と回旋", "外側への完全な並進移動のみ", "完全な伸展のみ", "下方への沈み込みのみ"],
+    answer: 0,
+    explanation: "外反母趾では第1中足骨が内側に開きながら回旋し、母趾が外側へ曲がっていく複合変形が起きます。"
+  },
+  {
+    category: "骨格・アーチ",
+    question: "人間の全身の骨（約206個）のうち、両手足を合わせると全体の何割以上の骨が集中しているか？",
+    options: ["約20%", "約30%", "約50%以上", "約80%"],
+    answer: 2,
+    explanation: "両手で54個、両足で52個（種子骨除く）、合計106個以上となり、全身の骨の半分以上が手足に集中しています。"
+  },
+
+  // ==========================================
+  // ジャンル2：筋肉・筋膜・バイオメカニクス（25問）
+  // ==========================================
+  {
+    category: "筋肉・筋膜",
+    question: "下腿三頭筋のうち、深層に位置し持続的な収縮や「第二の心臓」のポンプ機能に大きく寄与する筋肉はどれ？",
+    options: ["腓腹筋（内側頭）", "腓腹筋（外側頭）", "ヒラメ筋", "足底筋"],
+    answer: 2,
+    explanation: "ヒラメ筋は遅筋繊維が豊富で持久力に優れ、深層の静脈血を心臓へ押し上げるポンプの主役となります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "腓骨の頭部や外側を通り、足首を外側に返す（外反）主な筋肉のグループはどれ？",
+    options: ["腓骨筋群（長・短腓骨筋）", "前脛骨筋群", "深層3筋肉群", "大腿四頭筋群"],
+    answer: 0,
+    explanation: "長腓骨筋と短腓骨筋は腓骨側から足の外側を通り、足部の外反や安定化に寄与します。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "足首を上に向ける（背屈）作用を持ち、すねの前外側を走る代表的な筋肉はどれ？",
+    options: ["前脛骨筋", "腓腹筋", "ヒラメ筋", "後脛骨筋"],
+    answer: 0,
+    explanation: "前脛骨筋は下腿前面にあり、歩行時につま先を持ち上げる（背屈）動作の主動筋となります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "骨盤から大腿を通り、膝を伸ばす筋肉（大腿四頭筋）の中で、唯一2関節筋である筋肉はどれ？",
+    options: ["外側広筋", "内側広筋", "中間広筋", "大腿直筋"],
+    answer: 3,
+    explanation: "大腿直筋は骨盤（下前腸骨棘）から起きており、股関節の屈曲と膝関節の伸展の両方に関与する2関節筋です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "体幹の深部にあり、腰椎と大腿骨小子を結ぶ、股関節屈曲の最も強力なインナーマッスルはどれ？",
+    options: ["大腰筋（腸腰筋）", "腹直筋", "大臀筋", "梨状筋"],
+    answer: 0,
+    explanation: "大腰筋は腰椎から大腿骨へ直結し、腸骨筋とともに腸腰筋を形成、姿勢保持や歩行の脚の引き上げに必須です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "お尻の深層にあり、坐骨神経の真上または間を走行し、硬くなると痺れの原因になりやすい筋肉はどれ？",
+    options: ["大臀筋", "中臀筋", "梨状筋", "縫工筋"],
+    answer: 2,
+    explanation: "梨状筋は骨盤内から大腿骨頭へ走る外旋筋で、緊張して坐骨神経を圧迫すると坐骨神経痛を引き起こします。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "足の裏にある筋肉のうち、母趾を外側に広げる（外転）作用を持つ筋肉はどれ？",
+    options: ["母趾外転筋", "小趾外転筋", "虫様筋", "足底方形筋"],
+    answer: 0,
+    explanation: "母趾外転筋は足の内側縁にあり、母趾を外側（外方）へ広げる働きと内側縦アーチの保持を助けます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "全身の筋膜ネットワーク（アナトミー・トレイン）において、足底からふくらはぎ、太報裏を通って頭部まで繋がる代表的なラインはどれ？",
+    options: ["スーパーフィシャル・バック・ライン（SBL）", "ラテラル・ライン", "スパイラル・ライン", "フロント・ライン"],
+    answer: 0,
+    explanation: "SBLは足底の足底腱膜から始まり、下腿後面、ハムストリングス、脊柱起立筋をへて頭部まで繋がる筋膜の連鎖です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "腓腹筋が二関節筋であるため、膝を完全に曲げた状態（屈曲位）にすると発揮できる筋力がどうなるか？",
+    options: ["著しく低下する（主動筋としての効率が落ちる）", "劇的に強くなる", "全く変化しない", "完全に麻痺する"],
+    answer: 0,
+    explanation: "腓腹筋は膝と足首をまたぐ2関節筋のため、膝を曲げると起始と停止が近づき、張力が落ちて足関節底屈の力が発揮しにくくなります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "足の指を曲げる働きをする筋肉のうち、長母趾屈筋と長趾屈筋の腱が足首の内側（足根管）で交差する現象を何と呼ぶか？",
+    options: ["マスター・ノット（結び目）", "クロス・オーバー", "キネティック・チェーン", "アキレス・ループ"],
+    answer: 0,
+    explanation: "長母趾屈筋と長趾屈筋の腱は足底で交叉し、これを臨床解剖学で「Master knot of Henry（ヘンリーの結び目）」と呼びます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "大腿筋膜張筋からお尻の外側を通り、脛骨の外側（ゲルディ結節）に停止する非常に強力な結合組織の帯はどれ？",
+    options: ["腸脛靭帯", "鵞足", "膝蓋靭帯", "膝横靭帯"],
+    answer: 0,
+    explanation: "腸脛靭帯は骨盤から膝の外側を支え、ランニング時の安定や側方ブレを防ぐ役割を持ちます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "縫工筋、薄筋、半腱様筋の3つの腱が脛骨近位の内側に共通して付着する部分の名称はどれ？",
+    options: ["鵞足（がそく）", "アキレス腱", "膝蓋腱", "烏口突起"],
+    answer: 0,
+    explanation: "鵞足（がそく）は膝の内側下方にあたり、膝の屈曲や内旋をコントロールする重要な付着部です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "トリガーポイント療法において、筋肉の中にできる「硬結（しこり）」の主な原因物質や状態として正しいものはどれ？",
+    options: ["持続的な筋小胞体からのカルシウム過剰放出と局所の血流不全", "骨の完全な脱灰", "神経細胞の断裂", "リンパ液の完全な枯渇"],
+    answer: 0,
+    explanation: "トリガーポイントは、過剰な収縮により局所の虚血と持続的な筋収縮（カルシウム過剰）が起きることで形成されます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "足底の固有筋肉（内在筋）の総称として、手の「手内筋」に対応するものの一般的な呼び方はどれ？",
+    options: ["足内筋（または足底筋群）", "下腿外側群", "骨盤底筋群", "咀嚼筋群"],
+    answer: 0,
+    explanation: "足部にも手と同様に多くの固有筋肉があり、足内筋（足底筋群）と総称され、細かい指の調整やアーチを支えます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "PNFストレッチ（固有受容性神経筋促通法）の基本的な生理学的メカニズムに利用される反射はどれ？",
+    options: ["他動的伸張反射と相反抑制", "膝蓋腱反射のみ", "対光反射", "嚥下反射"],
+    answer: 0,
+    explanation: "PNFでは、主動筋の収縮による拮抗筋の弛緩（相反抑制）や、等尺性収縮後の弛緩反応を利用して可動域を広げます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "体幹のインナーマッスルであり、コルセットのように腹部を取り囲み、姿勢保持や腹圧を高める筋肉はどれ？",
+    options: ["腹横筋", "大胸筋", "広背筋", "上腕二頭筋"],
+    answer: 0,
+    explanation: "腹横筋は最も深層にある腹壁の筋肉で、横方向に繊維が走り、腹腔内圧を高めて脊椎を安定させます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "下腿の筋肉で、足首を強く内側に返す（内反）主動筋の組み合わせとして正しいものはどれ？",
+    options: ["後脛骨筋と前脛骨筋", "長腓骨筋と短腓骨筋", "腓腹筋とヒラメ筋", "長趾伸筋と短趾伸筋"],
+    answer: 0,
+    explanation: "前脛骨筋と後脛骨筋は協調して足首を内側に引き上げる・返す（内反）強力な働きをします。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "肩関節の回旋筋腱板（ローテーターカフ）の中で、肩甲骨の前方に位置し、上腕骨を内旋させる主な筋肉はどれ？",
+    options: ["肩甲下筋", "棘上筋", "棘下筋", "小円筋"],
+    answer: 0,
+    explanation: "ローテーターカフ（SITS）のうち、肩甲下筋のみが前面にあり、上腕骨頭を関節窩に引きつけながら内旋させます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "人間の歩行周期において、踵が地面に接地した瞬間（イニシャル・コンタクト）に最も活動している下腿の筋肉はどれ？",
+    options: ["前脛骨筋（足首がパタンと落ちるのを防ぐ）", "腓腹筋", "長腓骨筋", "足底筋"],
+    answer: 0,
+    explanation: "接地直後は前脛骨筋が遠心性収縮（ブレーキ）をかけ、つま先が地面に叩きつけられるのを優しく制御します。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "筋膜（ファシア）の特性として、水分やヒアルロン酸が不足して滑りが悪くなった状態を専門的に何と呼ぶか？",
+    options: ["癒着（フレクション・ハイドレーション低下）", "骨化", "完全溶解", "液状化現象"],
+    answer: 0,
+    explanation: "筋膜間のヒアルロン酸の粘性が高まり、滑走性が失われると組織間の滑りが悪くなり、痛みや可動域制限を生じます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "股関節を外側に回す（外旋）筋肉群の中で、仙骨の前面から大転子に向かって走る深層の筋肉はどれ？",
+    options: ["梨状筋", "大腿直筋", "半腱様筋", "薄筋"],
+    answer: 0,
+    explanation: "梨状筋は骨盤内（仙骨）から大転子を結び、股関節の外旋および外転（屈曲位）に働きます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "肩甲骨を上方回旋させる際に主に関与する、背中の外側にある大きなギザギザした筋肉はどれ？",
+    options: ["前鋸筋", "広背筋", "大菱形筋", "僧帽筋下部"],
+    answer: 0,
+    explanation: "前鋸筋は肋骨から肩甲骨の内側縁に付き、腕を上に上げる際に肩甲骨を前方に引き出しながら上方回旋させます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "長時間の立ち仕事などで足のアーチが低下した際、足の裏で持続的な伸張ストレスを受ける代表的な筋肉はどれ？",
+    options: ["足底の筋肉群および後脛骨筋", "大胸筋", "咀嚼筋", "三角筋"],
+    answer: 0,
+    explanation: "アーチが潰れると、それを支える足底筋群や後脛骨筋に持続的な引き伸ばしストレス（遠心性負荷）がかかります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "筋肉が収縮する際、アクチンとミクロフィラメント（ミオシン）が重なり合うことで短縮する理論を何と呼ぶか？",
+    options: ["滑走説（フィラメント滑走説）", "浸透圧説", "イオンチャンネル説", "受容体説"],
+    answer: 0,
+    explanation: "筋収縮のメカニズムである「滑走説」では、カルシウムイオンの結合によりアクチンとミオシンが滑り込んで筋が短縮します。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "下肢のキネティック・チェーン（運動連鎖）において、足部が過剰回内（内側に倒れる）したとき、膝と股関節に生じやすい連動した動きはどれ？",
+    options: ["膝の内旋と股関節の内旋・内転", "膝の外旋と股関節の外転", "膝の完全伸展のみ", "腰椎の過剰な前弯のみ"],
+    answer: 0,
+    explanation: "足が回内すると、脛骨が内旋し、それが連鎖して大腿骨も内旋・内転するため、下肢全体にねじれストレスが波及します。"
+  },
+
+  // ==========================================
+  // ジャンル3：神経・血管・生理学（50問）
+  // ==========================================
+  {
+    category: "神経・血管・生理学",
+    question: "食後に強い眠気が起こる主な生理学的要因として、最も適切なものはどれ？",
+    options: ["消化器系への血流集中と血糖値の変動（インスリン分泌等）", "脳の急激な神経細胞の死滅", "全身の水分が完全に枯渇すること", "骨格筋の急速な肥大化"],
+    answer: 0,
+    explanation: "食後は消化吸収のために胃腸へ血液が集まり、さらに炭水化物の摂取による血糖値の変動が自律神経や脳の覚醒度に影響を与えます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の裏や足先の感覚を司り、坐骨神経から分岐して膝裏を通り下腿の後面を下る主要な神経はどれ？",
+    options: ["脛骨神経", "大腿神経", "閉鎖神経", "橈骨神経"],
+    answer: 0,
+    explanation: "脛骨神経は坐骨神経の大きな枝で、足底の感覚や足指の運動神経を広く供給しています。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "腓骨頭のすぐ下を巻き込むように走行し、圧迫されると足首が上がらなくなる「下垂足（足尖下垂）」を引き起こしやすい神経はどれ？",
+    options: ["総腓骨神経", "正中神経", "尺骨神経", "腋窩神経"],
+    answer: 0,
+    explanation: "総腓骨神経は腓骨頭の皮下を浅く通るため、圧迫や打撲で麻痺しやすく、前脛骨筋などが動かなくなり下垂足を招きます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "「第二の心臓」と呼ばれるふくらはぎのポンプ機能において、静脈血が重力に逆らって心臓に戻る際、逆流を防ぐために内部に備わっている構造はどれ？",
+    options: ["静脈弁", "動脈の平滑筋", "毛細血管の網目", "リンパ節のフィルター"],
+    answer: 0,
+    explanation: "静脈の内側には「静脈弁」があり、筋肉の収縮で押し上げられた血液が重力で下に戻るのを一方通行でブロックします。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "自律神経系のうち、リラックス時や消化・睡眠を優位にする神経の名称はどれ？",
+    options: ["交感神経", "副交感神経", "体性神経", "感覚神経"],
+    answer: 1,
+    explanation: "副交感神経は休息や消化、リラクゼーションを司り、施術中や食後に優位に働くことで眠気や血流改善を促します。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "血糖値が急激に上昇したあと、インスリンの過剰分泌によって急降下し、強い眠気や倦怠感を引き起こす現象を何と呼ぶか？",
+    options: ["血糖値スパイク（血糖変動）", "低ナトリウム血症", "高血圧クリーゼ", "貧血ショック"],
+    answer: 0,
+    explanation: "血糖値スパイクでは乱高下がおき、脳へのエネルギー供給が一時的に不安定になることで強い眠気や集中力低下が生じます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の甲の表面（足背）を流れる主な表在静脈網から、内くるぶしの前を通って大伏在静脈へと繋がる血管の出発点はどれ？",
+    options: ["足背静脈弓", "足底静脈叢", "脛骨動脈", "腓骨動脈"],
+    answer: 0,
+    explanation: "足の甲にある足背静脈弓は、内側の大伏在静脈や外側の小伏在静脈へ血液を送り出す重要なルートです。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "人間の体温調節において、深部体温を下げて質の良い睡眠に入るために、熱を放散しやすい体の部位はどこか？",
+    options: ["手掌や足底（末梢血管の拡張による放熱）", "頭皮の毛髪部分", "胸部の皮膚", "背中の中央"],
+    answer: 0,
+    explanation: "手足の末梢にある吻合血管（AVA血管）が拡張して血流が増えることで、効率よく体の内部の熱が逃げ、睡眠へのスイッチが入ります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "脊髄から出て手足の筋肉や皮膚に分布する、意思通りに動かせる神経の総称はどれ？",
+    options: ["体性神経系（運動神経・感覚神経）", "自律神経系", "ホルモン系", "リンパ系"],
+    answer: 0,
+    explanation: "体性神経は、自分の意思で動かせる運動神経と、痛覚や触覚などを伝える感覚神経で構成されます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "ふくらはぎの筋肉が収縮する際、血管を物理的に圧迫して血液を押し上げるメカニズムを物理的・生理学的に何と呼ぶか？",
+    options: ["筋ポンプメカニズム", "心筋収縮サイクル", "肺循環システム", "毛細血管拡散"],
+    answer: 0,
+    explanation: "筋肉の収縮と弛緩がポンプのピストンのように働き、静脈やリンパ液を上方に押し上げる仕組みを筋ポンプと呼びます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の裏にある感覚受容器（メカノレセプター）が地面からの情報をキャッチし、姿勢を反射的に調整する中枢は主にどこか？",
+    options: ["小脳および脳幹", "大脳新皮質の前頭葉", "心臓のペースメーカー", "腎臓の糸球体"],
+    answer: 0,
+    explanation: "足底の固有受容器からの情報は小脳や脳幹に送られ、無意識下での姿勢制御やバランス保持に瞬時に寄与します。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "リンパ液の還流について、下半身のリンパ液の大部分が最終的に合流して静脈系に戻る胸部の大きな部位はどれ？",
+    options: ["胸管（乳び槽から続く管）", "右リンパ本管", "脾臓の内部", "頸動脈洞"],
+    answer: 0,
+    explanation: "下半身や全身の大部分のリンパ液は胸管を経由し、左鎖骨下静脈の合流部で血液に戻ります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "交感神経が優位に働いているとき、末梢の血管や心拍数に現れる一般的な変化はどれ？",
+    options: ["血管収縮と心拍数・血圧の上昇", "血管拡張と心拍数の急激な低下", "全ての血管の完全な弛緩", "消化液の極端な大量分泌"],
+    answer: 0,
+    explanation: "交感神経優位時は「闘争か逃走か」のモードになり、心拍数が上がり、末梢血管は収縮して主要な筋肉へ血流を備えます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "脳の覚醒状態を維持し、日中の意識のハッキリ感を保つために重要な役割を持つ、脳幹から大脳全体へ広がる神経網はどれ？",
+    options: ["上行性網様体賦活系（ARAS）", "錐体路", "視神経回路", "嗅神経ネットワーク"],
+    answer: 0,
+    explanation: "ARAS（網様体賦活系）は脳の覚醒レベルをコントロールしており、ここへの刺激低下や疲労が眠気を引き起こします。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の親指の感覚や爪の周囲の知覚を主に支配している末梢神経の枝はどれ？",
+    options: ["内側足底神経（脛骨神経の枝）", "正中神経の枝", "肋間神経", "顔面神経"],
+    answer: 0,
+    explanation: "足底の内側や母趾の感覚は、主に脛骨神経から分かれる内側足底神経が担当しています。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "長時間の同一姿勢や着圧の強すぎる靴下によって足の血流が悪くなったとき、組織に溜まってむくみの原因になる液体はどれ？",
+    options: ["組織液（間質液）", "胃酸", "胆汁", "髄液"],
+    answer: 0,
+    explanation: "毛細血管から滲み出た水分（組織液）が、筋ポンプの低下や静脈圧の上昇により回収しきれなくなると、足のむくみになります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の冷えを感じる原因の一つとして、体温が低下したときに体が生理的に行う、末梢の動静脈吻合（AVA）の一般的な反応はどれ？",
+    options: ["血管を閉じて中心部の熱を逃がさないようにする（血流遮断）", "末梢の血流を何倍にも増やす", "皮膚から大量の汗をかかせる", "筋肉を強制的に痙攣させる"],
+    answer: 0,
+    explanation: "寒さや冷えを感じると、体は生命維持のため内臓のある中心部の体温を守ろうとし、末梢の血管を閉じます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "リフレクソロジーや足裏マッサージを受けたあとに、尿の色が濃くなったり排尿が増えたりする現象の生理学的背景はどれ？",
+    options: ["滞っていた水分や老廃物が血液・リンパに乗って腎臓で濾過されるから", "腎臓の組織が一時的に破壊されるから", "体内の水分が完全に蒸発するから", "胃酸が逆流するから"],
+    answer: 0,
+    explanation: "血流やリンパの循環が促進されることで、組織に停滞していた老廃物や水分が循環し、腎臓で代謝されて排出されやすくなります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "人間の体内時計（サーカディアンリズム）を調整する主なホルモンで、夜間に分泌されて睡眠を誘うものはどれ？",
+    options: ["メラトニン", "アドレナリン", "インスリン", "コルチゾール"],
+    answer: 0,
+    explanation: "メラトニンは脳の松果体から分泌されるホルモンで、体内時計に働きかけ、夜間の眠気を促します。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足首を強く捻挫した際、靭帯の損傷だけでなく、周囲の神経や血管が引き伸ばされて起きる一時的な感覚異常を何と呼ぶか？",
+    options: ["神経・血管の牽引性ストレッチ障害（痺れや一時的麻痺）", "完全な骨髄消失", "脳震盪", "筋肉の完全な液状化"],
+    answer: 0,
+    explanation: "捻挫時の急激な関節の逸脱により、周囲を通る神経や血管が引き伸ばされ、一時的な痺れや冷感を伴うことがあります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "下肢の動脈血（酸素を豊富に含んだ血液）を心臓から足先まで送り出す、最も太いメインの動脈はどれ？",
+    options: ["大動脈から総腸骨動脈を経て大腿動脈へ", "上大静脈", "肺静脈", "門脈"],
+    answer: 0,
+    explanation: "心臓から出た血液は腹部大動脈、総腸骨動脈、外腸骨動脈、大腿動脈と名前を変えて下肢へ送られます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "ストレスが慢性化している現代人に多く見られる、副交感神経の働きが低下し交感神経が優位になりすぎる状態を何というか？",
+    options: ["交感神経緊張優位（自律神経の乱れ）", "完全副交感優位モード", "迷走神経発作", "低体温クリアランス"],
+    answer: 0,
+    explanation: "ストレスや緊張が続くと交感神経が常に優位になり、血管が収縮して血行不良や筋肉の緊張、睡眠障害を招きます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の裏にあるツボや反射区（リフレクソロジーの概念）が、内臓の不調と関連されるとされる主な生理学的説明の一つはどれ？",
+    options: ["内臓からの求心性神経と皮膚・筋肉への体性神経が脊髄レベルで混線・共有されること（内臓体性反射など）", "足の裏に内臓が直接つながっているから", "血液が1秒で内臓を一周するから", "骨の数が内臓の数と一致しているから"],
+    answer: 0,
+    explanation: "内臓からの神経と体表・足底からの神経は脊髄の同じ高位に入力されることが多く、関連痛や反射的応答の基盤となります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "食後の眠気対策として、血糖値の急激な上昇を防ぐために食事の最初に食べると良いとされる栄養素の代表はどれ？",
+    options: ["食物繊維（野菜や海藻類）やタンパク質", "白砂糖や白米", "スナック菓子", "炭水化物のみ"],
+    answer: 0,
+    explanation: "いわゆる「ベジタブルファースト」やタンパク質を先に摂ることで、糖の吸収スピードが緩やかになり、血糖値スパイクを防げます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "睡眠の質を高めるために、就寝の何時間前くらいに入浴（湯船に浸かる）するのが理想的とされているか？",
+    options: ["約90分前（深部体温が一度上がってから下がるタイミング）", "就寝の直前（0分前）", "起床直後", "起きてすぐの朝"],
+    answer: 0,
+    explanation: "入浴で一時的に上がった深部体温が、約90分かけて下がっていくタイミングでスムーズな入眠と深い睡眠が得られます。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+
+function startQuiz() {
+    currentQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('menu-container').classList.add('hidden');
+    document.getElementById('result-container').classList.add('hidden');
+    document.getElementById('quiz-container').classList.remove('hidden');
+    showQuestion();
+}
+
+function backToMenu() {
+    document.getElementById('quiz-container').classList.add('hidden');
+    document.getElementById('result-container').classList.add('hidden');
+    document.getElementById('menu-container').classList.remove('hidden');
+}
+
+function showQuestion() {
+    const q = currentQuestions[currentIndex];
+    document.getElementById('category-title').innerText = "【" + q.category + "】";
+    document.getElementById('question-count').innerText = `第 ${currentIndex + 1} 問 / 全 5 問`;
+    document.getElementById('question-text').innerText = q.question;
+    
+    const choicesDiv = document.getElementById('choices-container');
+    choicesDiv.innerHTML = '';
+    
+    q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.innerText = (index + 1) + '. ' + opt;
+        btn.onclick = () => selectAnswer(index);
+        choicesDiv.appendChild(btn);
+    });
+    
+    document.getElementById('explanation-container').classList.add('hidden');
+    document.getElementById('next-btn').classList.add('hidden');
+}
+
+function selectAnswer(selectedIndex) {
+    const q = currentQuestions[currentIndex];
+    const choiceButtons = document.querySelectorAll('.choice-btn');
+    
+    choiceButtons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answer) {
+            btn.classList.add('correct');
+        } else if (idx === selectedIndex) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    if (selectedIndex === q.answer) {
+        score++;
+    }
+    
+    const expDiv = document.getElementById('explanation-container');
+    expDiv.innerHTML = '<strong>【解説】</strong><br>' + q.explanation;
+    expDiv.classList.remove('hidden');
+    
+    document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < currentQuestions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-container').classList.add('hidden');
+    document.getElementById('result-container').classList.remove('hidden');
+    document.getElementById('score-text').innerText = `5問中 ${score}問正解でした！`;
+}
+
+function shareToX() {
+    const text = encodeURIComponent(`解剖学・足の構造クイズに挑戦し、5問中${score}問正解しました！\n#解剖学 #足の構造 #セルフケア #皓一部屋`);
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+</script>
 
 </body>
 </html>
