@@ -77,7 +77,6 @@
       background: linear-gradient(135deg, #8e44ad, #732d91);
       color: #fff;
     }
-    /* クイズ専用ボタン用スタイル */
     .quiz-btn-style {
       background: linear-gradient(135deg, #27ae60, #219653);
       color: #fff;
@@ -86,7 +85,7 @@
       display: block;
       font-size: 0.72rem;
       font-weight: normal;
-      opacity: 0.9;
+      opacity: 0.95;
       margin-top: 4px;
     }
     .back-link {
@@ -97,7 +96,6 @@
       text-decoration: none;
     }
     
-    /* クイズ画面用スタイル */
     .hidden { display: none !important; }
     .quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
     .question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
@@ -150,16 +148,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="btn-desc">（母指・示指・中指・環指・小指をタップ！）</span>
   </a>
 
-  <!-- 新規追加：プロ仕様解剖学クイズへの切り替えボタン -->
+  <!-- 難易度の注意書きを追加したクイズボタン -->
   <button onclick="startQuiz()" class="game-link-btn quiz-btn-style">
     🧠 本格解剖学・足の構造クイズ道場
-    <span class="btn-desc">（100問プールから毎回ランダム5問出題！）</span>
+    <span class="btn-desc">⚠️ ※かなり難しいマニアックなクイズなので要注意！<br>（100問プールから毎回ランダム5問出題）</span>
   </button>
 
   <a href="index.html" class="back-link">🏠 ホームに戻る</a>
 </div>
 
-<!-- 2. クイズ出題画面（最初は隠れています） -->
+<!-- 2. クイズ出題画面 -->
 <div class="quiz-card hidden" id="quiz-container">
   <div id="category-title" class="quiz-title">解剖学クイズ</div>
   <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
@@ -170,7 +168,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <button onclick="backToMenu()" style="background: #95a5a6; margin-top: 15px;" class="next-btn">メニューに戻る</button>
 </div>
 
-<!-- 3. クイズ結果発表画面（最初は隠れています） -->
+<!-- 3. クイズ結果発表画面 -->
 <div class="quiz-card hidden" id="result-container" style="text-align: center;">
   <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
   <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
