@@ -52,7 +52,7 @@
             color: #e74c3c;
             margin: 5px 0 10px 0;
         }
-        /* 蚊が飛び回るステージの設定 */
+        /* ステージの設定 */
         .game-stage {
             width: 100%;
             height: 280px;
@@ -60,7 +60,7 @@
             background-image: url('2senaka.png');
             background-position: center center;
             background-repeat: no-repeat;
-            background-size: cover; /* 背景いっぱいにきれいに敷き詰める */
+            background-size: cover;
             border: 2px solid #cbd5e1;
             border-radius: 16px;
             position: relative;
@@ -69,15 +69,15 @@
             overflow: hidden;
             cursor: crosshair;
         }
-        /* 蚊のボタン（ターゲット） */
+        /* 蚊のボタン（背景に負けないよう、白背景の丸と黒っぽいシルエット・影を強調） */
         .mosquito-btn {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            background-color: rgba(255, 255, 255, 0.3); /* タップしやすく当たり判定を少し広げる */
-            border: none;
+            width: 55px;
+            height: 55px;
+            background-color: rgba(255, 255, 255, 0.85); /* 白背景を敷いて見やすくする */
+            border: 2px solid #333;
             border-radius: 50%;
-            font-size: 2.2rem;
+            font-size: 2rem;
             cursor: pointer;
             user-select: none;
             touch-action: manipulation;
@@ -86,7 +86,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 99; /* 常に最前面に表示してクリックできるようにする */
+            z-index: 99;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            /* 蚊の絵文字をより黒くくっきり見せるフィルター */
+            filter: grayscale(100%) brightness(30%);
         }
         .mosquito-btn:active {
             transform: translate(-50%, -50%) scale(0.7);
@@ -193,8 +196,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         moveMosquito();
-        // 1.2秒ごとに蚊が別の場所に移動する
-        mosquitoInterval = setInterval(moveMosquito, 1200);
+        // 1.8秒ごとに蚊が移動（スピードをもう少しゆっくりに調整）
+        mosquitoInterval = setInterval(moveMosquito, 1800);
 
         timerInterval = setInterval(() => {
             timeLeft--;
@@ -232,7 +235,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         }
 
-        // タップしたらすぐに次の場所へワープさせる
         moveMosquito();
     }
 
@@ -245,7 +247,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-play-screen').classList.add('hidden');
         document.getElementById('game-result-screen').classList.remove('hidden');
 
-        var judge = score <= 10 ? "【蚊に好かれやすい初心者】" : score <= 20 ? "【カルボン酸チェイサー】" : "【伝説のモスキートハンター】";
+        var judge = score <= 8 ? "【蚊に好かれやすい初心者】" : score <= 15 ? "【カルボン酸チェイサー】" : "【伝説のモスキートハンター】";
         document.getElementById('result-message').innerHTML = '20秒で <b>' + score + ' 匹</b> の蚊を退治しました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>皮膚のカルボン酸対策とボディケアですっきり爽快！';
 
         var text = encodeURIComponent('モスキート退治ゲームで ' + score + ' 匹の蚊を退治しました！\n称号：' + judge + '\n\nカルボン酸の謎を解き明かしてモスキートを撃退しよう！👇');
