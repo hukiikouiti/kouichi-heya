@@ -69,35 +69,31 @@
             overflow: hidden;
             cursor: crosshair;
         }
-       /* 蚊のボタン */
+        /* 蚊のボタン（円周を完全に真っ白な太枠にし、中は完全透明＆強い影で浮き上がらせる） */
         .mosquito-btn {
             position: absolute;
-            width: 55px;
-            height: 55px;
-            /* 変更点：背景を透明（または半透明）にする */
-            background-color: transparent;
-            /* 変更点：円周（ボーダー）を白く設定する */
-            border: 3px solid #ffffff;
+            width: 58px;
+            height: 58px;
+            background-color: transparent !important; /* 中を完全に透明にする */
+            border: 4px solid #ffffff !important;   /* 円周をくっきり太い白枠にする */
             border-radius: 50%;
-            font-size: 2rem;
+            font-size: 2.1rem;
             cursor: pointer;
             user-select: none;
             touch-action: manipulation;
             transform: translate(-50%, -50%);
-            transition: transform 0.08s ease, border-color 0.2s ease;
+            transition: transform 0.08s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 99;
-            /* 変更点：白い背景がなくなったので、影をつけて見やすくする */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            /* 蚊の絵文字を黒くするフィルターは維持 */
-            filter: grayscale(100%) brightness(30%);
+            /* 周りに黒い影（ドロップシャドウ）を強くつけて、背中の写真の上でも虫がくっきり浮かぶようにする */
+            box-shadow: 0 0 10px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8);
+            /* 蚊を真っ黒にして視認性を最大化 */
+            filter: grayscale(100%) brightness(0%);
         }
-        /* 押した時のエフェクト */
         .mosquito-btn:active {
-            transform: translate(-50%, -50%) scale(0.8);
-            border-color: #ffcccc; /* 押した時に枠の色を変えるとおしゃれです */
+            transform: translate(-50%, -50%) scale(0.75);
         }
 
         .btn {
@@ -201,7 +197,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         moveMosquito();
-        // 1.8秒ごとに蚊が移動（スピードをもう少しゆっくりに調整）
+        // 1.8秒ごとに蚊が移動
         mosquitoInterval = setInterval(moveMosquito, 1800);
 
         timerInterval = setInterval(() => {
