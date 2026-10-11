@@ -50,7 +50,7 @@
     .game-link-btn {
       display: block;
       width: 100%;
-      padding: 16px 0;
+      padding: 16px 20px;
       margin-bottom: 15px;
       border-radius: 14px;
       font-weight: bold;
@@ -75,6 +75,14 @@
     }
     .yubi-btn-style {
       background: linear-gradient(135deg, #8e44ad, #732d91);
+      color: #fff;
+    }
+    .mosquito-btn-style {
+      background: linear-gradient(135deg, #d35400, #b94000);
+      color: #fff;
+    }
+    .sneeze-btn-style {
+      background: linear-gradient(135deg, #f39c12, #d68910);
       color: #fff;
     }
     .quiz-btn-style {
@@ -148,12 +156,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="btn-desc">（母指・示指・中指・環指・小指をタップ！）</span>
   </a>
 
- <!-- 綺麗に揃えたモスキート退治コースのボタン -->
-    <a href="mosquito.html" class="game-link-btn" style="background-color: #e67e22; color: #fff; text-decoration: none; display: block; text-align: center; padding: 15px 20px; border-radius: 12px; margin-bottom: 12px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-        🦟 モスキート退治コース<br>
-        <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.9;">（カルボン酸対策・20秒反射神経）</span>
-    </a>
-  <!-- 難易度の注意書きを追加したクイズボタン -->
+  <a href="mosquito.html" class="game-link-btn mosquito-btn-style">
+    🦟 モスキート退治コース
+    <span class="btn-desc">（カルボン酸対策・20秒反射神経）</span>
+  </a>
+
+  <!-- 新しく追加したくしゃみゲームのボタン（形状・余白を完全統一） -->
+  <a href="sneeze.html" class="game-link-btn sneeze-btn-style">
+    🤧 くしゃみが出そうで出ないゲーム
+    <span class="btn-desc">（画面をこすってムズムズ限界突破！）</span>
+  </a>
+
   <button onclick="startQuiz()" class="game-link-btn quiz-btn-style">
     🧠 本格解剖学・足の構造クイズ道場
     <span class="btn-desc">⚠️ ※かなり難しいマニアックなクイズなので要注意！<br>（100問プールから毎回ランダム5問出題）</span>
@@ -316,7 +329,7 @@ const allQuestions = [
     question: "距骨の滑車面は、どちら側の方が広い形状をしているか？",
     options: ["前方", "後方", "内側", "外側"],
     answer: 0,
-    explanation: "距骨滑車は前方が広く、足首を背屈したときに足関節が最も安定する構造になっています。"
+    explanation: "距骨滑車は前方が広い形状をしており、足首を背屈したときに足関節が最も安定する構造になっています。"
   },
   {
     category: "骨格・アーチ",
@@ -415,7 +428,7 @@ const allQuestions = [
   },
   {
     category: "筋肉・筋膜",
-    question: "全身の筋膜ネットワーク（アナトミー・トレイン）において、足底からふくらはぎ、太報裏を通って頭部まで繋がる代表的なラインはどれ？",
+    question: "全身の筋膜ネットワーク（アナトミー・トレイン）において、足底からふくらはぎ、太腿裏を通って頭部まで繋がる代表的なラインはどれ？",
     options: ["スーパーフィシャル・バック・ライン（SBL）", "ラテラル・ライン", "スパイラル・ライン", "フロント・ライン"],
     answer: 0,
     explanation: "SBLは足底の足底腱膜から始まり、下腿後面、ハムストリングス、脊柱起立筋をへて頭部まで繋がる筋膜の連鎖です。"
@@ -587,7 +600,7 @@ const allQuestions = [
   },
   {
     category: "神経・血管・生理学",
-    question: "足の甲の表面（足背）を流れる主な表在静脈網から、内くるぶしの前を通って大伏在静脈へと繋がる血管の出発点はどれ？",
+    question: "足の甲の表面（足背）を流れる主な表在静脈網から、内くるぶしの前を通長大伏在静脈へと繋がる血管の出発点はどれ？",
     options: ["足背静脈弓", "足底静脈叢", "脛骨動脈", "腓骨動脈"],
     answer: 0,
     explanation: "足の甲にある足背静脈弓は、内側の大伏在静脈や外側の小伏在静脈へ血液を送り出す重要なルートです。"
@@ -786,25 +799,3 @@ function selectAnswer(selectedIndex) {
 }
 
 function nextQuestion() {
-    currentIndex++;
-    if (currentIndex < currentQuestions.length) {
-        showQuestion();
-    } else {
-        showResult();
-    }
-}
-
-function showResult() {
-    document.getElementById('quiz-container').classList.add('hidden');
-    document.getElementById('result-container').classList.remove('hidden');
-    document.getElementById('score-text').innerText = `5問中 ${score}問正解でした！`;
-}
-
-function shareToX() {
-    const text = encodeURIComponent(`解剖学・足の構造クイズに挑戦し、5問中${score}問正解しました！\n#解剖学 #足の構造 #セルフケア #皓一部屋`);
-    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-}
-</script>
-
-</body>
-</html>
