@@ -69,13 +69,13 @@
             overflow: hidden;
             cursor: crosshair;
         }
-        /* 蚊のボタン（中も円周も完全に真っ白に設定） */
+        /* 蚊のボタン（白い丸の中に黒い蚊のアイコンを表示） */
         .mosquito-btn {
             position: absolute;
             width: 58px;
             height: 58px;
-            background-color: #ffffff !important; /* 中を完全に真っ白にする */
-            border: 3px solid #ffffff !important;   /* 円周も完全な白にする */
+            background-color: #ffffff !important; /* 丸の中を真っ白にする */
+            border: 3px solid #ffffff !important;   /* 縁を白にする */
             border-radius: 50%;
             font-size: 2.1rem;
             cursor: pointer;
@@ -87,10 +87,9 @@
             align-items: center;
             justify-content: center;
             z-index: 99;
-            /* 周りに影をつけて背中の写真の上でも抜群に目立たせる */
             box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-            /* 蚊のアイコンを黒くする */
-            filter: grayscale(100%) brightness(0%);
+            /* 修正：絵文字の形を保ったまま、色だけを黒くはっきりさせる */
+            color: #000000;
         }
         .mosquito-btn:active {
             transform: translate(-50%, -50%) scale(0.75);
