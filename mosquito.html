@@ -69,30 +69,35 @@
             overflow: hidden;
             cursor: crosshair;
         }
-        /* 蚊のボタン（背景に負けないよう、白背景の丸と黒っぽいシルエット・影を強調） */
+       /* 蚊のボタン */
         .mosquito-btn {
             position: absolute;
             width: 55px;
             height: 55px;
-            background-color: rgba(255, 255, 255, 0.85); /* 白背景を敷いて見やすくする */
-            border: 2px solid #333;
+            /* 変更点：背景を透明（または半透明）にする */
+            background-color: transparent;
+            /* 変更点：円周（ボーダー）を白く設定する */
+            border: 3px solid #ffffff;
             border-radius: 50%;
             font-size: 2rem;
             cursor: pointer;
             user-select: none;
             touch-action: manipulation;
             transform: translate(-50%, -50%);
-            transition: transform 0.08s ease;
+            transition: transform 0.08s ease, border-color 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 99;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            /* 蚊の絵文字をより黒くくっきり見せるフィルター */
+            /* 変更点：白い背景がなくなったので、影をつけて見やすくする */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            /* 蚊の絵文字を黒くするフィルターは維持 */
             filter: grayscale(100%) brightness(30%);
         }
+        /* 押した時のエフェクト */
         .mosquito-btn:active {
-            transform: translate(-50%, -50%) scale(0.7);
+            transform: translate(-50%, -50%) scale(0.8);
+            border-color: #ffcccc; /* 押した時に枠の色を変えるとおしゃれです */
         }
 
         .btn {
