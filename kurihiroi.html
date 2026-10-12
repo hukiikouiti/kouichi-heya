@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -58,17 +57,26 @@
             margin-bottom: 10px;
             color: #d35400;
         }
-        /* 栗が落ちてくるステージフィールド */
+        /* 栗拾いステージ（秋の夕暮れ・落ち葉風グラデーション） */
         .kuri-stage {
             width: 100%;
             height: 280px;
-            background-color: #fef6e4;
-            border: 2px dashed #cbd5e1;
+            background: linear-gradient(135deg, #f39c12 0%, #d35400 50%, #b9770e 100%);
+            border: 3px solid #d35400;
             border-radius: 16px;
             position: relative;
             margin: 0 auto 15px;
             overflow: hidden;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+        }
+        /* 背景にうっすら落ち葉の雰囲気を演出するドットパターン */
+        .kuri-stage::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            pointer-events: none;
         }
         /* 落ちてくるオブジェクト（栗・葉っぱ） */
         .falling-item {
@@ -86,15 +94,15 @@
         .popup-msg {
             position: absolute;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 4px 8px;
             border-radius: 6px;
             pointer-events: none;
             animation: floatUp 0.5s ease-out forwards;
             z-index: 10;
         }
-        .popup-plus { color: #d35400; background: rgba(255,255,255,0.9); }
-        .popup-miss { color: #c0392b; background: rgba(255,255,255,0.9); }
+        .popup-plus { color: #fff; background: rgba(211, 84, 0, 0.9); border: 1px solid #ffcc00; }
+        .popup-miss { color: #fff; background: rgba(192, 57, 43, 0.9); border: 1px solid #ff9999; }
 
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
@@ -237,7 +245,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         // 下へ落下するアニメーション
         let posY = -50;
-        const fallSpeed = 2 + Math.random() * 2.5; // 落ちるスピード
+        const fallSpeed = 2 + Math.random() * 2.5;
 
         const fallInterval = setInterval(() => {
             if (!isPlaying) {
@@ -249,14 +257,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             posY += fallSpeed;
             item.style.top = posY + 'px';
 
-            // ステージの下まで落ちたら消す
             if (posY > stage.clientHeight) {
                 clearInterval(fallInterval);
                 item.remove();
             }
         }, 30);
 
-        // タップ（クリック）したときの判定
+        // タップしたときの判定
         item.onmousedown = item.ontouchstart = (e) => {
             e.preventDefault();
             if (!isPlaying) return;
@@ -268,14 +275,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
             if (item.dataset.type === 'kuri') {
-                // 栗をゲット！
                 score += 1;
-                if (navigator.vibrate) navigator.vibrate(40); // 震える
+                if (navigator.vibrate) navigator.vibrate(40);
                 showPopup(clientX - rect.left, clientY - rect.top, '+1点 🌰', 'popup-plus', stage);
             } else {
-                // 葉っぱを触ってしまった（ミス！）
-                score = Math.max(0, score - 1); // 1点マイナス（0点未満にはならない）
-                if (navigator.vibrate) navigator.vibrate([80, 50, 80]); // ミス時は長めの振動
+                score = Math.max(0, score - 1);
+                if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
                 showPopup(clientX - rect.left, clientY - rect.top, 'ミス！🍃', 'popup-miss', stage);
             }
 
