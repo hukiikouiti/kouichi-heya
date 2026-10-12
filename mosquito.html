@@ -222,9 +222,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         mosquito.style.top = randomY + 'px';
         mosquito.classList.remove('hidden');
     }
-
-    function hitMosquito() {
+function hitMosquito() {
         if (!isPlaying) return;
+        
+        // タップ時にスマホを振動させる（40ミリ秒）
+        if (navigator.vibrate) {
+            navigator.vibrate(40);
+        }
+
         score++;
         document.getElementById('score').innerText = score;
 
