@@ -1,1 +1,751 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>本格解剖学・手の構造クイズ道場 | 皓一部屋</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .quiz-card {
+      background: #ffffff;
+      padding: 25px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+    .game-link-btn {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 15px;
+      border-radius: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .game-link-btn:active {
+      transform: scale(0.97);
+    }
+    .quiz-btn-style {
+      background: linear-gradient(135deg, #27ae60, #219653);
+      color: #fff;
+    }
+    .hidden { display: none !important; }
+    .quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+    .question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+    .question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+    .choice-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #f1f3f5;
+      color: #333;
+      text-align: left;
+      border: 1px solid #dcdde1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    .choice-btn:hover { background: #e4e7eb; }
+    .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+    .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+    .explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+    .next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- 1. クイズ出題画面（ページを開いたら自動でスタートします） -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">手の解剖学クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none; display: block; padding: 12px; border-radius: 8px; font-weight: bold;">メニューに戻る</a>
+</div>
+
+<!-- 2. クイズ結果発表画面 -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; margin-bottom: 10px;">X（旧Twitter）で結果をシェアする</button>
+  <button onclick="startQuiz()" class="game-link-btn quiz-btn-style" style="margin-bottom: 10px;">もう一度挑戦する（別の5問）</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<script>
+// 100問のデータプール（手・前腕の骨格・筋肉・神経生理学）
+const allQuestions = [
+  // ==========================================
+  // ジャンル1：手根骨・手指の骨格（25問）
+  // ==========================================
+  {
+    category: "手根骨・骨格",
+    question: "人間の片手の手根骨は何個で構成されているか？",
+    options: ["5個", "7個", "8個", "10個"],
+    answer: 2,
+    explanation: "手根骨は近位列4個、遠位列4個の合計8個の小さな骨で構成されています。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の近位列（親指側から小指側へ）の正しい配列はどれ？",
+    options: ["舟状骨・月状骨・三角骨・豆状骨", "大菱形骨・小菱形骨・有頭骨・有鈎骨", "舟状骨・有頭骨・月状骨・三角骨", "豆状骨・三角骨・月状骨・舟状骨"],
+    answer: 0,
+    explanation: "近位列は橈骨側から順に「舟状骨、月状骨、三角骨、豆状骨」の4個が並びます。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の遠位列（親指側から小指側へ）の正しい配列はどれ？",
+    options: ["大菱形骨・小菱形骨・有頭骨・有鈎骨", "舟状骨・月状骨・三角骨・豆状骨", "有頭骨・有鈎骨・小菱形骨・大菱形骨", "三角骨・有頭骨・月状骨・大菱形骨"],
+    answer: 0,
+    explanation: "遠位列は親指側から「大菱形骨、小菱形骨、有頭骨、有鈎骨」の4個が並びます。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の中で、最も大きく中心に位置し、手根骨の中心的な支柱となる骨はどれ？",
+    options: ["有頭骨", "舟状骨", "月状骨", "有鈎骨"],
+    answer: 0,
+    explanation: "有頭骨（ゆうとうこつ）は手根骨の中で最も大きく、中央に位置して手首の安定に寄与します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "転倒時に手をついた際、手首の骨の中で最も骨折しやすい（頻度が最も高い）骨はどれ？",
+    options: ["舟状骨", "豆状骨", "小菱形骨", "有鈎骨"],
+    answer: 0,
+    explanation: "舟状骨は手関節の衝撃を受けやすく、血流が特殊なため骨折すると偽関節になりやすい特徴があります。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "三角骨の掌側（手のひら側）に位置し、種子骨として発達した手根骨はどれ？",
+    options: ["豆状骨", "月状骨", "有鈎骨", "大菱形骨"],
+    answer: 0,
+    explanation: "豆状骨（とうじょうこつ）は屈筋腱の中に発生した種子骨で、触知しやすい小さな骨です。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "有鈎骨の掌側に突き出している特徴的な突起の名称はどれ？",
+    options: ["有鈎骨鉤（鈎状突起）", "橈骨茎状突起", "尺骨頭", "鉤状結節"],
+    answer: 0,
+    explanation: "有鈎骨には「鈎（こう）」と呼ばれる鉤状の突起があり、手根管の内側壁を構成します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "親指（母指）の中手骨と関節をなし、物をつまむ「対立運動」を可能にする重要なサドル関節（鞍関節）を形成する手根骨はどれ？",
+    options: ["大菱形骨", "小菱形骨", "有頭骨", "舟状骨"],
+    answer: 0,
+    explanation: "大菱形骨と第1中手骨の間には鞍関節があり、母指の自由な動き（対立運動）を生み出します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "人間の片手の中手骨（手の甲の骨）は何本あるか？",
+    options: ["4本", "5本", "7本", "8本"],
+    answer: 1,
+    explanation: "中手骨は母指から小指にかけて第1〜第5の合計5本が存在します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "母指（親指）の指骨（趾骨に相当）はいくつあるか？",
+    options: ["1節", "2節（基節骨・末節骨）", "3節", "4節"],
+    answer: 1,
+    explanation: "母指は中節骨がなく、基節骨と末節骨の2節で構成されています。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "第2〜第5指（人差し指〜小指）の指骨はそれぞれ何節で構成されているか？",
+    options: ["2節", "3節（基節骨・中節骨・末節骨）", "4節", "1節のみ"],
+    answer: 1,
+    explanation: "第2〜第5指は基節骨、中節骨、末節骨の3節で構成されています。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "人間の両手を合わせると、指骨（手の指の骨）の総数はいくつになるか？",
+    options: ["20個", "24個", "28個", "30個"],
+    answer: 2,
+    explanation: "片手あたり母指2個＋他指12個＝14個であり、両手では合計28個になります。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手首の関節（橈骨手根関節）を直接受ける下腿ならぬ前腕側の骨はどれ？",
+    options: ["橈骨（遠位端）と関節円板（尺骨側）", "尺骨が直接手根骨全てと関節を作る", "上腕骨と直接結合する", "舟状骨と直接完全に癒合している"],
+    answer: 0,
+    explanation: "手関節は主に橈骨の下端と関節円板が、近位の手根骨（舟状骨・月状骨・三角骨）と関節を作ります。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "前腕の2本の骨のうち、親指側に位置し、前腕の回旋（回内・回外）の軸となる骨はどれ？",
+    options: ["尺骨", "橈骨", "上腕骨", "肩甲骨"],
+    answer: 1,
+    explanation: "橈骨は親指側にあり、回外・回内運動時に尺骨の周りを回転するように動きます。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "前腕の2本の骨のうち、小指側に位置し、肘の「肘頭（ひじがしら）」を形成する骨はどれ？",
+    options: ["橈骨", "尺骨", "舟状骨", "有頭骨"],
+    answer: 1,
+    explanation: "尺骨は小指側にあり、肘を曲げたときに出っ張る「肘頭」を形成する骨です。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根管（しゅこんかん）の天井を覆い、神経や腱の飛び出しを防ぐ強力な線維性の帯の名称はどれ？",
+    options: ["屈筋支帯（横手根靭帯）", "伸筋支帯", "足底腱膜", "靭帯腱鞘"],
+    answer: 0,
+    explanation: "屈筋支帯（横手根靭帯）は手根骨のアーチの橋渡しをし、手根管をトンネル状に形成します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手の甲側（背面）にあり、指を伸ばす伸筋腱が浮き上がらないように押さえている横長のバンド状組織はどれ？",
+    options: ["伸筋支帯", "屈筋支帯", "手根靭帯", "掌側板"],
+    answer: 0,
+    explanation: "伸筋支帯は手関節背側にあり、手背の伸筋腱群をしっかりと定位置に保持します。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "中手骨と指の骨（基節骨）の間を結ぶ関節の一般名称はどれ？",
+    options: ["MP関節（中手指節関節）", "IP関節", "DIP関節", "手根中手関節"],
+    answer: 0,
+    explanation: "MP関節はナックルにあたる関節で、屈伸だけでなく外転・内転の動きも少しだけ可能です。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "指の第1関節（指の先端に近い方の関節、人差し指〜小指）の正式名称はどれ？",
+    options: ["DIP関節（遠位指節間関節）", "PIP関節", "MP関節", "CMC関節"],
+    answer: 0,
+    explanation: "DIP関節は指先から一番近い関節で、屈曲方向にのみ大きく動きます。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "指の第2関節（指の付け根に近い方の関節、人差し指〜小指）の正式名称はどれ？",
+    options: ["PIP関節（近位指節間関節）", "DIP関節", "MP関節", "手根関節"],
+    answer: 1,
+    explanation: "PIP関節はDIPよりも根元側にある指の関節です。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の並びが作る「手根溝」の底と壁をなす骨のうち、橈側（親指側）の壁を作る2つの骨の組み合わせはどれ？",
+    options: ["舟状骨の結節と大菱形骨の結節", "三角骨と豆状骨", "有頭骨と有鈎骨", "月状骨と頭状骨"],
+    answer: 0,
+    explanation: "手根溝の橈側は舟状骨結節と大菱形骨結節が壁となり、手根管の構造を支えます。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の並びが作る「手根溝」の尺側（小指側）の壁を作る2つの骨の組み合わせはどれ？",
+    options: ["豆状骨と有鈎骨の鉤", "舟状骨と月状骨", "大菱形骨と小菱形骨", "有頭骨と三角骨"],
+    answer: 0,
+    explanation: "手根溝の尺側は豆状骨と有鈎骨鉤が盛り上がって壁を作っています。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "人間の手（両手）に含まれる骨の総数は、全身（約206個）の約何割に相当するか？",
+    options: ["約15%", "約25%（54個）", "約40%", "約60%"],
+    answer: 1,
+    explanation: "両手で54個の骨があり、これは全身の骨の約4分の1（25%以上）を占めています。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "月状骨（げつじょうこつ）が手関節のなかで位置的に挟まれやすい隣接骨の主な組み合わせはどれ？",
+    options: ["近位で橈骨、遠位で有頭骨に挟まれている", "親指の先端と小指の先端", "肘頭と前腕の骨の間", "中手骨の真ん中"],
+    answer: 0,
+    explanation: "月状骨は手根骨のほぼ中央にあり、上方の橈骨と下方の有頭骨の間に挟まれるため、脱臼や血行障害（キーンベック病）が起きやすい部位です。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手のアーチ構造のうち、手のひらの横方向の丸み（横アーチ）の要となる遠位の手根骨・中手骨の結合部はどれ？",
+    options: ["有鈎骨・有頭骨と第2〜5中手骨底", "舟状骨と橈骨", "豆状骨と三角骨", "基節骨と末節骨"],
+    answer: 0,
+    explanation: "手根骨の遠位列と中手骨底がドーム状の横アーチを形成し、物を握る機能を高めています。"
+  },
+
+  // ==========================================
+  // ジャンル2：前腕・手内筋の筋肉（25問）
+  // ==========================================
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕の屈筋群（手のひらを曲げる筋肉など）の主な起始部となる上腕骨の突起はどれ？",
+    options: ["内側上顆", "外側上顆", "鷹嘴", "烏口突起"],
+    answer: 0,
+    explanation: "上腕骨の内側上顆は前腕屈筋群の共通起始部であり、ゴルフ肘の痛みの発症部位としても知られます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕の伸筋群（手首や指を反らす筋肉）の主な起始部となる上腕骨の突起はどれ？",
+    options: ["外側上顆", "内側上顆", "大結節", "小結節"],
+    answer: 0,
+    explanation: "上腕骨の外側上顆は前腕伸筋群の共通起始部であり、テニス肘の痛みの原因になりやすい部位です。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "親指の付け根（手のひらの親指側）にふくらみを作る筋肉群の総称はどれ？",
+    options: ["母指球筋群", "小指球筋群", "虫様筋", "骨間筋"],
+    answer: 0,
+    explanation: "母指球筋群（短母指外転筋、母指対立筋、短母指屈筋、母指内転筋など）は親指の繊細な動きを担います。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手のひらの小指側にふくらみを作る筋肉群の総称はどれ？",
+    options: ["小指球筋群", "母指球筋群", "回内筋群", "浅指屈筋群"],
+    answer: 0,
+    explanation: "小指球筋群は小指の運動や手のひらの横アーチの深まりに関与します。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手のひらの深部にあり、指をMP関節で曲げPIP・DIP関節を伸ばすという特殊な動きをする小さな筋肉群はどれ？",
+    options: ["虫様筋（ちゅうようきん）", "上腕二頭筋", "棘上筋", "腕橈骨筋"],
+    answer: 0,
+    explanation: "虫様筋は手の固有筋で、物を書くときの筆記フォームや指の微細な調整に不可欠です。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "中手骨の間を埋め、指を広げたり（外転）閉じたり（内転）する働きを持つ手の内在筋はどれ？",
+    options: ["骨間筋（背側骨間筋・底側骨間筋）", "浅指屈筋", "腕橈骨筋", "回外筋"],
+    answer: 0,
+    explanation: "骨間筋は指の横方向への開閉運動や、MP関節の屈曲・伸展を助けます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "肘を曲げるときに最も強く働き、前腕が中間位（親指が上を向いた状態）のときに最も効率よく力を発揮する筋肉はどれ？",
+    options: ["腕橈骨筋", "上腕三頭筋", "烏口腕筋", "鎖骨下筋"],
+    answer: 0,
+    explanation: "腕橈骨筋は前腕の橈側を走り、肘屈曲に強力に関与するほか、前腕の回内・回外を中間位に戻す働きもあります。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕を回外（手のひらを上に向ける）させる最強の筋肉はどれ？",
+    options: ["回外筋および上腕二頭筋", "円回内筋", "方形回内筋", "腕橈骨筋"],
+    answer: 0,
+    explanation: "上腕二頭筋と回外筋は強力に前腕を回外させます。特に肘を曲げた状態での上腕二頭筋の回外力は非常に強いです。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕を回内（手のひらを下に向ける）させる主要な筋肉の組み合わせはどれ？",
+    options: ["円回内筋と方形回内筋", "回外筋と上腕二頭筋", "腕橈骨筋と上腕三頭筋", "長橈側手根伸筋と短橈側手根伸筋"],
+    answer: 0,
+    explanation: "円回内筋（肘付近）と方形回内筋（手首の深部）が協調して前腕を回内させます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "親指を手のひらの中心に向かって回転させ、他の指と向かい合わせる（対立させる）最も重要な筋肉はどれ？",
+    options: ["母指対立筋", "虫様筋", "示指伸筋", "尺側手根屈筋"],
+    answer: 0,
+    explanation: "母指対立筋は、人間特有の「つまむ・握る」動作の根幹である対立運動を行わせる筋肉です。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手首を手のひら側に曲げ（屈曲）、さらに橈骨側へ傾ける（橈屈）働きをする前腕の筋肉はどれ？",
+    options: ["橈側手根屈筋", "尺側手根屈筋", "長母指伸筋", "総指伸筋"],
+    answer: 0,
+    explanation: "橈側手根屈筋は前腕前面の橈側にあり、手関節の屈曲と橈屈に作用します。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手首を手のひら側に曲げ（屈曲）、さらに小指側へ傾ける（尺屈）働きをする前腕の筋肉はどれ？",
+    options: ["尺側手根屈筋", "橈側手根屈筋", "腕橈骨筋", "長橈側手根伸筋"],
+    answer: 0,
+    explanation: "尺側手根屈筋は尺側を走り、手関節の屈曲と強い尺屈を行います。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "第2〜第5指のPIP・DIP関節を曲げる（指を握り込む）ために、前腕から指先まで腱を伸ばしている主要な筋肉はどれ？",
+    options: ["深指屈筋と浅指屈筋", "総指伸筋", "虫様筋", "短母指屈筋"],
+    answer: 0,
+    explanation: "浅指屈筋はPIP関節を、深指屈筋はDIP関節をそれぞれ屈曲させる強力な長指屈筋群です。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手の甲側にあり、第2〜第5指のMP・PIP・DIP関節をすべて伸ばす（伸展する）働きを持つ筋肉はどれ？",
+    options: ["総指伸筋", "浅指屈筋", "深指屈筋", "長母指屈筋"],
+    answer: 0,
+    explanation: "総指伸筋は前腕後面の浅層にあり、腱が4つに分かれて各指の背側に停止します。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "親指を外側に大きく開き、伸ばす動作に寄与する「長母指外転筋」や「短母指伸筋」などが通る、手首親指側のくぼみの通称はどれ？",
+    options: ["タバコボックス（解剖学的嗅ぎタバコ入れ）", "手根管", "肘部管", "ギオン管"],
+    answer: 0,
+    explanation: "親指を反らしたときに現れるくぼみは嗅ぎタバコ入れと呼ばれ、底面に舟状骨が存在します。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手のひらの皮膚を緊張させ、握るときに滑るのを防ぐ、手のひらの皮下に存在する小さな皮筋はどれ？",
+    options: ["掌筋（短掌筋）", "広頸筋", "表情筋", "前頭筋"],
+    answer: 0,
+    explanation: "短掌筋は小指球側の皮下にあり、握るときに手のひらの皮膚にしわ寄せてグリップ力を高めます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕の筋肉の中で、肘関節をまたぐ2関節筋であり、肘の屈曲を助ける細い筋肉で、人によっては欠損していることもあるものはどれ？",
+    options: ["長掌筋", "腕橈骨筋", "円回内筋", "上腕三頭筋"],
+    answer: 0,
+    explanation: "長掌筋の腱は手首の中央を走り、約15〜20%の人格で生まれつき欠損していますが機能に支障はありません。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "母指球筋の一つで、親指を手のひらの面に対して直角に外側へ引き離す（外転）主な筋肉はどれ？",
+    options: ["短母指外転筋", "母指内転筋", "虫様筋", "小指外転筋"],
+    answer: 0,
+    explanation: "短母指外転筋は母指球の最も浅く外側にあり、親指を外転させる主役です。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "母指球筋の深層にあり、親指を人差し指側に引き寄せる（内転）働きをする筋肉はどれ？",
+    options: ["母指内転筋", "短母指屈筋", "母指対立筋", "虫様筋"],
+    answer: 0,
+    explanation: "母指内転筋は第1・第2中手骨の間などに起始を持ち、親指を人差し指にピタリと寄せます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "小指球筋の中で、小指を外側に開く（外転）作用を持つ筋肉はどれ？",
+    options: ["小指外転筋", "小指対立筋", "短小指屈筋", "虫様筋"],
+    answer: 0,
+    explanation: "小指外転筋は小指球の外側縁にあり、小指を他の指から離す方向に動かします。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "手首を背屈（手の甲側に反らす）させる際に主要な役割を果たす、前腕後面の筋肉の組み合わせはどれ？",
+    options: ["長・短橈側手根伸筋および尺側手根伸筋", "橈側手根屈筋と尺側手根屈筋", "円回内筋と方形回内筋", "浅指屈筋と深指屈筋"],
+    answer: 0,
+    explanation: "長橈側手根伸筋、短橈側手根伸筋、尺側手根伸筋が協調して手関節を強力に背屈させます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕の深層にあり、親指（母指）の関節を大きく伸ばす（伸展）働きをする専用の長筋肉はどれ？",
+    options: ["長母指伸筋および短母指伸筋", "長母趾屈筋", "総指伸筋", "深指屈筋"],
+    answer: 0,
+    explanation: "長母指伸筋・短母指伸筋は前腕後面の深層から母指の末節・基節に至り、親指をしっかりと反らせます。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "前腕の筋肉が過剰に疲労して硬くなると、手のひらや指の動きに制限が出る理由として正しいものはどれ？",
+    options: ["手指を動かす長指屈筋・伸筋の筋腹が前腕にあり、腱を介して手先を引っ張っているから", "手に筋肉が一切存在しないから", "前腕の筋肉は顔の表情としか連動しないから", "骨がすべて溶けてしまうから"],
+    answer: 0,
+    explanation: "指を動かす本体の筋肉は前腕にあり、長い腱で指先を引っ張る構造のため、前腕の凝りが手のこわばりに直結します。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "背側骨間筋の主な働きとして、手指を開く（外転させる）ときの基準となる軸（中軸）はどの指か？",
+    options: ["中指（第3指）", "親指（第1指）", "小指（第5指）", "人差し指（第2指）"],
+    answer: 0,
+    explanation: "背側骨間筋は中指を基準として、左右に指をパッと開く（外転）動作を行います。"
+  },
+  {
+    category: "前腕・手内筋の筋肉",
+    question: "底側骨間筋の主な働きとして、手指を閉じる（内転させる）ときの基準となる軸はどの指か？",
+    options: ["中指（第3指）へ向けて閉じる", "小指の外側へ引っ張る", "親指だけを回す", "手首の中心点"],
+    answer: 0,
+    explanation: "底側骨間筋は、開いた指を中指に向けてキュッと閉じる（内転）働きを担います。"
+  },
+
+  // ==========================================
+  // ジャンル3：神経・血管・反射区（25問）
+  // ==========================================
+  {
+    category: "神経・血管・反射区",
+    question: "手首の手根管を通って手のひら側（母指〜第3指および第4指の半分）の感覚と母指球筋の一部を支配する重要な神経はどれ？",
+    options: ["正中神経", "尺骨神経", "橈骨神経", "腋窩神経"],
+    answer: 0,
+    explanation: "正中神経は手根管を通るため、ここが圧迫されると「手根管症候群」による親指〜薬指の痺れが起きます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "肘の内側の「肘部管」を通り、小指や薬指の小指側の感覚および手の中の多くの固有筋肉（骨間筋など）を支配する神経はどれ？",
+    options: ["尺骨神経", "正中神経", "橈骨神経", "筋皮神経"],
+    answer: 1,
+    explanation: "尺骨神経は肘のトンネル（肘部管）で圧迫されやすく、「肘部管症候群」では小指側の痺れや手の細かな作業障害が起きます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "前腕や手の甲側の伸筋群を支配し、手首や指を反らす動作に関与する主要な末梢神経はどれ？",
+    options: ["橈骨神経", "正中神経", "尺骨神経", "閉鎖神経"],
+    answer: 0,
+    explanation: "橈骨神経は上腕骨骨幹部や肘の外側を回り込み、手首や指の伸展（反らす）を支配します。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらへの血流を供給する主要な2つの動脈で、手首の浅側・深側でそれぞれアーチ（弓）を形成しているものはどれ？",
+    options: ["橈骨動脈と尺骨動脈", "頸動脈と椎骨動脈", "大腿動脈と膝窩動脈", "上腕深動脈のみ"],
+    answer: 0,
+    explanation: "橈骨動脈と尺骨動脈は手首で浅掌動脈弓と深掌動脈弓を作り、手のひら全体と指先に豊かな血流を送ります。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手首の親指側で、脈拍（橈骨動脈搏動）を簡単に触知できる場所の直上に位置する腱はどれ？",
+    options: ["橈側手根屈筋腱の外側", "尺側手根屈筋腱", "アキレス腱", "上腕三頭筋腱"],
+    answer: 0,
+    explanation: "橈骨動脈は橈側手根屈筋腱と腕橈骨筋の間に位置し、臨床で脈拍測定に最もよく使われます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "リフレクソロジーにおいて、手のひらの中心付近（第2・第3中手骨の間あたり）にあるとされる、自律神経の緊張を緩めると言われる代表的な反射区はどれ？",
+    options: ["太陽神経叢（ソーラー・プラクサス）の反射区", "肝臓の反射区", "腎臓の反射区", "耳の反射区"],
+    answer: 0,
+    explanation: "手のひらの中心にある太陽神経叢の反射区は、深い呼吸やリラクゼーション、ストレス緩和を促すツボとして知られています。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手根管症候群において、夜間や明け方に強くなりやすい症状の特徴として最も正しいものはどれ？",
+    options: ["親指から薬指にかけてのしびれ、ピリピリ感、痛み", "足の裏全体の激しい痙攣", "耳鳴りと視力低下", "首の完全な回旋不能"],
+    answer: 0,
+    explanation: "手根管症候群では正中神経が圧迫され、親指・人差し指・中指・薬指の橈側半分にしびれや痛みが生じます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "尺骨神経が小指球側の「ギオン管（尺骨神経管）」で圧迫されたときに現れやすい典型的な症状はどれ？",
+    options: ["小指と薬指の小指側のしびれ、握力低下、手の筋肉の痩せ", "親指が全く動かなくなる症状のみ", "肘全体の激痛", "足首の麻痺"],
+    answer: 0,
+    explanation: "ギオン管症候群では、尺骨神経の浅枝・深枝の圧迫により小指側のしびれや手の内在筋の麻痺がおきます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらや指先には、体温調節のために動静脈が直接吻合している特殊な血管がたくさんある。その血管の略称はどれ？",
+    options: ["AVA（動静脈吻合）", "DNA", "ATP", "GTM"],
+    answer: 0,
+    explanation: "手掌や足底のAVA（動静脈吻合）は開閉することで体温を効率よく調整する放熱・保温の要です。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "スマートフォンやパソコンの長時間使用で「スマホ指・腱鞘炎」になりやすい、親指を伸ばす・広げる筋肉の腱が通る部位の総称はどれ？",
+    options: ["手首の背側・橈側の各伸筋腱区画（第1区画など）", "足根管", "肘部管", "鎖骨下三角"],
+    answer: 0,
+    explanation: "親指の長母指外転筋や短母指伸筋が通る第1区画などは、反復使用で炎症（ド・ケルヴァン病など）を起こしやすいです。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらをマッサージしたり揉みほぐすことで、脳の感覚野や運動野に与える影響として最も適切なものはどれ？",
+    options: ["ペンフィールドのホムンクルスで示される通り、手は脳の広い領域を占めるため刺激が脳に伝わりやすい", "脳の活動が完全に停止する", "視覚情報のみが遮断される", "嗅覚の機能が一時的に消える"],
+    answer: 0,
+    explanation: "脳のマップ（ホムンクルス）において手や指は非常に広い面積を占めており、手への刺激は脳の活性化やリフレッシュに直結します。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手の反射区療法（ハンドリフレクソロジー）を行う際、全身のバランスを整えるために親指の腹（頭部・脳の反射区）を刺激する主な目的はどれ？",
+    options: ["脳の疲労を和らげ、自律神経のバランスを整えること", "視力を急激に2.0にすること", "骨を急激に伸ばすこと", "胃酸の分泌を完全に止めること"],
+    answer: 0,
+    explanation: "親指の腹は脳や頭部に対応しており、ここを優しく刺激することで全身の緊張緩和やリラックス効果を高めます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "デスクワークなどで前腕の筋肉（屈筋群）がパンパンに張っているとき、手首や指の神経が受ける影響として正しいものはどれ？",
+    options: ["神経や血管が圧迫され、手の血行不良やしびれ・冷感を招く", "神経の伝導速度が何倍にも加速する", "全く影響を受けない", "骨が太くなる"],
+    answer: 0,
+    explanation: "前腕の筋肉の緊張や筋膜の癒着は、内部を通る正中神経や血管を圧迫し、手先の冷えやだるさを引き起こします。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらのツボや反射区において、肺や胸郭に対応しているとされるエリアはどこか？",
+    options: ["手のひらの上部（指の付け根の下あたり）", "手首の真ん中", "小指の爪の生え際", "親指の第一関節"],
+    answer: 0,
+    explanation: "手指の付け根周辺の掌側は呼吸器系や胸郭の反射区とされ、深呼吸を促す施術でよくアプローチされます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "寒さや緊張で手先が冷たくなるとき、交感神経の働きによって手首の動脈や末梢血管に起きる生理学的反応はどれ？",
+    options: ["血管が収縮して血流量が減少し、熱の放散を防ぐ", "血管が限界まで拡張して血流が爆発的に増える", "血管がすべて硬化する", "リンパ液に置き換わる"],
+    answer: 0,
+    explanation: "寒冷時や緊張時は交感神経が優位になり、末梢血管がキュッと収縮するため手先が冷たくなります。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらや指先にある、触覚や圧覚をキャッチする代表的な感覚受容器（マイスナー小体やパチニ小体など）の主な役割はどれ？",
+    options: ["物の質感、形、振動、圧力などを微細に感知して脳に送る", "ホルモンを分泌して血糖値を下げる", "胃腸の消化液を合成する", "筋肉の細胞分裂を促す"],
+    answer: 0,
+    explanation: "手掌の豊富な感覚受容器は、触れたものの硬さや形、滑らかさを瞬時に感知する高精度のセンサーです。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "ハンドマッサージやリフレクソロジーの施術後に、副交感神経が優位になって起こる自然な身体反応はどれ？",
+    options: ["血流が改善して手足がポカポカ温まり、眠気やリラックス感が得られる", "心拍数が急上昇して走り出したくなる", "筋肉が完全に痙攣する", "体温が急激に低下して凍える"],
+    answer: 0,
+    explanation: "心地よい手技による刺激は副交感神経を優位にし、末梢血管を拡張させて全身の血行促進とリラックスを導きます。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手首の関節包や靭帯に多く存在する、関節の位置や動きを脳に伝えるセンサーの名称はどれ？",
+    options: ["固有受容器（関節受容器・筋紡錘など）", "味蕾", "網膜の桿体細胞", "コルチ器"],
+    answer: 0,
+    explanation: "手首の靭帯や関節包にある固有受容器は、手首がどの角度に曲がっているかを常に脳へフィードバックしています。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "パソコン作業などで手首を机に強く押し付け続けた場合に、浅層を走る神経や血管が受ける局所的なダメージはどれ？",
+    options: ["圧迫による一時的な血流障害や神経のしびれ", "骨の完全な消失", "免疫細胞の活性化", "筋肉の肥大化"],
+    answer: 0,
+    explanation: "手首の掌側や小指側を硬い机に長時間押し当てると、神経や血管が圧迫されてしびれや痛みの原因になります。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のひらの反射区において、消化器系（胃・腸・肝臓など）に対応するエリアが多く集まっている場所はどこか？",
+    options: ["手のひらの中央から下半分（土踏まずならぬ手の平中央部）", "親指の先端のみ", "小指の爪", "手首の甲側"],
+    answer: 0,
+    explanation: "手のひらの中央部から下部にかけては、消化器や排泄器に関連する反射区が多数分布しています。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手のマッサージを行うことで、首や肩のコリが和らぐことがある神経・筋膜的なつながりの理由の一つはどれ？",
+    options: ["上肢の筋膜ライン（上肢浅・深フロントラインなど）や首から腕へ通じる神経・血管の緊張が連動しているから", "腕と首が物理的に糸で縫い付けられているから", "手のマッサージは首に一切影響しないから", "骨の数が首と手で同じだから"],
+    answer: 0,
+    explanation: "腕や手の緊張は、肩甲帯や首筋の筋肉・筋膜、および腕神経叢を通じて首や肩のコリと密接に連動しています。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "人間の手は、脳からの指令を受けて複雑な動きをするが、運動野の中で手が占める割合の特徴はどれ？",
+    options: ["顔と並んで非常に大きな面積を占め、高度な巧緻運動を可能にしている", "足よりも圧倒的に小さい面積である", "脳全体の1%未満である", "言語野とは全く無関係である"],
+    answer: 0,
+    explanation: "大脳運動野・感覚野において、手と指は非常に広い領域を割り当てられており、人間の高い知性と巧緻性を支えています。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手指の血流が低下して冷えたときに、ハンドケアやストレッチを行うと血流が回復しやすい主な理由はどれ？",
+    options: ["毛細血管の血行促進や、筋肉のポンプ作用・リラックスによる血管拡張が起きるから", "血液が新しく体内で合成されるから", "手の骨が細くなるから", "皮膚が剥がれ落ちるから"],
+    answer: 0,
+    explanation: "手をもみほぐすことで、筋肉の緊張が解けて血管が広がり、末梢まで温かい血液が巡りやすくなります。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "手根管症候群や前腕の疲労を防ぐためのセルフケアとして、最も効果的なアプローチの一つはどれ？",
+    options: ["前腕の屈筋・伸筋群のストレッチや、手首周りのこまめなリフレッシュ・休息", "手首を毎日ハンマーで叩くこと", "腕を完全に固定して一切動かさないこと", "冷水をかけ続けること"],
+    answer: 0,
+    explanation: "同じ姿勢や反復作業の合間に前腕をストレッチし、手根管や筋肉への過剰な負担を逃がすことが予防に最も有効です。"
+  },
+  {
+    category: "神経・血管・反射区",
+    question: "リフレクソロジーやボディケアの施術において、足だけでなく「手」の反射区も活用される最大のメリットはどれ？",
+    options: ["椅子に座ったままでも手軽に施術でき、足が出せない状況でも同様のリラクゼーション効果を得られること", "足の施術の100倍痛いこと", "特別な資格が絶対に必要なこと", "効果が1分で消えること"],
+    answer: 0,
+    explanation: "ハンドケアは手軽にどこでも行えて副交感神経を優位に導けるため、日常のリフレッシュやケアに非常に適しています。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+
+// ページを開いたら自動でクイズがスタート
+window.onload = function() {
+    startQuiz();
+};
+
+function startQuiz() {
+    currentQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('result-container').classList.add('hidden');
+    document.getElementById('quiz-container').classList.remove('hidden');
+    showQuestion();
+}
+
+function showQuestion() {
+    const q = currentQuestions[currentIndex];
+    document.getElementById('category-title').innerText = "【" + q.category + "】";
+    document.getElementById('question-count').innerText = `第 ${currentIndex + 1} 問 / 全 5 問`;
+    document.getElementById('question-text').innerText = q.question;
+    
+    const choicesDiv = document.getElementById('choices-container');
+    choicesDiv.innerHTML = '';
+    
+    q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.innerText = (index + 1) + '. ' + opt;
+        btn.onclick = () => selectAnswer(index);
+        choicesDiv.appendChild(btn);
+    });
+    
+    document.getElementById('explanation-container').classList.add('hidden');
+    document.getElementById('next-btn').classList.add('hidden');
+}
+
+function selectAnswer(selectedIndex) {
+    const q = currentQuestions[currentIndex];
+    const choiceButtons = document.querySelectorAll('.choice-btn');
+    
+    choiceButtons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answer) {
+            btn.classList.add('correct');
+        } else if (idx === selectedIndex) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    if (selectedIndex === q.answer) {
+        score++;
+    }
+    
+    const expDiv = document.getElementById('explanation-container');
+    expDiv.innerHTML = '<strong>【解説】</strong><br>' + q.explanation;
+    expDiv.classList.remove('hidden');
+    
+    document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < currentQuestions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-container').classList.add('hidden');
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.classList.remove('hidden');
+    
+    const scoreText = document.getElementById('score-text');
+    let message = "";
+    if (score === 5) {
+        message = "5問正解！お見事！完璧な手の解剖学マスターです！";
+    } else if (score >= 3) {
+        message = `${score}問正解！なかなかの知識量ですね！`;
+    } else {
+        message = `${score}問正解！マニアックな難問でしたね、ぜひまた挑戦してね！`;
+    }
+    scoreText.innerText = message;
+}
+
+function shareToX() {
+    const text = encodeURIComponent(`【本格解剖学・手の構造クイズ道場】に挑戦し、5問中 ${score}問正解しました！🧠✨\n#皓一部屋 #解剖学クイズ`);
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+</script>
+
+</body>
+</html>
