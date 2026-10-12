@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -12,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>キノコ抜きゲーム - 皓一部屋</title>
+    <title>キノコ抜き道場 - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -53,36 +52,45 @@
         .timer-box {
             font-size: 1.4rem;
             font-weight: bold;
-            color: #e67e22;
+            color: #d35400;
             margin: 8px 0;
         }
-        /* キノコが生えてくるフィールドステージ */
+        /* キノコが生えてくるフィールドステージ（森の地面・ウッディ風背景） */
         .kinoko-stage {
             width: 100%;
             height: 260px;
-            background-color: #fffdf9;
-            border: 2px dashed #cbd5e1;
+            background: linear-gradient(135deg, #4a3319 0%, #3d2612 50%, #2c1a0b 100%);
+            border: 3px solid #8b5a2b;
             border-radius: 16px;
             position: relative;
             margin: 0 auto 15px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
+        }
+        /* 背景にうっすら木の葉や土の質感を感じさせるドットパターン */
+        .kinoko-stage::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 16px 16px;
+            pointer-events: none;
         }
         /* キノコボタン */
         .kinoko-btn {
             position: absolute;
             width: 70px;
             height: 70px;
-            background: #8b5a2b;
+            background: linear-gradient(135deg, #a0522d, #8b4513);
             color: #fff;
             border-radius: 50% 50% 30% 30%;
-            border: none;
+            border: 2px solid #deb887;
             font-size: 1.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
             transition: transform 0.1s ease;
         }
         .kinoko-btn:active {
@@ -92,12 +100,13 @@
         .popup-text {
             position: absolute;
             font-weight: bold;
-            font-size: 0.9rem;
-            color: #d35400;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 4px 8px;
+            font-size: 0.95rem;
+            color: #ffd700;
+            background: rgba(44, 26, 11, 0.9);
+            padding: 4px 10px;
             border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            border: 1px solid #deb887;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             pointer-events: none;
             animation: floatUp 0.6s ease-out forwards;
             z-index: 10;
@@ -120,7 +129,7 @@
             box-sizing: border-box;
         }
         .start-btn {
-            background-color: #27ae60;
+            background-color: #8b5a2b;
             color: #fff;
         }
         .share-btn {
@@ -169,14 +178,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             収穫数: <span id="score-count">0</span> 本
         </div>
         
-        <!-- キノコ抜きステージ -->
+        <!-- キノコ抜きステージ（森の地面・土風グラデーション） -->
         <div class="kinoko-stage" id="kinoko-stage"></div>
         <p style="font-size:0.8rem; color:#888;">制限時間内にできるだけ多く抜け！</p>
     </div>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #27ae60; font-size: 1.2rem;">✨ 収穫お疲れ様でした！</h2>
+        <h2 id="result-title" style="color: #8b5a2b; font-size: 1.2rem;">✨ 収穫お疲れ様でした！</h2>
         <p id="result-message"></p>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
@@ -315,7 +324,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             judge = "【神速のシイタケマスター】";
         }
 
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍄✨</div>20秒間で <b>' + score + ' 本</b> のキノコを収穫しました！<br><span style="font-size:0.8rem; color:#27ae60; font-weight:bold;">' + judge + '</span><br><br>指先の運動でリフレッシュ完了！';
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍄✨</div>20秒間で <b>' + score + ' 本</b> のキノコを収穫しました！<br><span style="font-size:0.8rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>指先の運動でリフレッシュ完了！';
 
         var text = encodeURIComponent('キノコ抜きゲームで ' + score + ' 本のキノコを収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも体験してみる？👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
