@@ -243,6 +243,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (!isPlaying) return;
 
         if (fingerName === currentTarget) {
+            // タップ時にスマホを振動させる（40ミリ秒）
+            if (navigator.vibrate) {
+                navigator.vibrate(40);
+            }
+
             score++;
             document.getElementById('score').innerText = score;
             playSound(fingerName);
