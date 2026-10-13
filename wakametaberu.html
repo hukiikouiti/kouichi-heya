@@ -1,1 +1,261 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ワカメサラダをもぐもぐ食べる男性ゲーム | 皓一部屋</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .quiz-card {
+            background: #ffffff;
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 480px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .game-link-btn:active {
+            transform: scale(0.97);
+        }
+        .quiz-title { 
+            font-size: 1.1rem; 
+            color: #27ae60; 
+            margin-top: 0; 
+            font-weight: bold; 
+        }
+        .hidden { display: none !important; }
+
+        /* ゲーム専用スタイル */
+        .scene {
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, #fff9c4 0%, #fff59d 100%);
+            border-radius: 12px;
+            margin: 15px 0;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+        .table {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 45px;
+            background: #8d6e63;
+            border-top: 4px solid #6d4c41;
+        }
+        .salad-bowl {
+            font-size: 2.2rem;
+            position: absolute;
+            bottom: 25px;
+            z-index: 2;
+            transition: transform 0.1s ease;
+        }
+        .character {
+            font-size: 3.8rem;
+            position: absolute;
+            bottom: 25px;
+            z-index: 1;
+            transition: transform 0.1s ease;
+        }
+        .character.eat {
+            transform: scale(1.1) translateY(-5px);
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f1f3f5;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .btn-eat {
+            background: linear-gradient(135deg, #ff7043, #f4511e);
+            color: white;
+            font-size: 1.05rem;
+        }
+        .btn-eat:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .message-box {
+            font-size: 0.85rem;
+            color: #00796b;
+            font-weight: bold;
+            margin-bottom: 5px;
+            min-height: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ゲームプレイ画面 -->
+<div class="quiz-card" id="game-container">
+    <div class="quiz-title">🥗 ワカメサラダをもぐもぐ食べる男性</div>
+    <div class="status-bar">
+        <span>残り時間: <span id="time">15</span>秒</span>
+        <span>食べた量: <span id="score">0</span>皿</span>
+    </div>
+    
+    <div class="scene">
+        <div class="message-box" id="msg">ボタン連打でワカメサラダを食べまくれ！</div>
+        <div class="character" id="char">👨</div>
+        <div class="salad-bowl" id="bowl">🥗</div>
+        <div class="table"></div>
+    </div>
+
+    <button class="game-link-btn btn-eat" id="eatBtn" onclick="eatSalad()">🥗 ワカメサラダを食べる！</button>
+    <a href="index.html" style="background: #95a5a6; color: #fff; text-decoration: none; display: block; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">メニューに戻る</a>
+</div>
+
+<!-- 結果発表画面 -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+    <h2 style="color: #2c3e50; font-size: 1.2rem; margin-top: 0;">ゲーム終了！</h2>
+    <p id="score-text" style="font-size: 1.2rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
+    <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</button>
+    <button onclick="startGame()" class="game-link-btn" style="background: #27ae60; color: #fff;">もう一度挑戦する</button>
+    <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<script>
+let timeLeft = 15;
+let score = 0;
+let isPlaying = false;
+let timerId = null;
+
+const timeDisplay = document.getElementById('time');
+const scoreDisplay = document.getElementById('score');
+const eatBtn = document.getElementById('eatBtn');
+const charEl = document.getElementById('char');
+const bowlEl = document.getElementById('bowl');
+const msgEl = document.getElementById('msg');
+
+window.onload = function() {
+    startGame();
+};
+
+function startGame() {
+    isPlaying = true;
+    score = 0;
+    timeLeft = 15;
+    scoreDisplay.textContent = score;
+    timeDisplay.textContent = timeLeft;
+    eatBtn.disabled = false;
+    msgEl.textContent = "もぐもぐ中！連打して食べまくれ！";
+    
+    document.getElementById('result-container').classList.add('hidden');
+    document.getElementById('game-container').classList.remove('hidden');
+
+    if (timerId) clearInterval(timerId);
+
+    timerId = setInterval(() => {
+        timeLeft--;
+        timeDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerId);
+            isPlaying = false;
+            eatBtn.disabled = true;
+            showResult();
+        }
+    }, 1000);
+}
+
+function eatSalad() {
+    if (!isPlaying) return;
+
+    score++;
+    scoreDisplay.textContent = score;
+
+    // モグモグアニメーション
+    charEl.classList.add('eat');
+    charEl.textContent = '😋';
+    bowlEl.style.transform = 'scale(0.85) translateY(5px)';
+
+    setTimeout(() => {
+        charEl.classList.remove('eat');
+        charEl.textContent = '👨';
+        bowlEl.style.transform = 'scale(1) translateY(0)';
+    }, 100);
+
+    // GTMイベント送信
+    if (window.dataLayer) {
+        window.dataLayer.push({
+            'event': 'wakatable_eat',
+            'current_score': score
+        });
+    }
+}
+
+function showResult() {
+    document.getElementById('game-container').classList.add('hidden');
+    document.getElementById('result-container').classList.remove('hidden');
+    
+    const scoreText = document.getElementById('score-text');
+    scoreText.innerText = `15秒間で ${score}皿 のワカメサラダを食べました！🎉`;
+
+    if (window.dataLayer) {
+        window.dataLayer.push({
+            'event': 'wakatable_finish',
+            'final_score': score
+        });
+    }
+}
+
+function shareToX() {
+    const text = encodeURIComponent(`ワカメサラダ早食いゲームで ${score}皿 食べました！腸活パワー全開！💪🥗\n#皓一部屋 #腸活`);
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+</script>
+
+</body>
+</html>
