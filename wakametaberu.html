@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -12,122 +11,139 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ワカメサラダをもぐもぐ食べる男性ゲーム | 皓一部屋</title>
+    <title>ワカメサラダをもぐもぐ食べるゲーム - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #f7f9fc;
             color: #333;
+            text-align: center;
             margin: 0;
-            padding: 20px 10px;
+            padding: 15px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            text-align: center;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .quiz-card {
+        .game-card {
             background: #ffffff;
-            padding: 25px 20px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            max-width: 480px;
+            max-width: 420px;
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 20px;
         }
-        .game-link-btn {
-            display: block;
-            width: 100%;
-            padding: 16px 20px;
-            margin-bottom: 15px;
-            border-radius: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1rem;
-            box-sizing: border-box;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-            cursor: pointer;
-            border: none;
+        h1 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #00838f;
         }
-        .game-link-btn:active {
-            transform: scale(0.97);
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
         }
-        .quiz-title { 
-            font-size: 1.1rem; 
-            color: #27ae60; 
-            margin-top: 0; 
-            font-weight: bold; 
-        }
-        .hidden { display: none !important; }
-
-        /* ゲーム専用スタイル */
-        .scene {
-            height: 180px;
+        .timer-score {
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00acc1;
+        }
+        /* 海中ステージ（綺麗なブルー系グラデーション） */
+        .wakame-stage {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #00acc1 100%);
+            border: 3px solid #00838f;
+            border-radius: 16px;
+            position: relative;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+        }
+        /* 背景にうっすら気泡を演出するドットパターン */
+        .wakame-stage::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            pointer-events: none;
+        }
+        /* 落ちてくるオブジェクト（ワカメ・タコなど） */
+        .falling-item {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
+            display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            background: radial-gradient(circle, #fff9c4 0%, #fff59d 100%);
-            border-radius: 12px;
-            margin: 15px 0;
-            overflow: hidden;
-            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: transform 0.05s linear;
         }
-        .table {
+        /* ゲットやミスのポップアップ文字 */
+        .popup-msg {
             position: absolute;
-            bottom: 0;
+            font-weight: bold;
+            font-size: 0.95rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            pointer-events: none;
+            animation: floatUp 0.5s ease-out forwards;
+            z-index: 10;
+        }
+        .popup-plus { color: #fff; background: rgba(0, 172, 193, 0.9); border: 1px solid #ffcc00; }
+        .popup-miss { color: #fff; background: rgba(192, 57, 43, 0.9); border: 1px solid #ff9999; }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-35px) scale(1.1); }
+        }
+
+        .btn {
+            display: inline-block;
             width: 100%;
-            height: 45px;
-            background: #8d6e63;
-            border-top: 4px solid #6d4c41;
-        }
-        .salad-bowl {
-            font-size: 2.2rem;
-            position: absolute;
-            bottom: 25px;
-            z-index: 2;
-            transition: transform 0.1s ease;
-        }
-        .character {
-            font-size: 3.8rem;
-            position: absolute;
-            bottom: 25px;
-            z-index: 1;
-            transition: transform 0.1s ease;
-        }
-        .character.eat {
-            transform: scale(1.1) translateY(-5px);
-        }
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 12px;
-            background: #f1f3f5;
+            padding: 12px 0;
+            border-radius: 30px;
             font-weight: bold;
-            font-size: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-sizing: border-box;
         }
-        .btn-eat {
-            background: linear-gradient(135deg, #ff7043, #f4511e);
-            color: white;
-            font-size: 1.05rem;
+        .start-btn {
+            background-color: #00acc1;
+            color: #fff;
         }
-        .btn-eat:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none !important;
+        .share-btn {
+            background-color: #000000;
+            color: #fff;
+            margin-top: 12px;
         }
-        .message-box {
+        .reserve-btn {
+            background-color: #2ecc71;
+            color: #fff;
+            margin-top: 8px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            color: #3498db;
             font-size: 0.85rem;
-            color: #00796b;
-            font-weight: bold;
-            margin-bottom: 5px;
-            min-height: 1.2rem;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -138,123 +154,212 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- ゲームプレイ画面 -->
-<div class="quiz-card" id="game-container">
-    <div class="quiz-title">🥗 ワカメサラダをもぐもぐ食べる男性</div>
-    <div class="status-bar">
-        <span>残り時間: <span id="time">15</span>秒</span>
-        <span>食べた量: <span id="score">0</span>皿</span>
-    </div>
-    
-    <div class="scene">
-        <div class="message-box" id="msg">ボタン連打でワカメサラダを食べまくれ！</div>
-        <div class="character" id="char">👨</div>
-        <div class="salad-bowl" id="bowl">🥗</div>
-        <div class="table"></div>
+<div class="game-card">
+    <h1>🥗 ワカメサラダを食べる男</h1>
+    <p>上から落ちてくる「ワカメ（🌿 / 🥗）」をタップしてモグモグ食べよう！「タコ（🐙）」をタップするとミスになるので注意！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3.5rem; margin: 15px 0;">😋🥗</div>
+        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
     </div>
 
-    <button class="game-link-btn btn-eat" id="eatBtn" onclick="eatSalad()">🥗 ワカメサラダを食べる！</button>
-    <a href="index.html" style="background: #95a5a6; color: #fff; text-decoration: none; display: block; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">メニューに戻る</a>
-</div>
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="timer-score">
+            <div>残り時間: <span id="timer">20</span>秒</div>
+            <div>食べた量: <span id="score-count">0</span>皿</div>
+        </div>
+        
+        <!-- 海中ステージ -->
+        <div class="wakame-stage" id="wakame-stage"></div>
+        <p style="font-size:0.8rem; color:#888;">ワカメを素早くタップして食べまくれ！</p>
+    </div>
 
-<!-- 結果発表画面 -->
-<div class="quiz-card hidden" id="result-container" style="text-align: center;">
-    <h2 style="color: #2c3e50; font-size: 1.2rem; margin-top: 0;">ゲーム終了！</h2>
-    <p id="score-text" style="font-size: 1.2rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
-    <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</button>
-    <button onclick="startGame()" class="game-link-btn" style="background: #27ae60; color: #fff;">もう一度挑戦する</button>
-    <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; text-decoration: none;">メニューに戻る</a>
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 id="result-title" style="color: #00838f; font-size: 1.2rem;">✨ もぐもぐタイム終了！</h2>
+        <p id="result-message"></p>
+        <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+        <a href="javascript:void(0)" onclick="resetGame()" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+    </div>
+
+    <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
 <script>
-let timeLeft = 15;
-let score = 0;
-let isPlaying = false;
-let timerId = null;
+    let score = 0;
+    let timeLeft = 20;
+    let timerInterval = null;
+    let spawnerInterval = null;
+    let isPlaying = false;
 
-const timeDisplay = document.getElementById('time');
-const scoreDisplay = document.getElementById('score');
-const eatBtn = document.getElementById('eatBtn');
-const charEl = document.getElementById('char');
-const bowlEl = document.getElementById('bowl');
-const msgEl = document.getElementById('msg');
+    function startGame() {
+        if (isPlaying) return;
+        isPlaying = true;
+        score = 0;
+        timeLeft = 20;
+        document.getElementById('timer').innerText = timeLeft;
+        document.getElementById('score-count').innerText = score;
 
-window.onload = function() {
-    startGame();
-};
+        document.getElementById('game-start-screen').classList.add('hidden');
+        document.getElementById('game-play-screen').classList.remove('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
 
-function startGame() {
-    isPlaying = true;
-    score = 0;
-    timeLeft = 15;
-    scoreDisplay.textContent = score;
-    timeDisplay.textContent = timeLeft;
-    eatBtn.disabled = false;
-    msgEl.textContent = "もぐもぐ中！連打して食べまくれ！";
-    
-    document.getElementById('result-container').classList.add('hidden');
-    document.getElementById('game-container').classList.remove('hidden');
+        clearItems();
 
-    if (timerId) clearInterval(timerId);
-
-    timerId = setInterval(() => {
-        timeLeft--;
-        timeDisplay.textContent = timeLeft;
-
-        if (timeLeft <= 0) {
-            clearInterval(timerId);
-            isPlaying = false;
-            eatBtn.disabled = true;
-            showResult();
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'wakame_game'});
         }
-    }, 1000);
-}
 
-function eatSalad() {
-    if (!isPlaying) return;
+        // 制限時間タイマー（20秒）
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
 
-    score++;
-    scoreDisplay.textContent = score;
-
-    // モグモグアニメーション
-    charEl.classList.add('eat');
-    charEl.textContent = '😋';
-    bowlEl.style.transform = 'scale(0.85) translateY(5px)';
-
-    setTimeout(() => {
-        charEl.classList.remove('eat');
-        charEl.textContent = '👨';
-        bowlEl.style.transform = 'scale(1) translateY(0)';
-    }, 100);
-
-    // GTMイベント送信
-    if (window.dataLayer) {
-        window.dataLayer.push({
-            'event': 'wakatable_eat',
-            'current_score': score
-        });
+        // ワカメやタコを降らせるタイマー
+        spawnerInterval = setInterval(spawnItem, 550);
     }
-}
 
-function showResult() {
-    document.getElementById('game-container').classList.add('hidden');
-    document.getElementById('result-container').classList.remove('hidden');
-    
-    const scoreText = document.getElementById('score-text');
-    scoreText.innerText = `15秒間で ${score}皿 のワカメサラダを食べました！🎉`;
+    function spawnItem() {
+        if (!isPlaying) return;
+        const stage = document.getElementById('wakame-stage');
+        
+        const item = document.createElement('div');
+        item.className = 'falling-item';
 
-    if (window.dataLayer) {
-        window.dataLayer.push({
-            'event': 'wakatable_finish',
-            'final_score': score
-        });
+        // 75%の確率でワカメ（🌿または🥗）、25%の確率でミスオブジェクト（🐙）
+        const rand = Math.random();
+        let itemType = 'wakame';
+        if (rand < 0.5) {
+            item.innerHTML = '🌿';
+            itemType = 'wakame';
+        } else if (rand < 0.75) {
+            item.innerHTML = '🥗';
+            itemType = 'wakame';
+        } else {
+            item.innerHTML = '🐙';
+            itemType = 'tako';
+        }
+        item.dataset.type = itemType;
+
+        const maxX = stage.clientWidth - 50;
+        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+        item.style.left = randomX + 'px';
+        item.style.top = '-50px';
+
+        // 下へ落下するアニメーション速度
+        let posY = -50;
+        const fallSpeed = 2.2 + Math.random() * 2.8;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
+                item.remove();
+            }
+        }, 30);
+
+        // タップしたときの判定
+        item.onmousedown = item.ontouchstart = (e) => {
+            e.preventDefault();
+            if (!isPlaying) return;
+
+            clearInterval(fallInterval);
+
+            const rect = stage.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (item.dataset.type === 'wakame') {
+                score += 1;
+                if (navigator.vibrate) navigator.vibrate(40);
+                showPopup(clientX - rect.left, clientY - rect.top, '+1皿 😋', 'popup-plus', stage);
+            } else {
+                score = Math.max(0, score - 1);
+                if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+                showPopup(clientX - rect.left, clientY - rect.top, 'ミス！🐙', 'popup-miss', stage);
+            }
+
+            document.getElementById('score-count').innerText = score;
+            item.remove();
+        };
+
+        stage.appendChild(item);
     }
-}
 
-function shareToX() {
-    const text = encodeURIComponent(`ワカメサラダ早食いゲームで ${score}皿 食べました！腸活パワー全開！💪🥗\n#皓一部屋 #腸活`);
-    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-}
+    function showPopup(x, y, text, className, stage) {
+        const popup = document.createElement('div');
+        popup.className = `popup-msg ${className}`;
+        popup.innerText = text;
+        popup.style.left = Math.max(10, x - 20) + 'px';
+        popup.style.top = Math.max(10, y - 20) + 'px';
+
+        stage.appendChild(popup);
+        setTimeout(() => popup.remove(), 500);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('wakame-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        if (score < 10) {
+            judge = "【ワカメ初心者ビギナー】";
+        } else if (score < 20) {
+            judge = "【腸活もぐもぐマスター】";
+        } else if (score < 35) {
+            judge = "【海藻キング・超人ファイター】";
+        } else {
+            judge = "【神速のワカメハンター伝説】";
+        }
+
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">😋🥗</div>合計スコア： <b>' + score + ' 皿</b><br><span style="font-size:0.8rem; color:#00838f; font-weight:bold;">' + judge + '</span><br><br>ワカメパワーで腸活リフレッシュ完了！';
+
+        var text = encodeURIComponent('ワカメサラダをもぐもぐ食べるゲームで ' + score + ' 皿食べました！\n称号：' + judge + '\n\nタコを避けてワカメを食べる爽快感、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,腸活,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'wakame_game', 'score': score});
+        }
+    }
+
+    function resetGame() {
+        if (timerInterval) clearInterval(timerInterval);
+        if (spawnerInterval) clearInterval(spawnerInterval);
+        document.getElementById('game-start-screen').classList.remove('hidden');
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+        isPlaying = false;
+    }
 </script>
 
 </body>
