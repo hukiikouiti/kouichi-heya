@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -42,7 +41,7 @@
         h1 {
             font-size: 1.1rem;
             margin-bottom: 6px;
-            color: #d35400;
+            color: #0288d1;
         }
         p {
             font-size: 0.85rem;
@@ -56,7 +55,7 @@
             font-size: 0.95rem;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #e67e22;
+            color: #0288d1;
         }
         /* 血糖値メーターの外枠 */
         .meter-container {
@@ -66,14 +65,14 @@
             height: 22px;
             margin-bottom: 12px;
             overflow: hidden;
-            border: 2px solid #d35400;
+            border: 2px solid #0288d1;
             position: relative;
         }
         /* 血糖値メーターの中身（バー） */
         .meter-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            background: linear-gradient(90deg, #4fc3f7, #0288d1);
             transition: width 0.1s linear;
         }
         .meter-text {
@@ -87,12 +86,12 @@
             line-height: 18px;
             text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
         }
-        /* ゲームステージ */
+        /* ゲームステージ（爽やかな水色グラデーションに変更） */
         .game-stage {
             width: 100%;
             height: 260px;
-            background: linear-gradient(135deg, #fce4ec 0%, #fff3e0 100%);
-            border: 3px solid #e67e22;
+            background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 50%, #81d4fa 100%);
+            border: 3px solid #0288d1;
             border-radius: 16px;
             position: relative;
             margin: 0 auto 15px;
@@ -122,7 +121,7 @@
             animation: floatUp 0.5s ease-out forwards;
             z-index: 10;
         }
-        .popup-rice { color: #fff; background: rgba(230, 126, 34, 0.9); border: 1px solid #ffcc00; }
+        .popup-rice { color: #fff; background: rgba(2, 136, 209, 0.9); border: 1px solid #b3e5fc; }
         .popup-veg { color: #fff; background: rgba(39, 174, 96, 0.9); border: 1px solid #a3e4d7; }
         .popup-meat { color: #fff; background: rgba(192, 57, 43, 0.9); border: 1px solid #f5b7b1; }
 
@@ -144,7 +143,7 @@
             box-sizing: border-box;
         }
         .start-btn {
-            background-color: #e67e22;
+            background-color: #0288d1;
             color: #fff;
         }
         .share-btn {
@@ -206,7 +205,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #d35400; font-size: 1.2rem;">✨ 血糖値MAX達成！</h2>
+        <h2 id="result-title" style="color: #0288d1; font-size: 1.2rem;">✨ 血糖値MAX達成！</h2>
         <p id="result-message"></p>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
@@ -257,7 +256,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const item = document.createElement('div');
         item.className = 'falling-item';
 
-        // 確率振り分け：ご飯60%、野菜20%、肉20%
         const rand = Math.random();
         let itemType = 'rice';
         if (rand < 0.6) {
@@ -296,7 +294,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }, 30);
 
-        // タップしたときの判定
         item.onmousedown = item.ontouchstart = (e) => {
             e.preventDefault();
             if (!isPlaying) return;
@@ -312,12 +309,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 if (navigator.vibrate) navigator.vibrate(40);
                 showPopup(clientX - rect.left, clientY - rect.top, '+5% 🍚', 'popup-rice', stage);
             } else if (item.dataset.type === 'veg') {
-                // 野菜は血糖値の上昇を抑える（スコアが少し減る、またはボーナス等に調整可能）
                 score = Math.max(0, score - 1);
                 if (navigator.vibrate) navigator.vibrate(30);
                 showPopup(clientX - rect.left, clientY - rect.top, '食物繊維でセーブ！🥦', 'popup-veg', stage);
             } else {
-                // 肉はタンパク質
                 if (navigator.vibrate) navigator.vibrate(50);
                 showPopup(clientX - rect.left, clientY - rect.top, 'お肉パワー！🥩', 'popup-meat', stage);
             }
@@ -380,10 +375,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             judge = "【マイペースもぐもぐ名人】";
         }
 
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍚✨</div>クリアタイム： <b>' + finalTime.toFixed(1) + ' 秒</b><br><span style="font-size:0.8rem; color:#d35400; font-weight:bold;">' + judge + '</span><br><br>ご飯を食べて血糖値100%達成！';
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍚✨</div>クリアタイム： <b>' + finalTime.toFixed(1) + ' 秒</b><br><span style="font-size:0.8rem; color:#0288d1; font-weight:bold;">' + judge + '</span><br><br>ご飯を食べて血糖値100%達成！';
 
         var text = encodeURIComponent('血糖値爆上げタイムアタックで ' + finalTime.toFixed(1) + '秒 でクリアしました！\n称号：' + judge + '\n\nご飯を食べて血糖値を上げる爽快感、あなたも挑戦してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,血糖値,健康エンタメ,名古屋マッサージ';
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/gohan.html') + '&hashtags=皓一部屋,血糖値,健康エンタメ,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'blood_sugar_game', 'time': finalTime});
