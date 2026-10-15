@@ -293,7 +293,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">' + faceEmoji + '</div>10秒間で <b>' + score + ' 回</b> こすりました！<br><span style="font-size:0.8rem; color:#d97706; font-weight:bold;">' + judge + '</span><br><br>モヤモヤを吹き飛ばして頭もスッキリ！';
 
         var text = encodeURIComponent('くしゃみが出そうで出ないゲームで ' + score + ' 回こすりました！\n判定：' + judge + '\n\nこのシュールなもどかしさ、あなたも体験してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
+        // ↓ 現在のページ自身のURLを自動で設定するように変更済み
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'sneeze_game', 'score': score});
