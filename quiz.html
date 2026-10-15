@@ -242,7 +242,7 @@ let score = 0;
 let hintTimer = null;
 
 function startQuiz() {
-    currentQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentQuestions = [...allQuestions].sort(function() { return 0.5 - Math.random(); }).slice(0, 5);
     currentIndex = 0;
     score = 0;
     document.getElementById('result-container').classList.add('hidden');
@@ -251,93 +251,17 @@ function startQuiz() {
 }
 
 function showQuestion() {
-    if (hintTimer) clearTimeout(hintTimer);
+    if (hintTimer) {
+        clearTimeout(hintTimer);
+        hintTimer = null;
+    }
 
-    const q = currentQuestions[currentIndex];
+    var q = currentQuestions[currentIndex];
     document.getElementById('category-title').innerText = "【" + q.category + "】";
     document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
     document.getElementById('question-text').innerText = q.question;
     
-    const choicesDiv = document.getElementById('choices-container');
+    var choicesDiv = document.getElementById('choices-container');
     choicesDiv.innerHTML = '';
     
-    q.options.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.dataset.index = index;
-        btn.innerText = (index + 1) + '. ' + opt;
-        btn.onclick = function() { selectAnswer(index); };
-        choicesDiv.appendChild(btn);
-    });
-    
-    document.getElementById('explanation-container').classList.add('hidden');
-    document.getElementById('next-btn').classList.add('hidden');
-
-    hintTimer = setTimeout(function() {
-        const choiceButtons = document.querySelectorAll('.choice-btn');
-        choiceButtons.forEach(function(btn) {
-            if (parseInt(btn.dataset.index, 10) === q.answer) {
-                btn.classList.add('hint-flash');
-            }
-        });
-    }, 5000);
-}
-
-function selectAnswer(selectedIndex) {
-    if (hintTimer) clearTimeout(hintTimer);
-
-    const q = currentQuestions[currentIndex];
-    const choiceButtons = document.querySelectorAll('.choice-btn');
-    
-    choiceButtons.forEach(function(btn, idx) {
-        btn.disabled = true;
-        btn.classList.remove('hint-flash');
-
-        if (idx === q.answer) {
-            btn.classList.add('correct');
-        } else if (idx === selectedIndex) {
-            btn.classList.add('incorrect');
-        }
-    });
-    
-    if (selectedIndex === q.answer) {
-        score++;
-    }
-    
-    const expDiv = document.getElementById('explanation-container');
-    expDiv.innerHTML = '<strong>【解説】</strong><br>' + q.explanation;
-    expDiv.classList.remove('hidden');
-    
-    document.getElementById('next-btn').classList.remove('hidden');
-}
-
-function nextQuestion() {
-    currentIndex++;
-    if (currentIndex < currentQuestions.length) {
-        showQuestion();
-    } else {
-        showResult();
-    }
-}
-
-function showResult() {
-    if (hintTimer) clearTimeout(hintTimer);
-    document.getElementById('quiz-container').classList.add('hidden');
-    document.getElementById('result-container').classList.remove('hidden');
-    document.getElementById('score-text').innerText = "5問中 " + score + "問正解でした！";
-}
-
-function shareToX() {
-    const text = encodeURIComponent("解剖学・足の構造クイズ道場に挑戦し、5問中" + score + "問正解しました！\n#解剖学 #足の構造 #セルフケア #皓一部屋");
-    window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
-}
-
-function restartQuiz() {
-    startQuiz();
-}
-
-startQuiz();
-</script>
-
-</body>
-</html>
+    q.options.forEach(function(opt, index) {
