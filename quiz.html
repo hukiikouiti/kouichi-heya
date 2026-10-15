@@ -19,20 +19,20 @@
         p { line-height: 1.5; }
         button { display: block; width: 100%; padding: 12px; margin: 10px 0; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
         button:hover { background: #0056b3; }
-        .choice-btn { background: #e9ecef; color: #333; text-align: left; transition: all 0.2s; }
+        .choice-btn { background: #e9ecef; color: #333; text-align: left; border: 1px solid #ced4da; transition: all 0.2s; }
         .choice-btn:hover { background: #ced4da; }
         .hidden { display: none; }
-        .correct { background: #d4edda !important; color: #155724; border: 1px solid #c3e6cb; }
-        .incorrect { background: #f8d7da !important; color: #721c24; border: 1px solid #f5c6cb; }
+        .correct { background: #d4edda !important; color: #155724 !important; border: 1px solid #c3e6cb !important; }
+        .incorrect { background: #f8d7da !important; color: #721c24 !important; border: 1px solid #f5c6cb !important; }
         .explanation-box { margin-top: 15px; padding: 15px; background: #e2e3e5; border-radius: 4px; font-size: 14px; }
         
-        /* 5秒後の点滅アニメーション */
+        /* 5秒後の点滅アニメーション（確実に黄色く光るように修正） */
         @keyframes hintFlash {
-            0%, 100% { background-color: #e9ecef; color: #333; border-color: transparent; transform: scale(1); }
-            50% { background-color: #fde047; color: #854d0e; border-color: #eab308; transform: scale(1.02); }
+            0%, 100% { background-color: #e9ecef !important; color: #333 !important; border-color: #ced4da !important; transform: scale(1); }
+            50% { background-color: #fde047 !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.02); }
         }
         .choice-btn.hint-flash {
-            animation: hintFlash 0.6s infinite;
+            animation: hintFlash 0.6s infinite !important;
         }
     </style>
 </head>
@@ -237,7 +237,7 @@ const allQuestions = [
     explanation: "手足合わせて106個以上あり、全身の半数以上の骨が集中しています。"
   },
 
-  // ジャンル2、3のデータについても省略せずにそのまま含めています（省略なしの完全版コード）
+  // ジャンル2
   {
     category: "筋肉・筋膜",
     question: "下腿三頭筋のうち、深層に位置し持続的な収縮や「第二の心臓」のポンプ機能に大きく寄与する筋肉はどれ？",
@@ -303,4 +303,157 @@ const allQuestions = [
   },
   {
     category: "筋肉・筋膜",
-    question: "足の指を曲げる働きをする筋肉のうち、長母趾屈筋と長趾屈筋の腱が足首の内側で交差する現象を何と呼
+    question: "足の指を曲げる働きをする筋肉のうち、長母趾屈筋と長趾屈筋の腱が足首の内側で交差する現象を何と呼ぶか？",
+    options: ["マスター・ノット（結び目）", "クロス・オーバー", "キネティック・チェーン", "アキレス・ループ"],
+    answer: 0,
+    explanation: "ヘンリーの結び目（Master knot）と呼ばれます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "大腿筋膜張筋からお尻の外側を通り、脛骨の外側（ゲルディ結節）に停止する非常に強力な結合組織の帯はどれ？",
+    options: ["腸脛靭帯", "鵞足", "膝蓋靭帯", "膝横靭帯"],
+    answer: 0,
+    explanation: "腸脛靭帯は下肢の外側の安定性を保ちます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "縫工筋、薄筋、半腱様筋の3つの腱が脛骨近位の内側に共通して付着する部分の名称はどれ？",
+    options: ["鵞足（がそく）", "アキレス腱", "膝蓋腱", "烏口突起"],
+    answer: 0,
+    explanation: "鵞足は膝内側の重要な付着部です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "トリガーポイント療法において、筋肉の中にできる「硬結（しこり）」の主な原因物質や状態として正しいものはどれ？",
+    options: ["持続的な筋小胞体からのカルシウム過剰放出と局所の血流不全", "骨の完全な脱灰", "神経細胞の断裂", "リンパ液の完全な枯渇"],
+    answer: 0,
+    explanation: "カルシウムの過剰放出と局所虚血が硬結を形成します。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "足底の固有筋肉（内在筋）の総称として、手の「手内筋」に対応するものの一般的な呼び方はどれ？",
+    options: ["足内筋（または足底筋群）", "下腿外側群", "骨盤底筋群", "咀嚼筋群"],
+    answer: 0,
+    explanation: "足内筋は足部の細かい動きやアーチを支えます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "PNFストレッチの基本的な生理学的メカニズムに利用される反射はどれ？",
+    options: ["他動的伸張反射と相反抑制", "膝蓋腱反射のみ", "対光反射", "嚥下反射"],
+    answer: 0,
+    explanation: "相反抑制などを利用して可動域を広げます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "体幹のインナーマッスルであり、コルセットのように腹部を取り囲み、姿勢保持や腹圧を高める筋肉はどれ？",
+    options: ["腹横筋", "大胸筋", "広背筋", "上腕二頭筋"],
+    answer: 0,
+    explanation: "腹横筋は腹圧を高めて脊椎を安定させます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "下腿の筋肉で、足首を強く内側に返す（内反）主動筋の組み合わせとして正しいものはどれ？",
+    options: ["後脛骨筋と前脛骨筋", "長腓骨筋と短腓骨筋", "腓腹筋とヒラメ筋", "長趾伸筋と短趾伸筋"],
+    answer: 0,
+    explanation: "前脛骨筋と後脛骨筋が内反に働きます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "肩関節の回旋筋腱板（ローテーターカフ）の中で、肩甲骨の前方に位置し、上腕骨を内旋させる主な筋肉はどれ？",
+    options: ["肩甲下筋", "棘上筋", "棘下筋", "小円筋"],
+    answer: 0,
+    explanation: "肩甲下筋は前面から上腕骨を内旋させます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "人間の歩行周期において、踵が地面に接地した瞬間に最も活動している下腿の筋肉はどれ？",
+    options: ["前脛骨筋（足首がパタンと落ちるのを防ぐ）", "腓腹筋", "長腓骨筋", "足底筋"],
+    answer: 0,
+    explanation: "接地時の衝撃を和らげるブレーキとして働きます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "筋膜の特性として、水分やヒアルロン酸が不足して滑りが悪くなった状態を専門的に何と呼ぶか？",
+    options: ["癒着（フレクション・ハイドレーション低下）", "骨化", "完全溶解", "液状化現象"],
+    answer: 0,
+    explanation: "ヒアルロン酸の粘性増加により滑りが悪くなります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "股関節を外側に回す筋肉群の中で、仙骨の前面から大転子に向かって走る深層の筋肉はどれ？",
+    options: ["梨状筋", "大腿直筋", "半腱様筋", "薄筋"],
+    answer: 0,
+    explanation: "梨状筋は外旋に寄与します。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "肩甲骨を上方回旋させる際に主に関与する、背中の外側にある大きなギザギザした筋肉はどれ？",
+    options: ["前鋸筋", "広背筋", "大菱形筋", "僧帽筋下部"],
+    answer: 0,
+    explanation: "前鋸筋は腕を上げる際に肩甲骨を前方に引きます。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "長時間の立ち仕事などで足のアーチが低下した際、足の裏で持続的な伸張ストレスを受ける代表的な筋肉はどれ？",
+    options: ["足の筋肉群および後脛骨筋", "大胸筋", "咀嚼筋", "三角筋"],
+    answer: 0,
+    explanation: "アーチ低下に伴い足底筋や後脛骨筋に負担がかかります。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "筋肉が収縮する際、アクチンとミオシンが重なり合うことで短縮する理論を何と呼ぶか？",
+    options: ["滑走説（フィラメント滑走説）", "浸透圧説", "イオンチャンネル説", "受容体説"],
+    answer: 0,
+    explanation: "フィラメント滑走説が筋収縮の基本理論です。"
+  },
+  {
+    category: "筋肉・筋膜",
+    question: "下肢のキネティック・チェーンにおいて、足部が過剰回内したとき、膝と股関節に生じやすい連動した動きはどれ？",
+    options: ["膝の内旋と股関節の内旋・内転", "膝の外旋と股関節の外転", "膝の完全伸展のみ", "腰椎の過剰な前弯のみ"],
+    answer: 0,
+    explanation: "足の回内は下肢全体に内旋のねじれストレスを波及させます。"
+  },
+
+  // ジャンル3
+  {
+    category: "神経・血管・生理学",
+    question: "食後に強い眠気が起こる主な生理学的要因として、最も適切なものはどれ？",
+    options: ["消化器系への血流集中と血糖値の変動（インスリン分泌等）", "脳の急激な神経細胞の死滅", "全身の水分が完全に枯渇すること", "骨格筋の急速な肥大化"],
+    answer: 0,
+    explanation: "胃腸への血流集中や血糖値の変動が眠気を引き起こします。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "足の裏や足先の感覚を司り、坐骨神経から分岐して膝裏を通り下腿の後面を下る主要な神経はどれ？",
+    options: ["脛骨神経", "大腿神経", "閉鎖神経", "橈骨神経"],
+    answer: 0,
+    explanation: "脛骨神経は足底の感覚や足指の運動を支配します。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "腓骨頭のすぐ下を巻き込むように走行し、圧迫されると足首が上がらなくなる「下垂足」を引き起こしやすい神経はどれ？",
+    options: ["総腓骨神経", "正中神経", "尺骨神経", "腋窩神経"],
+    answer: 0,
+    explanation: "総腓骨神経は腓骨頭付近で圧迫されやすい部位です。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "ふくらはぎのポンプ機能において、静脈血の逆流を防ぐために内部に備わっている構造はどれ？",
+    options: ["静脈弁", "動脈の平滑筋", "毛細血管の網目", "リンパ節のフィルター"],
+    answer: 0,
+    explanation: "静脈弁が血液の逆流を防ぎます。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "自律神経系のうち、リラックス時や消化・睡眠を優位にする神経の名称はどれ？",
+    options: ["交感神経", "副交感神経", "体性神経", "感覚神経"],
+    answer: 1,
+    explanation: "副交感神経は休息やリラックスを司ります。"
+  },
+  {
+    category: "神経・血管・生理学",
+    question: "血糖値が急激に上昇したあと、インスリンの過剰分泌によって急降下し、強い眠気や倦怠感を引き起こす現象を何と呼ぶか？",
+    options: ["血糖値スパイク（血糖変動）", "低ナトリウム血症", "高血圧クリーゼ", "貧血ショック"],
+    answer: 0,
+    explanation: "血糖値スパイクが眠気や倦怠感の原因になります。"
+  },
