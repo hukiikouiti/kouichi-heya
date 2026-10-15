@@ -303,7 +303,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = faceScore <= 30 ? "【カチコチ度100%】" : faceScore <= 50 ? "【標準ほぐれ】" : "【神連打マスター】";
     document.getElementById('face-result-message').innerHTML = '20秒で <b>' + faceScore + ' 回</b> ほぐせました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>プロの施術でさらにスッキリしませんか？';
     var text = encodeURIComponent('20秒ゲームで顔と手指を ' + faceScore + ' 回さすりました！\n判定：' + judge + '\n\nあなたは何回ほぐせる？👇');
-    document.getElementById('face-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
+    // ↓実際のファイル名 tap.html に設定済み
+    document.getElementById('face-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,名古屋マッサージ';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'face_rub', 'score': faceScore});
   }
 
@@ -349,7 +350,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = legScore <= 40 ? "【むくみ要注意】" : legScore <= 80 ? "【標準ポンプ】" : "【超強力ポンプ級】";
     document.getElementById('leg-result-message').innerHTML = '20秒で <b>' + legScore + ' 回</b> ポンプできました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>オイルボディワークで脚全体を癒やそう！';
     var text = encodeURIComponent('20秒足ポンプで ' + legScore + ' 回血流を流しました！\n判定：' + judge + '\n\nあなたの脚はむくんでない？👇');
-    document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,オイルマッサージ';
+    // ↓実際のファイル名 tap.html に設定済み
+    document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,オイルマッサージ';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'leg_pump', 'score': legScore});
   }
 
@@ -387,7 +389,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = bellyScore <= 40 ? "【ストレス蓄積腹】" : "【鉄壁のお腹ガード】";
     document.getElementById('belly-result-message').innerHTML = '20秒で <b>' + bellyScore + ' 回</b> ガード成功！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>カルサイネイザンでお腹の緊張を解放しよう。';
     var text = encodeURIComponent('20秒お腹ゲームでストレスを ' + bellyScore + ' 回ガード！\n判定：' + judge + '\n\nあなたのお腹は固まってない？👇');
-    document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,カルサイネイザン';
+    // ↓実際のファイル名 tap.html に設定済み
+    document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,カルサイネイザン';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
   }
 </script>
