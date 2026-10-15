@@ -321,28 +321,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else if (score < 30) {
             judge = "【キノコ抜き達人レベル】";
         } else {
-            judge = "【神速のシイタケマスター】";
-        }
-
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍄✨</div>20秒間で <b>' + score + ' 本</b> のキノコを収穫しました！<br><span style="font-size:0.8rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>指先の運動でリフレッシュ完了！';
-
-        var text = encodeURIComponent('キノコ抜きゲームで ' + score + ' 本のキノコを収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも体験してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
-
-        if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kinoko_game', 'score': score});
-        }
-    }
-
-    function resetGame() {
-        if (timerInterval) clearInterval(timerInterval);
-        if (spawnerInterval) clearInterval(spawnerInterval);
-        document.getElementById('game-start-screen').classList.remove('hidden');
-        document.getElementById('game-play-screen').classList.add('hidden');
-        document.getElementById('game-result-screen').classList.add('hidden');
-        isPlaying = false;
-    }
-</script>
-
-</body>
-</html>
+            judge = "【神速の
