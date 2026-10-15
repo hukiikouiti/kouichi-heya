@@ -26,7 +26,7 @@
         .incorrect { background: #f8d7da !important; color: #721c24 !important; border: 1px solid #f5c6cb !important; }
         .explanation-box { margin-top: 15px; padding: 15px; background: #e2e3e5; border-radius: 4px; font-size: 14px; }
         
-        /* 5秒後の点滅アニメーション（確実に黄色く光るように修正） */
+        /* 5秒後の点滅アニメーション */
         @keyframes hintFlash {
             0%, 100% { background-color: #e9ecef !important; color: #333 !important; border-color: #ced4da !important; transform: scale(1); }
             50% { background-color: #fde047 !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.02); }
@@ -456,4 +456,118 @@ const allQuestions = [
     options: ["血糖値スパイク（血糖変動）", "低ナトリウム血症", "高血圧クリーゼ", "貧血ショック"],
     answer: 0,
     explanation: "血糖値スパイクが眠気や倦怠感の原因になります。"
-  },
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let hintTimer = null; // 5秒後のヒント用タイマー
+
+function startQuiz() {
+    currentQuestions = [...allQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('result-container').classList.add('hidden');
+    document.getElementById('quiz-container').classList.remove('hidden');
+    showQuestion();
+}
+
+function showQuestion() {
+    // 前の問題のタイマーが残っていればクリア
+    if (hintTimer) clearTimeout(hintTimer);
+
+    const q = currentQuestions[currentIndex];
+    document.getElementById('category-title').innerText = "【" + q.category + "】";
+    document.getElementById('question-count').innerText = `第 ${currentIndex + 1} 問 / 全 5 問`;
+    document.getElementById('question-text').innerText = q.question;
+    
+    const choicesDiv = document.getElementById('choices-container');
+    choicesDiv.innerHTML = '';
+    
+    q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        // 各ボタンにインデックス（番号）を持たせておく
+        btn.dataset.index = index;
+        btn.innerText = (index + 1) + '. ' + opt;
+        btn.onclick = () => selectAnswer(index);
+        choicesDiv.appendChild(btn);
+    });
+    
+    document.getElementById('explanation-container').classList.add('hidden');
+    document.getElementById('next-btn').classList.add('hidden');
+
+    // ★ 5秒（5000ミリ秒）経過したら正解の選択肢ボタンに強制的にクラスを付与する
+    hintTimer = setTimeout(() => {
+        const choiceButtons = document.querySelectorAll('.choice-btn');
+        choiceButtons.forEach(btn => {
+            // ボタンのインデックスが正解の番号と一致するものだけを光らせる
+            if (parseInt(btn.dataset.index) === q.answer) {
+                btn.classList.add('hint-flash');
+            }
+        });
+    }, 5000);
+}
+
+function selectAnswer(selectedIndex) {
+    // 答えたらタイマーを即座に停止
+    if (hintTimer) clearTimeout(hintTimer);
+
+    const q = currentQuestions[currentIndex];
+    const choiceButtons = document.querySelectorAll('.choice-btn');
+    
+    choiceButtons.forEach((btn, idx) => {
+        btn.disabled = true;
+        // 点滅クラスは解除
+        btn.classList.remove('hint-flash');
+
+        if (idx === q.answer) {
+            btn.classList.add('correct');
+        } else if (idx === selectedIndex) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    if (selectedIndex === q.answer) {
+        score++;
+    }
+    
+    const expDiv = document.getElementById('explanation-container');
+    expDiv.innerHTML = '<strong>【解説】</strong><br>' + q.explanation;
+    expDiv.classList.remove('hidden');
+    
+    document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < currentQuestions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    if (hintTimer) clearTimeout(hintTimer);
+    document.getElementById('quiz-container').classList.add('hidden');
+    document.getElementById('result-container').classList.remove('hidden');
+    document.getElementById('score-text').innerText = `5問中 ${score}問正解でした！`;
+}
+
+function shareToX() {
+    const text = encodeURIComponent(`解剖学・足の構造クイズ道場に挑戦し、5問中${score}問正解しました！\n#解剖学 #足の構造 #セルフケア #皓一部屋`);
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function restartQuiz() {
+    startQuiz();
+}
+
+// 起動時にクイズ開始
+startQuiz();
+</script>
+
+</body>
+</html>
