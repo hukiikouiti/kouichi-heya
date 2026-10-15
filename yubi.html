@@ -243,7 +243,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (!isPlaying) return;
 
         if (fingerName === currentTarget) {
-            // タップ時にスマホを振動させる（40ミリ秒）
             if (navigator.vibrate) {
                 navigator.vibrate(40);
             }
@@ -287,7 +286,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-message').innerHTML = '20秒で <b>' + score + ' 回</b> 正解しました！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>星野青龍のボイスと指の名前記憶で頭もスッキリ！';
 
         var text = encodeURIComponent('指の名前記憶ゲームで ' + score + ' 回正解しました！\n判定：' + judge + '\n\n星野青龍のボイス付き指の記憶ゲームで癒やされよう！👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
+        // ↓ 現在のページ自身のURLに設定済み（実際のファイル名に合わせて変更してください）
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'yubi_game', 'score': score});
