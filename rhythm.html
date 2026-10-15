@@ -335,7 +335,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function tapShoulder(index) {
     if (shoulderTimeLeft <= 0) return;
     if (index === currentShoulderTarget) {
-      // タップ時にスマホを振動させる（40ミリ秒）
       if (navigator.vibrate) {
         navigator.vibrate(40);
       }
@@ -351,7 +350,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = shoulderScore <= 15 ? "【ガチガチ肩首】" : shoulderScore <= 30 ? "【スッキリ肩首】" : "【肩首リリースマスター】";
     document.getElementById('shoulder-result-message').innerHTML = '20秒で <b>' + shoulderScore + ' 箇所</b> ほぐしました！<br><span style="font-size:0.8rem; color:#d35400; font-weight:bold;">' + judge + '</span><br><br>プロの施術で肩首の重だるさを解消しましょう！';
     var text = encodeURIComponent('肩首ほぐしゲームで ' + shoulderScore + ' 箇所ほぐしました！\n判定：' + judge + '\n\nあなたの肩首、お疲れじゃない？👇');
-    document.getElementById('shoulder-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,名古屋マッサージ';
+    // ↓ rhythm.html に設定済み
+    document.getElementById('shoulder-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/rhythm.html') + '&hashtags=皓一部屋,名古屋マッサージ';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'shoulder_rhythm', 'score': shoulderScore});
   }
 
@@ -377,7 +377,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function tapBack(index) {
     if (backTimeLeft <= 0) return;
     if (index === currentBackTarget) {
-      // タップ時にスマホを振動させる（40ミリ秒）
       if (navigator.vibrate) {
         navigator.vibrate(40);
       }
@@ -393,7 +392,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = backScore <= 15 ? "【背中・腰ガチガチ】" : backScore <= 30 ? "【スッキリ背中腰】" : "【背面リリースプロ】";
     document.getElementById('back-result-message').innerHTML = '20秒で <b>' + backScore + ' 箇所</b> ほぐしました！<br><span style="font-size:0.8rem; color:#16a085; font-weight:bold;">' + judge + '</span><br><br>重だるい背中や腰をすっきりケア！';
     var text = encodeURIComponent('背中・腰ほぐしゲームで ' + backScore + ' 箇所ほぐしました！\n判定：' + judge + '\n\nあなたの背中・腰、お疲れじゃない？👇');
-    document.getElementById('back-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,ボディケア';
+    // ↓ rhythm.html に設定済み
+    document.getElementById('back-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/rhythm.html') + '&hashtags=皓一部屋,ボディケア';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'back_stretch', 'score': backScore});
   }
 
@@ -419,7 +419,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function tapHand(index) {
     if (handTimeLeft <= 0) return;
     if (index === currentHandTarget) {
-      // タップ時にスマホを振動させる（40ミリ秒）
       if (navigator.vibrate) {
         navigator.vibrate(40);
       }
@@ -435,7 +434,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var judge = handScore <= 15 ? "【お疲れモードの手】" : handScore <= 30 ? "【スッキリ反射区】" : "【反射区マスター】";
     document.getElementById('hand-result-message').innerHTML = '20秒で <b>' + handScore + ' 箇所</b> 刺激しました！<br><span style="font-size:0.8rem; color:#2980b9; font-weight:bold;">' + judge + '</span><br><br>手のひらから全身をリフレッシュ！';
     var text = encodeURIComponent('手のひら反射区ゲームで ' + handScore + ' 箇所刺激しました！\n判定：' + judge + '\n\n手のツボで癒やされよう！👇');
-    document.getElementById('hand-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,リフレクソロジー';
+    // ↓ rhythm.html に設定済み
+    document.getElementById('hand-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/rhythm.html') + '&hashtags=皓一部屋,リフレクソロジー';
     if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'hand_reflex', 'score': handScore});
   }
 </script>
