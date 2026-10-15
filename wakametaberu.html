@@ -345,7 +345,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">😋🥗</div>合計スコア： <b>' + score + ' 皿</b><br><span style="font-size:0.8rem; color:#00838f; font-weight:bold;">' + judge + '</span><br><br>ワカメパワーで腸活リフレッシュ完了！';
 
         var text = encodeURIComponent('ワカメサラダをもぐもぐ食べるゲームで ' + score + ' 皿食べました！\n称号：' + judge + '\n\nタコを避けてワカメを食べる爽快感、あなたも挑戦してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/') + '&hashtags=皓一部屋,腸活,名古屋マッサージ';
+        // ↓ 現在のページ自身のURLを自動で設定するように変更済み
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,腸活,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'wakame_game', 'score': score});
