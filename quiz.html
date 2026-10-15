@@ -1,267 +1,327 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
-    <!-- End Google Tag Manager -->
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>本格解剖学・足の構造クイズ道場</title>
-    <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f9f9f9; color: #333; }
-        .quiz-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { font-size: 1.2rem; color: #0056b3; margin-top: 0; }
-        p { line-height: 1.5; }
-        button { display: block; width: 100%; padding: 12px; margin: 10px 0; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        button:hover { background: #0056b3; }
-        .choice-btn { background: #e9ecef; color: #333; text-align: left; border: 1px solid #ced4da; transition: all 0.2s; }
-        .choice-btn:hover { background: #ced4da; }
-        .hidden { display: none; }
-        .correct { background: #d4edda !important; color: #155724 !important; border: 1px solid #c3e6cb !important; }
-        .incorrect { background: #f8d7da !important; color: #721c24 !important; border: 1px solid #f5c6cb !important; }
-        .explanation-box { margin-top: 15px; padding: 15px; background: #e2e3e5; border-radius: 4px; font-size: 14px; }
-        
-        @keyframes hintFlash {
-            0%, 100% { background-color: #e9ecef !important; color: #333 !important; border-color: #ced4da !important; transform: scale(1); }
-            50% { background-color: #fde047 !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.02); }
-        }
-        .choice-btn.hint-flash {
-            animation: hintFlash 0.6s infinite !important;
-        }
-    </style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本格解剖学・足の構造クイズ道場</title>
+<style>
+body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f9f9f9; color: #333; }
+.quiz-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+h2 { font-size: 1.2rem; color: #0056b3; margin-top: 0; }
+p { line-height: 1.5; }
+button { display: block; width: 100%; padding: 12px; margin: 10px 0; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+button:hover { background: #0056b3; }
+.choice-btn { background: #e9ecef; color: #333; text-align: left; border: 1px solid #ced4da; transition: all 0.2s; }
+.choice-btn:hover { background: #ced4da; }
+.hidden { display: none; }
+.correct { background: #d4edda !important; color: #155724 !important; border: 1px solid #c3e6cb !important; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border: 1px solid #f5c6cb !important; }
+.explanation-box { margin-top: 15px; padding: 15px; background: #e2e3e5; border-radius: 4px; font-size: 14px; }
+@keyframes hintFlash {
+0%, 100% { background-color: #e9ecef !important; color: #333 !important; border-color: #ced4da !important; transform: scale(1); }
+50% { background-color: #fde047 !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.02); }
+}
+.choice-btn.hint-flash {
+animation: hintFlash 0.6s infinite !important;
+}
+</style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <div class="quiz-card" id="quiz-container">
-        <h2 id="category-title">解剖学クイズ</h2>
-        <p id="question-count" style="font-weight: bold; color: #666;">第 1 問 / 全 5 問</p>
-        <p id="question-text" style="font-size: 18px; font-weight: bold;"></p>
-        <div id="choices-container"></div>
-        <div id="explanation-container" class="hidden explanation-box"></div>
-        <button id="next-btn" class="hidden" onclick="nextQuestion()">次の問題へ</button>
-    </div>
-
-    <div class="quiz-card hidden" id="result-container" style="text-align: center;">
-        <h2>クイズ結果発表</h2>
-        <p id="score-text" style="font-size: 22px; font-weight: bold; margin: 20px 0;"></p>
-        <button onclick="shareToX()" style="background: #000;">X（旧Twitter）で結果をシェアする</button>
-        <button onclick="restartQuiz()" style="background: #6c757d;">もう一度挑戦する（別の5問）</button>
-    </div>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="quiz-card" id="quiz-container">
+<h2 id="category-title">解剖学クイズ</h2>
+<p id="question-count" style="font-weight: bold; color: #666;">第 1 問 / 全 5 問</p>
+<p id="question-text" style="font-size: 18px; font-weight: bold;"></p>
+<div id="choices-container"></div>
+<div id="explanation-container" class="hidden explanation-box"></div>
+<button id="next-btn" class="hidden" onclick="nextQuestion()">次の問題へ</button>
+</div>
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+<h2>クイズ結果発表</h2>
+<p id="score-text" style="font-size: 22px; font-weight: bold; margin: 20px 0;"></p>
+<button onclick="shareToX()" style="background: #000;">X（旧Twitter）で結果をシェアする</button>
+<button onclick="restartQuiz()" style="background: #6c757d;">もう一度挑戦する（別の5問）</button>
+</div>
 <script>
-const allQuestions = [
-  {
-    category: "骨格・アーチ",
-    question: "成人における片足の骨の数として、種子骨を含めない一般的な標準数はいくつか？",
-    options: ["24個", "26個", "28個", "30個"],
-    answer: 1,
-    explanation: "成人片足の骨は足根骨7個、中足骨5個、趾骨14個の合計26個で構成されます（種子骨除く）。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足根骨の中で、最も近位に位置し、下腿の骨（脛骨・腓骨）と足関節を形成する骨はどれ？",
-    options: ["踵骨", "距骨", "舟状骨", "立方骨"],
-    answer: 1,
-    explanation: "距骨は足根骨の一つで上方にあり、下腿の脛骨・腓骨と噛み合って足関節（距腿関節）を構成します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足部の3つのアーチのうち、最も高い高さを維持し、バネとしての衝撃吸収に最も寄与するのはどれ？",
-    options: ["内側縦アーチ", "外側縦アーチ", "横アーチ", "足底 transverse アーチ"],
-    answer: 0,
-    explanation: "内側縦アーチは最も高く、歩行時の衝撃を吸収する「足のバネ」として最も重要な役割を果たします。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足根骨のうち、全体の中で最も大きく、体重の負荷を地面に伝える役割を持つ「かかとの骨」はどれ？",
-    options: ["距骨", "舟状骨", "踵骨", "立方骨"],
-    answer: 2,
-    explanation: "踵骨（しょうこつ）は足根骨最大の骨であり、立位や歩行時に全体重の大部分を受け止めます。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の母趾（親指）の裏側に通常2つ存在し、腱の摩擦を防ぐ小さな骨の名称はどれ？",
-    options: ["種子骨", "支帯骨", "種実骨", "結節骨"],
-    answer: 0,
-    explanation: "短母趾屈筋腱などの下にある種子骨は、荷重時の摩擦軽減やテコとしての効率を高める役割があります。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "ショパール関節（横足根関節）を構成する2つの骨の組み合わせとして正しいものはどれ？",
-    options: ["距骨と踵骨、および舟状骨と立方骨", "脛骨と腓骨、および距骨", "内側・中間・外側楔状骨と舟状骨", "中足骨と基節骨"],
-    answer: 0,
-    explanation: "ショパール関節は、距骨-舟状骨関節と踵骨-立方骨関節の総称で、足部の回内外の動きに関与します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "リスフラン関節（足根中足関節）が位置している場所として正しいものはどれ？",
-    options: ["足関節と足根骨の間", "足根骨と中足骨の間", "中足骨と趾骨の間", "かかとと足首の間"],
-    answer: 1,
-    explanation: "リスフラン関節は足根骨（楔状骨・立方骨）と5本の中足骨を結ぶ関節で、足の剛性を高める要です。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の外側縦アーチを主に構成し、地面に接する際に安定性をもたらす足根骨はどれ？",
-    options: ["舟状骨", "内側楔状骨", "立方骨", "距骨"],
-    answer: 2,
-    explanation: "立方骨は外側縦アーチの要であり、外側縁の安定や歩行時の体重移動を支えています。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の舟状骨の粗面に停止し、内側縦アーチの低下（扁平足）を防ぐ重要な筋肉の腱はどれ？",
-    options: ["前脛骨筋腱", "後脛骨筋腱", "長腓骨筋腱", "ヒラメ筋腱"],
-    answer: 1,
-    explanation: "後脛骨筋は足裏を通って舟状骨等に付着し、内側縦アーチを吊り上げる最も重要なインナーマッスルです。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "距骨下関節（サブタラー関節）で主に起こる複合的な動きはどれ？",
-    options: ["屈曲と伸展", "回外と回内", "外転と内転のみ", "回旋のみ"],
-    answer: 1,
-    explanation: "距骨下関節は距骨と踵骨の間で動き、足部の回内（内側への倒れ込み）と回外の軸となります。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の指（趾骨）の数について、片足あたり合計いくつあるか？",
-    options: ["10個", "12個", "14個", "16個"],
-    answer: 2,
-    explanation: "母趾は2節（基節骨・末節骨）、第2〜5趾は3節（基節・中節・末節骨）で、片足合計14個あります。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の中足骨は何本あるか？",
-    options: ["4本", "5本", "7本", "14本"],
-    answer: 1,
-    explanation: "足の中足骨は内側から第1〜第5まで5本が存在し、足の横幅や前方のアーチを作ります。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "楔状骨（けいじょうこつ）は足根骨にいくつ存在するか？",
-    options: ["1個", "2個", "3個", "4個"],
-    answer: 2,
-    explanation: "内側、中間、外側の3つの楔状骨があり、足の横アーチの前方部を支えています。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足底のアーチを支える硬い結合組織の帯で、かかとから足の指の付け根にかけて走るものはどれ？",
-    options: ["アキレス腱", "足底腱膜", "屈筋支帯", "腓骨筋腱"],
-    answer: 1,
-    explanation: "足底腱膜は、踵骨から趾の付け根へ扇状に広がり、ウィンドラス機構によってアーチを保持します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "歩行の際、つま先が地面から離れる直前に足底腱膜が緊張し、アーチが高くなる現象を何というか？",
-    options: ["トス機構", "ウィンドラス機構", "ポンプ機構", "トラス機構"],
-    answer: 1,
-    explanation: "MP関節が背屈することで足底腱膜が巻き上げられ、足が硬いレバー構造になる仕組みをウィンドラス機構と呼びます。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足の横アーチを支える筋肉のうち、中足骨の間に位置し、指を寄せたり広げたりする筋肉はどれ？",
-    options: ["骨間筋（背側・底側）", "ヒラメ筋", "長母趾屈筋", "前脛骨筋"],
-    answer: 0,
-    explanation: "足の骨間筋は中足骨の間にあり、横アーチの形状保持や微細な指のコントロールを行います。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "扁平足になると、歩行時にどの部分へ過剰なストレスがかかりやすくなるか？",
-    options: ["足の内側縦アーチや後脛骨筋、膝の内側", "足の甲の表面のみ", "膝の外側と外側側副靭帯のみ", "鎖骨周辺"],
-    answer: 0,
-    explanation: "扁平足は足が内側に倒れ込む（過剰回内）ため、後脛骨筋や内側縦アーチ、膝や股関節に負担が波及します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "ハイアーチ（高足出）の最大の特徴・デメリットはどれ？",
-    options: ["衝撃吸収能力（クッション性）が低下する", "足の筋肉が一切疲れない", "足底腱膜炎になりにくい", "体重が均等に分散される"],
-    answer: 0,
-    explanation: "ハイアーチはアーチが硬すぎてしならないため、地面からの衝撃を吸収できず、足や膝に衝撃が直撃します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "距骨の滑車面は、どちら側の方が広い形状をしているか？",
-    options: ["前方", "後方", "内側", "外側"],
-    answer: 0,
-    explanation: "距骨滑車は前方が広い形状をしており、背屈時に安定します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "踵骨の後面に付着し、人体で最も強力な腱とされるものはどれ？",
-    options: ["膝蓋腱", "アキレス腱（跟骨腱）", "半膜様肌腱", "長腓骨筋腱"],
-    answer: 1,
-    explanation: "アキレス腱は下腿三頭筋から踵骨へ至る強力な腱です。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "立方骨の外側を通る、足の横アーチを支える重要な筋肉の腱はどれ？",
-    options: ["長腓骨筋腱", "前脛骨筋腱", "短趾屈筋腱", "虫様筋腱"],
-    answer: 0,
-    explanation: "長腓骨筋腱は足底を横切るように走り、横アーチを保持します。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足根管を通る神経・血管・筋肉の配列で、最も後方（アキレス腱側）に位置するのはどれ？",
-    options: ["脛骨神経", "後脛骨動脈", "長母趾屈筋腱", "後脛骨筋腱"],
-    answer: 2,
-    explanation: "長母趾屈筋腱は最も後方に位置しています。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "足部の骨のうち、体重を直接受け止める「足関節の天井」の真下に位置して支えるキー骨はどれ？",
-    options: ["距骨", "立方骨", "第1中足骨", "種子骨"],
-    answer: 0,
-    explanation: "距骨が荷重を受け止めるキーストーンとなります。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "外反母趾の進行に伴い、変形が顕著になりやすい第1中足骨の動きはどれ？",
-    options: ["内反（内側への開き）と回旋", "外側への完全な並進移動のみ", "完全な伸展のみ", "下方への沈み込みのみ"],
-    answer: 0,
-    explanation: "第1中足骨は内反しながら回旋する複合変形を起こします。"
-  },
-  {
-    category: "骨格・アーチ",
-    question: "人間の全身の骨（約206個）のうち、両手足を合わせると全体の何割以上の骨が集中しているか？",
-    options: ["約20%", "約30%", "約50%以上", "約80%"],
-    answer: 2,
-    explanation: "手足合わせて106個以上あり、全身の半数以上の骨が集中しています。"
-  }
-];
-
-let currentQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let hintTimer = null;
-
-function startQuiz() {
-    currentQuestions = [...allQuestions].sort(function() { return 0.5 - Math.random(); }).slice(0, 5);
-    currentIndex = 0;
-    score = 0;
-    document.getElementById('result-container').classList.add('hidden');
-    document.getElementById('quiz-container').classList.remove('hidden');
-    showQuestion();
+var allQuestions = [
+{
+category: "骨格・アーチ",
+question: "成人における片足の骨の数として、種子骨を含めない一般的な標準数はいくつか？",
+options: ["24個", "26個", "28個", "30個"],
+answer: 1,
+explanation: "成人片足の骨は足根骨7個、中足骨5個、趾骨14個の合計26個で構成されます（種子骨除く）。"
+},
+{
+category: "骨格・アーチ",
+question: "足根骨の中で、最も近位に位置し、下腿の骨（脛骨・腓骨）と足関節を形成する骨はどれ？",
+options: ["踵骨", "距骨", "舟状骨", "立方骨"],
+answer: 1,
+explanation: "距骨は足根骨の一つで上方にあり、下腿の脛骨・腓骨と噛み合って足関節（距腿関節）を構成します。"
+},
+{
+category: "骨格・アーチ",
+question: "足部の3つのアーチのうち、最も高い高さを維持し、バネとしての衝撃吸収に最も寄与するのはどれ？",
+options: ["内側縦アーチ", "外側縦アーチ", "横アーチ", "足底 transverse アーチ"],
+answer: 0,
+explanation: "内側縦アーチは最も高く、歩行時の衝撃を吸収する「足のバネ」として最も重要な役割を果たします。"
+},
+{
+category: "骨格・アーチ",
+question: "足根骨のうち、全体の中で最も大きく、体重の負荷を地面に伝える役割を持つ「かかとの骨」はどれ？",
+options: ["距骨", "舟状骨", "踵骨", "立方骨"],
+answer: 2,
+explanation: "踵骨（しょうこつ）は足根骨最大の骨であり、立位や歩行時に全体重の大部分を受け止めます。"
+},
+{
+category: "骨格・アーチ",
+question: "足の母趾（親指）の裏側に通常2つ存在し、腱の摩擦を防ぐ小さな骨の名称はどれ？",
+options: ["種子骨", "支帯骨", "種実骨", "結節骨"],
+answer: 0,
+explanation: "短母趾屈筋腱などの下にある種子骨は、荷重時の摩擦軽減やテコとしての効率を高める役割があります。"
+},
+{
+category: "骨格・アーチ",
+question: "ショパール関節（横足根関節）を構成する2つの骨の組み合わせとして正しいものはどれ？",
+options: ["距骨と踵骨、および舟状骨と立方骨", "脛骨と腓骨、および距骨", "内側・中間・外側楔状骨と舟状骨", "中足骨と基節骨"],
+answer: 0,
+explanation: "ショパール関節は、距骨-舟状骨関節と踵骨-立方骨関節の総称で、足部の回内外の動きに関与します。"
+},
+{
+category: "骨格・アーチ",
+question: "リスフラン関節（足根中足関節）が位置している場所として正しいものはどれ？",
+options: ["足関節と足根骨の間", "足根骨と中足骨の間", "中足骨と趾骨の間", "かかとと足首の間"],
+answer: 1,
+explanation: "リスフラン関節は足根骨（楔状骨・立方骨）と5本の中足骨を結ぶ関節で、足の剛性を高める要です。"
+},
+{
+category: "骨格・アーチ",
+question: "足の外側縦アーチを主に構成し、地面に接する際に安定性をもたらす足根骨はどれ？",
+options: ["舟状骨", "内側楔状骨", "立方骨", "距骨"],
+answer: 2,
+explanation: "立方骨は外側縦アーチの要であり、外側縁の安定や歩行時の体重移動を支えています。"
+},
+{
+category: "骨格・アーチ",
+question: "足の舟状骨の粗面に停止し、内側縦アーチの低下（扁平足）を防ぐ重要な筋肉の腱はどれ？",
+options: ["前脛骨筋腱", "後脛骨筋腱", "長腓骨筋腱", "ヒラメ筋腱"],
+answer: 1,
+explanation: "後脛骨筋は足裏を通って舟状骨等に付着し、内側縦アーチを吊り上げる最も重要なインナーマッスルです。"
+},
+{
+category: "骨格・アーチ",
+question: "距骨下関節（サブタラー関節）で主に起こる複合的な動きはどれ？",
+options: ["屈曲と伸展", "回外と回内", "外転と内転のみ", "回旋のみ"],
+answer: 1,
+explanation: "距骨下関節は距骨と踵骨の間で動き、足部の回内（内側への倒れ込み）と回外の軸となります。"
+},
+{
+category: "骨格・アーチ",
+question: "足の指（趾骨）の数について、片足あたり合計いくつあるか？",
+options: ["10個", "12個", "14個", "16個"],
+answer: 2,
+explanation: "母趾は2節（基節骨・末節骨）、第2〜5趾は3節（基節・中節・末節骨）で、片足合計14個あります。"
+},
+{
+category: "骨格・アーチ",
+question: "足の中足骨は何本あるか？",
+options: ["4本", "5本", "7本", "14本"],
+answer: 1,
+explanation: "足の中足骨は内側から第1〜第5まで5本が存在し、足の横幅や前方のアーチを作ります。"
+},
+{
+category: "骨格・アーチ",
+question: "楔状骨（けいじょうこつ）は足根骨にいくつ存在するか？",
+options: ["1個", "2個", "3個", "4個"],
+answer: 2,
+explanation: "内側、中間、外側の3つの楔状骨があり、足の横アーチの前方部を支えています。"
+},
+{
+category: "骨格・アーチ",
+question: "足底のアーチを支える硬い結合組織の帯で、かかとから足の指の付け根にかけて走るものはどれ？",
+options: ["アキレス腱", "足底腱膜", "屈筋支帯", "腓骨筋腱"],
+answer: 1,
+explanation: "足底腱膜は、踵骨から趾の付け根へ扇状に広がり、ウィンドラス機構によってアーチを保持します。"
+},
+{
+category: "骨格・アーチ",
+question: "歩行の際、つま先が地面から離れる直前に足底腱膜が緊張し、アーチが高くなる現象を何というか？",
+options: ["トス機構", "ウィンドラス機構", "ポンプ機構", "トラス機構"],
+answer: 1,
+explanation: "MP関節が背屈することで足底腱膜が巻き上げられ、足が硬いレバー構造になる仕組みをウィンドラス機構と呼びます。"
+},
+{
+category: "骨格・アーチ",
+question: "足の横アーチを支える筋肉のうち、中足骨の間に位置し、指を寄せたり広げたりする筋肉はどれ？",
+options: ["骨間筋（背側・底側）", "ヒラメ筋", "長母趾屈筋", "前脛骨筋"],
+answer: 0,
+explanation: "足の骨間筋は中足骨の間にあり、横アーチの形状保持や微細な指のコントロールを行います。"
+},
+{
+category: "骨格・アーチ",
+question: "扁平足になると、歩行時にどの部分へ過剰なストレスがかかりやすくなるか？",
+options: ["足の内側縦アーチや後脛骨筋、膝の内側", "足の甲の表面のみ", "膝の外側と外側側副靭帯のみ", "鎖骨周辺"],
+answer: 0,
+explanation: "扁平足は足が内側に倒れ込む（過剰回内）ため、後脛骨筋や内側縦アーチ、膝や股関節に負担が波及します。"
+},
+{
+category: "骨格・アーチ",
+question: "ハイアーチ（高足出）の最大の特徴・デメリットはどれ？",
+options: ["衝撃吸収能力（クッション性）が低下する", "足の筋肉が一切疲れない", "足底腱膜炎になりにくい", "体重が均等に分散される"],
+answer: 0,
+explanation: "ハイアーチはアーチが硬すぎてしならないため、地面からの衝撃を吸収できず、足や膝に衝撃が直撃します。"
+},
+{
+category: "骨格・アーチ",
+question: "距骨の滑車面は、どちら側の方が広い形状をしているか？",
+options: ["前方", "後方", "内側", "外側"],
+answer: 0,
+explanation: "距骨滑車は前方が広い形状をしており、背屈時に安定します。"
+},
+{
+category: "骨格・アーチ",
+question: "踵骨の後面に付着し、人体で最も強力な腱とされるものはどれ？",
+options: ["膝蓋腱", "アキレス腱（跟骨腱）", "半膜様肌腱", "長腓骨筋腱"],
+answer: 1,
+explanation: "アキレス腱は下腿三頭筋から踵骨へ至る強力な腱です。"
+},
+{
+category: "骨格・アーチ",
+question: "立方骨の外側を通る、足の横アーチを支える重要な筋肉の腱はどれ？",
+options: ["長腓骨筋腱", "前脛骨筋腱", "短趾屈筋腱", "虫様筋腱"],
+answer: 0,
+explanation: "長腓骨筋腱は足底を横切るように走り、横アーチを保持します。"
+},
+{
+category: "骨格・アーチ",
+question: "足根管を通る神経・血管・筋肉の配列で、最も後方（アキレス腱側）に位置するのはどれ？",
+options: ["脛骨神経", "後脛骨動脈", "長母趾屈筋腱", "後脛骨筋腱"],
+answer: 2,
+explanation: "長母趾屈筋腱は最も後方に位置しています。"
+},
+{
+category: "骨格・アーチ",
+question: "足部の骨のうち、体重を直接受け止める「足関節の天井」の真下に位置して支えるキー骨はどれ？",
+options: ["距骨", "立方骨", "第1中足骨", "種子骨"],
+answer: 0,
+explanation: "距骨が荷重を受け止めるキーストーンとなります。"
+},
+{
+category: "骨格・アーチ",
+question: "外反母趾の進行に伴い、変形が顕著になりやすい第1中足骨の動きはどれ？",
+options: ["内反（内側への開き）と回旋", "外側への完全な並進移動のみ", "完全な伸展のみ", "下方への沈み込みのみ"],
+answer: 0,
+explanation: "第1中足骨は内反しながら回旋する複合変形を起こします。"
+},
+{
+category: "骨格・アーチ",
+question: "人間の全身の骨（約206個）のうち、両手足を合わせると全体の何割以上の骨が集中しているか？",
+options: ["約20%", "約30%", "約50%以上", "約80%"],
+answer: 2,
+explanation: "手足合わせて106個以上あり、全身の半数以上の骨が集中しています。"
 }
-
+];
+var currentQuestions = [];
+var currentIndex = 0;
+var score = 0;
+var hintTimer = null;
+function startQuiz() {
+currentQuestions = [...allQuestions].sort(function() { return 0.5 - Math.random(); }).slice(0, 5);
+currentIndex = 0;
+score = 0;
+document.getElementById('result-container').classList.add('hidden');
+document.getElementById('quiz-container').classList.remove('hidden');
+showQuestion();
+}
 function showQuestion() {
-    if (hintTimer) {
-        clearTimeout(hintTimer);
-        hintTimer = null;
-    }
-
-    var q = currentQuestions[currentIndex];
-    document.getElementById('category-title').innerText = "【" + q.category + "】";
-    document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
-    document.getElementById('question-text').innerText = q.question;
-    
-    var choicesDiv = document.getElementById('choices-container');
-    choicesDiv.innerHTML = '';
-    
-    q.options.forEach(function(opt, index) {
+if (hintTimer) {
+clearTimeout(hintTimer);
+hintTimer = null;
+}
+var q = currentQuestions[currentIndex];
+document.getElementById('category-title').innerText = "【" + q.category + "】";
+document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+document.getElementById('question-text').innerText = q.question;
+var choicesDiv = document.getElementById('choices-container');
+choicesDiv.innerHTML = '';
+q.options.forEach(function(opt, index) {
+var btn = document.createElement('button');
+btn.className = 'choice-btn';
+btn.setAttribute('data-index', index);
+btn.innerText = (index + 1) + '. ' + opt;
+btn.onclick = function() { selectAnswer(index); };
+choicesDiv.appendChild(btn);
+});
+document.getElementById('explanation-container').classList.add('hidden');
+document.getElementById('next-btn').classList.add('hidden');
+hintTimer = setTimeout(function() {
+var choiceButtons = document.querySelectorAll('.choice-btn');
+choiceButtons.forEach(function(btn) {
+var btnIndex = parseInt(btn.getAttribute('data-index'), 10);
+if (btnIndex === q.answer) {
+btn.classList.add('hint-flash');
+}
+});
+}, 5000);
+}
+function selectAnswer(selectedIndex) {
+if (hintTimer) {
+clearTimeout(hintTimer);
+hintTimer = null;
+}
+var q = currentQuestions[currentIndex];
+var choiceButtons = document.querySelectorAll('.choice-btn');
+choiceButtons.forEach(function(btn, idx) {
+btn.disabled = true;
+btn.classList.remove('hint-flash');
+if (idx === q.answer) {
+btn.classList.add('correct');
+} else if (idx === selectedIndex) {
+btn.classList.add('incorrect');
+}
+});
+if (selectedIndex === q.answer) {
+score++;
+}
+var expDiv = document.getElementById('explanation-container');
+expDiv.innerHTML = '<strong>【解説】</strong><br>' + q.explanation;
+expDiv.classList.remove('hidden');
+document.getElementById('next-btn').classList.remove('hidden');
+}
+function nextQuestion() {
+currentIndex++;
+if (currentIndex < currentQuestions.length) {
+showQuestion();
+} else {
+showResult();
+}
+}
+function showResult() {
+if (hintTimer) {
+clearTimeout(hintTimer);
+hintTimer = null;
+}
+document.getElementById('quiz-container').classList.add('hidden');
+document.getElementById('result-container').classList.remove('hidden');
+document.getElementById('score-text').innerText = "5問中 " + score + "問正解でした！";
+}
+function shareToX() {
+var text = encodeURIComponent("解剖学・足の構造クイズ道場に挑戦し、5問中" + score + "問正解しました！\n#解剖学 #足の構造 #セルフケア #皓一部屋");
+window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
+}
+function restartQuiz() {
+startQuiz();
+}
+startQuiz();
+</script>
+</body>
+</html>
