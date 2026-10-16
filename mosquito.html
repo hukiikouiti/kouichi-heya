@@ -99,29 +99,36 @@
             display: inline-block;
             width: 100%;
             padding: 12px 0;
-            border-radius: 30px;
+            border-radius: 14px;
             font-weight: bold;
             text-decoration: none;
             border: none;
             cursor: pointer;
             font-size: 0.95rem;
             box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
             position: relative;
             z-index: 10;
         }
         .start-btn {
             background-color: #e67e22;
             color: #fff;
+            border-radius: 30px;
         }
         .share-btn {
             background-color: #000000;
             color: #fff;
-            margin-top: 12px;
+            margin-top: 10px;
+        }
+        .line-btn {
+            background: linear-gradient(135deg, #06c755, #05b34c);
+            color: #fff;
+            margin-top: 10px;
         }
         .reserve-btn {
-            background-color: #2ecc71;
+            background: linear-gradient(135deg, #27ae60, #219653);
             color: #fff;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .hidden {
             display: none !important;
@@ -165,7 +172,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 style="color: #27ae60; font-size: 1.2rem;">✨ モスキート退治完了！</h2>
         <p id="result-message"></p>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="btn line-btn">🟢 LINEお友達追加</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
         <a href="javascript:void(0)" onclick="resetGame()" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
     </div>
 
@@ -222,7 +230,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         mosquito.style.top = randomY + 'px';
         mosquito.classList.remove('hidden');
     }
-function hitMosquito() {
+
+    function hitMosquito() {
         if (!isPlaying) return;
         
         // タップ時にスマホを振動させる（40ミリ秒）
@@ -256,7 +265,7 @@ function hitMosquito() {
         document.getElementById('result-message').innerHTML = '20秒で <b>' + score + ' 匹</b> の蚊を退治しました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>皮膚のカルボン酸対策とボディケアですっきり爽快！';
 
         var text = encodeURIComponent('モスキート退治ゲームで ' + score + ' 匹の蚊を退治しました！\n称号：' + judge + '\n\nカルボン酸の謎を解き明かしてモスキートを撃退しよう！👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/mosquito.html') + '&hashtags=皓一部屋,名古屋マッサージ';
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ';
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_finish', 'game_name': 'mosquito_game', 'score': score});
