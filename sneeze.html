@@ -88,7 +88,7 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             transition: background-color 0.2s;
-            touch-action: none; /* スマホでスクロールせずこすりに集中させる */
+            touch-action: none;
         }
         .sneeze-stage:active {
             background-color: #fef3c7;
@@ -181,7 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- スタート画面 -->
     <div id="game-start-screen">
         <div style="font-size: 3.5rem; margin: 15px 0;">😫</div>
-        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+        <button id="start-btn" class="btn start-btn">ゲームスタート！</button>
     </div>
 
     <!-- プレイ画面 -->
@@ -191,13 +191,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="gauge-bar" class="gauge-bar"></div>
         </div>
         
-        <!-- こすり判定ステージ（HTMLに直接イベントを記述してスマホ・PC両対応に強化） -->
-        <div class="sneeze-stage" id="sneeze-stage" 
-             ontouchstart="handleScrape(event)" 
-             ontouchmove="handleScrape(event)" 
-             onmousedown="handleScrape(event)" 
-             onmousemove="handleScrape(event)" 
-             onclick="handleScrape(event)">
+        <!-- こすり判定ステージ -->
+        <div class="sneeze-stage" id="sneeze-stage">
             <div id="face-icon" class="face-character">＞﹏＜</div>
             <div class="action-hint">👇 ここをグリグリこする！</div>
         </div>
@@ -209,9 +204,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 id="result-title" style="color: #d97706; font-size: 1.2rem;">✨ ハクション！！</h2>
         <p id="result-message"></p>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-        <!-- LINEお友達追加ボタン -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="btn line-btn">🟢 LINEお友達追加</a>
-        <!-- 予約ボタン -->
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
         <a href="javascript:void(0)" onclick="resetGame()" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
     </div>
@@ -220,11 +213,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    let score = 0; // こすった回数
+    let score = 0;
     let timeLeft = 10;
     let timerInterval = null;
     let isPlaying = false;
     let lastScrapeTime = 0;
+
+    // スマホ・PC両方で確実にボタンやステージが反応するようイベントリスナーを登録
+    document.addEventListener('DOMContentLoaded', () => {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', startGame);
+            startBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                startGame();
+            });
+        }
+
+        const stage = document.getElementById('sneeze-stage');
+        if (stage) {
+            stage.addEventListener('mousemove', handleScrape);
+            stage.addEventListener('touchmove', handleScrape);
+            stage.addEventListener('click', handleScrape);
+            stage.addEventListener('touchstart', handleScrape);
+        }
+    });
 
     function startGame() {
         if (isPlaying) return;
@@ -242,6 +255,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             window.dataLayer.push({'event': 'game_start', 'game_name': 'sneeze_game'});
         }
 
+        if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
@@ -251,17 +265,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }, 1000);
     }
 
-    // 画面をこすったりタップしたときの処理
     function handleScrape(e) {
         if (!isPlaying) return;
         
-        // タッチ時の画面スクロールなどのデフォルト動作を防止
         if (e && e.cancelable) {
             e.preventDefault();
         }
 
         const now = Date.now();
-        if (now - lastScrapeTime < 15) return; // 判定間隔を短くして連打やスワイプでサクサク溜まるように調整
+        if (now - lastScrapeTime < 15) return;
         lastScrapeTime = now;
 
         score++;
