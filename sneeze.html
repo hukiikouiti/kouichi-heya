@@ -116,6 +116,7 @@
             padding: 4px 12px;
             border-radius: 20px;
             border: 1px solid #fde68a;
+            pointer-events: none;
         }
 
         .btn {
@@ -187,8 +188,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="gauge-bar" class="gauge-bar"></div>
         </div>
         
-        <!-- こすり判定ステージ -->
-        <div class="sneeze-stage" id="sneeze-stage" ontouchmove="handleScrape(event)" onmousemove="handleScrape(event)">
+        <!-- こすり判定ステージ（タッチやマウス移動、クリックに幅広く対応） -->
+        <div class="sneeze-stage" id="sneeze-stage">
             <div id="face-icon" class="face-character">＞﹏＜</div>
             <div class="action-hint">👇 ここをグリグリこする！</div>
         </div>
@@ -216,6 +217,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let timerInterval = null;
     let isPlaying = false;
     let lastScrapeTime = 0;
+
+    // イベントリスナーを動的に設定して確実に反応するようにする
+    window.addEventListener('DOMContentLoaded', () => {
+        const stage = document.getElementById('sneeze-stage');
+        if (stage) {
+            stage.addEventListener('mousemove', handleScrape);
+            stage.addEventListener('touchmove', handleScrape);
+            stage.addEventListener('click', handleScrape);
+            stage.addEventListener('touchstart', handleScrape);
+        }
+    });
 
     function startGame() {
         if (isPlaying) return;
@@ -247,7 +259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (!isPlaying) return;
         
         const now = Date.now();
-        if (now - lastScrapeTime < 30) return;
+        if (now - lastScrapeTime < 20) return; // 制限を少し短くして反応良く改良
         lastScrapeTime = now;
 
         score++;
@@ -297,4 +309,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-title').innerText = isSuccess ? "💥 限界突破！大爆発ハクション！！" : "💨 タイムアップ！";
         document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">' + faceEmoji + '</div>10秒間で <b>' + score + ' 回</b> こすりました！<br><span style="font-size:0.8rem; color:#d97706; font-weight:bold;">' + judge + '</span><br><br>モヤモヤを吹き飛ばして頭もスッキリ！';
 
-        var text = encodeURIComponent('くしゃみが出そうで出ないゲームで ' + score + ' 回こすりました！\n判定：' + judge + '\n\nこのシュールなもどかしさ、あなたも体験してみる
+        var text = encodeURIComponent('くしゃみが出そうで出ないゲームで ' + score + ' 回こすりました！\n判定：' + judge + '\n\nこのシュールなもどかしさ、あなたも体験してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'sneeze_game', 'score': score});
+        }
+    }
+
+    function resetGame() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('game-start-screen').classList.remove('hidden');
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+        isPlaying = false;
+    }
+</script>
+
+</body>
+</html>
