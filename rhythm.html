@@ -10,7 +10,7 @@
   <!-- End Google Tag Manager -->
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>20秒リズムリフレッシュ | 皓一部屋</title>
   <style>
     body {
@@ -25,6 +25,9 @@
       justify-content: center;
       min-height: 100vh;
       text-align: center;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
     .game-card {
       background: #ffffff;
@@ -124,6 +127,7 @@
       user-select: none;
       touch-action: manipulation;
       z-index: 10;
+      -webkit-tap-highlight-color: transparent;
     }
     .spot-btn.active-target {
       background-color: #fef08a;
@@ -164,6 +168,7 @@
       font-size: 0.95rem;
       box-sizing: border-box;
       box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      -webkit-tap-highlight-color: transparent;
     }
     .start-btn {
       background-color: #3498db;
@@ -288,7 +293,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <a href="index.html" class="back-link">🏠 ホームに戻る</a>
+  <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 
 </div>
 
@@ -333,6 +338,114 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }, 1000);
   }
   function setNewShoulderTarget() {
-    for(let i=0; i<4; i++) document.getElementById('s-spot-' + i).classList.remove('active-target');
+    for(let i=0; i<4; i++) {
+      document.getElementById('s-spot-' + i).classList.remove('active-target');
+    }
     currentShoulderTarget = Math.floor(Math.random() * 4);
-    document.getElementById('s-spot-' + currentShoulderTarget).classList
+    document.getElementById('s-spot-' + currentShoulderTarget).classList.add('active-target');
+  }
+  function tapShoulder(index) {
+    if (shoulderTimeLeft <= 0) return;
+    if (index === currentShoulderTarget) {
+      shoulderScore++;
+      if (navigator.vibrate) navigator.vibrate(30);
+      document.getElementById('shoulder-score').innerText = shoulderScore;
+      setNewShoulderTarget();
+    }
+  }
+  function endShoulderGame() {
+    clearInterval(shoulderTimer);
+    document.getElementById('shoulder-game-screen').classList.add('hidden');
+    document.getElementById('shoulder-result-screen').classList.remove('hidden');
+    var judge = shoulderScore <= 15 ? "【肩コリコリ集中モード】" : shoulderScore <= 30 ? "【スムーズほぐし上手】" : "【神リズムマスター】";
+    document.getElementById('shoulder-result-message').innerHTML = '20秒で <b>' + shoulderScore + ' 回</b> ほぐせました！<br><span style="font-size:0.8rem; color:#d35400; font-weight:bold;">' + judge + '</span><br><br>プロの施術で肩首の重みをすっきり解消しませんか？';
+    var text = encodeURIComponent('20秒肩首ほぐしで ' + shoulderScore + ' 回成功しました！\n判定：' + judge + '\n\nあなたの肩は何点？👇');
+    document.getElementById('shoulder-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ';
+    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'shoulder_rhythm', 'score': shoulderScore});
+  }
+
+  // --- 背中・腰ほぐしゲーム ---
+  var backTimeLeft = 20, backScore = 0, backTimer = null, currentBackTarget = 0;
+  function startBackGame() {
+    document.getElementById('back-start-screen').classList.add('hidden');
+    document.getElementById('back-game-screen').classList.remove('hidden');
+    backScore = 0; backTimeLeft = 20;
+    document.getElementById('back-score').innerText = backScore;
+    document.getElementById('back-timer').innerText = backTimeLeft;
+    setNewBackTarget();
+    backTimer = setInterval(function() {
+      backTimeLeft--; document.getElementById('back-timer').innerText = backTimeLeft;
+      if (backTimeLeft <= 0) endBackGame();
+    }, 1000);
+  }
+  function setNewBackTarget() {
+    for(let i=0; i<4; i++) {
+      document.getElementById('b-spot-' + i).classList.remove('active-target');
+    }
+    currentBackTarget = Math.floor(Math.random() * 4);
+    document.getElementById('b-spot-' + currentBackTarget).classList.add('active-target');
+  }
+  function tapBack(index) {
+    if (backTimeLeft <= 0) return;
+    if (index === currentBackTarget) {
+      backScore++;
+      if (navigator.vibrate) navigator.vibrate(30);
+      document.getElementById('back-score').innerText = backScore;
+      setNewBackTarget();
+    }
+  }
+  function endBackGame() {
+    clearInterval(backTimer);
+    document.getElementById('back-game-screen').classList.add('hidden');
+    document.getElementById('back-result-screen').classList.remove('hidden');
+    var judge = backScore <= 15 ? "【腰まわりお疲れモード】" : backScore <= 30 ? "【背中すっきり柔軟派】" : "【鉄壁の腰ケアマスター】";
+    document.getElementById('back-result-message').innerHTML = '20秒で <b>' + backScore + ' 回</b> ほぐせました！<br><span style="font-size:0.8rem; color:#16a085; font-weight:bold;">' + judge + '</span><br><br>オイルボディワークで背中から腰まで軽やかに！';
+    var text = encodeURIComponent('20秒背中・腰ほぐしで ' + backScore + ' 回成功しました！\n判定：' + judge + '\n\nあなたの背中・腰の状態は？👇');
+    document.getElementById('back-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,オイルマッサージ';
+    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'back_rhythm', 'score': backScore});
+  }
+
+  // --- 手のひら反射区ゲーム ---
+  var handTimeLeft = 20, handScore = 0, handTimer = null, currentHandTarget = 0;
+  function startHandGame() {
+    document.getElementById('hand-start-screen').classList.add('hidden');
+    document.getElementById('hand-game-screen').classList.remove('hidden');
+    handScore = 0; handTimeLeft = 20;
+    document.getElementById('hand-score').innerText = handScore;
+    document.getElementById('hand-timer').innerText = handTimeLeft;
+    setNewHandTarget();
+    handTimer = setInterval(function() {
+      handTimeLeft--; document.getElementById('hand-timer').innerText = handTimeLeft;
+      if (handTimeLeft <= 0) endHandGame();
+    }, 1000);
+  }
+  function setNewHandTarget() {
+    for(let i=0; i<4; i++) {
+      document.getElementById('h-spot-' + i).classList.remove('active-target');
+    }
+    currentHandTarget = Math.floor(Math.random() * 4);
+    document.getElementById('h-spot-' + currentHandTarget).classList.add('active-target');
+  }
+  function tapHand(index) {
+    if (handTimeLeft <= 0) return;
+    if (index === currentHandTarget) {
+      handScore++;
+      if (navigator.vibrate) navigator.vibrate(30);
+      document.getElementById('hand-score').innerText = handScore;
+      setNewHandTarget();
+    }
+  }
+  function endHandGame() {
+    clearInterval(handTimer);
+    document.getElementById('hand-game-screen').classList.add('hidden');
+    document.getElementById('hand-result-screen').classList.remove('hidden');
+    var judge = handScore <= 15 ? "【リフレッシュ初心者】" : handScore <= 30 ? "【反射区マスター】" : "【神速のツボ押し師】";
+    document.getElementById('hand-result-message').innerHTML = '20秒で <b>' + handScore + ' 回</b> 刺激できました！<br><span style="font-size:0.8rem; color:#2980b9; font-weight:bold;">' + judge + '</span><br><br>手のひらから全身の巡りを整えましょう！';
+    var text = encodeURIComponent('20秒手のひら反射区で ' + handScore + ' 回ツボを刺激しました！\n判定：' + judge + '\n\nあなたの反射区は元気？👇');
+    document.getElementById('hand-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,リフレッシュ';
+    if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'hand_rhythm', 'score': handScore});
+  }
+</script>
+
+</body>
+</html>
