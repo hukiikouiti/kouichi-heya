@@ -84,9 +84,11 @@
             margin: 0 auto 15px;
             cursor: pointer;
             user-select: none;
+            -webkit-user-select: none;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             transition: background-color 0.2s;
+            touch-action: none; /* スマホでスクロールせずこすりに集中させる */
         }
         .sneeze-stage:active {
             background-color: #fef3c7;
@@ -96,6 +98,7 @@
             font-size: 4rem;
             margin-bottom: 5px;
             transition: transform 0.05s ease;
+            pointer-events: none;
         }
         .face-character.shake {
             animation: shake 0.15s infinite;
@@ -188,8 +191,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="gauge-bar" class="gauge-bar"></div>
         </div>
         
-        <!-- こすり判定ステージ（タッチやマウス移動、クリックに幅広く対応） -->
-        <div class="sneeze-stage" id="sneeze-stage">
+        <!-- こすり判定ステージ（HTMLに直接イベントを記述してスマホ・PC両対応に強化） -->
+        <div class="sneeze-stage" id="sneeze-stage" 
+             ontouchstart="handleScrape(event)" 
+             ontouchmove="handleScrape(event)" 
+             onmousedown="handleScrape(event)" 
+             onmousemove="handleScrape(event)" 
+             onclick="handleScrape(event)">
             <div id="face-icon" class="face-character">＞﹏＜</div>
             <div class="action-hint">👇 ここをグリグリこする！</div>
         </div>
@@ -218,17 +226,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let isPlaying = false;
     let lastScrapeTime = 0;
 
-    // イベントリスナーを動的に設定して確実に反応するようにする
-    window.addEventListener('DOMContentLoaded', () => {
-        const stage = document.getElementById('sneeze-stage');
-        if (stage) {
-            stage.addEventListener('mousemove', handleScrape);
-            stage.addEventListener('touchmove', handleScrape);
-            stage.addEventListener('click', handleScrape);
-            stage.addEventListener('touchstart', handleScrape);
-        }
-    });
-
     function startGame() {
         if (isPlaying) return;
         isPlaying = true;
@@ -254,12 +251,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }, 1000);
     }
 
-    // 画面をこすったときの処理
+    // 画面をこすったりタップしたときの処理
     function handleScrape(e) {
         if (!isPlaying) return;
         
+        // タッチ時の画面スクロールなどのデフォルト動作を防止
+        if (e && e.cancelable) {
+            e.preventDefault();
+        }
+
         const now = Date.now();
-        if (now - lastScrapeTime < 20) return; // 制限を少し短くして反応良く改良
+        if (now - lastScrapeTime < 15) return; // 判定間隔を短くして連打やスワイプでサクサク溜まるように調整
         lastScrapeTime = now;
 
         score++;
