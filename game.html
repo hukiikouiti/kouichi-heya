@@ -1,125 +1,128 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
-  <!-- End Google Tag Manager -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ゲーム・解剖学クイズ道場 | 皓一部屋</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f7f9fc;
-      color: #333;
-      margin: 0;
-      padding: 20px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-    .menu-card {
-      background: #ffffff;
-      padding: 25px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      max-width: 480px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-      color: #2c3e50;
-    }
-    p {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-    .game-link-btn {
-      display: block;
-      width: 100%;
-      padding: 16px 20px;
-      margin-bottom: 15px;
-      border-radius: 14px;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 1rem;
-      box-sizing: border-box;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-      cursor: pointer;
-      border: none;
-    }
-    .game-link-btn:active {
-      transform: scale(0.97);
-    }
-    .tap-btn-style {
-      background: linear-gradient(135deg, #3498db, #2980b9);
-      color: #fff;
-    }
-    .rhythm-btn-style {
-      background: linear-gradient(135deg, #e67e22, #d35400);
-      color: #fff;
-    }
-    .yubi-btn-style {
-      background: linear-gradient(135deg, #8e44ad, #732d91);
-      color: #fff;
-    }
-    .mosquito-btn-style {
-      background: linear-gradient(135deg, #d35400, #b94000);
-      color: #fff;
-    }
-    .sneeze-btn-style {
-      background: linear-gradient(135deg, #f39c12, #d68910);
-      color: #fff;
-    }
-    .kinoko-btn-style {
-      background: linear-gradient(135deg, #8b5a2b, #654321);
-      color: #fff;
-    }
-    .kuri-btn-style {
-      background: linear-gradient(135deg, #d35400, #a04000);
-      color: #fff;
-    }
-    .wakame-btn-style {
-      background: linear-gradient(135deg, #00acc1, #00838f);
-      color: #fff;
-    }
-    .rice-btn-style {
-      background: linear-gradient(135deg, #e67e22, #b93d00);
-      color: #fff;
-    }
-    .quiz-btn-style {
-      background: linear-gradient(135deg, #27ae60, #219653);
-      color: #fff;
-    }
-    .btn-desc {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: normal;
-      opacity: 0.95;
-      margin-top: 4px;
-    }
-    .back-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: #3498db;
-      font-size: 0.85rem;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ゲーム・解剖学クイズ道場 | 皓一部屋</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    margin: 0;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+  }
+  .menu-card {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 480px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #2c3e50;
+  }
+  p {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .game-link-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 15px;
+    border-radius: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    box-sizing: border-box;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .game-link-btn:active {
+    transform: scale(0.97);
+  }
+  
+  /* 色の並び替え後の美しいグラデーション配列 */
+  .tap-btn-style {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+  }
+  .wakame-btn-style {
+    background: linear-gradient(135deg, #00acc1, #00838f);
+    color: #fff;
+  }
+  .yubi-btn-style {
+    background: linear-gradient(135deg, #8e44ad, #732d91);
+    color: #fff;
+  }
+  .sneeze-btn-style {
+    background: linear-gradient(135deg, #f39c12, #d68910);
+    color: #fff;
+  }
+  .rice-btn-style {
+    background: linear-gradient(135deg, #e67e22, #b93d00);
+    color: #fff;
+  }
+  .rhythm-btn-style {
+    background: linear-gradient(135deg, #d35400, #a04000);
+    color: #fff;
+  }
+  .mosquito-btn-style {
+    background: linear-gradient(135deg, #c0392b, #962d22);
+    color: #fff;
+  }
+  .kinoko-btn-style {
+    background: linear-gradient(135deg, #8b5a2b, #654321);
+    color: #fff;
+  }
+  .kuri-btn-style {
+    background: linear-gradient(135deg, #6d4c41, #4e342e);
+    color: #fff;
+  }
+  .quiz-btn-style {
+    background: linear-gradient(135deg, #27ae60, #219653);
+    color: #fff;
+  }
+
+  .btn-desc {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: normal;
+    opacity: 0.95;
+    margin-top: 4px;
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #3498db;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+</style>
 </head>
 <body>
 
@@ -133,69 +136,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>🎮 20秒リフレッシュゲーム＆道場</h1>
   <p>お好みのコースを選んで、日頃の凝りをスッキリ解消しよう！</p>
 
- 
-
-  <!-- 指の名前ボイスゲーム -->
-  <a href="yubi.html" class="game-link-btn yubi-btn-style">
-    ✋ 指の名前記憶ボイスゲーム
-    <span class="btn-desc">（母指・示指・中指・環指・小指をタップ！）</span>
-  </a>
-
-  <!-- モスキート退治 -->
-  <a href="mosquito.html" class="game-link-btn mosquito-btn-style">
-    🦟 モスキート退治コース
-    <span class="btn-desc">（カルボン酸対策・20秒反射神経）</span>
-  </a>
-
-  <!-- くしゃみゲーム -->
-  <a href="sneeze.html" class="game-link-btn sneeze-btn-style">
-    🤧 くしゃみが出そうで出ないゲーム
-    <span class="btn-desc">（画面をこすってムズムズ限界突破！）</span>
-  </a>
-
-  <!-- キノコ抜き道場 -->
-  <a href="kinoko.html" class="game-link-btn kinoko-btn-style">
-    🍄 キノコ抜き道場
-    <span class="btn-desc">（生えてくる椎茸を素早くスポスポ収穫！）</span>
-  </a>
-
-  <!-- 秋の栗拾いゲーム -->
-  <a href="kurihiroi.html" class="game-link-btn kuri-btn-style">
-    🌰 秋の栗拾いゲーム
-    <span class="btn-desc">（落ちてくる栗を集めて葉っぱを避けよう！）</span>
-  </a>
-
-  <!-- ワカメサラダゲーム -->
-  <a href="wakametaberu.html" class="game-link-btn wakame-btn-style">
-    🥗 ワカメサラダを食べる男
-    <span class="btn-desc">（腸活パワー全開でワカメを素早くもぐもぐ！）</span>
-  </a>
-
- <!-- 血糖値爆上げタイムアタック -->
-  <a href="gohan.html" class="game-link-btn rice-btn-style">
-    🍚 血糖値爆上げタイムアタック
-    <span class="btn-desc">（ご飯を食べて血糖値メーターを100%にしよう！）</span>
-  </a>
-
-   <!-- 連打ゲーム -->
+  <!-- 1. 連打ゲーム（青系） -->
   <a href="tap.html" class="game-link-btn tap-btn-style">
     💆‍♂️ 連打でほぐすコース
     <span class="btn-desc">（顔・手指 / 足ポンプ / お腹ガード）</span>
   </a>
 
-  <!-- リズムゲーム -->
+  <!-- 2. ワカメサラダゲーム（シアン・青緑系） -->
+  <a href="wakametaberu.html" class="game-link-btn wakame-btn-style">
+    🥗 ワカメサラダを食べる男
+    <span class="btn-desc">（腸活パワー全開でワカメを素早くもぐもぐ！）</span>
+  </a>
+
+  <!-- 3. 指の名前ボイスゲーム（紫系） -->
+  <a href="yubi.html" class="game-link-btn yubi-btn-style">
+    ✋ 指の名前記憶ボイスゲーム
+    <span class="btn-desc">（母指・示指・中指・環指・小指をタップ！）</span>
+  </a>
+
+  <!-- 4. くしゃみゲーム（黄・オレンジ系） -->
+  <a href="sneeze.html" class="game-link-btn sneeze-btn-style">
+    🤧 くしゃみが出そうで出ないゲーム
+    <span class="btn-desc">（画面をこすってムズムズ限界突破！）</span>
+  </a>
+
+  <!-- 5. 血糖値爆上げタイムアタック（オレンジ・赤みオレンジ系） -->
+  <a href="gohan.html" class="game-link-btn rice-btn-style">
+    🍚 血糖値爆上げタイムアタック
+    <span class="btn-desc">（ご飯を食べて血糖値メーターを100%にしよう！）</span>
+  </a>
+
+  <!-- 6. リズムゲーム（赤みオレンジ・ブラウン系） -->
   <a href="rhythm.html" class="game-link-btn rhythm-btn-style">
     ✨ リズムで整えるコース
     <span class="btn-desc">（肩首ほぐし / 背中・腰 / 手のひら反射区）</span>
   </a>
 
-  <!-- 足の解剖学クイズ -->
+  <!-- 7. モスキート退治（濃い赤・朱色系） -->
+  <a href="mosquito.html" class="game-link-btn mosquito-btn-style">
+    🦟 モスキート退治コース
+    <span class="btn-desc">（カルボン酸対策・20秒反射神経）</span>
+  </a>
+
+  <!-- 8. キノコ抜き道場（明るいブラウン系） -->
+  <a href="kinoko.html" class="game-link-btn kinoko-btn-style">
+    🍄 キノコ抜き道場
+    <span class="btn-desc">（生えてくる椎茸を素早くスポスポ収穫！）</span>
+  </a>
+
+  <!-- 9. 秋の栗拾いゲーム（深いダークブラウン系） -->
+  <a href="kurihiroi.html" class="game-link-btn kuri-btn-style">
+    🌰 秋の栗拾いゲーム
+    <span class="btn-desc">（落ちてくる栗を集めて葉っぱを避けよう！）</span>
+  </a>
+
+  <!-- 10. 足の解剖学クイズ（緑系） -->
   <a href="ashi-quiz.html" class="game-link-btn quiz-btn-style">
-    🦶🏼 本格解剖学・足の構造クイズ道場
+    🦶🏼 本格解剖学・足と膝の構造クイズ道場
     <span class="btn-desc">（100問プールから毎回ランダム5問出題）</span>
   </a>
 
-  <!-- 手の解剖学クイズ -->
+  <!-- 11. 手の解剖学クイズ（緑系） -->
   <a href="te-quiz.html" class="game-link-btn quiz-btn-style">
     🖐️ 本格解剖学・手の構造クイズ道場
     <span class="btn-desc">（100問プールから毎回ランダム5問出題）</span>
