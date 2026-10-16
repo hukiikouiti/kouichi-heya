@@ -39,7 +39,6 @@
             box-sizing: border-box;
         }
 
-        /* タブ切替メニュー（連打3つ） */
         .tab-menu {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -67,7 +66,6 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
-        /* 各ゲームエリア表示切替 */
         .game-section {
             display: none;
         }
@@ -181,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
 
-    <!-- タブメニュー（3つの連打ゲーム切り替え） -->
+    <!-- タブメニュー -->
     <div class="tab-menu">
         <button class="tab-btn active" id="tab-btn-face" onclick="switchTab('face')">💆‍♂️ 顔・手指</button>
         <button class="tab-btn" id="tab-btn-leg" onclick="switchTab('leg')">🦵 足ポンプ</button>
@@ -262,7 +260,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    // --- タブ切り替え処理 ---
     function switchTab(type) {
         document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
         document.querySelectorAll('.game-section').forEach(function(s) { s.classList.remove('active'); });
@@ -283,48 +280,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function resetGame(type) {
-        if (type === 'face') { if (faceTimer) clearInterval(faceTimer); document.getElementById('face-start-screen').classList.remove('hidden'); document.getElementById('face-game-screen').classList.add('hidden'); document.getElementById('face-result-screen').classList.add('hidden'); }
-        else if (type === 'leg') { if (legTimer) clearInterval(legTimer); document.getElementById('leg-start-screen').classList.remove('hidden'); document.getElementById('leg-game-screen').classList.add('hidden'); document.getElementById('leg-result-screen').classList.add('hidden'); }
-        else if (type === 'belly') { if (bellyTimer) clearInterval(bellyTimer); document.getElementById('belly-start-screen').classList.remove('hidden'); document.getElementById('belly-game-screen').classList.add('hidden'); document.getElementById('belly-result-screen').classList.add('hidden'); }
+        if (type === 'face') { 
+            if (faceTimer) clearInterval(faceTimer); 
+            document.getElementById('face-start-screen').classList.remove('hidden'); 
+            document.getElementById('face-game-screen').classList.add('hidden'); 
+            document.getElementById('face-result-screen').classList.add('hidden'); 
+        }
+        else if (type === 'leg') { 
+            if (legTimer) clearInterval(legTimer); 
+            document.getElementById('leg-start-screen').classList.remove('hidden'); 
+            document.getElementById('leg-game-screen').classList.add('hidden'); 
+            document.getElementById('leg-result-screen').classList.add('hidden'); 
+        }
+        else if (type === 'belly') { 
+            if (bellyTimer) clearInterval(bellyTimer); 
+            document.getElementById('belly-start-screen').classList.remove('hidden'); 
+            document.getElementById('belly-game-screen').classList.add('hidden'); 
+            document.getElementById('belly-result-screen').classList.add('hidden'); 
+        }
     }
 
-    // --- イベントリスナー設定（スマホ・PC両対応） ---
-    document.addEventListener('DOMContentLoaded', () => {
-        // 顔ゲーム
-        const faceBtn = document.getElementById('face-start-btn');
+    document.addEventListener('DOMContentLoaded', function() {
+        var faceBtn = document.getElementById('face-start-btn');
         if (faceBtn) {
             faceBtn.addEventListener('click', startFaceGame);
-            faceBtn.addEventListener('touchend', (e) => { e.preventDefault(); startFaceGame(); });
+            faceBtn.addEventListener('touchend', function(e) { e.preventDefault(); startFaceGame(); });
         }
-        const faceArea = document.getElementById('face-area');
+        var faceArea = document.getElementById('face-area');
         if (faceArea) {
-            faceArea.addEventListener('pointerdown', (e) => { e.preventDefault(); rubFace(); });
+            faceArea.addEventListener('pointerdown', function(e) { e.preventDefault(); rubFace(); });
         }
 
-        // 足ゲーム
-        const legBtn = document.getElementById('leg-start-btn');
+        var legBtn = document.getElementById('leg-start-btn');
         if (legBtn) {
             legBtn.addEventListener('click', startLegGame);
-            legBtn.addEventListener('touchend', (e) => { e.preventDefault(); startLegGame(); });
+            legBtn.addEventListener('touchend', function(e) { e.preventDefault(); startLegGame(); });
         }
-        const legArea = document.getElementById('leg-area');
+        var legArea = document.getElementById('leg-area');
         if (legArea) {
-            legArea.addEventListener('pointerdown', (e) => { e.preventDefault(); pumpLeg(); });
+            legArea.addEventListener('pointerdown', function(e) { e.preventDefault(); pumpLeg(); });
         }
 
-        // お腹ゲーム
-        const bellyBtn = document.getElementById('belly-start-btn');
+        var bellyBtn = document.getElementById('belly-start-btn');
         if (bellyBtn) {
             bellyBtn.addEventListener('click', startBellyGame);
-            bellyBtn.addEventListener('touchend', (e) => { e.preventDefault(); startBellyGame(); });
+            bellyBtn.addEventListener('touchend', function(e) { e.preventDefault(); startBellyGame(); });
         }
-        const bellyArea = document.getElementById('belly-area');
+        var bellyArea = document.getElementById('belly-area');
         if (bellyArea) {
-            bellyArea.addEventListener('pointerdown', (e) => { e.preventDefault(); guardBelly(); });
+            bellyArea.addEventListener('pointerdown', function(e) { e.preventDefault(); guardBelly(); });
         }
     });
 
-    // --- 1. 顔ゲーム ---
     var faceTimeLeft = 20, faceScore = 0, faceTimer = null;
     function startFaceGame() {
         document.getElementById('face-start-screen').classList.add('hidden');
@@ -336,7 +343,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('face-status-text').innerText = 'カチコチ…';
         if (faceTimer) clearInterval(faceTimer);
         faceTimer = setInterval(function() {
-            faceTimeLeft--; document.getElementById('face-timer').innerText = faceTimeLeft;
+            faceTimeLeft--; 
+            document.getElementById('face-timer').innerText = faceTimeLeft;
             if (faceTimeLeft <= 0) endFaceGame();
         }, 1000);
     }
@@ -361,7 +369,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'face_rub', 'score': faceScore});
     }
 
-    // --- 2. 足ゲーム ---
     var legTimeLeft = 20, legScore = 0, legTimer = null;
     function startLegGame() {
         document.getElementById('leg-start-screen').classList.add('hidden');
@@ -373,7 +380,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('leg-status-text').innerText = '血流が滞り中…';
         if (legTimer) clearInterval(legTimer);
         legTimer = setInterval(function() {
-            legTimeLeft--; document.getElementById('leg-timer').innerText = legTimeLeft;
+            legTimeLeft--; 
+            document.getElementById('leg-timer').innerText = legTimeLeft;
             if (legTimeLeft <= 0) endLegGame();
         }, 1000);
     }
@@ -392,3 +400,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else if (legScore > 50) {
             avatar.innerText = '🏃‍♂️';
             statusText.innerText = '強烈ポンプ発動！';
+        } else if (legScore > 30) {
+            avatar.innerText = '🚶‍♂️';
+            statusText.innerText = '血流がめぐり始めた！';
+        }
+    }
+    function endLegGame() {
+        clearInterval(legTimer);
+        document.getElementById('leg-game-screen').classList.add('hidden');
+        document.getElementById('leg-result-screen').classList.remove('hidden');
+        var judge = legScore <= 40 ? "【むくみ要注意】" : legScore <= 80 ? "【標準ポンプ】" : "【超強力ポンプ級】";
+        document.getElementById('leg-result-message').innerHTML = '20秒で <b>' + legScore + ' 回</b> ポンプできました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>オイルボディワークで脚全体を癒やそう！';
+        var text = encodeURIComponent('20秒足ポンプで ' + legScore + ' 回血流を流しました！\n判定：' + judge + '\n\nあなたの脚はむくんでない？👇');
+        document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,オイルマッサージ';
+        if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'leg_pump', 'score': legScore});
+    }
+
+    var bellyTimeLeft = 20, bellyScore = 0, bellyTimer = null;
+    var stressList = ["💻 デスクワークの圧", "🥶 冷え・自律神経", "📧 鳴りやまない通知", "🧠 無意識の腹圧緊張", "💦 慢性的なストレス"];
+    function startBellyGame() {
+        document.getElementById('belly-start-screen').classList.add('hidden');
+        document.getElementById('belly-game-screen').classList.remove('hidden');
+        bellyScore = 0; bellyTimeLeft = 20;
+        document.getElementById('belly-score').innerText = bellyScore;
+        document.getElementById('belly-timer').innerText = bellyTimeLeft;
+        document.getElementById('belly-avatar').innerText = '🧘‍♂️🛡️';
+        document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔ 💻 デスクワークの圧';
+        if (bellyTimer) clearInterval(bellyTimer);
+        bellyTimer = setInterval(function() {
+            bellyTimeLeft--; 
+            document.getElementById('belly-timer').innerText = bellyTimeLeft;
+            if (bellyTimeLeft <= 0) endBellyGame();
+        }, 1000);
+    }
+    function guardBelly() {
+        if (bellyTimeLeft <= 0) return;
+        bellyScore++;
+        if (navigator.vibrate) navigator.vibrate(30);
+        document.getElementById('belly-score').innerText = bellyScore;
+
+        if (bellyScore % 5 === 0) {
+            var randomStress = stressList[Math.floor(Math.random() * stressList.length)];
+            document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔ ' + randomStress;
+        }
+    }
+    function endBellyGame() {
+        clearInterval(bellyTimer);
+        document.getElementById('belly-game-screen').classList.add('hidden');
+        document.getElementById('belly-result-screen').classList.remove('hidden');
+        var judge = bellyScore <= 40 ? "【ストレス蓄積腹】" : "【鉄壁のお腹ガード】";
+        document.getElementById('belly-result-message').innerHTML = '20秒で <b>' + bellyScore + ' 回</b> ガード成功！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>カルサイネイザンでお腹の緊張を解放しよう。';
+        var text = encodeURIComponent('20秒お腹ゲームでストレスを ' + bellyScore + ' 回ガード！\n判定：' + judge + '\n\nあなたのお腹は固まってない？👇');
+        document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,カルサイネイザン';
+        if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
+    }
+</script>
+
+</body>
+</html>
