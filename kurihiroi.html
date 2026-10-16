@@ -126,7 +126,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d35400; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
   <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
-  <a href="https://toluch.jp/kouichihigashino" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
+  <!-- LINEお友達追加ボタン -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="btn" style="background: linear-gradient(135deg, #06c755, #05b34c); margin-top: 10px; text-align: center;">🟢 LINEお友達追加</a>
+  <!-- 予約枠ボタン（正しいGoogleカレンダーURL設定） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
@@ -181,7 +184,6 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  // スピードを少し遅く調整
   const fallSpeed = Math.random() * 1.2 + 1.2;
 
   const fallInterval = setInterval(() => {
@@ -203,12 +205,17 @@ function spawnItem() {
     e.stopPropagation();
     if (!gameActive) return;
 
+    // タップ時のバイブレーション（対応端末のみ 40ミリ秒振動）
+    if (navigator.vibrate) {
+      navigator.vibrate(40);
+    }
+
     if (isChestnut) {
-      score += 1; // 1個ずつカウント
+      score += 1;
       item.innerText = '✨';
       setTimeout(() => item.remove(), 100);
     } else {
-      score = Math.max(0, score - 2); // 葉っぱは-2個分
+      score = Math.max(0, score - 2);
       item.innerText = '❌';
       setTimeout(() => item.remove(), 100);
     }
