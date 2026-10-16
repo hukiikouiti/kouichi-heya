@@ -61,17 +61,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .hidden { display: none !important; }
 
-  /* ゲームプレイ画面のスタイル */
+  /* 夕暮れ背景のゲーム画面 */
   #game-canvas-container {
     position: relative;
     width: 100%;
     max-width: 480px;
     height: 400px;
-    background: #fff8e1;
+    background: linear-gradient(180deg, #ff7e5f 0%, #feb47b 50%, #d35400 100%);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 2px solid #ffe0b2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ffccbc;
   }
   .hud {
     display: flex;
@@ -79,7 +79,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding: 10px 20px;
     font-weight: bold;
     font-size: 1rem;
-    color: #d35400;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
   .falling-item {
     position: absolute;
@@ -87,6 +88,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     cursor: pointer;
     transform: translate(-50%, -50%);
     transition: transform 0.1s;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   }
   .falling-item:active {
     transform: translate(-50%, -50%) scale(1.2);
@@ -100,7 +102,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- スタート画面 -->
 <div class="screen" id="start-screen">
   <h1>🌰 秋の栗拾いゲーム</h1>
   <p>空から降ってくる「栗（🌰）」をタップして集めよう！<br>「葉っぱ（🍃）」をタップするとミスになるので注意！</p>
@@ -110,7 +111,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
-<!-- プレイ画面 -->
 <div class="screen hidden" id="game-screen" style="padding: 10px;">
   <div class="hud">
     <div id="timer-text">残り時間: 20秒</div>
@@ -119,7 +119,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="game-canvas-container"></div>
 </div>
 
-<!-- 結果画面 -->
 <div class="screen hidden" id="result-screen">
   <h1>🎉 記録発表！</h1>
   <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d35400; margin: 20px 0;"></p>
@@ -150,17 +149,13 @@ function startGame() {
   const container = document.getElementById('game-canvas-container');
   container.innerHTML = '';
 
-  // タイマー開始
   if (timerId) clearInterval(timerId);
   timerId = setInterval(() => {
     timeLeft--;
     document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
-    if (timeLeft <= 0) {
-      endGame();
-    }
+    if (timeLeft <= 0) endGame();
   }, 1000);
 
-  // アイテム生成開始
   if (spawnerId) clearInterval(spawnerId);
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
@@ -172,7 +167,6 @@ function spawnItem() {
   const item = document.createElement('div');
   item.className = 'falling-item';
 
-  // 7割の確率で栗、3割の確率で葉っぱ
   const isChestnut = Math.random() < 0.7;
   item.innerText = isChestnut ? '🌰' : '🍃';
 
@@ -184,7 +178,6 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  // 落ちるスピード
   const fallSpeed = Math.random() * 2 + 2;
 
   const fallInterval = setInterval(() => {
@@ -193,18 +186,15 @@ function spawnItem() {
       item.remove();
       return;
     }
-
     currentTop += fallSpeed;
     item.style.top = currentTop + 'px';
 
-    // 画面下に到達したら消す
     if (currentTop > container.clientHeight + 30) {
       clearInterval(fallInterval);
       item.remove();
     }
   }, 20);
 
-  // タップしたときの処理
   item.onclick = function(e) {
     e.stopPropagation();
     if (!gameActive) return;
