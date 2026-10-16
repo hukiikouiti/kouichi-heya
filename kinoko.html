@@ -61,17 +61,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .hidden { display: none !important; }
 
-  /* ゲームプレイ画面のスタイル */
+  /* 茶色地面のゲーム画面 */
   #game-canvas-container {
     position: relative;
     width: 100%;
     max-width: 480px;
     height: 400px;
-    background: #f1f8e9;
+    background: linear-gradient(180deg, #8d6e63 0%, #5d4037 100%);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 2px solid #dcedc8;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 2px solid #d7ccc8;
   }
   .hud {
     display: flex;
@@ -79,14 +79,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding: 10px 20px;
     font-weight: bold;
     font-size: 1rem;
-    color: #558b2f;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
-  .kinoko-item {
+  /* キノコを囲む白いタップボタン */
+  .kinoko-wrapper {
     position: absolute;
-    font-size: 2.8rem;
+    width: 65px;
+    height: 65px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transform: translate(-50%, -50%) scale(0);
     animation: popUp 0.3s forwards;
+    border: 3px solid #ffccbc;
+  }
+  .kinoko-item {
+    font-size: 2.2rem;
   }
   @keyframes popUp {
     to { transform: translate(-50%, -50%) scale(1); }
@@ -100,17 +113,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- スタート画面 -->
 <div class="screen" id="start-screen">
   <h1>🍄 キノコ抜き道場</h1>
-  <p>次々生えてくる椎茸（🍄）を素早くタップしてスポスポ収穫しよう！</p>
+  <p>茶色の地面から生えてくる椎茸（🍄）を白いボタンごとスポスポ収穫しよう！</p>
   <div style="font-size: 3rem; margin: 10px 0;">🍄</div>
   <button class="btn" onclick="startGame()">ゲームスタート！</button>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
-<!-- プレイ画面 -->
 <div class="screen hidden" id="game-screen" style="padding: 10px;">
   <div class="hud">
     <div id="timer-text">残り時間: 20秒</div>
@@ -119,10 +130,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="game-canvas-container"></div>
 </div>
 
-<!-- 結果画面 -->
 <div class="screen hidden" id="result-screen">
   <h1>🎉 収穫結果発表！</h1>
-  <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #8b5a2b; margin: 20px 0;"></p>
+  <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d7ccc8; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
   <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
   <br>
@@ -150,17 +160,13 @@ function startGame() {
   const container = document.getElementById('game-canvas-container');
   container.innerHTML = '';
 
-  // タイマー開始
   if (timerId) clearInterval(timerId);
   timerId = setInterval(() => {
     timeLeft--;
     document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
-    if (timeLeft <= 0) {
-      endGame();
-    }
+    if (timeLeft <= 0) endGame();
   }, 1000);
 
-  // キノコを生やすタイマー
   if (spawnerId) clearInterval(spawnerId);
   spawnerId = setInterval(() => {
     if (gameActive) spawnKinoko();
@@ -169,37 +175,42 @@ function startGame() {
 
 function spawnKinoko() {
   const container = document.getElementById('game-canvas-container');
+  
+  // 白いボタンのラッパー要素
+  const wrapper = document.createElement('div');
+  wrapper.className = 'kinoko-wrapper';
+
   const item = document.createElement('div');
   item.className = 'kinoko-item';
   item.innerText = '🍄';
+  wrapper.appendChild(item);
 
   const containerWidth = container.clientWidth;
   const containerHeight = container.clientHeight;
   
-  const randomX = Math.random() * (containerWidth - 60) + 30;
-  const randomY = Math.random() * (containerHeight - 60) + 30;
+  const randomX = Math.random() * (containerWidth - 90) + 45;
+  const randomY = Math.random() * (containerHeight - 90) + 45;
 
-  item.style.left = randomX + 'px';
-  item.style.top = randomY + 'px';
+  wrapper.style.left = randomX + 'px';
+  wrapper.style.top = randomY + 'px';
 
-  container.appendChild(item);
+  container.appendChild(wrapper);
 
-  // 一定時間（1.2秒）以内にタップしないと消える
   const disappearTimeout = setTimeout(() => {
-    if (item.parentNode) {
-      item.remove();
+    if (wrapper.parentNode) {
+      wrapper.remove();
     }
   }, 1200);
 
-  // タップしたときの処理
-  item.onclick = function(e) {
+  wrapper.onclick = function(e) {
     e.stopPropagation();
     if (!gameActive) return;
 
     clearTimeout(disappearTimeout);
     score++;
     item.innerText = '✨';
-    setTimeout(() => item.remove(), 150);
+    wrapper.style.background = '#e8f5e9'; // タップ時に緑っぽく光る
+    setTimeout(() => wrapper.remove(), 150);
     document.getElementById('score-text').innerText = "収穫数: " + score;
   };
 }
