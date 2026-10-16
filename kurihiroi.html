@@ -51,6 +51,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     margin-top: 15px;
+    text-decoration: none;
+    box-sizing: border-box;
   }
   .back-link {
     display: inline-block;
@@ -114,7 +116,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="screen hidden" id="game-screen" style="padding: 10px;">
   <div class="hud">
     <div id="timer-text">残り時間: 20秒</div>
-    <div id="score-text">スコア: 0</div>
+    <div id="score-text">スコア: 0個</div>
   </div>
   <div id="game-canvas-container"></div>
 </div>
@@ -124,6 +126,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d35400; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
   <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
+  <a href="https://toluch.jp/kouichihigashino" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
@@ -143,7 +146,7 @@ function startGame() {
   score = 0;
   timeLeft = 20;
   gameActive = true;
-  document.getElementById('score-text').innerText = "スコア: " + score;
+  document.getElementById('score-text').innerText = "スコア: " + score + "個";
   document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
 
   const container = document.getElementById('game-canvas-container');
@@ -159,7 +162,7 @@ function startGame() {
   if (spawnerId) clearInterval(spawnerId);
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
-  }, 600);
+  }, 700);
 }
 
 function spawnItem() {
@@ -167,7 +170,7 @@ function spawnItem() {
   const item = document.createElement('div');
   item.className = 'falling-item';
 
-  const isChestnut = Math.random() < 0.7;
+  const isChestnut = Math.random() < 0.75;
   item.innerText = isChestnut ? '🌰' : '🍃';
 
   const containerWidth = container.clientWidth;
@@ -178,7 +181,8 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  const fallSpeed = Math.random() * 2 + 2;
+  // スピードを少し遅く調整
+  const fallSpeed = Math.random() * 1.2 + 1.2;
 
   const fallInterval = setInterval(() => {
     if (!gameActive) {
@@ -200,15 +204,15 @@ function spawnItem() {
     if (!gameActive) return;
 
     if (isChestnut) {
-      score += 10;
+      score += 1; // 1個ずつカウント
       item.innerText = '✨';
       setTimeout(() => item.remove(), 100);
     } else {
-      score = Math.max(0, score - 15);
+      score = Math.max(0, score - 2); // 葉っぱは-2個分
       item.innerText = '❌';
       setTimeout(() => item.remove(), 100);
     }
-    document.getElementById('score-text').innerText = "スコア: " + score;
+    document.getElementById('score-text').innerText = "スコア: " + score + "個";
   };
 }
 
@@ -219,11 +223,11 @@ function endGame() {
 
   document.getElementById('game-screen').classList.add('hidden');
   document.getElementById('result-screen').classList.remove('hidden');
-  document.getElementById('result-score').innerText = "獲得スコア: " + score + "点！";
+  document.getElementById('result-score').innerText = "獲得した栗: " + score + "個！";
 }
 
 function shareToX() {
-  const text = encodeURIComponent("【秋の栗拾いゲーム】で " + score + "点獲得しました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
+  const text = encodeURIComponent("【秋の栗拾いゲーム】で栗を " + score + "個拾いました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
   window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
 }
 </script>
