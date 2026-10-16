@@ -250,7 +250,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <a href="index.html" class="back-link">🏠 ホームに戻る</a>
+    <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 
 </div>
 
@@ -373,34 +373,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('belly-score').innerText = bellyScore;
         document.getElementById('belly-timer').innerText = bellyTimeLeft;
         document.getElementById('belly-avatar').innerText = '🧘‍♂️🛡️';
-        document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔ 💻 デスクワークの圧';
-        bellyTimer = setInterval(function() {
-            bellyTimeLeft--; document.getElementById('belly-timer').innerText = bellyTimeLeft;
-            if (bellyTimeLeft <= 0) endBellyGame();
-        }, 1000);
-    }
-    function guardBelly(e) {
-        if (e && e.cancelable) e.preventDefault();
-        if (bellyTimeLeft <= 0) return;
-        bellyScore++;
-        document.getElementById('belly-score').innerText = bellyScore;
-
-        if (bellyScore % 5 === 0) {
-            var randomStress = stressList[Math.floor(Math.random() * stressList.length)];
-            document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔ ' + randomStress;
-        }
-    }
-    function endBellyGame() {
-        clearInterval(bellyTimer);
-        document.getElementById('belly-game-screen').classList.add('hidden');
-        document.getElementById('belly-result-screen').classList.remove('hidden');
-        var judge = bellyScore <= 40 ? "【ストレス蓄積腹】" : "【鉄壁のお腹ガード】";
-        document.getElementById('belly-result-message').innerHTML = '20秒で <b>' + bellyScore + ' 回</b> ガード成功！<br><span style="font-size:0.8rem; color:#8e44ad; font-weight:bold;">' + judge + '</span><br><br>カルサイネイザンでお腹の緊張を解放しよう。';
-        var text = encodeURIComponent('20秒お腹ゲームでストレスを ' + bellyScore + ' 回ガード！\n判定：' + judge + '\n\nあなたのお腹は固まってない？👇');
-        document.getElementById('belly-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,カルサイネイザン';
-        if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'belly_guard', 'score': bellyScore});
-    }
-</script>
-
-</body>
-</html>
+        document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔
