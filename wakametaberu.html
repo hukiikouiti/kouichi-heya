@@ -168,7 +168,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- スタート画面 -->
     <div id="game-start-screen">
         <div style="font-size: 3.5rem; margin: 15px 0;">😋🥗</div>
-        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+        <button id="start-btn" class="btn start-btn">ゲームスタート！</button>
     </div>
 
     <!-- プレイ画面 -->
@@ -203,6 +203,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let spawnerInterval = null;
     let isPlaying = false;
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', startGame);
+            startBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                startGame();
+            });
+        }
+    });
+
     function startGame() {
         if (isPlaying) return;
         isPlaying = true;
@@ -221,7 +232,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             window.dataLayer.push({'event': 'game_start', 'game_name': 'wakame_game'});
         }
 
-        // 制限時間タイマー（20秒）
+        if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
@@ -230,7 +241,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }, 1000);
 
-        // ワカメやタコを降らせるタイマー
+        if (spawnerInterval) clearInterval(spawnerInterval);
         spawnerInterval = setInterval(spawnItem, 550);
     }
 
@@ -241,7 +252,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const item = document.createElement('div');
         item.className = 'falling-item';
 
-        // 75%の確率でワカメ（🌿または🥗）、25%の確率でミスオブジェクト（🐙）
         const rand = Math.random();
         let itemType = 'wakame';
         if (rand < 0.5) {
@@ -250,3 +260,127 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else if (rand < 0.75) {
             item.innerHTML = '🥗';
             itemType = 'wakame';
+        } else {
+            item.innerHTML = '🐙';
+            itemType = 'tako';
+        }
+        item.dataset.type = itemType;
+
+        const maxX = stage.clientWidth - 50;
+        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+        item.style.left = randomX + 'px';
+        item.style.top = '-50px';
+
+        let posY = -50;
+        const fallSpeed = 2.2 + Math.random() * 2.8;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
+                item.remove();
+            }
+        }, 30);
+
+        const handleItemTap = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!isPlaying) return;
+
+            clearInterval(fallInterval);
+
+            const rect = stage.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (item.dataset.type === 'wakame') {
+                score += 1;
+                if (navigator.vibrate) navigator.vibrate(40);
+                showPopup(clientX - rect.left, clientY - rect.top, '+1皿 😋', 'popup-plus', stage);
+            } else {
+                score = Math.max(0, score - 1);
+                if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+                showPopup(clientX - rect.left, clientY - rect.top, 'ミス！🐙', 'popup-miss', stage);
+            }
+
+            document.getElementById('score-count').innerText = score;
+            item.remove();
+        };
+
+        item.onmousedown = handleItemTap;
+        item.ontouchstart = handleItemTap;
+
+        stage.appendChild(item);
+    }
+
+    function showPopup(x, y, text, className, stage) {
+        const popup = document.createElement('div');
+        popup.className = `popup-msg ${className}`;
+        popup.innerText = text;
+        popup.style.left = Math.max(10, x - 20) + 'px';
+        popup.style.top = Math.max(10, y - 20) + 'px';
+
+        stage.appendChild(popup);
+        setTimeout(() => popup.remove(), 500);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('wakame-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        if (score < 10) {
+            judge = "【ワカメ初心者ビギナー】";
+        } else if (score < 20) {
+            judge = "【腸活もぐもぐマスター】";
+        } else if (score < 35) {
+            judge = "【海藻キング・超人ファイター】";
+        } else {
+            judge = "【神速のワカメハンター伝説】";
+        }
+
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">😋🥗</div>合計スコア： <b>' + score + ' 皿</b><br><span style="font-size:0.8rem; color:#00838f; font-weight:bold;">' + judge + '</span><br><br>ワカメパワーで腸活リフレッシュ完了！';
+
+        var text = encodeURIComponent('ワカメサラダをもぐもぐ食べるゲームで ' + score + ' 皿食べました！\n称号：' + judge + '\n\nタコを避けてワカメを食べる爽快感、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,腸活,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'wakame_game', 'score': score});
+        }
+    }
+
+    function resetGame() {
+        if (timerInterval) clearInterval(timerInterval);
+        if (spawnerInterval) clearInterval(spawnerInterval);
+        document.getElementById('game-start-screen').classList.remove('hidden');
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+        isPlaying = false;
+    }
+</script>
+
+</body>
+</html>
