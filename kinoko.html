@@ -25,6 +25,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     min-height: 100vh;
     overflow: hidden;
     user-select: none;
+    touch-action: manipulation;
   }
   .screen {
     background: #ffffff;
@@ -53,6 +54,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-top: 15px;
     text-decoration: none;
     box-sizing: border-box;
+    text-align: center;
   }
   .back-link {
     display: inline-block;
@@ -74,6 +76,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     border: 2px solid #d7ccc8;
+    touch-action: none;
   }
   .hud {
     display: flex;
@@ -98,6 +101,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     transform: translate(-50%, -50%) scale(0);
     animation: popUp 0.3s forwards;
     border: 3px solid #ffccbc;
+    -webkit-tap-highlight-color: transparent;
   }
   .kinoko-item {
     font-size: 2.2rem;
@@ -118,9 +122,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>🍄 キノコ抜き道場</h1>
   <p>茶色の地面から生えてくる椎茸（🍄）を白いボタンごとスポスポ収穫しよう！</p>
   <div style="font-size: 3rem; margin: 10px 0;">🍄</div>
-  <button class="btn" onclick="startGame()">ゲームスタート！</button>
+  <button id="start-btn" class="btn">ゲームスタート！</button>
   <br>
-  <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
+  <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
 <div class="screen hidden" id="game-screen" style="padding: 10px;">
@@ -133,15 +137,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="screen hidden" id="result-screen">
   <h1>🎉 収穫結果発表！</h1>
-  <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d7ccc8; margin: 20px 0;"></p>
+  <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #8b5a2b; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
   <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
   <!-- LINEお友達追加ボタン -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="btn" style="background: linear-gradient(135deg, #06c755, #05b34c); margin-top: 10px; text-align: center;">🟢 LINEお友達追加</a>
-  <!-- 予約枠ボタン（正しいURL設定） -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="btn" style="background: linear-gradient(135deg, #06c755, #05b34c); margin-top: 10px;">🟢 LINEお友達追加</a>
+  <!-- 予約枠ボタン -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px;">📅 予約する（空き状況確認・ご予約）</a>
   <br>
-  <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
+  <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
 <script>
@@ -150,6 +154,17 @@ let timeLeft = 20;
 let timerId = null;
 let spawnerId = null;
 let gameActive = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', startGame);
+    startBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      startGame();
+    });
+  }
+});
 
 function startGame() {
   document.getElementById('start-screen').classList.add('hidden');
@@ -206,11 +221,11 @@ function spawnKinoko() {
     }
   }, 1500);
 
-  wrapper.onclick = function(e) {
+  wrapper.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
     e.stopPropagation();
     if (!gameActive) return;
 
-    // タップ時のバイブレーション（対応端末のみ 40ミリ秒振動）
     if (navigator.vibrate) {
       navigator.vibrate(40);
     }
@@ -221,7 +236,7 @@ function spawnKinoko() {
     wrapper.style.background = '#e8f5e9';
     setTimeout(() => wrapper.remove(), 150);
     document.getElementById('score-text').innerText = "収穫数: " + score + "個";
-  };
+  });
 }
 
 function endGame() {
@@ -236,7 +251,7 @@ function endGame() {
 
 function shareToX() {
   const text = encodeURIComponent("【キノコ抜き道場】で椎茸を " + score + "個収穫しました！🍄✨\n#皓一部屋 #リフレッシュゲーム");
-  window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
 }
 </script>
 
