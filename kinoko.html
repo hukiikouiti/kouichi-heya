@@ -51,6 +51,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     margin-top: 15px;
+    text-decoration: none;
+    box-sizing: border-box;
   }
   .back-link {
     display: inline-block;
@@ -82,7 +84,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: #fff;
     text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
-  /* キノコを囲む白いタップボタン */
   .kinoko-wrapper {
     position: absolute;
     width: 65px;
@@ -125,7 +126,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="screen hidden" id="game-screen" style="padding: 10px;">
   <div class="hud">
     <div id="timer-text">残り時間: 20秒</div>
-    <div id="score-text">収穫数: 0</div>
+    <div id="score-text">収穫数: 0個</div>
   </div>
   <div id="game-canvas-container"></div>
 </div>
@@ -135,6 +136,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d7ccc8; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
   <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
+  <a href="https://toluch.jp/kouichihigashino" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
@@ -154,7 +156,7 @@ function startGame() {
   score = 0;
   timeLeft = 20;
   gameActive = true;
-  document.getElementById('score-text').innerText = "収穫数: " + score;
+  document.getElementById('score-text').innerText = "収穫数: " + score + "個";
   document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
 
   const container = document.getElementById('game-canvas-container');
@@ -168,15 +170,15 @@ function startGame() {
   }, 1000);
 
   if (spawnerId) clearInterval(spawnerId);
+  // スピードを少し遅く（0.7秒ごとに生成）調整
   spawnerId = setInterval(() => {
     if (gameActive) spawnKinoko();
-  }, 500);
+  }, 700);
 }
 
 function spawnKinoko() {
   const container = document.getElementById('game-canvas-container');
   
-  // 白いボタンのラッパー要素
   const wrapper = document.createElement('div');
   wrapper.className = 'kinoko-wrapper';
 
@@ -200,7 +202,7 @@ function spawnKinoko() {
     if (wrapper.parentNode) {
       wrapper.remove();
     }
-  }, 1200);
+  }, 1500); // 表示時間を少し延長
 
   wrapper.onclick = function(e) {
     e.stopPropagation();
@@ -209,9 +211,9 @@ function spawnKinoko() {
     clearTimeout(disappearTimeout);
     score++;
     item.innerText = '✨';
-    wrapper.style.background = '#e8f5e9'; // タップ時に緑っぽく光る
+    wrapper.style.background = '#e8f5e9';
     setTimeout(() => wrapper.remove(), 150);
-    document.getElementById('score-text').innerText = "収穫数: " + score;
+    document.getElementById('score-text').innerText = "収穫数: " + score + "個";
   };
 }
 
