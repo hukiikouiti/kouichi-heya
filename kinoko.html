@@ -1,158 +1,97 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
-    <!-- End Google Tag Manager -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>キノコ抜き道場 | 皓一部屋</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+  .screen {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 480px;
+    width: 90%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  h1 { font-size: 1.2rem; color: #8b5a2b; margin-top: 0; }
+  p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #8b5a2b, #654321);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin-top: 15px;
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3498db;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .hidden { display: none !important; }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>キノコ抜き道場 - 皓一部屋</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
-            text-align: center;
-            margin: 0;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .game-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            max-width: 420px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        h1 {
-            font-size: 1.1rem;
-            margin-bottom: 6px;
-            color: #2c3e50;
-        }
-        p {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0;
-            margin-bottom: 12px;
-        }
-        .timer-box {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #d35400;
-            margin: 8px 0;
-        }
-        /* キノコが生えてくるフィールドステージ（森の地面・ウッディ風背景） */
-        .kinoko-stage {
-            width: 100%;
-            height: 260px;
-            background: linear-gradient(135deg, #4a3319 0%, #3d2612 50%, #2c1a0b 100%);
-            border: 3px solid #8b5a2b;
-            border-radius: 16px;
-            position: relative;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
-        }
-        /* 背景にうっすら木の葉や土の質感を感じさせるドットパターン */
-        .kinoko-stage::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-            background-size: 16px 16px;
-            pointer-events: none;
-        }
-        /* キノコボタン */
-        .kinoko-btn {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #a0522d, #8b4513);
-            color: #fff;
-            border-radius: 50% 50% 30% 30%;
-            border: 2px solid #deb887;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-            transition: transform 0.1s ease;
-        }
-        .kinoko-btn:active {
-            transform: scale(0.8);
-        }
-        /* 字幕ポップアップ */
-        .popup-text {
-            position: absolute;
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: #ffd700;
-            background: rgba(44, 26, 11, 0.9);
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid #deb887;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            pointer-events: none;
-            animation: floatUp 0.6s ease-out forwards;
-            z-index: 10;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-40px) scale(1.1); }
-        }
-
-        .btn {
-            display: inline-block;
-            width: 100%;
-            padding: 12px 0;
-            border-radius: 30px;
-            font-weight: bold;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-            box-sizing: border-box;
-        }
-        .start-btn {
-            background-color: #8b5a2b;
-            color: #fff;
-        }
-        .share-btn {
-            background-color: #000000;
-            color: #fff;
-            margin-top: 12px;
-        }
-        .reserve-btn {
-            background-color: #2ecc71;
-            color: #fff;
-            margin-top: 8px;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .back-link {
-            display: block;
-            margin-top: 15px;
-            color: #3498db;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-    </style>
+  /* ゲームプレイ画面のスタイル */
+  #game-canvas-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 400px;
+    background: #f1f8e9;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 2px solid #dcedc8;
+  }
+  .hud {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #558b2f;
+  }
+  .kinoko-item {
+    position: absolute;
+    font-size: 2.8rem;
+    cursor: pointer;
+    transform: translate(-50%, -50%) scale(0);
+    animation: popUp 0.3s forwards;
+  }
+  @keyframes popUp {
+    to { transform: translate(-50%, -50%) scale(1); }
+  }
+</style>
 </head>
 <body>
 
@@ -161,164 +100,125 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<div class="game-card">
-    <h1>🍄 キノコ抜き道場</h1>
-    <p>生えてくる椎茸を次々タップしてスポスポ収穫しよう！</p>
+<!-- スタート画面 -->
+<div class="screen" id="start-screen">
+  <h1>🍄 キノコ抜き道場</h1>
+  <p>次々生えてくる椎茸（🍄）を素早くタップしてスポスポ収穫しよう！</p>
+  <div style="font-size: 3rem; margin: 10px 0;">🍄</div>
+  <button class="btn" onclick="startGame()">ゲームスタート！</button>
+  <br>
+  <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
+</div>
 
-    <!-- スタート画面 -->
-    <div id="game-start-screen">
-        <div style="font-size: 3.5rem; margin: 15px 0;">🍄</div>
-        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
-    </div>
+<!-- プレイ画面 -->
+<div class="screen hidden" id="game-screen" style="padding: 10px;">
+  <div class="hud">
+    <div id="timer-text">残り時間: 20秒</div>
+    <div id="score-text">収穫数: 0</div>
+  </div>
+  <div id="game-canvas-container"></div>
+</div>
 
-    <!-- プレイ画面 -->
-    <div id="game-play-screen" class="hidden">
-        <div class="timer-box">残り <span id="timer">20</span> 秒</div>
-        <div style="font-size: 0.9rem; font-weight: bold; color: #2c3e50; margin-bottom: 8px;">
-            収穫数: <span id="score-count">0</span> 本
-        </div>
-        
-        <!-- キノコ抜きステージ（森の地面・土風グラデーション） -->
-        <div class="kinoko-stage" id="kinoko-stage"></div>
-        <p style="font-size:0.8rem; color:#888;">制限時間内にできるだけ多く抜け！</p>
-    </div>
-
-    <!-- 結果画面 -->
-    <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #8b5a2b; font-size: 1.2rem;">✨ 収穫お疲れ様でした！</h2>
-        <p id="result-message"></p>
-        <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する</a>
-        <a href="javascript:void(0)" onclick="resetGame()" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
-    </div>
-
-    <a href="index.html" class="back-link">🎮 ゲーム選択に戻る</a>
+<!-- 結果画面 -->
+<div class="screen hidden" id="result-screen">
+  <h1>🎉 収穫結果発表！</h1>
+  <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #8b5a2b; margin: 20px 0;"></p>
+  <button class="btn" onclick="startGame()">もう一度挑戦する</button>
+  <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
+  <br>
+  <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
 <script>
-    let score = 0;
-    let timeLeft = 20;
-    let timerInterval = null;
-    let spawnerInterval = null;
-    let isPlaying = false;
-    const phrases = ["スポッ！", "収穫成功！", "立派な椎茸！", "スポーン！", "豊作！"];
+let score = 0;
+let timeLeft = 20;
+let timerId = null;
+let spawnerId = null;
+let gameActive = false;
 
-    function startGame() {
-        if (isPlaying) return;
-        isPlaying = true;
-        score = 0;
-        timeLeft = 20;
-        document.getElementById('timer').innerText = timeLeft;
-        document.getElementById('score-count').innerText = score;
+function startGame() {
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('result-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.remove('hidden');
 
-        document.getElementById('game-start-screen').classList.add('hidden');
-        document.getElementById('game-play-screen').classList.remove('hidden');
-        document.getElementById('game-result-screen').classList.add('hidden');
+  score = 0;
+  timeLeft = 20;
+  gameActive = true;
+  document.getElementById('score-text').innerText = "収穫数: " + score;
+  document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
 
-        clearKinoko();
+  const container = document.getElementById('game-canvas-container');
+  container.innerHTML = '';
 
-        if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'kinoko_game'});
-        }
-
-        // 制限時間タイマー
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById('timer').innerText = timeLeft;
-            if (timeLeft <= 0) {
-                endGame();
-            }
-        }, 1000);
-
-        // キノコを次々発生させるタイマー
-        spawnerInterval = setInterval(spawnKinoko, 750);
+  // タイマー開始
+  if (timerId) clearInterval(timerId);
+  timerId = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer-text').innerText = "残り時間: " + timeLeft + "秒";
+    if (timeLeft <= 0) {
+      endGame();
     }
+  }, 1000);
 
-    function spawnKinoko() {
-        if (!isPlaying) return;
-        const stage = document.getElementById('kinoko-stage');
-        
-        const maxX = stage.clientWidth - 70;
-        const maxY = stage.clientHeight - 70;
-        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
-        const randomY = Math.floor(Math.random() * Math.max(0, maxY));
+  // キノコを生やすタイマー
+  if (spawnerId) clearInterval(spawnerId);
+  spawnerId = setInterval(() => {
+    if (gameActive) spawnKinoko();
+  }, 500);
+}
 
-        const btn = document.createElement('button');
-        btn.className = 'kinoko-btn';
-        btn.innerHTML = '🍄';
-        btn.style.left = randomX + 'px';
-        btn.style.top = randomY + 'px';
+function spawnKinoko() {
+  const container = document.getElementById('game-canvas-container');
+  const item = document.createElement('div');
+  item.className = 'kinoko-item';
+  item.innerText = '🍄';
 
-        btn.onclick = (e) => {
-            if (!isPlaying) return;
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
+  
+  const randomX = Math.random() * (containerWidth - 60) + 30;
+  const randomY = Math.random() * (containerHeight - 60) + 30;
 
-            // タップ時のスマホ振動（バイブレーション）
-            if (navigator.vibrate) {
-                navigator.vibrate(40);
-            }
+  item.style.left = randomX + 'px';
+  item.style.top = randomY + 'px';
 
-            score++;
-            document.getElementById('score-count').innerText = score;
+  container.appendChild(item);
 
-            // 字幕ポップアップ表示
-            showPopup(e.clientX || (e.touches && e.touches[0].clientX), e.clientY || (e.touches && e.touches[0].clientY), stage);
-
-            btn.remove();
-        };
-
-        stage.appendChild(btn);
-
-        // 一定時間（1.3秒）タップされないと消える
-        setTimeout(() => {
-            if (btn.parentElement) {
-                btn.remove();
-            }
-        }, 1300);
+  // 一定時間（1.2秒）以内にタップしないと消える
+  const disappearTimeout = setTimeout(() => {
+    if (item.parentNode) {
+      item.remove();
     }
+  }, 1200);
 
-    function showPopup(clientX, clientY, stage) {
-        const popup = document.createElement('div');
-        popup.className = 'popup-text';
-        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-        popup.innerText = randomPhrase;
+  // タップしたときの処理
+  item.onclick = function(e) {
+    e.stopPropagation();
+    if (!gameActive) return;
 
-        const rect = stage.getBoundingClientRect();
-        const x = (clientX ? clientX - rect.left : rect.width / 2) - 20;
-        const y = (clientY ? clientY - rect.top : rect.height / 2) - 10;
+    clearTimeout(disappearTimeout);
+    score++;
+    item.innerText = '✨';
+    setTimeout(() => item.remove(), 150);
+    document.getElementById('score-text').innerText = "収穫数: " + score;
+  };
+}
 
-        popup.style.left = Math.max(10, Math.min(rect.width - 80, x)) + 'px';
-        popup.style.top = Math.max(10, Math.min(rect.height - 40, y)) + 'px';
+function endGame() {
+  gameActive = false;
+  clearInterval(timerId);
+  clearInterval(spawnerId);
 
-        stage.appendChild(popup);
-        setTimeout(() => popup.remove(), 600);
-    }
+  document.getElementById('game-screen').classList.add('hidden');
+  document.getElementById('result-screen').classList.remove('hidden');
+  document.getElementById('result-score').innerText = "合計収穫数: " + score + "個！";
+}
 
-    function clearKinoko() {
-        const stage = document.getElementById('kinoko-stage');
-        stage.innerHTML = '';
-    }
+function shareToX() {
+  const text = encodeURIComponent("【キノコ抜き道場】で椎茸を " + score + "個収穫しました！🍄✨\n#皓一部屋 #リフレッシュゲーム");
+  window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
+}
+</script>
 
-    function endGame() {
-        if (!isPlaying) return;
-        isPlaying = false;
-        clearInterval(timerInterval);
-        clearInterval(spawnerInterval);
-        clearKinoko();
-
-        // 終了時の振動
-        if (navigator.vibrate) {
-            navigator.vibrate([100, 50, 100]);
-        }
-
-        document.getElementById('game-play-screen').classList.add('hidden');
-        document.getElementById('game-result-screen').classList.remove('hidden');
-
-        let judge = "";
-        if (score < 10) {
-            judge = "【まだまだ初心者キノコ採り】";
-        } else if (score < 20) {
-            judge = "【なかなかの収穫名人】";
-        } else if (score < 30) {
-            judge = "【キノコ抜き達人レベル】";
-        } else {
-            judge = "【神速の
+</body>
+</html>
