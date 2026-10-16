@@ -10,7 +10,7 @@
     <!-- End Google Tag Manager -->
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>20秒連打リフレッシュ | 皓一部屋</title>
     <style>
         body {
@@ -25,6 +25,9 @@
             justify-content: center;
             min-height: 100vh;
             text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
         .game-card {
             background: #ffffff;
@@ -104,7 +107,8 @@
             -webkit-user-select: none;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
             transition: transform 0.1s ease;
-            touch-action: manipulation;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .massage-area:active {
             transform: scale(0.95);
@@ -112,12 +116,14 @@
         .avatar {
             font-size: 3rem;
             line-height: 1.1;
+            pointer-events: none;
         }
         .status-text {
             font-size: 0.75rem;
             color: #555;
             margin-top: 6px;
             padding: 0 10px;
+            pointer-events: none;
         }
 
         .btn {
@@ -132,6 +138,7 @@
             font-size: 0.95rem;
             box-sizing: border-box;
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            -webkit-tap-highlight-color: transparent;
         }
         .start-btn {
             background-color: #3498db;
@@ -176,19 +183,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- タブメニュー（3つの連打ゲーム切り替え） -->
     <div class="tab-menu">
-        <button class="tab-btn active" id="tab-face" onclick="switchTab('face')">💆‍♂️ 顔・手指</button>
-        <button class="tab-btn" id="tab-leg" onclick="switchTab('leg')">🦵 足ポンプ</button>
-        <button class="tab-btn" id="tab-belly" onclick="switchTab('belly')">🧘 お腹ガード</button>
+        <button class="tab-btn active" id="tab-btn-face" onclick="switchTab('face')">💆‍♂️ 顔・手指</button>
+        <button class="tab-btn" id="tab-btn-leg" onclick="switchTab('leg')">🦵 足ポンプ</button>
+        <button class="tab-btn" id="tab-btn-belly" onclick="switchTab('belly')">🧘 お腹ガード</button>
     </div>
 
     <!-- 1. 顔・手指さすりゲーム -->
     <div id="game-sec-face" class="game-section active">
         <h1>💆‍♂️ 20秒さすり体験</h1>
         <p>丸印の中を指でなでて凝りをほぐそう！</p>
-        <div id="face-start-screen"><button class="btn start-btn" onclick="startFaceGame()">スタート！</button></div>
+        <div id="face-start-screen"><button id="face-start-btn" class="btn start-btn">スタート！</button></div>
         <div id="face-game-screen" class="hidden">
             <div class="timer-box">残り <span id="face-timer">20</span> 秒</div>
-            <div class="massage-area" onclick="rubFace(event)">
+            <div class="massage-area" id="face-area">
                 <div class="avatar" id="face-avatar">😫</div>
                 <div class="status-text" id="face-status-text">カチコチ…</div>
             </div>
@@ -208,10 +215,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-sec-leg" class="game-section">
         <h1>🦵 20秒ふくらはぎポンプ</h1>
         <p>丸印の中をリズムよく連打して血流アップ！</p>
-        <div id="leg-start-screen"><button class="btn start-btn" style="background-color:#27ae60;" onclick="startLegGame()">スタート！</button></div>
+        <div id="leg-start-screen"><button id="leg-start-btn" class="btn start-btn" style="background-color:#27ae60;">スタート！</button></div>
         <div id="leg-game-screen" class="hidden">
             <div class="timer-box">残り <span id="leg-timer">20</span> 秒</div>
-            <div class="massage-area" style="background-color:#e8f8f5;" onclick="pumpLeg(event)">
+            <div class="massage-area" id="leg-area" style="background-color:#e8f8f5;">
                 <div class="avatar" id="leg-avatar">🦶</div>
                 <div class="status-text" id="leg-status-text">血流が滞り中…</div>
             </div>
@@ -231,10 +238,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-sec-belly" class="game-section">
         <h1>🧘 お腹ストレスガード</h1>
         <p>襲いかかるストレスをお腹の盾で弾き返せ！</p>
-        <div id="belly-start-screen"><button class="btn start-btn" style="background-color:#8e44ad;" onclick="startBellyGame()">スタート！</button></div>
+        <div id="belly-start-screen"><button id="belly-start-btn" class="btn start-btn" style="background-color:#8e44ad;">スタート！</button></div>
         <div id="belly-game-screen" class="hidden">
             <div class="timer-box">残り <span id="belly-timer">20</span> 秒</div>
-            <div class="massage-area" style="background-color:#f4ecf7;" onclick="guardBelly(event)">
+            <div class="massage-area" id="belly-area" style="background-color:#f4ecf7;">
                 <div class="avatar" id="belly-avatar">🧘‍♂️🛡️</div>
                 <div class="status-text" id="belly-status-text">お腹の盾でガード中 ➔ 💻 デスクワークの圧</div>
             </div>
@@ -260,7 +267,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
         document.querySelectorAll('.game-section').forEach(function(s) { s.classList.remove('active'); });
 
-        var targetTab = document.getElementById('tab-' + type);
+        var targetTab = document.getElementById('tab-btn-' + type);
         if (targetTab) targetTab.classList.add('active');
         
         var targetSection = document.getElementById('game-sec-' + type);
@@ -281,6 +288,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         else if (type === 'belly') { if (bellyTimer) clearInterval(bellyTimer); document.getElementById('belly-start-screen').classList.remove('hidden'); document.getElementById('belly-game-screen').classList.add('hidden'); document.getElementById('belly-result-screen').classList.add('hidden'); }
     }
 
+    // --- イベントリスナー設定（スマホ・PC両対応） ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // 顔ゲーム
+        const faceBtn = document.getElementById('face-start-btn');
+        if (faceBtn) {
+            faceBtn.addEventListener('click', startFaceGame);
+            faceBtn.addEventListener('touchend', (e) => { e.preventDefault(); startFaceGame(); });
+        }
+        const faceArea = document.getElementById('face-area');
+        if (faceArea) {
+            faceArea.addEventListener('pointerdown', (e) => { e.preventDefault(); rubFace(); });
+        }
+
+        // 足ゲーム
+        const legBtn = document.getElementById('leg-start-btn');
+        if (legBtn) {
+            legBtn.addEventListener('click', startLegGame);
+            legBtn.addEventListener('touchend', (e) => { e.preventDefault(); startLegGame(); });
+        }
+        const legArea = document.getElementById('leg-area');
+        if (legArea) {
+            legArea.addEventListener('pointerdown', (e) => { e.preventDefault(); pumpLeg(); });
+        }
+
+        // お腹ゲーム
+        const bellyBtn = document.getElementById('belly-start-btn');
+        if (bellyBtn) {
+            bellyBtn.addEventListener('click', startBellyGame);
+            bellyBtn.addEventListener('touchend', (e) => { e.preventDefault(); startBellyGame(); });
+        }
+        const bellyArea = document.getElementById('belly-area');
+        if (bellyArea) {
+            bellyArea.addEventListener('pointerdown', (e) => { e.preventDefault(); guardBelly(); });
+        }
+    });
+
     // --- 1. 顔ゲーム ---
     var faceTimeLeft = 20, faceScore = 0, faceTimer = null;
     function startFaceGame() {
@@ -291,15 +334,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('face-timer').innerText = faceTimeLeft;
         document.getElementById('face-avatar').innerText = '😫';
         document.getElementById('face-status-text').innerText = 'カチコチ…';
+        if (faceTimer) clearInterval(faceTimer);
         faceTimer = setInterval(function() {
             faceTimeLeft--; document.getElementById('face-timer').innerText = faceTimeLeft;
             if (faceTimeLeft <= 0) endFaceGame();
         }, 1000);
     }
-    function rubFace(e) {
-        if (e && e.cancelable) e.preventDefault();
+    function rubFace() {
         if (faceTimeLeft <= 0) return;
         faceScore++;
+        if (navigator.vibrate) navigator.vibrate(30);
         document.getElementById('face-score').innerText = faceScore;
         var avatar = document.getElementById('face-avatar'), statusText = document.getElementById('face-status-text');
         if (faceScore > 100) { avatar.innerText = '😆✨'; statusText.innerText = 'めちゃくちゃ軽やか！'; }
@@ -327,15 +371,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('leg-timer').innerText = legTimeLeft;
         document.getElementById('leg-avatar').innerText = '🦶';
         document.getElementById('leg-status-text').innerText = '血流が滞り中…';
+        if (legTimer) clearInterval(legTimer);
         legTimer = setInterval(function() {
             legTimeLeft--; document.getElementById('leg-timer').innerText = legTimeLeft;
             if (legTimeLeft <= 0) endLegGame();
         }, 1000);
     }
-    function pumpLeg(e) {
-        if (e && e.cancelable) e.preventDefault();
+    function pumpLeg() {
         if (legTimeLeft <= 0) return;
         legScore++;
+        if (navigator.vibrate) navigator.vibrate(30);
         document.getElementById('leg-score').innerText = legScore;
 
         var avatar = document.getElementById('leg-avatar');
@@ -347,30 +392,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else if (legScore > 50) {
             avatar.innerText = '🏃‍♂️';
             statusText.innerText = '強烈ポンプ発動！';
-        } else if (legScore > 30) {
-            avatar.innerText = '🚶‍♂️';
-            statusText.innerText = '血流がめぐり始めた！';
-        }
-    }
-    function endLegGame() {
-        clearInterval(legTimer);
-        document.getElementById('leg-game-screen').classList.add('hidden');
-        document.getElementById('leg-result-screen').classList.remove('hidden');
-        var judge = legScore <= 40 ? "【むくみ要注意】" : legScore <= 80 ? "【標準ポンプ】" : "【超強力ポンプ級】";
-        document.getElementById('leg-result-message').innerHTML = '20秒で <b>' + legScore + ' 回</b> ポンプできました！<br><span style="font-size:0.8rem; color:#e67e22; font-weight:bold;">' + judge + '</span><br><br>オイルボディワークで脚全体を癒やそう！';
-        var text = encodeURIComponent('20秒足ポンプで ' + legScore + ' 回血流を流しました！\n判定：' + judge + '\n\nあなたの脚はむくんでない？👇');
-        document.getElementById('leg-share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/tap.html') + '&hashtags=皓一部屋,オイルマッサージ';
-        if (window.dataLayer) window.dataLayer.push({'event': 'game_finish', 'game_name': 'leg_pump', 'score': legScore});
-    }
-
-    // --- 3. お腹ゲーム ---
-    var bellyTimeLeft = 20, bellyScore = 0, bellyTimer = null;
-    var stressList = ["💻 デスクワークの圧", "🥶 冷え・自律神経", "📧 鳴りやまない通知", "🧠 無意識の腹圧緊張", "💦 慢性的なストレス"];
-    function startBellyGame() {
-        document.getElementById('belly-start-screen').classList.add('hidden');
-        document.getElementById('belly-game-screen').classList.remove('hidden');
-        bellyScore = 0; bellyTimeLeft = 20;
-        document.getElementById('belly-score').innerText = bellyScore;
-        document.getElementById('belly-timer').innerText = bellyTimeLeft;
-        document.getElementById('belly-avatar').innerText = '🧘‍♂️🛡️';
-        document.getElementById('belly-status-text').innerText = 'お腹の盾でガード中 ➔
+        } else if (legScore > 30
