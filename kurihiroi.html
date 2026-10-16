@@ -25,6 +25,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     min-height: 100vh;
     overflow: hidden;
     user-select: none;
+    touch-action: manipulation;
   }
   .screen {
     background: #ffffff;
@@ -41,7 +42,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .btn {
     display: block;
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     background: linear-gradient(135deg, #d35400, #a04000);
     color: #fff;
     border: none;
@@ -50,9 +51,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    margin-top: 15px;
+    margin-top: 10px;
     text-decoration: none;
     box-sizing: border-box;
+    text-align: center;
   }
   .back-link {
     display: inline-block;
@@ -74,6 +76,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     border: 2px solid #ffccbc;
+    touch-action: none;
   }
   .hud {
     display: flex;
@@ -86,14 +89,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .falling-item {
     position: absolute;
-    font-size: 2.5rem;
+    width: 55px;
+    height: 55px;
+    font-size: 2.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  }
-  .falling-item:active {
-    transform: translate(-50%, -50%) scale(1.2);
+    -webkit-tap-highlight-color: transparent;
   }
 </style>
 </head>
@@ -108,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>🌰 秋の栗拾いゲーム</h1>
   <p>空から降ってくる「栗（🌰）」をタップして集めよう！<br>「葉っぱ（🍃）」をタップするとミスになるので注意！</p>
   <div style="font-size: 3rem; margin: 10px 0;">🌰</div>
-  <button class="btn" onclick="startGame()">ゲームスタート！</button>
+  <button id="start-btn" class="btn">ゲームスタート！</button>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
@@ -125,11 +130,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>🎉 記録発表！</h1>
   <p id="result-score" style="font-size: 1.2rem; font-weight: bold; color: #d35400; margin: 20px 0;"></p>
   <button class="btn" onclick="startGame()">もう一度挑戦する</button>
-  <button class="btn" style="background: #000; margin-top: 10px;" onclick="shareToX()">Xで結果をシェアする</button>
+  <button class="btn" style="background: #000;" onclick="shareToX()">Xで結果をシェアする</button>
   <!-- LINEお友達追加ボタン -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="btn" style="background: linear-gradient(135deg, #06c755, #05b34c); margin-top: 10px; text-align: center;">🟢 LINEお友達追加</a>
-  <!-- 予約枠ボタン（正しいGoogleカレンダーURL設定） -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653); margin-top: 10px; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="btn" style="background: linear-gradient(135deg, #06c755, #05b34c);">🟢 LINEお友達追加</a>
+  <!-- 予約枠ボタン -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="btn" style="background: linear-gradient(135deg, #27ae60, #219653);">📅 予約する（空き状況確認・ご予約）</a>
   <br>
   <a href="menu.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
@@ -140,6 +145,17 @@ let timeLeft = 20;
 let timerId = null;
 let spawnerId = null;
 let gameActive = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', startGame);
+    startBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      startGame();
+    });
+  }
+});
 
 function startGame() {
   document.getElementById('start-screen').classList.add('hidden');
@@ -175,6 +191,7 @@ function spawnItem() {
 
   const isChestnut = Math.random() < 0.75;
   item.innerText = isChestnut ? '🌰' : '🍃';
+  item.dataset.type = isChestnut ? 'chestnut' : 'leaf';
 
   const containerWidth = container.clientWidth;
   const randomX = Math.random() * (containerWidth - 60) + 30;
@@ -201,16 +218,18 @@ function spawnItem() {
     }
   }, 20);
 
-  item.onclick = function(e) {
+  item.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
     e.stopPropagation();
     if (!gameActive) return;
 
-    // タップ時のバイブレーション（対応端末のみ 40ミリ秒振動）
+    clearInterval(fallInterval);
+
     if (navigator.vibrate) {
       navigator.vibrate(40);
     }
 
-    if (isChestnut) {
+    if (item.dataset.type === 'chestnut') {
       score += 1;
       item.innerText = '✨';
       setTimeout(() => item.remove(), 100);
@@ -220,7 +239,7 @@ function spawnItem() {
       setTimeout(() => item.remove(), 100);
     }
     document.getElementById('score-text').innerText = "スコア: " + score + "個";
-  };
+  });
 }
 
 function endGame() {
@@ -235,7 +254,7 @@ function endGame() {
 
 function shareToX() {
   const text = encodeURIComponent("【秋の栗拾いゲーム】で栗を " + score + "個拾いました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
-  window.open("https://twitter.com/intent/tweet?text=" + text, "_blank");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
 }
 </script>
 
