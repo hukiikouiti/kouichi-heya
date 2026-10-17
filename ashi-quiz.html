@@ -830,7 +830,6 @@ function startQuiz() {
   document.getElementById('result-container').classList.add('hidden');
   document.getElementById('quiz-container').classList.remove('hidden');
   
-  // 100問の中からランダムに5問抽出
   let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
   currentQuestions = shuffled.slice(0, 5);
   currentIndex = 0;
@@ -852,7 +851,7 @@ function showQuestion() {
     let btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.innerText = (index + 1) + ". " + opt;
-    btn.onclick = () => selectChoice(index);
+    btn.onclick = () => selectChoice(index, btn);
     choicesContainer.appendChild(btn);
   });
   
@@ -860,9 +859,61 @@ function showQuestion() {
   document.getElementById('next-btn').classList.add('hidden');
 }
 
-function selectChoice(index) {
+function selectChoice(index, clickedBtn) {
   if (answered) return;
   answered = true;
   
   let q = currentQuestions[currentIndex];
   let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct'); // 正解のボタンを確実にハイライト
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい解剖学の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの解剖学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【足と膝の構造クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🦴✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
