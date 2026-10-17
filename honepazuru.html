@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>左足の骨 組み立てパズル</title>
+    <title>右足の骨 組み立てパズル</title>
     <style>
         body {
             font-family: sans-serif;
@@ -85,7 +85,7 @@
 </head>
 <body>
 
-    <h1>左足の骨 組み立てパズル</h1>
+    <h1>右足の骨 組み立てパズル</h1>
     <div id="ui-panel">
         残り時間: <span id="time">90</span>秒 | クリア: <span id="score">0</span> / 9
     </div>
@@ -96,17 +96,17 @@
     <button onclick="resetGame()">もう一度プレイ</button>
 
 <script>
-    // 左足のパーツデータ（位置・サイズを調整）
+    // 右足のパーツデータ（お持ちの画像ファイルの向きに完全同期）
     const partsData = [
-        { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 170, y: 20, w: 160, h: 200 },
-        { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 120, y: 30, w: 100, h: 180 },
-        { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 150, y: 210, w: 200, h: 150 },
-        { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 155, y: 355, w: 190, h: 180 },
-        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 140, y: 535, w: 50, h: 90 },
-        { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 195, y: 535, w: 45, h: 90 },
-        { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 245, y: 535, w: 40, h: 85 },
-        { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 290, y: 535, w: 40, h: 80 },
-        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 335, y: 535, w: 40, h: 75 }
+        { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 200, y: 20, w: 100, h: 140 },
+        { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 295, y: 30, w: 50, h: 130 },
+        { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 175, y: 155, w: 150, h: 110 },
+        { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 180, y: 260, w: 140, h: 140 },
+        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 290, y: 395, w: 45, h: 90 }, // 親指が右側
+        { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 252, y: 395, w: 38, h: 95 },
+        { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 217, y: 395, w: 35, h: 90 },
+        { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 182, y: 395, w: 35, h: 85 },
+        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 147, y: 395, w: 35, h: 80 }  // 小指が左側
     ];
 
     let timeLeft = 90;
@@ -165,11 +165,10 @@
             img.style.width = part.w + 'px';
             img.style.height = part.h + 'px';
 
-            // バラバラに配置する初期位置を画面下部に確実に収まるように調整
             const col = index % 3;
             const row = Math.floor(index / 3);
             const randomX = 40 + col * 140;
-            const randomY = 635 + row * 38;
+            const randomY = 520 + row * 70;
             img.style.left = randomX + 'px';
             img.style.top = randomY + 'px';
 
