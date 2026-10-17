@@ -4,7 +4,7 @@
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    j=d.createElement(s),dl=l!='dataLayer'?'&l!='l':'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
     <!-- End Google Tag Manager -->
@@ -93,23 +93,14 @@
             background-repeat: no-repeat;
             background-position: center;
         }
-        /* ポップアップ文字 */
-        .popup-msg {
-            position: absolute;
-            font-weight: bold;
-            font-size: 0.9rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-            pointer-events: none;
-            animation: floatUp 0.5s ease-out forwards;
-            z-index: 10;
+        /* 被弾時の点滅アニメーション用 */
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
         }
-        .popup-plus { color: #fff; background: rgba(212, 175, 55, 0.9); border: 1px solid #ffcc00; }
-        .popup-miss { color: #fff; background: rgba(192, 57, 43, 0.9); border: 1px solid #ff9999; }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-35px) scale(1.1); }
+        .hit-flash {
+            animation: flash 0.4s ease;
         }
 
         .btn {
@@ -180,7 +171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🏰 名古屋めし防衛戦</h1>
-    <p>名古屋城を動かして（または画面タップで）、迫り来る名古屋めしを撃ち落とせ！敵の弾に当たると血糖値オーバーでゲームオーバー！</p>
+    <p>名古屋城を動かして名古屋めしを撃ち落とせ！弾に当たっても血糖値が上がるだけで、数回まで耐えられます！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -235,15 +226,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let timeLeft = 60;
     let isPlaying = false;
     let score = 0; // 倒した数
-    let sugarLevel = 0;
+    let sugarLevel = 0; // 血糖値（0〜100%）
     let timerInterval = null;
     let loopInterval = null;
     let enemyShootInterval = null;
+    let hitCooldown = false; // 連続被弾防止用
 
     let castleX = 160;
     const castleWidth = 65;
     const castleHeight = 65;
-    let castle, castleElem;
+    let castleElem;
     let bullets = [];
     let enemies = [];
     let enemyBullets = [];
@@ -280,6 +272,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         bullets = [];
         enemies = [];
         enemyBullets = [];
+        hitCooldown = false;
 
         document.getElementById('timer').innerText = timeLeft;
         document.getElementById('score-count').innerText = "4";
@@ -360,11 +353,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         enemyShootInterval = setInterval(() => {
             if (!isPlaying) return;
             enemies.forEach(enemy => {
-                if (enemy.hp > 0 && Math.random() < 0.4) {
+                if (enemy.hp > 0 && Math.random() < 0.35) {
                     enemyShoot(enemy);
                 }
             });
-        }, 850);
+        }, 900);
 
         if (loopInterval) cancelAnimationFrame(loopInterval);
         gameLoop();
@@ -400,7 +393,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         eb.style.top = ey + 'px';
         stage.appendChild(eb);
         
-        let randomSpeed = 1.5 + Math.random() * 1.5;
+        let randomSpeed = 1.3 + Math.random() * 1.4;
         enemyBullets.push({ x: ex, y: ey, speed: randomSpeed, element: eb });
     }
 
@@ -441,9 +434,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (en.hp <= 0) {
                         en.element.remove();
                         score++;
-                        sugarLevel += 25;
-                        document.getElementById('sugar-text').innerText = sugarLevel;
-                        document.getElementById('meter-bar').style.width = sugarLevel + '%';
                         document.getElementById('score-count').innerText = 4 - score;
 
                         if (score >= 4) {
@@ -469,10 +459,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
 
             // 当たり判定（名古屋城に被弾）
-            if (eb.x > castleX && eb.x < castleX + castleWidth &&
+            if (!hitCooldown && eb.x > castleX && eb.x < castleX + castleWidth &&
                 eb.y > stage.clientHeight - castleHeight - 15 && eb.y < stage.clientHeight) {
-                endGame(false, "血糖値オーバー（被弾）！ゲームオーバー");
-                return;
+                
+                // 弾を消す
+                eb.element.remove();
+                enemyBullets.splice(i, 1);
+
+                // 血糖値が25%上昇（4回当たると100%でゲームオーバー）
+                sugarLevel += 25;
+                document.getElementById('sugar-text').innerText = sugarLevel;
+                document.getElementById('meter-bar').style.width = sugarLevel + '%';
+
+                // 被弾エフェクト（点滅）
+                castleElem.classList.add('hit-flash');
+                setTimeout(() => castleElem.classList.remove('hit-flash'), 400);
+
+                if (sugarLevel >= 100) {
+                    endGame(false, "血糖値が100%を超えてしまいました…！ゲームオーバー");
+                    return;
+                }
+
+                // 連続被弾を防ぐ無敵時間（0.5秒）
+                hitCooldown = true;
+                setTimeout(() => { hitCooldown = false; }, 500);
+                break;
             }
         }
 
