@@ -1,105 +1,101 @@
+足のクイズ道場と同じように、綺麗に出力フォーマットを統一した「本格解剖学・手の構造クイズ道場（100問版）」の完全版コードを作成いたしました。
+
+以下のコードをコピーして、GitHubなどの該当ファイルに丸ごと上書き保存してください。
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
-  <!-- End Google Tag Manager -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格解剖学・手の構造クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>本格解剖学・手の構造クイズ道場 | 皓一部屋</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f7f9fc;
-      color: #333;
-      margin: 0;
-      padding: 20px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-    .quiz-card {
-      background: #ffffff;
-      padding: 25px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      max-width: 480px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-    }
-    .game-link-btn {
-      display: block;
-      width: 100%;
-      padding: 14px 20px;
-      margin-bottom: 10px;
-      border-radius: 14px;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-      cursor: pointer;
-      border: none;
-    }
-    .game-link-btn:active {
-      transform: scale(0.97);
-    }
-    .quiz-btn-style {
-      background: linear-gradient(135deg, #27ae60, #219653);
-      color: #fff;
-    }
-    .line-btn {
-      background: linear-gradient(135deg, #06c755, #05b34c);
-      color: #fff;
-    }
-    .reserve-btn {
-      background: linear-gradient(135deg, #2980b9, #3498db);
-      color: #fff;
-    }
-    .hidden { display: none !important; }
-    .quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
-    .question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
-    .question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
-    .choice-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      background: #f1f3f5;
-      color: #333;
-      text-align: left;
-      border: 1px solid #dcdde1;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      box-sizing: border-box;
-      transition: all 0.2s;
-    }
-    .choice-btn:hover { background: #e4e7eb; }
-    .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
-    .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
-    .explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
-    .next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
 
-    /* 5秒後の点滅アニメーション */
-    @keyframes hintFlash {
-      0%, 100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); }
-      50% { background-color: #fde047; color: #854d0e; border-color: #eab308; transform: scale(1.02); }
-    }
-    .choice-btn.hint-flash {
-      animation: hintFlash 0.6s infinite;
-    }
-  </style>
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
 </head>
 <body>
 
@@ -108,7 +104,6 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- 1. クイズ出題画面 -->
 <div class="quiz-card" id="quiz-container">
   <div id="category-title" class="quiz-title">手の解剖学クイズ</div>
   <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
@@ -116,24 +111,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="choices-container"></div>
   <div id="explanation-container" class="hidden explanation-box"></div>
   <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
-  <a href="index.html" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none; display: block; padding: 12px; border-radius: 8px; font-weight: bold;">メニューに戻る</a>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
 </div>
 
-<!-- 2. クイズ結果発表画面 -->
 <div class="quiz-card hidden" id="result-container" style="text-align: center;">
   <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
-  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
-  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">X（旧Twitter）で結果をシェアする</button>
-  <!-- LINEお友達追加ボタン -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
-  <!-- 予約枠ボタン -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
   <button onclick="startQuiz()" class="game-link-btn quiz-btn-style">もう一度挑戦する（別の5問）</button>
-  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; text-decoration: none; margin-bottom: 0;">メニューに戻る</a>
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</button>
+  <!-- LINEお友達追加ボタン -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+  <!-- 予約枠ボタン -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #2980b9, #3498db); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff;">メニューに戻る</a>
 </div>
 
 <script>
-// 100問のデータプール（手・前腕の骨格・筋肉・神経生理学）
 const allQuestions = [
   // ジャンル1：手根骨・手指の骨格（25問）
   {
@@ -222,7 +215,7 @@ const allQuestions = [
   },
   {
     category: "手根骨・骨格",
-    question: "手首の関節（橈骨手根関節）を直接受ける下腿ならぬ前腕側の骨はどれ？",
+    question: "手首の関節（橈骨手根関節）を直接受ける前腕側の構造はどれ？",
     options: ["橈骨（遠位端）と関節円板（尺骨側）", "尺骨が直接手根骨全てと関節を作る", "上腕骨と直接結合する", "舟状骨と直接完全に癒合している"],
     answer: 0,
     explanation: "手関節は主に橈骨の下端と関節円板が、近位の手根骨（舟状骨・月状骨・三角骨）と関節を作ります。"
@@ -299,4 +292,668 @@ const allQuestions = [
   },
   {
     category: "手根骨・骨格",
-    question: "月状骨（げつじょうこつ）が手関節のなかで位置的に挟まれやすい隣接
+    question: "月状骨が手関節の中で脱臼や血流障害を起こしやすい理由として最も関係深い構造上の特徴はどれ？",
+    options: ["表面の大部分が関節軟骨に覆われ、血管の入り口が限られるため", "筋肉が直接大量に付着しているため", "手首の一番外側にあるため", "常に全体重を支えているため"],
+    answer: 0,
+    explanation: "月状骨は周囲を関節面に囲まれており血行が乏しいため、受傷時にキーンベック病などの血流障害を起こしやすいです。"
+  },
+  {
+    category: "手根骨・骨格",
+    question: "手根骨の中で一番小さく、単独で触れやすい豆状骨の真後ろ（深層）にある手根骨はどれ？",
+    options: ["三角骨", "有鈎骨", "月状骨", "舟状骨"],
+    answer: 0,
+    explanation: "豆状骨は三角骨の掌側にぴったりと乗るように位置しています。"
+  },
+
+  // ジャンル2：手・前腕の筋肉と腱（25問）
+  {
+    category: "筋肉・腱",
+    question: "手のひらの親指の付け根にあって、母指を動かす筋肉群の総称はどれ？",
+    options: ["母指球筋群（短母趾外転筋など）", "小指球筋群", "虫様筋", "骨間筋"],
+    answer: 0,
+    explanation: "母指球筋群は親指の繊細で力強い動き（対立や屈曲など）を支えます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手のひらの小指の付け根にあって、小指側の運動を司る筋肉群の総称はどれ？",
+    options: ["小指球筋群", "母指球筋群", "深指屈筋", "総指伸筋"],
+    answer: 0,
+    explanation: "小指球筋群は小指を動かしたり、手のひらの横アーチを深めたりする働きをします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕から手根管を通って、指の第1関節（DIP関節）までを強力に曲げる深層の筋肉はどれ？",
+    options: ["深指屈筋（FDP）", "浅指屈筋", "長母趾屈筋", "橈側手根屈筋"],
+    answer: 0,
+    explanation: "深指屈筋は指先（DIP関節）を曲げる唯一の筋肉です。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "指の第2関節（PIP関節）を曲げる働きを持つ、深指屈筋よりも浅い層にある筋肉はどれ？",
+    options: ["浅指屈筋（FDS）", "深指屈筋", "総指伸筋", "虫様筋"],
+    answer: 0,
+    explanation: "浅指屈筋はPIP関節を屈曲させます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手の甲側（背面）を通り、人差し指から小指までのMP・PIP・DIP関節を伸ばす働きをする筋肉はどれ？",
+    options: ["総指伸筋（ED）", "示指伸筋", "長母指伸筋", "長橈側手根伸筋"],
+    answer: 0,
+    explanation: "総指伸筋は前腕背面から各指の指背腱膜に移行し、指を伸ばします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手のひらのなかにあり、MP関節を曲げ、PIP・DIP関節を伸ばすという特殊な連動動作を行う小さな筋肉はどれ？",
+    options: ["虫様筋（ちゅうようきん）", "背側骨間筋", "母指内転筋", "掌側骨間筋"],
+    answer: 0,
+    explanation: "虫様筋は屈筋腱から起こり伸筋腱に終わるため、指を「もの書きの形」に曲げる調整をします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "指を外側に広げたり閉じたりする微細な動作をコントロールするため、中手骨の間にある筋肉群はどれ？",
+    options: ["骨間筋（背側・掌側骨間筋）", "虫様筋", "浅指屈筋", "回内筋"],
+    answer: 0,
+    explanation: "背側骨間筋は指を広げ、掌側骨間筋は指を閉じる働きをします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "親指を手のひらの中心方向に向かって強く引き寄せる（内転する）働きを持つ筋肉はどれ？",
+    options: ["母指内転筋", "母指外転筋", "短母指屈筋", "対立母指筋"],
+    answer: 0,
+    explanation: "母指内転筋は物をしっかりと挟み込むときに強く働きます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "親指を他の指と対向させる（つまみ動作の要となる）最も重要な筋肉はどれ？",
+    options: ["母指対立筋", "小指対立筋", "虫様筋", "腕橈骨筋"],
+    answer: 0,
+    explanation: "母指対立筋は親指の先端を他の指の先端と向き合わせる対立運動を行わせます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕の親指側（橈側）にあり、手首を親指側に曲げる（橈屈）働きをする筋肉はどれ？",
+    options: ["橈側手根屈筋", "尺側手根屈筋", "長橈側手根伸筋", "円回内筋"],
+    answer: 0,
+    explanation: "橈側手根屈筋は手関節の屈曲と橈屈を行います。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕の小指側（尺側）にあり、手首を小指側に曲げる（尺屈）働きをする主要な筋肉はどれ？",
+    options: ["尺側手根屈筋", "橈側手根屈筋", "総指伸筋", "長母指外転筋"],
+    answer: 0,
+    explanation: "尺側手根屈筋は手関節の屈曲および尺屈に大きく関与します。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "親指を外側に大きく広げる（外転）動作に関与する、前腕深層にある筋肉はどれ？",
+    options: ["長母指外転筋", "短母指伸筋", "総指伸筋", "腕橈骨筋"],
+    answer: 0,
+    explanation: "長母指外転筋は親指を外側・手掌面から離す方向に動かします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "親指の第2関節（IP関節）をまっすぐ伸ばす働きを持つ筋肉はどれ？",
+    options: ["長母指伸筋", "短母指伸筋", "母指内転筋", "深指屈筋"],
+    answer: 0,
+    explanation: "長母指伸筋は親指の第一関節・第二関節を同時に伸ばします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "肘を曲げるときに最も強力に働く、前腕の親指側にある筋肉はどれ？",
+    options: ["腕橈骨筋（わんとうこつきん）", "円回内筋", "回外筋", "上腕三頭筋"],
+    answer: 0,
+    explanation: "腕橈骨筋は前腕の筋肉でありながら肘の屈曲を強力にサポートします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手のひらの皮膚を緊張させ、ものを握る際の滑りを防ぐ役割を持つ、皮下の小さな筋肉はどれ？",
+    options: ["掌筋（しょうきん）", "短掌筋", "虫様筋", "骨間筋"],
+    answer: 1,
+    explanation: "短掌筋は手のひらの尺側の皮下にあり、皮膚を緊張させ握る動作を助けます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕を内側に雑巾絞りのように捻る（回内）動作の主役となる筋肉はどれ？",
+    options: ["円回内筋・方形回内筋", "回外筋", "上腕二頭筋", "腕橈骨筋"],
+    answer: 0,
+    explanation: "円回内筋や方形回内筋が収縮することで前腕が回内します。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕を外側に捻る（回外）動作において、上腕二頭筋と共に強力に働く深層の筋肉はどれ？",
+    options: ["回外筋（かいがいきん）", "円回内筋", "尺側手根屈筋", "掌長筋"],
+    answer: 0,
+    explanation: "回外筋は肘の深部にあり、前腕を外側に回す動作を行います。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手首のなかにあり、指を曲げる腱が浮き上がらないようにトンネル状の底や壁を作る構造の一部である線維組織はどれ？",
+    options: ["手根管の骨と屈筋支帯", "伸筋支帯のみ", "パッセンジャー腱", "手掌腱膜"],
+    answer: 0,
+    explanation: "手根骨が作る溝と屈筋支帯がトンネル（手根管）を作り、その中を屈筋腱が通過します。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "指の腱が通るトンネル（腱鞘）の中で、腱が浮き上がるのを防ぐプーリー（滑車）状の組織の名称はどれ？",
+    options: ["輪状腱鞘（Aプーリー）および十字腱鞘", "滑液包", "関節包", "骨間膜"],
+    answer: 0,
+    explanation: "指の屈筋腱にはAプーリーと呼ばれる環状の靭帯構造があり、腱が弓状に浮き上がるのを防いでいます。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手のひらの皮下に広がり、手全体の保護や衝撃吸収を行う強靭な線維性の膜の名称はどれ？",
+    options: ["手掌腱膜（しゅしょうけんまく）", "足底腱膜", "広頚筋", "胸 A 筋膜"],
+    answer: 0,
+    explanation: "手掌腱膜は手のひらの中心を覆う硬い膜で、物をつかむときのクッションになります。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "人差し指だけに独立して備わっており、人差し指を他の指とは別に伸ばすのを助ける筋肉はどれ？",
+    options: ["示指伸筋", "小指伸筋", "長母指伸筋", "短橈側手根伸筋"],
+    answer: 0,
+    explanation: "示指伸筋があることで、人差し指だけを独立してピシッと伸ばしやすくなります。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "小指だけに独立して備わり、小指を他の指と離して伸ばすのを助ける筋肉はどれ？",
+    options: ["小指伸筋", "示指伸筋", "母指外転筋", "対立小指筋"],
+    answer: 0,
+    explanation: "小指伸筋は小指の伸展動作をサポートします。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手首の背側で親指側の腱が通る区画（第1区画）に存在する2つの筋肉の組み合わせはどれ？",
+    options: ["長母指外転筋と短母指伸筋", "総指伸筋と示指伸筋", "長橈側手根伸筋と短橈側手根伸筋", "尺側手根屈筋と小指伸筋"],
+    answer: 0,
+    explanation: "第1区画には長母指外転筋と短母指伸筋の腱が並んで通っており、ドケルバン病の好発部位となります。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "前腕の筋肉のうち、人によって欠損していることが最も多い、手首を曲げる細い腱を持つ筋肉はどれ？",
+    options: ["掌長筋（しょうちょうきん）", "円回内筋", "腕橈骨筋", "回外筋"],
+    answer: 0,
+    explanation: "掌長筋は人類の進化の過程で退化傾向にあり、10〜20%程度の人は生まれつき持っていません。"
+  },
+  {
+    category: "筋肉・腱",
+    question: "手首や指を動かす筋肉の大部分が「前腕」に存在し、手自体には小さな筋肉（内在筋）が高い割合であることの最大の利点はどれ？",
+    options: ["手の本体を軽量に保ち、指先を細やかでスピーディーに動かせること", "手首を360度回転させられること", "握力を永久に落とさないようにするため", "手の中の骨を減らすため"],
+    answer: 0,
+    explanation: "重い筋肉を前腕に置くことで手が軽くなり、指先を機敏に動かすことが可能になっています。"
+  },
+
+  // ジャンル3：手の運動・バイオメカニクス・神経（25問）
+  {
+    category: "運動・神経",
+    question: "手のひらの感覚（親指から薬指の半分）や母指球筋の運動を主に支配する主要な神経はどれ？",
+    options: ["正中神経", "尺骨神経", "橈骨神経", "腋窩神経"],
+    answer: 0,
+    explanation: "正中神経は手根管を通るため、ここが圧迫されると手根管症候群を引き起こします。"
+  },
+  {
+    category: "運動・神経",
+    question: "小指側の感覚（小指と薬指の半分）や手のひらの細かい内在筋（骨間筋など）の大部分を支配する神経はどれ？",
+    options: ["尺骨神経", "正中神経", "橈骨神経", "筋皮神経"],
+    answer: 0,
+    explanation: "尺骨神経は肘や手首の小指側（ギヨン管）で圧迫されやすく、鷲手変形などを起こします。"
+  },
+  {
+    category: "運動・神経",
+    question: "手の甲（手背）の親指側寄りの感覚や、手首・指を「伸ばす」筋肉群（伸筋群）を支配する神経はどれ？",
+    options: ["橈骨神経", "正中神経", "尺骨神経", "正中神経枝"],
+    answer: 0,
+    explanation: "橈骨神経は腕の背面を走り、手首や指を伸ばす機能を担います（障害されると下垂手になる）。"
+  },
+  {
+    category: "運動・神経",
+    question: "親指と人差し指の腹同士を合わせて丸を作る「OKサイン（つまみ動作）」のときに最も重要な役割をする神経はどれ？",
+    options: ["正中神経", "尺骨神経", "橈骨神経", "坐骨神経"],
+    answer: 0,
+    explanation: "つまみ動作は正中神経が支配する筋肉（深指屈筋の橈側や母指対立筋など）によって精密に行われます。"
+  },
+  {
+    category: "運動・神経",
+    question: "指をパッと大きく「パー」の形に開くときに最も活躍する、手の内在筋を支配している神経はどれ？",
+    options: ["尺骨神経", "正中神経", "橈骨神経", "正中・橈骨神経"],
+    answer: 0,
+    explanation: "指を広げる背側骨間筋は尺骨神経に支配されています。"
+  },
+  {
+    category: "運動・神経",
+    question: "手の握力発揮において、最も大きな力を生み出す指はどれ？",
+    options: ["中指と薬指（および小指）", "親指のみ", "人差し指のみ", "すべての指が完全に均等"],
+    answer: 0,
+    explanation: "握力の大部分は中指・薬指・小指側の尺側指群が発揮しています。"
+  },
+  {
+    category: "運動・神経",
+    question: "物を強く握るときに、手首が不自然に曲がらないように手首を適度に反らせる（背屈させる）働きをする前腕の筋肉グループはどれ？",
+    options: ["手関節 伸筋群（橈側・尺側手根伸筋など）", "屈筋群", "虫様筋", "骨間筋"],
+    answer: 0,
+    explanation: "手首を少し反らせた状態（背屈位）のほうが、指の屈筋腱の効率が良くなり強い握力を発揮できます。"
+  },
+  {
+    category: "運動・神経",
+    question: "親指を人差し指の横にピタッとつけて何かを「しっかり挟む」つまみ方の名称はどれ？",
+    options: ["鍵つまみ（ラテラル・ピンチ）", "先端つまみ（チップ・ピンチ）", "三指つまみ", "握り締め"],
+    answer: 0,
+    explanation: "鍵を回すときのような動作を鍵つまみ（キー・ピンチ）と呼びます。"
+  },
+  {
+    category: "運動・神経",
+    question: "親指と他の指の指先同士で小さなものを摘み上げるつまみ方の名称はどれ？",
+    options: ["先端つまみ（チップ・ピンチ）", "鍵つまみ", "円柱握り", "球形握り"],
+    answer: 0,
+    explanation: "針や小さなビーズをつまむような動作を先端つまみ（チップ・ピンチ）と言います。"
+  },
+  {
+    category: "運動・神経",
+    question: "コップの取っ手やハンマーの柄を握るような、指全体で包み込むように握る把持形態はどれ？",
+    options: ["パワーグリップ（握り握持）", "プレシジョン・グリップ", "ピンチ", "フック・グリップ"],
+    answer: 0,
+    explanation: "パワーグリップは強い力で物体をしっかりと保持する把持形式です。"
+  },
+  {
+    category: "運動・神経",
+    question: "ペンを持つときや鍵盤を叩くときのような、指先で精密に道具を扱う把持形態はどれ？",
+    options: ["プレシジョン・グリップ（精密握持）", "パワーグリップ", "フック・グリップ", "ラテラル・ピンチ"],
+    answer: 0,
+    explanation: "プレシジョン・グリップは高度な巧緻性を要求される手の使い方です。"
+  },
+  {
+    category: "運動・神経",
+    question: "重い鞄の持ち手などを指をフック状に引っかけて持ち上げる把持形態を何というか？",
+    options: ["フック・グリップ（鉤状握持）", "パワーグリップ", "ピンチ", "対立運動"],
+    answer: 0,
+    explanation: "指をかぎの形に曲げて重いものを下げる持ち方をフック・グリップと言います。"
+  },
+  {
+    category: "運動・神経",
+    question: "人間の手根管を通るものの組み合わせとして正しいものはどれ？",
+    options: ["正中神経と9本の屈筋腱", "橈骨神経と伸筋腱", "尺骨神経と血管のみ", "全ての指の伸筋腱"],
+    answer: 0,
+    explanation: "手根管には正中神経と、浅指屈筋腱・深指屈筋腱・長母指屈筋腱の合計9本の腱が通っています。"
+  },
+  {
+    category: "運動・神経",
+    question: "手首を小指側に曲げたとき（尺屈）、骨同士がぶつからないように可動域を広げている手首の構造物はどれ？",
+    options: ["三角繊維軟骨複合体（TFCC）", "アキレス腱", "半月板", "関節唇"],
+    answer: 0,
+    explanation: "TFCCは手首の小指側にあるクッション兼スタビライザーで、衝撃吸収と安定性を保ちます。"
+  },
+  {
+    category: "運動・神経",
+    question: "手のひらの皮膚に大量に存在する「感覚受容器（固有受容器やメルケル盤など）」が果たす主な役割はどれ？",
+    options: ["触れたものの硬さ、質感、形状を瞬時に脳へ伝えること", "手の温度を一定に発熱させること", "手の骨の成長を促すこと", "手のひらの汗を完全に防ぐこと"],
+    answer: 0,
+    explanation: "手のひらは非常に高密度な感覚センサーを持っており、精密な作業や触覚認知に不可欠です。"
+  },
+  {
+    category: "運動・神経",
+    question: "手関節を手のひら側に曲げる（屈曲）可動域は、一般的に何度くらいが正常か？",
+    options: ["約80度", "約20度", "約180度", "約5度"],
+    answer: 0,
+    explanation: "手関節の屈曲は一般的に約80度、背屈（反らす）は約70度程度の可動域を持ちます。"
+  },
+  {
+    category: "運動・神経",
+    question: "親指の付け根（CMC関節）が持つ「サドル関節（鞍関節）」の最大の特性はどれ？",
+    options: ["2軸性の運動が可能で、回旋を伴う複雑な対立運動ができる", "1方向だけにしか曲がらない", "まったく動かない固定関節である", "360度回転する"],
+    answer: 0,
+    explanation: "鞍関節の形状により、親指は全方向への大きな自由度と対立運動を獲得しています。"
+  },
+  {
+    category: "運動・神経",
+    question: "前腕の回外（手のひらを上に向ける動き）が回内よりも一般的に力が強い理由に関係している主たる筋肉はどれ？",
+    options: ["上腕二頭筋と回外筋の強力なタッグ", "腕橈骨筋のみ", "深指屈筋", "尺側手根屈筋"],
+    answer: 0,
+    explanation: "回外運動には上腕二頭筋という太い筋肉が参加するため、回内よりも一般に力強くなります。"
+  },
+  {
+    category: "運動・神経",
+    question: "手や指を動かす神経の信号が脳から送られるとき、大脳皮質の運動野で「手」が占める割合の特徴はどれ？",
+    options: ["体の他の部位に比べて非常に広い領域を占めている", "足よりも狭い領域である", "体幹と全く同じ広さである", "脳の機能とは無関係である"],
+    answer: 0,
+    explanation: "ペンフィールドの脳地図を見てもわかる通り、手や指は脳の運動野・感覚野で非常に広い面積を割いています。"
+  },
+  {
+    category: "運動・神経",
+    question: "親指の指先で物を強く押さえたとき、親指の第1関節（IP関節）が過度に反らないように支える手内在筋はどれ？",
+    options: ["短母指屈筋や母指内転筋などのバランス", "総指伸筋", "小指外転筋", "回外筋"],
+    answer: 0,
+    explanation: "細かいバランス筋が協調することで、つまむときに指が変に反らさず安定します。"
+  },
+  {
+    category: "運動・神経",
+    question: "手首を強く背屈（反らす）させたときに、手のひらの皮膚に浮き出る縦方向の筋の正体はどれ？",
+    options: ["長掌筋や手掌腱膜の縦走線維", "正中神経そのもの", "橈骨動脈", "伸筋支帯"],
+    answer: 0,
+    explanation: "手首の掌側中央に見える筋は長掌筋腱や手掌腱膜の構造です。"
+  },
+  {
+    category: "運動・神経",
+    question: "手根管を通る正中神経が圧迫されたとき、初期症状として感覚が鈍くなる指の組み合わせはどれ？",
+    options: ["親指、人差し指、中指、および薬指の親指側半分", "小指と薬指の小指側半分", "手の甲全体", "すべての指の先端"],
+    answer: 0,
+    explanation: "正中神経が支配する領域（橈側3本半の指の掌側）にしびれや痛みが出現します。"
+  },
+  {
+    category: "運動・神経",
+    question: "手関節を完全に曲げた状態（屈曲位）で両手の手背を合わせるテスト（ファレンテスト）の目的はどれ？",
+    options: ["手根管症候群（正中神経圧迫）の誘発テスト", "ばネ指のチェック", "TFCC損傷のチェック", "肘部管症候群のチェック"],
+    answer: 0,
+    explanation: "ファレンテストで手根管内の圧力を高めることで、正中神経のしびれが誘発されるかを確認します。"
+  },
+  {
+    category: "運動・神経",
+    question: "手首の親指側のくぼみ（いわゆる「タバコボックス：解剖学的嗅ぎタバコ入れ」）の底を形成している重要な手根骨はどれ？",
+    options: ["舟状骨", "月状骨", "豆状骨", "有頭骨"],
+    answer: 0,
+    explanation: "タバコボックスの底には舟状骨や大菱形骨が存在し、舟状骨骨折時にはこの部位に圧痛が生じます。"
+  },
+  {
+    category: "運動・神経",
+    question: "人間の手が高度な道具使用や文明を生み出せた決定的なバイオメカニクスの要素はどれ？",
+    options: ["母指の「対立運動」による完璧なつまみ・握り機能", "手が他の動物より非常に重いこと", "指の骨が一切動かないこと", "手のひらに爪が生えていること"],
+    answer: 0,
+    explanation: "母指を他の指と対向させられる「対立運動」こそが、人類の巧緻性を支える最大の進化の要です。"
+  },
+
+  // ジャンル4：手のトラブル・疾患・コンディショニング・ケア（25問）
+  {
+    category: "トラブル・ケア",
+    question: "手首の手根管で正中神経が圧迫され、親指から薬指にしびれや痛みが生じる代表的な疾患はどれ？",
+    options: ["手根管症候群", "バネ指", "デュピュイトラン拘縮", "腱鞘炎"],
+    answer: 0,
+    explanation: "手根管症候群は、妊娠中・更年期の女性や手の使いすぎによって中高年に多く見られます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "指を曲げ伸ばしするときに、途中で引っかかってカクンと跳ねるように起きる疾患（弾発指）の通称はどれ？",
+    options: ["ばネ指（狭窄性腱鞘炎）", "ヘバーデン結節", "マレットフィンガー", "つき指"],
+    answer: 0,
+    explanation: "ばね指は、指の屈筋腱とAプーリーの部分で炎症や肥厚が起き、スムーズに通らなくなることで発生します。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "指の第1関節（DIP関節）が変形し、背側にコブ（結節）ができて曲がらなくなったり痛んだりする疾患はどれ？",
+    options: ["ヘバーデン結節", "ブシャール結節", "リウマチ", "痛風"],
+    answer: 0,
+    explanation: "ヘバーデン結節は原因不明ながら中年以降の女性に多く発症する変形性関節症の一つです。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "指の第2関節（PIP関節）にコブができ、変形や痛みを伴う疾患の名称はどれ？",
+    options: ["ブシャール結節", "ヘバーデン結節", "バネ指", "モートン病"],
+    answer: 0,
+    explanation: "ブシャール結節はPIP関節に生じる変形性関節症です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "親指の付け根（手首寄り）の腱鞘部分に痛みや腫れが生じる、スマホや育児中の人に多い疾患はどれ？",
+    options: ["ドケルバン病（狭窄性腱鞘炎）", "手根管症候群", "TFCC損傷", "野球肘"],
+    answer: 0,
+    explanation: "ドケルバン病は短母指伸筋腱と長母指外転筋腱の腱鞘炎です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "親指を中に入れてグーを握り、手首を小指側に倒したときに激痛が走るドケルバン病の検査法はどれ？",
+    options: ["フィンケルシュタインテスト", "ファレンテスト", "チネルサイン", "スパーリングテスト"],
+    answer: 0,
+    explanation: "フィンケルシュタインテストは第1区画の腱鞘炎を誘発する有名なテストです。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手のひらの皮膚（手掌腱膜）が線維化して縮み、指（特に薬指や小指）が曲がったまま伸びなくなってしまう疾患はどれ？",
+    options: ["デュピュイトラン拘縮", "バネ指", "関節リウマチ", "手根管症候群"],
+    answer: 0,
+    explanation: "デュピュイトラン拘縮は原因不明の手掌腱膜の硬化・引きつれによる変形です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "スポーツや日常の転倒で、指の第1関節を伸ばす腱が切れてしまい、指先が垂れ下がったまま伸びなくなる怪我はどれ？",
+    options: ["マレットフィンガー（ツェメ変形）", "ばね指", "ヘバーデン結節", "ガングリオン"],
+    answer: 0,
+    explanation: "マレットフィンガーは伸筋腱の断裂や剥離骨折によって指先が自力で伸ばせなくなる状態です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手首や指の関節の周辺にできる、ゼリー状の液体が詰まった良性の腫瘤（コブ）の名称はどれ？",
+    options: ["ガングリオン", "脂肪腫", "悪性腫瘍", "骨棘"],
+    answer: 0,
+    explanation: "ガングリオンは関節包や腱鞘の周辺によく見られるゼリー状の嚢胞です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "パソコン作業などで手首を机の角に強く押し当てたり、前腕の筋肉を酷使したときに手や指にしびれやだるさが出る原因はどれ？",
+    options: ["筋肉の緊張による神経や血管の圧迫・血流不良", "骨の自然成長", "手の骨の完全な消失", "体温の急激な上昇"],
+    answer: 0,
+    explanation: "筋肉の過緊張や不良姿勢は、手へ向かう神経や血管の通路を狭めて不調を引き起こします。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手の疲労回復やコリ・むくみの改善に最も効果的な、プロのボディワークにおけるアプローチ方法はどれ？",
+    options: ["前腕から手のひら、指先にかけての丁寧な筋膜リリースとオイルトリートメント", "手首を強い力でハンマーで叩くこと", "一切触れずに放置すること", "手を輪ゴムで長時間縛ること"],
+    answer: 0,
+    explanation: "前腕の屈筋群・伸筋群や手のひらの硬さを優しくほぐすことで、手全体の巡りが劇的に改善します。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "デスクワークやスマホ操作で凝り固まった前腕の筋肉をセルフケアで緩める効果的な方法はどれ？",
+    options: ["反対側の手で前腕の筋肉を掴みながら手首をゆっくり回したり揉みほぐす", "前腕を氷点下で冷やし続ける", "前腕をカッターで傷つける", "何もしない"],
+    answer: 0,
+    explanation: "前腕の筋肉（特に屈筋群や腕橈骨筋）を優しくマッサージし、ストレッチすることが有効です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手指のストレッチを行う際、正しい手順として推奨されるものはどれ？",
+    options: ["指先を反対の手で優しく反らせたり、手のひらを伸ばして深呼吸しながら行う", "関節が鳴るほど急激に強く引っ張る", "痛みを我慢して勢いよく曲げる", "温めずに全力で力む"],
+    answer: 0,
+    explanation: "ストレッチは反動をつけず、呼吸に合わせて心地よい伸びを感じる程度に行うのが鉄則です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "高齢者やデスクワーカーに多い「手の冷えやこわばり」を防ぐために日常生活で意識すべきことはどれ？",
+    options: ["こまめな手指の運動、ストレッチ、および保温（温めケア）", "冷たい水に長時間手を浸し続ける", "手を完全に動かさないように固定する", "手袋を一生外さない"],
+    answer: 0,
+    explanation: "血流を滞らせないための適度な運動や保温ケアが、こわばりの予防に直結します。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手や指を酷使するスポーツ（ゴルフやテニス、クライミングなど）の後に、前腕の張りを和らげるためのアイシングや温熱の使い分けとして適切なのはどれ？",
+    options: ["急性期の熱感があるときは冷却、慢性的なコリには温めて血行促進", "常に熱湯につける", "常に凍らせる", "どちらも一切意味がない"],
+    answer: 0,
+    explanation: "状態に合わせた適切な温度調整が、炎症の抑制と疲労物質の排出を助けます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "親指や手のひらの筋肉（母指球・小指球）を自分でケアするときに、テニスボールやマッサージボールを使う方法のメリットはどれ？",
+    options: ["自分の手の重みを使って、深部のコリを安全かつ効率的にリリースできる", "手の骨を粉々にできる", "指の長さを伸ばせる", "皮膚を剥がせる"],
+    answer: 0,
+    explanation: "ボールの上に手のひらを乗せてコロコロ転がすことで、硬くなった内在筋を優しくほぐせます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手首を酷使する作業が多い人が、腱鞘炎を予防するために見直すべきポイントはどれ？",
+    options: ["手首を過度に曲げたまま強い力を入れ続ける動作や、長時間の連続作業を避ける", "マウスを全く使わない生活にする", "手の指をすべて切断する", "水を一切飲まない"],
+    answer: 0,
+    explanation: "同じ姿勢や過度な負担の蓄積を避け、適度な休憩を挟むことが最大の予防です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "指の関節（ヘバーデン結節など）に痛みがあるとき、日常生活で心がけると良い基本的な配慮はどれ？",
+    options: ["関節に無理な負担や強い捻じれがかかる動作を避け、保護するサポーター等を活用する", "痛む関節を毎日ハンマーで叩いて鍛える", "指を一切動かさずにギプスで一生固める", "お湯につけてはいけない"],
+    answer: 0,
+    explanation: "痛みを誘発する過剰な負荷を避け、関節を労わる工夫が大切です。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手先の細かい作業やスマホ操作の合間にできる「グー・パー運動」の主なコンディショニング効果はどれ？",
+    options: ["手の血流を促進し、筋肉の緊張をリセットしてむくみやこわばりを防ぐ", "手の骨の数を増やす", "指の関節を脱臼させる", "手のサイズを大きくする"],
+    answer: 0,
+    explanation: "グーとパーで筋肉の収縮と弛緩を繰り返すことで、末梢の血行が良くなりリフレッシュできます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "「皓一部屋」のようなリラクゼーションサロンで、ボディケアやオイルトリートメントを受けることで得られる手・前腕へのアプローチの価値はどれ？",
+    options: ["セルフケアでは届きにくい前腕の深層筋のコリや手のひらの緊張をプロの技術で徹底的に緩め、全身の巡りを最高潮に整えること", "医療手術を受けること", "骨格の外科的矯正を行うこと", "手の病気を完全に治療すること"],
+    answer: 0,
+    explanation: "プロによる的確なほぐしとオイルケアは、日常のデスクワークやスマホ疲れでパンパンになった手腕を根本から軽やかに整えます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "前腕の筋肉が硬くなりすぎると、なぜ「握力」や「手指の動き」が低下してしまうのか？",
+    options: ["指を動かす腱の滑りが悪くなり、筋肉が必要以上に引っ張られてスムーズに収縮できなくなるため", "手の骨が消えるため", "脳の機能が停止するため", "神経がすべて消滅するため"],
+    answer: 0,
+    explanation: "前腕の屈筋・伸筋群の柔軟性が失われると、腱の滑走障害が起き、手のパフォーマンスが低下します。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "入浴中に湯船の中で手や指を優しくマッサージしたりグーパーしたりすることの素晴らしい効果はどれ？",
+    options: ["温熱効果で血管が拡張し、血流が良くなった状態で効率よく筋肉や関節の緊張を緩められる", "皮膚が溶ける", "指の骨が柔らかくなりすぎる", "意味がない"],
+    answer: 0,
+    explanation: "入浴中の温熱と水圧、リラックス効果の相乗効果で、手の疲労物質がスムーズに排出されます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "スマートフォンの長時間使用によって引き起こされる「テキスト・サム（親指の使いすぎによる腱鞘炎）」を予防・ケアするための習慣はどれ？",
+    options: ["片手での長時間の操作を避け、両手で分散させたり、こまめに手指を休ませてストレッチする", "親指を一切使わずに生活する", "親指をハンマーで叩く", "画面を見ない"],
+    answer: 0,
+    explanation: "同一部位への偏った負担を減らすことが、現代病であるスマホ手首・スマホ指の予防につながります。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手首や手の平のストレッチにおいて、腕を真っ直ぐ前に伸ばして手のひらを前に向け、反対の手で指先を自分の方へ反らせるストレッチが主に伸ばす部位はどれ？",
+    options: ["前腕の屈筋群（手のひら側の筋肉）", "前腕の伸筋群", "上腕二頭筋", "肩甲骨"],
+    answer: 0,
+    explanation: "このストレッチは前腕の屈筋群を効果的にストレッチし、手首の疲れや手根管への負担を和らげます。"
+  },
+  {
+    category: "トラブル・ケア",
+    question: "手・指の健康と美しいコンディションを維持するために最も大切なトータルケアの基本姿勢はどれ？",
+    options: ["毎日の適度なストレッチや休息、そしてプロの施術による定期的なメンテナンスを組み合わせること", "一切ケアをせず放置すること", "手に負担のかかる作業を24時間続けること", "薬に頼りきること"],
+    answer: 0,
+    explanation: "日々のセルフケアと、プロによる専門的なボディケアの相乗効果が、手腕の健康と軽やかさを長く維持するカギとなります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "手の解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい手の解剖学の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの手の解剖学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【手の構造クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🖐️✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
+
+```
