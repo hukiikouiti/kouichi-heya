@@ -36,12 +36,13 @@
             background-color: rgba(240, 248, 255, 0.5);
             box-sizing: border-box;
         }
-        /* パズルピース */
+        /* パズルピース（mix-blend-modeで白い背景を透明にして重ねられるようにする） */
         .piece {
             position: absolute;
             cursor: grab;
             user-select: none;
             object-fit: contain;
+            mix-blend-mode: multiply; /* 白い部分を透明にして重ねる魔法の設定 */
         }
         .piece:active {
             cursor: grabbing;
@@ -96,17 +97,17 @@
     <button onclick="resetGame()">もう一度プレイ</button>
 
 <script>
-    // 右足のパーツデータ（お持ちの画像ファイルの向きに完全同期）
+    // 右足のパーツデータ
     const partsData = [
         { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 200, y: 20, w: 100, h: 140 },
         { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 295, y: 30, w: 50, h: 130 },
         { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 175, y: 155, w: 150, h: 110 },
         { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 180, y: 260, w: 140, h: 140 },
-        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 290, y: 395, w: 45, h: 90 }, // 親指が右側
+        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 290, y: 395, w: 45, h: 90 },
         { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 252, y: 395, w: 38, h: 95 },
         { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 217, y: 395, w: 35, h: 90 },
         { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 182, y: 395, w: 35, h: 85 },
-        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 147, y: 395, w: 35, h: 80 }  // 小指が左側
+        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 147, y: 395, w: 35, h: 80 }
     ];
 
     let timeLeft = 90;
