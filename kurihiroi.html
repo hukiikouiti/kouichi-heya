@@ -56,6 +56,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     box-sizing: border-box;
     text-align: center;
   }
+  .game-link-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    box-sizing: border-box;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    cursor: pointer;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+  }
   .back-link {
     display: inline-block;
     margin-top: 15px;
@@ -128,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="screen hidden" id="result-screen">
   <h1>🎉 記録発表！</h1>
- <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+  <p id="result-score" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
 
   <!-- 1列目：LINEお友達追加（太ボタン） -->
   <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
@@ -139,9 +154,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 3列目：Xで結果をシェア -->
   <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
 
-  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る（Xボタンと同じサイズ感に統一） -->
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
   <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
-    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
     <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
   </div>
 
