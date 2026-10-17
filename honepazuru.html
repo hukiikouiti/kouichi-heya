@@ -20,8 +20,8 @@
         }
         #game-container {
             position: relative;
-            width: 500px;
-            height: 750px;
+            width: 600px;
+            height: 850px;
             background: #ffffff;
             border: 2px solid #ccc;
             border-radius: 8px;
@@ -33,16 +33,16 @@
         .drop-zone {
             position: absolute;
             border: 2px dashed #b0c4de;
-            background-color: rgba(240, 248, 255, 0.5);
+            background-color: rgba(240, 248, 255, 0.4);
             box-sizing: border-box;
         }
-        /* パズルピース（mix-blend-modeで白い背景を透明にして重ねられるようにする） */
+        /* パズルピース（大きく表示し、白い背景を透過させる） */
         .piece {
             position: absolute;
             cursor: grab;
             user-select: none;
             object-fit: contain;
-            mix-blend-mode: multiply; /* 白い部分を透明にして重ねる魔法の設定 */
+            mix-blend-mode: multiply;
         }
         .piece:active {
             cursor: grabbing;
@@ -97,17 +97,17 @@
     <button onclick="resetGame()">もう一度プレイ</button>
 
 <script>
-    // 右足のパーツデータ
+    // パーツの表示サイズ（w, h）を大きくし、配置座標（x, y）を調整
     const partsData = [
-        { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 200, y: 20, w: 100, h: 140 },
-        { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 295, y: 30, w: 50, h: 130 },
-        { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 175, y: 155, w: 150, h: 110 },
-        { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 180, y: 260, w: 140, h: 140 },
-        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 290, y: 395, w: 45, h: 90 },
-        { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 252, y: 395, w: 38, h: 95 },
-        { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 217, y: 395, w: 35, h: 90 },
-        { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 182, y: 395, w: 35, h: 85 },
-        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 147, y: 395, w: 35, h: 80 }
+        { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 180, y: 20, w: 160, h: 220 },
+        { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 330, y: 30, w: 90, h: 200 },
+        { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 165, y: 220, w: 220, h: 170 },
+        { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 170, y: 370, w: 210, h: 210 },
+        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 320, y: 560, w: 80, h: 140 },
+        { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 260, y: 560, w: 70, h: 145 },
+        { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 205, y: 560, w: 65, h: 140 },
+        { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 155, y: 560, w: 65, h: 135 },
+        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 105, y: 560, w: 65, h: 130 }
     ];
 
     let timeLeft = 90;
@@ -166,10 +166,11 @@
             img.style.width = part.w + 'px';
             img.style.height = part.h + 'px';
 
+            // バラバラに配置する初期位置を画面下部にゆったりと配置
             const col = index % 3;
             const row = Math.floor(index / 3);
-            const randomX = 40 + col * 140;
-            const randomY = 520 + row * 70;
+            const randomX = 30 + col * 180;
+            const randomY = 710 + row * 70;
             img.style.left = randomX + 'px';
             img.style.top = randomY + 'px';
 
@@ -213,7 +214,8 @@
 
             const distance = Math.hypot(currentX - targetX, currentY - targetY);
 
-            if (distance < 50) {
+            // 当たり判定の許容範囲も拡大
+            if (distance < 60) {
                 element.style.left = targetX + 'px';
                 element.style.top = targetY + 'px';
                 element.classList.add('locked');
