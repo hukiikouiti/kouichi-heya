@@ -170,6 +170,21 @@
       box-shadow: 0 3px 10px rgba(0,0,0,0.06);
       -webkit-tap-highlight-color: transparent;
     }
+    .game-link-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      cursor: pointer;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+    }
     .start-btn {
       background-color: #3498db;
       color: #fff;
@@ -236,10 +251,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="shoulder-result-screen" class="hidden">
       <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 肩首ほぐし完了！</h2>
       <p id="shoulder-result-message"></p>
-      <a id="shoulder-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="btn line-btn">🟢 LINEお友達追加</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
-      <a href="javascript:void(0)" onclick="resetGame('shoulder')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+      <a id="shoulder-share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
+      <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
+      <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+        <button onclick="startShoulderGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+        <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+      </div>
+      <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
     </div>
   </div>
 
@@ -261,10 +280,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="back-result-screen" class="hidden">
       <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 背中・腰ほぐし完了！</h2>
       <p id="back-result-message"></p>
-      <a id="back-share-link" href="#" target="_blank" rel="noopener noreferrer" class="btn share-btn">𝕏 で結果をシェアする</a>
-      <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="btn line-btn">🟢 LINEお友達追加</a>
-      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
-      <a href="javascript:void(0)" onclick="resetGame('back')" style="display:block; margin-top:12px; color:#888; font-size:0.8rem; text-decoration:none;">もう一度あそぶ</a>
+      <a id="back-share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
+      <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
+      <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+        <button onclick="startBackGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+        <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+      </div>
+      <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
     </div>
   </div>
 
@@ -285,25 +308,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div id="hand-result-screen" class="hidden">
       <h2 style="color: #27ae60; font-size: 1.2rem;">✨ 反射区リフレッシュ完了！</h2>
-      <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+      <p id="hand-result-message" style="font-size: 1rem; margin: 15px 0; color: #333; line-height: 1.6;"></p>
 
-  <!-- 1列目：LINEお友達追加（太ボタン） -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+      <!-- 1列目：LINEお友達追加（太ボタン） -->
+      <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
 
-  <!-- 2列目：予約する（太ボタン） -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+      <!-- 2列目：予約する（太ボタン） -->
+      <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
 
-  <!-- 3列目：Xで結果をシェア -->
-  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+      <!-- 3列目：Xで結果をシェア -->
+      <a id="hand-share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
 
-  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る（Xボタンと同じサイズ感に統一） -->
-  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
-    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
-    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+      <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+      <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+        <button onclick="startHandGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+        <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+      </div>
+
+      <!-- 5列目：トップに戻る -->
+      <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+    </div>
   </div>
 
-  <!-- 5列目：トップに戻る -->
-  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
 </div>
 
 <script>
@@ -337,10 +363,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function startShoulderGame() {
     document.getElementById('shoulder-start-screen').classList.add('hidden');
     document.getElementById('shoulder-game-screen').classList.remove('hidden');
+    document.getElementById('shoulder-result-screen').classList.add('hidden');
     shoulderScore = 0; shoulderTimeLeft = 20;
     document.getElementById('shoulder-score').innerText = shoulderScore;
     document.getElementById('shoulder-timer').innerText = shoulderTimeLeft;
     setNewShoulderTarget();
+    if (shoulderTimer) clearInterval(shoulderTimer);
     shoulderTimer = setInterval(function() {
       shoulderTimeLeft--; document.getElementById('shoulder-timer').innerText = shoulderTimeLeft;
       if (shoulderTimeLeft <= 0) endShoulderGame();
@@ -378,10 +406,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function startBackGame() {
     document.getElementById('back-start-screen').classList.add('hidden');
     document.getElementById('back-game-screen').classList.remove('hidden');
+    document.getElementById('back-result-screen').classList.add('hidden');
     backScore = 0; backTimeLeft = 20;
     document.getElementById('back-score').innerText = backScore;
     document.getElementById('back-timer').innerText = backTimeLeft;
     setNewBackTarget();
+    if (backTimer) clearInterval(backTimer);
     backTimer = setInterval(function() {
       backTimeLeft--; document.getElementById('back-timer').innerText = backTimeLeft;
       if (backTimeLeft <= 0) endBackGame();
@@ -419,10 +449,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function startHandGame() {
     document.getElementById('hand-start-screen').classList.add('hidden');
     document.getElementById('hand-game-screen').classList.remove('hidden');
+    document.getElementById('hand-result-screen').classList.add('hidden');
     handScore = 0; handTimeLeft = 20;
     document.getElementById('hand-score').innerText = handScore;
     document.getElementById('hand-timer').innerText = handTimeLeft;
     setNewHandTarget();
+    if (handTimer) clearInterval(handTimer);
     handTimer = setInterval(function() {
       handTimeLeft--; document.getElementById('hand-timer').innerText = handTimeLeft;
       if (handTimeLeft <= 0) endHandGame();
