@@ -99,9 +99,21 @@ body {
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- クイズ出題用のメインカード（ここが消えていたため動かなくなっていました） -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">足と膝の解剖学クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
+</div>
+
+<!-- 結果発表用のカード -->
 <div class="quiz-card hidden" id="result-container" style="text-align: center;">
   <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
- <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
 
   <!-- 1列目：LINEお友達追加（太ボタン） -->
   <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
@@ -112,7 +124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 3列目：Xで結果をシェア -->
   <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
 
-  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る（Xボタンと同じサイズ感に統一） -->
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
   <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
     <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
     <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
@@ -121,6 +133,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 5列目：トップに戻る -->
   <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
 </div>
+
 <script>
 const allQuestions = [
   // ジャンル1：膝蓋骨・下腿骨格・関節（25問）
@@ -814,7 +827,7 @@ const allQuestions = [
     question: "足裏のセンサー（固有受容器）を刺激し、バランス感覚や足部安定性を高めるために効果的なトレーニングはどれ？",
     options: ["長時間の正座", "片足立ちバランス訓練", "完全な安静座位", "重りを持った全力疾走"],
     answer: 1,
-    explanation: "不安定な環境での片足立ちは足首周りの固有受容器を刺激し、転倒予防にも繋가ります。"
+    explanation: "不安定な環境での片足立ちは足首周りの固有受容器を刺激し、転倒予防にも繋がります。"
   },
   {
     category: "トラブル・ケア",
@@ -908,7 +921,7 @@ function selectChoice(index, clickedBtn) {
   
   let expBox = document.getElementById('explanation-container');
   expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
-  expBox.classList.5remove ? expBox.classList.remove('hidden') : expBox.classList.remove('hidden');
+  expBox.classList.remove('hidden');
   
   document.getElementById('next-btn').classList.remove('hidden');
 }
