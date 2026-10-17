@@ -1,3 +1,8 @@
+お手数をおかけしております！問題が表示された後、自動的に正解のボタンが5秒間光り続ける（ヒントとして点滅・ハイライトする）ようにコードを修正いたしました。
+
+以下の完全版コードをコピーして、GitHubの該当ファイルに丸ごと上書き保存してください。
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -77,6 +82,16 @@ body {
 .choice-btn:hover { background: #e4e7eb; }
 .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
 .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+
+/* 5秒間ヒントで光らせるアニメーション */
+@keyframes hintFlash {
+  0%, 100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); }
+  50% { background-color: #fef08a; color: #854d0e; border-color: #eab308; transform: scale(1.02); }
+}
+.choice-btn.hint-flash {
+  animation: hintFlash 0.6s infinite !important;
+}
+
 .explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
 .next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
 </style>
@@ -825,6 +840,7 @@ let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
+let hintTimer = null; // 5秒タイマー用
 
 function startQuiz() {
   document.getElementById('result-container').classList.add('hidden');
@@ -839,6 +855,12 @@ function startQuiz() {
 
 function showQuestion() {
   answered = false;
+  
+  // 前の問題のタイマーが残っていればクリア
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
   let q = currentQuestions[currentIndex];
   document.getElementById('category-title').innerText = "足と膝の解剖学クイズ（" + q.category + "）";
   document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
@@ -847,22 +869,39 @@ function showQuestion() {
   let choicesContainer = document.getElementById('choices-container');
   choicesContainer.innerHTML = '';
   
+  let createdButtons = [];
   q.options.forEach((opt, index) => {
     let btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.innerText = (index + 1) + ". " + opt;
     btn.onclick = () => selectChoice(index, btn);
     choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
   });
   
   document.getElementById('explanation-container').classList.add('hidden');
   document.getElementById('next-btn').classList.add('hidden');
+
+  // ★問題表示から5秒後に正解のボタンをピカッと光らせる（ヒント機能）
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
 }
 
 function selectChoice(index, clickedBtn) {
   if (answered) return;
   answered = true;
   
+  // 答えたので5秒後のヒントタイマーをクリア
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  // 光るヒントクラスがついている場合は全ボタンから外す
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
   let q = currentQuestions[currentIndex];
   let choiceButtons = document.querySelectorAll('.choice-btn');
   
@@ -871,7 +910,7 @@ function selectChoice(index, clickedBtn) {
     score++;
   } else {
     clickedBtn.classList.add('incorrect');
-    choiceButtons[q.answer].classList.add('correct'); // 正解のボタンを確実にハイライト
+    choiceButtons[q.answer].classList.add('correct'); // 正解のボタンをハイライト
   }
   
   let expBox = document.getElementById('explanation-container');
@@ -891,6 +930,7 @@ function nextQuestion() {
 }
 
 function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
   document.getElementById('quiz-container').classList.add('hidden');
   document.getElementById('result-container').classList.remove('hidden');
   
@@ -917,3 +957,5 @@ window.onload = function() {
 
 </body>
 </html>
+
+```
