@@ -3,7 +3,275 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足の骨 組み立てパズル</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            touch-action: none; /* スマホでの意図しないスクロールを防ぐ */
+        }
+        h1 {
+            font-size: 1.4rem;
+            color: #333;
+            margin: 5px 0;
+        }
+        #game-container {
+            position: relative;
+            width: 500px;
+            height: 700px;
+            background: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* 正解のドロップゾーン（シルエット枠） */
+        .drop-zone {
+            position: absolute;
+            border: 2px dashed #b0c4de;
+            background-color: rgba(240, 248, 255, 0.5);
+            box-sizing: border-box;
+        }
+        /* パズルピース */
+        .piece {
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            object-fit: contain;
+        }
+        .piece:active {
+            cursor: grabbing;
+        }
+        /* 残り50秒以下で点滅するアニメーション */
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.8)); opacity: 1; }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 69, 0, 1)); opacity: 0.6; }
+            100% { filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.8)); opacity: 1; }
+        }
+        .blinking {
+            animation: pulse-glow 0.8s infinite;
+        }
+        #ui-panel {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #555;
+        }
+        #message {
+            margin-top: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d9534f;
+            height: 1.5rem;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>足の骨 組み立てパズル</h1>
+    <div id="ui-panel">
+        残り時間: <span id="time">90</span>秒 | クリア: <span id="score">0</span> / 9
+    </div>
+    <div id="message"></div>
+
+    <div id="game-container">
+        <!-- ドロップゾーンとピースがここに配置されます -->
+    </div>
+
+    <button onclick="resetGame()">もう一度プレイ</button>
+
+<script>
+    // 9つのパーツデータ（大きく見やすいサイズと座標に調整済）
+    const partsData = [
+        { id: 'tibia', name: '脛骨', src: 'keikotu.jpeg', x: 170, y: 30, w: 180, h: 220 },
+        { id: 'fibula', name: '腓骨', src: 'hikotu.jpeg', x: 110, y: 40, w: 120, h: 200 },
+        { id: 'tarsals', name: '足根骨', src: 'syotukonkotu.jpeg', x: 155, y: 220, w: 200, h: 170 },
+        { id: 'metatarsals', name: '中足骨', src: 'tyuusokukotu.jpeg', x: 160, y: 385, w: 190, h: 210 },
+        { id: 'toe1', name: '親指趾骨', src: 'oyayubishikotu.jpeg', x: 135, y: 590, w: 70, h: 100 },
+        { id: 'toe2', name: '人差し趾骨', src: 'hitosashiyubishikotu.jpeg', x: 200, y: 590, w: 55, h: 100 },
+        { id: 'toe3', name: '中趾骨', src: 'nakayubishikotu.jpeg', x: 255, y: 590, w: 45, h: 95 },
+        { id: 'toe4', name: '薬指趾骨', src: 'kusuriyubishikotu.jpeg', x: 300, y: 590, w: 45, h: 90 },
+        { id: 'toe5', name: '小指趾骨', src: 'koyubishikotu.jpeg', x: 345, y: 590, w: 45, h: 85 }
+    ];
+
+    let timeLeft = 90;
+    let timerId = null;
+    let clearedCount = 0;
+    let isPlaying = false;
+
+    const container = document.getElementById('game-container');
+    const timeDisplay = document.getElementById('time');
+    const scoreDisplay = document.getElementById('score');
+    const messageDisplay = document.getElementById('message');
+
+    function initGame() {
+        container.innerHTML = '';
+        timeLeft = 90;
+        clearedCount = 0;
+        isPlaying = true;
+        timeDisplay.textContent = timeLeft;
+        scoreDisplay.textContent = clearedCount;
+        messageDisplay.textContent = '';
+
+        if (timerId) clearInterval(timerId);
+
+        // タイマー開始
+        timerId = setInterval(() => {
+            if (!isPlaying) return;
+            timeLeft--;
+            timeDisplay.textContent = timeLeft;
+
+            // 残り50秒以下になったらパーツを点滅させる
+            if (timeLeft <= 50) {
+                const pieces = document.querySelectorAll('.piece:not(.locked)');
+                pieces.forEach(p => p.classList.add('blinking'));
+            }
+
+            // タイムアップ
+            if (timeLeft <= 0) {
+                clearInterval(timerId);
+                isPlaying = false;
+                messageDisplay.textContent = 'タイムアップ！残念…';
+                lockAllPieces();
+            }
+        }, 1000);
+
+        // パーツとドロップゾーンを配置
+        partsData.forEach((part, index) => {
+            // 正解ゾーンの枠を作成
+            const zone = document.createElement('div');
+            zone.className = 'drop-zone';
+            zone.style.left = part.x + 'px';
+            zone.style.top = part.y + 'px';
+            zone.style.width = part.w + 'px';
+            zone.style.height = part.h + 'px';
+            zone.dataset.id = part.id;
+            container.appendChild(zone);
+
+            // ドラッグするピース画像を作成
+            const img = document.createElement('img');
+            img.src = part.src;
+            img.className = 'piece';
+            img.dataset.id = part.id;
+            img.style.width = part.w + 'px';
+            img.style.height = part.h + 'px';
+
+            // 初期位置を画面下の余白スペースにバラバラに配置
+            const col = index % 3;
+            const row = Math.floor(index / 3);
+            const randomX = 30 + col * 150 + (Math.random() * 20 - 10);
+            const randomY = 530 + row * 90;
+            img.style.left = randomX + 'px';
+            img.style.top = randomY + 'px';
+
+            makeDraggable(img, part);
+            container.appendChild(img);
+        });
+    }
+
+    // ドラッグ＆ドロップのロジック（マウス＆タッチ対応）
+    function makeDraggable(element, partData) {
+        let isDragging = false;
+        let startX, startY;
+
+        function startDrag(e) {
+            if (!isPlaying || element.classList.contains('locked')) return;
+            isDragging = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startX = clientX - element.offsetLeft;
+            startY = clientY - element.offsetTop;
+            element.style.zIndex = 1000;
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            element.style.left = (clientX - startX) + 'px';
+            element.style.top = (clientY - startY) + 'px';
+        }
+
+        function endDrag(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            element.style.zIndex = 10;
+
+            const currentX = parseInt(element.style.left);
+            const currentY = parseInt(element.style.top);
+
+            const targetX = partData.x;
+            const targetY = partData.y;
+
+            // 当たり判定の許容誤差（50px以内なら正解）
+            const distance = Math.hypot(currentX - targetX, currentY - targetY);
+
+            if (distance < 50) {
+                // 正解！ピタッと位置を合わせる
+                element.style.left = targetX + 'px';
+                element.style.top = targetY + 'px';
+                element.classList.add('locked');
+                element.classList.remove('blinking');
+                element.style.cursor = 'default';
+                
+                element.onmousedown = null;
+                element.ontouchstart = null;
+
+                clearedCount++;
+                scoreDisplay.textContent = clearedCount;
+
+                if (clearedCount === partsData.length) {
+                    clearInterval(timerId);
+                    isPlaying = false;
+                    messageDisplay.style.color = '#28a745';
+                    messageDisplay.textContent = '🎉 お見事！完全クリア！';
+                }
+            }
+        }
+
+        element.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', onDrag);
+        window.addEventListener('mouseup', endDrag);
+
+        element.addEventListener('touchstart', startDrag);
+        window.addEventListener('touchmove', onDrag);
+        window.addEventListener('touchend', endDrag);
+    }
+
+    function lockAllPieces() {
+        document.querySelectorAll('.piece').forEach(p => {
+            p.classList.remove('blinking');
+        });
+    }
+
+    // 初回起動
+    initGame();
+</script>
+
+</body>
+</html>viewport" content="width=device-width, initial-scale=1.0">
     <title>足の骨 組み立てパズル</title>
     <style>
         body {
