@@ -5,3 +5,410 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご飯を食べて血糖値爆上げタイムアタック - 皓一部屋</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .game-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #0288d1;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .timer-score {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0288d1;
+        }
+        /* 血糖値メーターの外枠 */
+        .meter-container {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 10px;
+            height: 22px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 2px solid #0288d1;
+            position: relative;
+        }
+        /* 血糖値メーターの中身（バー） */
+        .meter-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #0288d1);
+            transition: width 0.1s linear;
+        }
+        .meter-text {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fff;
+            line-height: 18px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+        /* ゲームステージ */
+        .game-stage {
+            width: 100%;
+            height: 260px;
+            background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 50%, #81d4fa 100%);
+            border: 3px solid #0288d1;
+            border-radius: 16px;
+            position: relative;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* 落ちてくるオブジェクト */
+        .falling-item {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.05s linear;
+        }
+        /* ポップアップ文字 */
+        .popup-msg {
+            position: absolute;
+            font-weight: bold;
+            font-size: 0.95rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            pointer-events: none;
+            animation: floatUp 0.5s ease-out forwards;
+            z-index: 10;
+        }
+        .popup-rice { color: #fff; background: rgba(2, 136, 209, 0.9); border: 1px solid #b3e5fc; }
+        .popup-veg { color: #fff; background: rgba(39, 174, 96, 0.9); border: 1px solid #a3e4d7; }
+        .popup-meat { color: #fff; background: rgba(192, 57, 43, 0.9); border: 1px solid #f5b7b1; }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-35px) scale(1.1); }
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .start-btn {
+            background-color: #0288d1;
+            color: #fff;
+            border-radius: 30px;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>🍚 血糖値爆上げタイムアタック</h1>
+    <p>上から降ってくる「ご飯（🍚）」を20個食べて血糖値を100%にしよう！野菜や肉も登場するよ！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3.5rem; margin: 15px 0;">😋🍚</div>
+        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+    </div>
+
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="timer-score">
+            <div>経過時間: <span id="timer">0.0</span>秒</div>
+            <div>ご飯スコア: <span id="score-count">0</span> / 20個</div>
+        </div>
+        
+        <!-- 血糖値メーター -->
+        <div class="meter-container">
+            <div id="meter-bar" class="meter-bar"></div>
+            <div id="meter-text" class="meter-text">血糖値: 0%</div>
+        </div>
+
+        <!-- ゲームステージ -->
+        <div class="game-stage" id="game-stage"></div>
+        <p style="font-size:0.8rem; color:#888;">ご飯を素早くタップして血糖値を上げろ！</p>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 id="result-title" style="color: #0288d1; font-size: 1.2rem;">✨ 血糖値MAX達成！</h2>
+        
+        <!-- 結果メッセージ表示用 -->
+        <div id="result-message" style="font-size: 1rem; margin: 15px 0; color: #333; line-height: 1.6;"></div>
+
+        <!-- 1列目：LINEお友達追加（太ボタン） -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+        <!-- 2列目：予約する（太ボタン） -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+        <!-- 3列目：Xで結果をシェア -->
+        <a id="share-link" target="_blank" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">𝕏 で結果をシェアする</a>
+
+        <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+        <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+            <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+            <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+        </div>
+
+        <!-- 5列目：トップに戻る -->
+        <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+    </div>
+</div>
+
+<script>
+    let score = 0; // ご飯を食べた数 (0〜20)
+    let elapsedTime = 0.0;
+    let timerInterval = null;
+    let spawnerInterval = null;
+    let isPlaying = false;
+
+    function startGame() {
+        if (isPlaying) return;
+        isPlaying = true;
+        score = 0;
+        elapsedTime = 0.0;
+        document.getElementById('timer').innerText = '0.0';
+        document.getElementById('score-count').innerText = score;
+        updateMeter();
+
+        document.getElementById('game-start-screen').classList.add('hidden');
+        document.getElementById('game-play-screen').classList.remove('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+
+        clearItems();
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'blood_sugar_game'});
+        }
+
+        timerInterval = setInterval(() => {
+            elapsedTime += 0.1;
+            document.getElementById('timer').innerText = elapsedTime.toFixed(1);
+        }, 100);
+
+        spawnerInterval = setInterval(spawnItem, 500);
+    }
+
+    function spawnItem() {
+        if (!isPlaying) return;
+        const stage = document.getElementById('game-stage');
+        
+        const item = document.createElement('div');
+        item.className = 'falling-item';
+
+        const rand = Math.random();
+        let itemType = 'rice';
+        if (rand < 0.6) {
+            item.innerHTML = '🍚';
+            itemType = 'rice';
+        } else if (rand < 0.8) {
+            item.innerHTML = '🥦';
+            itemType = 'veg';
+        } else {
+            item.innerHTML = '🥩';
+            itemType = 'meat';
+        }
+        item.dataset.type = itemType;
+
+        const maxX = stage.clientWidth - 50;
+        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+        item.style.left = randomX + 'px';
+        item.style.top = '-50px';
+
+        let posY = -50;
+        const fallSpeed = 2.2 + Math.random() * 2.5;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
+                item.remove();
+            }
+        }, 30);
+
+        item.onmousedown = item.ontouchstart = (e) => {
+            e.preventDefault();
+            if (!isPlaying) return;
+
+            clearInterval(fallInterval);
+
+            const rect = stage.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (item.dataset.type === 'rice') {
+                score = Math.min(20, score + 1);
+                if (navigator.vibrate) navigator.vibrate(40);
+                showPopup(clientX - rect.left, clientY - rect.top, '+5% 🍚', 'popup-rice', stage);
+            } else if (item.dataset.type === 'veg') {
+                score = Math.max(0, score - 1);
+                if (navigator.vibrate) navigator.vibrate(30);
+                showPopup(clientX - rect.left, clientY - rect.top, '食物繊維でセーブ！🥦', 'popup-veg', stage);
+            } else {
+                if (navigator.vibrate) navigator.vibrate(50);
+                showPopup(clientX - rect.left, clientY - rect.top, 'お肉パワー！🥩', 'popup-meat', stage);
+            }
+
+            document.getElementById('score-count').innerText = score;
+            updateMeter();
+            item.remove();
+
+            if (score >= 20) {
+                endGame();
+            }
+        };
+
+        stage.appendChild(item);
+    }
+
+    function updateMeter() {
+        const percentage = (score / 20) * 100;
+        document.getElementById('meter-bar').style.width = percentage + '%';
+        document.getElementById('meter-text').innerText = '血糖値: ' + percentage + '%';
+    }
+
+    function showPopup(x, y, text, className, stage) {
+        const popup = document.createElement('div');
+        popup.className = `popup-msg ${className}`;
+        popup.innerText = text;
+        popup.style.left = Math.max(10, x - 20) + 'px';
+        popup.style.top = Math.max(10, y - 20) + 'px';
+
+        stage.appendChild(popup);
+        setTimeout(() => popup.remove(), 500);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('game-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let finalTime = parseFloat(document.getElementById('timer').innerText);
+        let judge = "";
+        if (finalTime < 7.0) {
+            judge = "【神速の血糖値スパイク王】";
+        } else if (finalTime < 11.0) {
+            judge = "【爆速炭水化物ハンター】";
+        } else {
+            judge = "【マイペースもぐもぐ名人】";
+        }
+
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍚✨</div>クリアタイム： <b>' + finalTime.toFixed(1) + ' 秒</b><br><span style="font-size:0.8rem; color:#0288d1; font-weight:bold;">' + judge + '</span><br><br>ご飯を食べて血糖値100%達成！';
+
+        var text = encodeURIComponent('血糖値爆上げタイムアタックで ' + finalTime.toFixed(1) + '秒 でクリアしました！\n称号：' + judge + '\n\nご飯を食べて血糖値を上げる爽快感、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/gohan.html') + '&hashtags=皓一部屋,血糖値,健康エンタメ,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'blood_sugar_game', 'time': finalTime});
+        }
+    }
+
+    function resetGame() {
+        if (timerInterval) clearInterval(timerInterval);
+        if (spawnerInterval) clearInterval(spawnerInterval);
+        document.getElementById('game-start-screen').classList.remove('hidden');
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+        isPlaying = false;
+    }
+</script>
+
+</body>
+</html>
