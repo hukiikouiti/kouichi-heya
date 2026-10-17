@@ -9,7 +9,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>本格解剖学・足と膝の構造クイズ道場（100問版） | 皓一部屋</title>
 <style>
 body {
@@ -48,6 +48,7 @@ body {
   box-shadow: 0 3px 10px rgba(0,0,0,0.06);
   cursor: pointer;
   border: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .quiz-btn-style {
   background: linear-gradient(135deg, #2980b9, #3498db);
@@ -71,20 +72,13 @@ body {
   font-size: 0.9rem;
   box-sizing: border-box;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 .choice-btn:hover { background: #e4e7eb; }
 .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
 .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 .explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
 .next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
-
-@keyframes hintFlash {
-  0%, 100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); }
-  50% { background-color: #fde047; color: #854d0e; border-color: #eab308; transform: scale(1.02); }
-}
-.choice-btn.hint-flash {
-  animation: hintFlash 0.6s infinite !important;
-}
 </style>
 </head>
 <body>
@@ -101,27 +95,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="choices-container"></div>
   <div id="explanation-container" class="hidden explanation-box"></div>
   <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
-  <a href="index.html" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none; display: block; padding: 12px; border-radius: 8px; font-weight: bold;">メニューに戻る</a>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
 </div>
 
 <div class="quiz-card hidden" id="result-container" style="text-align: center;">
   <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
   <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 20px 0; color: #e67e22;"></p>
   <button onclick="startQuiz()" class="game-link-btn quiz-btn-style">もう一度挑戦する（別の5問）</button>
-  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">X（旧Twitter）で結果をシェアする</button>
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</button>
   <!-- LINEお友達追加ボタン -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; text-align: center;">🟢 LINEお友達追加</a>
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
   <!-- 予約枠ボタン -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; text-align: center;">📅 予約枠（空き状況確認・ご予約）</a>
-  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; text-decoration: none;">メニューに戻る</a>
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff;">🎮 ゲームに戻る</a>
 </div>
 
 <script>
-// 4ジャンル×25問＝計100問のデータプール
 const allQuestions = [
-  // -------------------------------------------------------------------------
-  // ジャンル1：膝蓋骨・下腿骨格・関節（25問）
-  // -------------------------------------------------------------------------
   {
     category: "膝蓋骨・下腿骨格",
     question: "人体最大の種子骨であり、大腿四頭筋の腱の中に存在して膝の曲げ伸ばしを効率化する骨はどれ？",
@@ -193,115 +183,6 @@ const allQuestions = [
     explanation: "内側側副靭帯は膝の内側の安定性を保ちます。"
   },
   {
-    category: "膝蓋骨・下腿骨格",
-    question: "膝の外側にあって、内側からの力に対して膝が外側に折れ曲がるのを防ぐ靭帯はどれ？",
-    options: ["外側側副靭帯（LCL）", "内側側副靭帯", "後十字靭帯", "屈筋支帯"],
-    answer: 0,
-    explanation: "外側側副靭帯は膝の外側を補強しています。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足根骨の中で最も上方にあり、下腿の骨（脛骨・腓骨）と噛み合って足首の上下の動きを作る骨はどれ？",
-    options: ["距骨", "踵骨", "舟状骨", "立方骨"],
-    answer: 0,
-    explanation: "距骨は足関節（距腿関節）を構成する土台の骨です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足のかかとを形成し、全体の中で最も大きい足根骨の名称はどれ？",
-    options: ["踵骨", "距骨", "舟状骨", "内側楔状骨"],
-    answer: 0,
-    explanation: "踵骨は全体重の着地衝撃を受け止める最大の足根骨です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "ショパール関節（横足根関節）を構成する骨の組み合わせとして正しいものはどれ？",
-    options: ["距骨と踵骨、および舟状骨と立方骨", "脛骨と腓骨", "中足骨と趾骨", "楔状骨と中足骨"],
-    answer: 0,
-    explanation: "ショパール関節は足部を前後に分ける重要な関節です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "リスフラン関節（足根中足関節）が位置している場所として正しいものはどれ？",
-    options: ["足根骨と中足骨の間", "足首とすねの間", "中足骨と足の指の間", "かかとの裏"],
-    answer: 0,
-    explanation: "リスフラン関節は足の剛性を高めるアーチの要所です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "成人片足の足根骨の数は全部でいくつあるか？",
-    options: ["5個", "7個", "8個", "14個"],
-    answer: 1,
-    explanation: "足根骨は距骨、踵骨、舟状骨、立方骨、3つの楔状骨の合計7個です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "成人片足の中足骨（足の甲の骨）の数は全部でいくつあるか？",
-    options: ["4本", "5本", "7本", "14本"],
-    answer: 1,
-    explanation: "内側から第1〜第5まで5本の中足骨が存在します。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "成人片足の趾骨（足の指の骨）の総数はいくつあるか？",
-    options: ["10個", "12個", "14個", "16個"],
-    answer: 2,
-    explanation: "母趾が2節、第2〜5趾が3節ずつの合計14個です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足の内側縦アーチを最も高く保ち、バネの役割をする上で中心となる骨はどれ？",
-    options: ["舟状骨", "立方骨", "腓骨", "腓腹筋"],
-    answer: 0,
-    explanation: "舟状骨は内側縦アーチの頂点付近に位置する重要な骨です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足の外側縦アーチの要となり、外側縁の安定を保つ足根骨はどれ？",
-    options: ["立方骨", "舟状骨", "距骨", "内側楔状骨"],
-    answer: 0,
-    explanation: "立方骨は外側アーチを支え、歩行時の体重移動を安定させます。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足の母趾（親指）の裏側に通常2つ存在し、摩擦を防ぐ小さな骨の名称はどれ？",
-    options: ["種子骨", "支帯骨", "距骨下骨", "結節骨"],
-    answer: 0,
-    explanation: "母趾球の裏にある種子骨は荷重時のテコ効率を高めます。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足首の内側にある「内くるぶし」を形成している骨はどれ？",
-    options: ["脛骨の遠位端（内果）", "腓骨の遠位端", "距骨", "踵骨"],
-    answer: 0,
-    explanation: "内果は脛骨の下端が内側に突き出た部分です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "足首の外側にある「外くるぶし」を形成している骨はどれ？",
-    options: ["腓骨の遠位端（外果）", "脛骨", "立方骨", "舟状骨"],
-    answer: 0,
-    explanation: "外果は腓骨の下端が外側に突き出た部分です。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "距骨下関節（サブタラー関節）で主に起こる複合的な動きはどれ？",
-    options: ["回外と回内", "屈曲と伸展のみ", "外転のみ", "回旋のみ"],
-    answer: 0,
-    explanation: "距骨下関節は足部の傾きや回内外の軸となります。"
-  },
-  {
-    category: "膝蓋骨・下腿骨格",
-    question: "人間の片足の骨の数（種子骨除く）の合計はいくつ？",
-    options: ["24個", "26個", "28個", "30個"],
-    answer: 1,
-    explanation: "足根骨7個＋中足骨5個＋趾骨14個＝合計26個です。"
-  },
-
-  // -------------------------------------------------------------------------
-  // ジャンル2：膝下・下腿・足底の筋肉と筋膜（25問）
-  // -------------------------------------------------------------------------
-  {
     category: "筋肉・筋膜",
     question: "ふくらはぎを形成し、足首を下に踏み出す（底屈）作用を持つ浅層の大きな筋肉はどれ？",
     options: ["腓腹筋", "前脛骨筋", "長母趾伸筋", "骨間筋"],
@@ -335,60 +216,104 @@ const allQuestions = [
     options: ["後脛骨筋", "長腓骨筋", "短腓骨筋", "足底筋"],
     answer: 0,
     explanation: "後脛骨筋は足裏を通って舟状骨等に付着し、内側縦アーチを吊り上げます。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "腓骨の外側を通り、足首を外側に返す（外反）主な筋肉のグループはどれ？",
-    options: ["腓骨筋群（長・短腓骨筋）", "前脛骨筋群", "下腿三頭筋", "ハムストリングス"],
-    answer: 0,
-    explanation: "腓骨筋群は足首の安定性と外反運動を担います。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "かかとから足の指の付け根にかけて扇状に広がり、足のアーチを支える強靭な結合組織の帯はどれ？",
-    options: ["足底腱膜（足底筋膜）", "アキレス腱", "屈筋支帯", "伸筋支帯"],
-    answer: 0,
-    explanation: "足底腱膜はウィンドラス機構によって歩行時のバネを形成します。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "歩行の際、つま先が地面から離れる直前に足底腱膜が巻き上げられてアーチが高くなる仕組みを何というか？",
-    options: ["ウィンドラス機構", "ポンプ機構", "キネティック・チェーン", "相反抑制"],
-    answer: 0,
-    explanation: "MP関節の背屈により足底腱膜が緊張し、足が硬いレバーに変わります。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "足の裏にある固有筋肉（内在筋）の総称として正しいものはどれ？",
-    options: ["足内筋（足底筋群）", "咀嚼筋群", "骨盤底筋群", "ローテーターカフ"],
-    answer: 0,
-    explanation: "足内筋は足指の細かい動きや横・縦アーチの形状保持を支えます。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "足の母趾（親指）を外側に広げる（外転）作用を持つ足底の筋肉はどれ？",
-    options: ["母趾外転筋", "小趾外転筋", "虫様筋", "骨間筋"],
-    answer: 0,
-    explanation: "母趾外転筋は母趾側のアーチ形成や外転に寄与します。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "全身の筋膜ネットワークにおいて、足底からふくらはぎ、太もも裏を通って頭部まで繋がる代表的なラインはどれ？",
-    options: ["スーパーフィシャル・バック・ライン（SBL）", "ラテラル・ライン", "スパイラル・ライン", "フロント・ライン"],
-    answer: 0,
-    explanation: "SBLは足の裏から背面全体を経て頭部まで筋膜で連動しています。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "長母趾屈筋と長趾屈筋の腱が足首の内側で交差する部位の通称はどれ？",
-    options: ["マスター・ノット（ヘンリーの結び目）", "タバコボックス", "手根管", "ギオン管"],
-    answer: 0,
-    explanation: "足底へ向かう長趾屈筋と長母趾屈筋の腱が交差する結び目です。"
-  },
-  {
-    category: "筋肉・筋膜",
-    question: "大腿筋膜張筋からお尻の外側を通り、脛骨の外側（ゲルディ結節）に停止する強力な靭帯状の組織はどれ？",
-    options: ["腸脛靭帯", "鵞足", "膝蓋靭帯", "半膜様肌腱"],
-    answer: 0,
-    explanation: "腸脛靭帯は下肢の外側の安定性を保ち、ランナー膝の原因にもなりやすい部位です。"
-  },
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  // ランダムに5問抽出
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "足と膝の解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index);
+    choicesContainer.appendChild(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+}
+
+function selectChoice(index) {
+  if (answered) return;
+  answered = true;
+  
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    choiceButtons[index].classList.add('correct');
+    score++;
+  } else {
+    choiceButtons[index].classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい解剖学の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの解剖学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【足と膝の構造クイズ道場】で 5問中 " + score + "問正解しました！🦴✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+// ページ読み込み時に自動スタート
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
