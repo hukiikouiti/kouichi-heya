@@ -10,7 +10,7 @@
     <!-- End Google Tag Manager -->
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>名古屋めし防衛戦 - 皓一部屋</title>
     <style>
         body {
@@ -19,7 +19,7 @@
             color: #333;
             text-align: center;
             margin: 0;
-            padding: 15px 10px;
+            padding: 10px 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,42 +31,42 @@
         }
         .game-card {
             background: #ffffff;
-            padding: 20px;
+            padding: 15px 10px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            max-width: 420px;
-            width: 100%;
+            max-width: 100%;
+            width: 380px;
             box-sizing: border-box;
         }
         h1 {
-            font-size: 1.1rem;
-            margin-bottom: 6px;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
             color: #b8860b;
         }
         p {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #666;
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .timer-score {
             display: flex;
             justify-content: space-around;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: #d4af37;
         }
         /* メーター */
         #meter-container {
             width: 100%;
             background: #444;
-            height: 14px;
-            border-radius: 7px;
+            height: 12px;
+            border-radius: 6px;
             overflow: hidden;
             box-sizing: border-box;
             border: 2px solid #666;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         #meter-bar {
             width: 0%;
@@ -74,18 +74,17 @@
             background: #ff4757;
             transition: width 0.3s;
         }
-        /* ゲームステージ */
+        /* ゲームステージ（スマホ幅に完全フィット） */
         .game-stage {
             width: 100%;
-            height: 340px;
+            height: 320px;
             background: #1a1a1a;
             border: 3px solid #d4af37;
-            border-radius: 16px;
+            border-radius: 14px;
             position: relative;
-            margin: 0 auto 12px;
+            margin: 0 auto 10px;
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
-            touch-action: none;
         }
         .entity {
             position: absolute;
@@ -101,6 +100,51 @@
         }
         .hit-flash {
             animation: flash 0.4s ease;
+        }
+
+        /* 画面下の操作ボタンパネル */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 8px;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+        .ctrl-btn {
+            background: #34495e;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 14px 0;
+            flex: 1;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ctrl-btn:active {
+            background: #2c3e50;
+            transform: scale(0.96);
+        }
+        /* 丸い発射ボタン */
+        .fire-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            flex: 0 0 60px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4);
+        }
+        .fire-btn:active {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            transform: scale(0.92);
         }
 
         .btn {
@@ -155,9 +199,9 @@
         }
         .back-link {
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
             color: #3498db;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-decoration: none;
         }
     </style>
@@ -171,34 +215,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🏰 名古屋めし防衛戦</h1>
-    <p>名古屋城を動かして名古屋めしを撃ち落とせ！弾に当たっても血糖値が上がるだけで、数回まで耐えられます！</p>
+    <p>下のボタン（◀ ▶）で城を動かし、丸い発射ボタン（FIRE）で弾を出そう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
-        <div style="font-size: 3.5rem; margin: 15px 0;">🏯✨</div>
+        <div style="font-size: 3rem; margin: 10px 0;">🏯✨</div>
         <button id="start-btn" class="btn start-btn">ゲームスタート！</button>
     </div>
 
     <!-- プレイ画面 -->
     <div id="game-play-screen" class="hidden">
         <div class="timer-score">
-            <div>残り時間: <span id="timer">60</span>秒</div>
+            <div>残り: <span id="timer">60</span>秒</div>
             <div>残り標的: <span id="score-count">4</span>個</div>
         </div>
-        <div style="font-size: 0.8rem; color: #ff4757; font-weight: bold; margin-bottom: 2px;">血糖値メーター (<span id="sugar-text">0</span>%)</div>
+        <div style="font-size: 0.75rem; color: #ff4757; font-weight: bold; margin-bottom: 2px;">血糖値メーター (<span id="sugar-text">0</span>%)</div>
         <div id="meter-container">
             <div id="meter-bar"></div>
         </div>
         
         <!-- ゲームステージ -->
         <div class="game-stage" id="game-stage"></div>
-        <p style="font-size: 0.75rem; color: #888;">左右キー / 画面スワイプ / タップで攻撃！</p>
+
+        <!-- 画面下の操作ボタンパネル -->
+        <div class="controls">
+            <button class="ctrl-btn" id="left-btn">◀ 移動</button>
+            <button class="ctrl-btn fire-btn" id="fire-btn">🔥発射</button>
+            <button class="ctrl-btn" id="right-btn">移動 ▶</button>
+        </div>
     </div>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #b8860b; font-size: 1.2rem;">✨ バトル終了！</h2>
-        <div id="result-message" style="font-size: 0.95rem; margin: 15px 0; color: #333; line-height: 1.6;"></div>
+        <h2 id="result-title" style="color: #b8860b; font-size: 1.1rem;">✨ バトル終了！</h2>
+        <div id="result-message" style="font-size: 0.9rem; margin: 12px 0; color: #333; line-height: 1.5;"></div>
 
         <!-- 1列目：LINEお友達追加 -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
@@ -210,13 +260,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
 
         <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
-        <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 10px; box-sizing: border-box;">
-            <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 12px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.9rem;">もう一度あそぶ</button>
-            <a href="nagoyameshi.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 12px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.9rem;">ゲーム選択に戻る</a>
+        <div style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px; box-sizing: border-box;">
+            <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; font-size: 0.85rem;">もう一度あそぶ</button>
+            <a href="nagoyameshi.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">ゲーム選択に戻る</a>
         </div>
 
         <!-- 5列目：トップに戻る -->
-        <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; width: 100%; padding: 12px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.9rem;">🏠 トップに戻る</a>
+        <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; width: 100%; padding: 12px 15px; box-sizing: border-box; text-decoration: none; font-size: 0.85rem;">🏠 トップに戻る</a>
     </div>
 
     <a href="nagoyameshi.html" class="back-link">🎮 ゲーム選択に戻る</a>
@@ -225,21 +275,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
     let timeLeft = 60;
     let isPlaying = false;
-    let score = 0; // 倒した数
-    let sugarLevel = 0; // 血糖値（0〜100%）
+    let score = 0;
+    let sugarLevel = 0;
     let timerInterval = null;
     let loopInterval = null;
     let enemyShootInterval = null;
-    let hitCooldown = false; // 連続被弾防止用
+    let hitCooldown = false;
 
-    let castleX = 160;
-    const castleWidth = 65;
-    const castleHeight = 65;
-    let castleElem;
+    let castleX = 140;
+    const castleWidth = 55;
+    const castleHeight = 55;
+    let castleElem, stageElem;
     let bullets = [];
     let enemies = [];
     let enemyBullets = [];
     let keys = {};
+    let movingLeft = false;
+    let movingRight = false;
 
     document.addEventListener('DOMContentLoaded', () => {
         const startBtn = document.getElementById('start-btn');
@@ -251,6 +303,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         }
 
+        // キーボード操作対応
         window.addEventListener('keydown', (e) => {
             keys[e.key] = true;
             if ((e.key === ' ' || e.key === 'ArrowUp') && isPlaying) {
@@ -260,7 +313,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         window.addEventListener('keyup', (e) => {
             keys[e.key] = false;
         });
+
+        // 画面下ボタンのタッチ・マウスイベント設定
+        setupButtonControls('left-btn', () => { movingLeft = true; }, () => { movingLeft = false; });
+        setupButtonControls('right-btn', () => { movingRight = true; }, () => { movingRight = false; });
+        
+        const fireBtn = document.getElementById('fire-btn');
+        fireBtn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            if (isPlaying) shootBullet();
+        });
     });
+
+    function setupButtonControls(id, onStart, onEnd) {
+        const btn = document.getElementById(id);
+        btn.addEventListener('pointerdown', (e) => { e.preventDefault(); onStart(); });
+        btn.addEventListener('pointerup', (e) => { e.preventDefault(); onEnd(); });
+        btn.addEventListener('pointerleave', (e) => { e.preventDefault(); onEnd(); });
+    }
 
     function startGame() {
         if (isPlaying) return;
@@ -268,11 +338,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         timeLeft = 60;
         score = 0;
         sugarLevel = 0;
-        castleX = 160;
+        castleX = 140;
         bullets = [];
         enemies = [];
         enemyBullets = [];
         hitCooldown = false;
+        movingLeft = false;
+        movingRight = false;
 
         document.getElementById('timer').innerText = timeLeft;
         document.getElementById('score-count').innerText = "4";
@@ -283,8 +355,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-play-screen').classList.remove('hidden');
         document.getElementById('game-result-screen').classList.add('hidden');
 
-        const stage = document.getElementById('game-stage');
-        stage.innerHTML = '';
+        stageElem = document.getElementById('game-stage');
+        stageElem.innerHTML = '';
 
         // 自機（名古屋城）配置
         castleElem = document.createElement('div');
@@ -294,16 +366,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         castleElem.style.backgroundImage = "url('nagoyajyuu.png')";
         castleElem.style.bottom = '10px';
         castleElem.style.left = castleX + 'px';
-        stage.appendChild(castleElem);
+        stageElem.appendChild(castleElem);
 
         // 敵（名古屋めし4種類）配置
         const enemyImages = ['hitsumabushi.png', 'miso-katsu.png', 'miso-nikomi.png', 'tebasaki.png'];
+        const stageWidth = stageElem.clientWidth || 320;
+        const spacing = stageWidth / 4;
+
         enemyImages.forEach((img, index) => {
             let enemy = {
-                x: 8 + index * 95,
-                y: 15,
-                width: 75,
-                height: 75,
+                x: 10 + index * (spacing - 5),
+                y: 12,
+                width: 60,
+                height: 60,
                 hp: 10,
                 maxHp: 10,
                 element: document.createElement('div'),
@@ -315,26 +390,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             enemy.element.style.backgroundImage = `url('${enemy.image}')`;
             enemy.element.style.left = enemy.x + 'px';
             enemy.element.style.top = enemy.y + 'px';
-            stage.appendChild(enemy.element);
+            stageElem.appendChild(enemy.element);
             enemies.push(enemy);
         });
-
-        // マウス・タッチ操作
-        stage.onmousemove = (e) => {
-            const rect = stage.getBoundingClientRect();
-            castleX = e.clientX - rect.left - (castleWidth / 2);
-            if (castleX < 0) castleX = 0;
-            if (castleX > stage.clientWidth - castleWidth) castleX = stage.clientWidth - castleWidth;
-        };
-        stage.ontouchmove = (e) => {
-            const rect = stage.getBoundingClientRect();
-            castleX = e.touches[0].clientX - rect.left - (castleWidth / 2);
-            if (castleX < 0) castleX = 0;
-            if (castleX > stage.clientWidth - castleWidth) castleX = stage.clientWidth - castleWidth;
-        };
-        stage.onclick = () => {
-            if (isPlaying) shootBullet();
-        };
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_start', 'game_name': 'nagoya_game'});
@@ -349,38 +407,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }, 1000);
 
+        // 敵の弾の頻度をさらにゆっくり（1.2秒おきに判定）
         if (enemyShootInterval) clearInterval(enemyShootInterval);
         enemyShootInterval = setInterval(() => {
             if (!isPlaying) return;
             enemies.forEach(enemy => {
-                if (enemy.hp > 0 && Math.random() < 0.35) {
+                if (enemy.hp > 0 && Math.random() < 0.28) {
                     enemyShoot(enemy);
                 }
             });
-        }, 900);
+        }, 1100);
 
         if (loopInterval) cancelAnimationFrame(loopInterval);
         gameLoop();
     }
 
     function shootBullet() {
-        const stage = document.getElementById('game-stage');
         let bullet = document.createElement('div');
         bullet.className = 'entity';
-        bullet.style.width = '6px';
-        bullet.style.height = '14px';
+        bullet.style.width = '5px';
+        bullet.style.height = '12px';
         bullet.style.backgroundColor = '#d4af37';
         bullet.style.borderRadius = '3px';
-        let bx = castleX + (castleWidth / 2) - 3;
-        let by = stage.clientHeight - castleHeight - 20;
+        let bx = castleX + (castleWidth / 2) - 2;
+        let by = stageElem.clientHeight - castleHeight - 15;
         bullet.style.left = bx + 'px';
         bullet.style.top = by + 'px';
-        stage.appendChild(bullet);
+        stageElem.appendChild(bullet);
         bullets.push({ x: bx, y: by, element: bullet });
     }
 
     function enemyShoot(enemy) {
-        const stage = document.getElementById('game-stage');
         let eb = document.createElement('div');
         eb.className = 'entity';
         eb.style.width = '8px';
@@ -391,26 +448,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         let ey = enemy.y + enemy.height;
         eb.style.left = ex + 'px';
         eb.style.top = ey + 'px';
-        stage.appendChild(eb);
+        stageElem.appendChild(eb);
         
-        let randomSpeed = 1.3 + Math.random() * 1.4;
+        // 弾のスピードもさらにゆっくり（1.0〜2.0）
+        let randomSpeed = 1.0 + Math.random() * 1.0;
         enemyBullets.push({ x: ex, y: ey, speed: randomSpeed, element: eb });
     }
 
     function gameLoop() {
         if (!isPlaying) return;
-        const stage = document.getElementById('game-stage');
 
-        if (keys['ArrowLeft'] || keys['a']) castleX -= 6;
-        if (keys['ArrowRight'] || keys['d']) castleX += 6;
+        // 左右ボタンまたはキーボードでの移動処理
+        if (keys['ArrowLeft'] || keys['a'] || movingLeft) castleX -= 5;
+        if (keys['ArrowRight'] || keys['d'] || movingRight) castleX += 5;
+        
         if (castleX < 0) castleX = 0;
-        if (castleX > stage.clientWidth - castleWidth) castleX = stage.clientWidth - castleWidth;
+        if (castleX > stageElem.clientWidth - castleWidth) castleX = stageElem.clientWidth - castleWidth;
         castleElem.style.left = castleX + 'px';
 
         // 自機の弾移動
         for (let i = bullets.length - 1; i >= 0; i--) {
             let b = bullets[i];
-            b.y -= 11;
+            b.y -= 10;
             b.element.style.top = b.y + 'px';
 
             if (b.y < 0) {
@@ -452,26 +511,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             eb.y += eb.speed;
             eb.element.style.top = eb.y + 'px';
 
-            if (eb.y > stage.clientHeight) {
+            if (eb.y > stageElem.clientHeight) {
                 eb.element.remove();
                 enemyBullets.splice(i, 1);
                 continue;
             }
 
-            // 当たり判定（名古屋城に被弾）
+            // 当たり判定
             if (!hitCooldown && eb.x > castleX && eb.x < castleX + castleWidth &&
-                eb.y > stage.clientHeight - castleHeight - 15 && eb.y < stage.clientHeight) {
+                eb.y > stageElem.clientHeight - castleHeight - 10 && eb.y < stageElem.clientHeight) {
                 
-                // 弾を消す
                 eb.element.remove();
                 enemyBullets.splice(i, 1);
 
-                // 血糖値が25%上昇（4回当たると100%でゲームオーバー）
                 sugarLevel += 25;
                 document.getElementById('sugar-text').innerText = sugarLevel;
                 document.getElementById('meter-bar').style.width = sugarLevel + '%';
 
-                // 被弾エフェクト（点滅）
                 castleElem.classList.add('hit-flash');
                 setTimeout(() => castleElem.classList.remove('hit-flash'), 400);
 
@@ -480,7 +536,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     return;
                 }
 
-                // 連続被弾を防ぐ無敵時間（0.5秒）
                 hitCooldown = true;
                 setTimeout(() => { hitCooldown = false; }, 500);
                 break;
