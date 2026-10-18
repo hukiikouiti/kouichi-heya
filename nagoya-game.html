@@ -71,7 +71,7 @@
         #meter-bar {
             width: 0%;
             height: 100%;
-            background: #27ae60;
+            background: #ff4757;
             transition: width 0.3s;
         }
         /* ゲームステージ */
@@ -91,6 +91,15 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+        }
+        /* 被弾時の点滅アニメーション */
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        .hit-flash {
+            animation: flash 0.4s ease;
         }
 
         /* 画面下の操作ボタンパネル */
@@ -195,7 +204,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🏰 名古屋めし防衛戦</h1>
-    <p>ボタンで城を動かして、名古屋めしをサクッと撃ち落とそう！（攻撃するだけで必ずクリアできます）</p>
+    <p>敵の弾を避けながら名古屋めしを撃ち落とせ！3回まで被弾しても大丈夫です！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -209,7 +218,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div>残り: <span id="timer">99</span>秒</div>
             <div>残り標的: <span id="score-count">4</span>個</div>
         </div>
-        <div style="font-size: 0.75rem; color: #27ae60; font-weight: bold; margin-bottom: 2px;">制覇ゲージ (<span id="sugar-text">0</span>%)</div>
+        <div style="font-size: 0.75rem; color: #ff4757; font-weight: bold; margin-bottom: 2px;">血糖値メーター (<span id="sugar-text">0</span>%)</div>
         <div id="meter-container">
             <div id="meter-bar"></div>
         </div>
@@ -227,25 +236,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #b8860b; font-size: 1.1rem;">✨ 大勝利（クリア）！</h2>
+        <h2 id="result-title" style="color: #b8860b; font-size: 1.1rem;">✨ バトル終了！</h2>
         <div id="result-message" style="font-size: 0.9rem; margin: 12px 0; color: #333; line-height: 1.5;"></div>
 
-        <!-- 1列目：LINEお友達追加 -->
+        <!-- 1：LINEお友達追加 -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
 
-        <!-- 2列目：予約する -->
+        <!-- 2：予約する -->
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
 
-        <!-- 3列目：Xで結果をシェア -->
+        <!-- 3：Xで結果をシェア -->
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
 
-        <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+        <!-- 4：もう一度あそぶ ＆ ゲーム選択に戻る -->
         <div style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px; box-sizing: border-box;">
             <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; font-size: 0.85rem;">もう一度あそぶ</button>
             <a href="nagoyameshi.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">ゲーム選択に戻る</a>
         </div>
 
-        <!-- 5列目：トップに戻る -->
+        <!-- 5：トップに戻る -->
         <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; width: 100%; padding: 12px 15px; box-sizing: border-box; text-decoration: none; font-size: 0.85rem;">🏠 トップに戻る</a>
     </div>
 
@@ -256,9 +265,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let timeLeft = 99;
     let isPlaying = false;
     let score = 0;
-    let progress = 0;
+    let sugarLevel = 0;
     let timerInterval = null;
     let loopInterval = null;
+    let enemyShootInterval = null;
+    let hitCooldown = false;
 
     let castleX = 140;
     const castleWidth = 55;
@@ -266,6 +277,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let castleElem, stageElem;
     let bullets = [];
     let enemies = [];
+    let enemyBullets = [];
     let keys = {};
     let movingLeft = false;
     let movingRight = false;
@@ -312,10 +324,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         isPlaying = true;
         timeLeft = 99;
         score = 0;
-        progress = 0;
+        sugarLevel = 0;
         castleX = 140;
         bullets = [];
         enemies = [];
+        enemyBullets = [];
+        hitCooldown = false;
         movingLeft = false;
         movingRight = false;
 
@@ -374,9 +388,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
             if (timeLeft <= 0) {
-                endGame("時間切れですが大勝利です！");
+                endGame(false, "時間切れです…！");
             }
         }, 1000);
+
+        // 敵の弾発射頻度（少しゆったりめのスリル）
+        if (enemyShootInterval) clearInterval(enemyShootInterval);
+        enemyShootInterval = setInterval(() => {
+            if (!isPlaying) return;
+            enemies.forEach(enemy => {
+                if (enemy.hp > 0 && Math.random() < 0.25) {
+                    enemyShoot(enemy);
+                }
+            });
+        }, 1200);
 
         if (loopInterval) cancelAnimationFrame(loopInterval);
         gameLoop();
@@ -397,6 +422,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         bullets.push({ x: bx, y: by, element: bullet });
     }
 
+    function enemyShoot(enemy) {
+        let eb = document.createElement('div');
+        eb.className = 'entity';
+        eb.style.width = '8px';
+        eb.style.height = '12px';
+        eb.style.backgroundColor = '#ff4757';
+        eb.style.borderRadius = '3px';
+        let ex = enemy.x + enemy.width / 2 - 4;
+        let ey = enemy.y + enemy.height;
+        eb.style.left = ex + 'px';
+        eb.style.top = ey + 'px';
+        stageElem.appendChild(eb);
+        
+        let randomSpeed = 1.0 + Math.random() * 0.8;
+        enemyBullets.push({ x: ex, y: ey, speed: randomSpeed, element: eb });
+    }
+
     function gameLoop() {
         if (!isPlaying) return;
 
@@ -407,6 +449,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (castleX > stageElem.clientWidth - castleWidth) castleX = stageElem.clientWidth - castleWidth;
         castleElem.style.left = castleX + 'px';
 
+        // 自機の弾移動
         for (let i = bullets.length - 1; i >= 0; i--) {
             let b = bullets[i];
             b.y -= 12;
@@ -433,13 +476,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (en.hp <= 0) {
                         en.element.remove();
                         score++;
-                        progress += 25;
-                        document.getElementById('sugar-text').innerText = progress;
-                        document.getElementById('meter-bar').style.width = progress + '%';
                         document.getElementById('score-count').innerText = 4 - score;
 
                         if (score >= 4) {
-                            endGame("おめでとうございます！名古屋めしをすべて制覇しました！");
+                            endGame(true, "おめでとうございます！名古屋めしをすべて制覇しました！");
                             return;
                         }
                     }
@@ -448,26 +488,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }
 
+        // 敵の弾移動
+        for (let i = enemyBullets.length - 1; i >= 0; i--) {
+            let eb = enemyBullets[i];
+            eb.y += eb.speed;
+            eb.element.style.top = eb.y + 'px';
+
+            if (eb.y > stageElem.clientHeight) {
+                eb.element.remove();
+                enemyBullets.splice(i, 1);
+                continue;
+            }
+
+            // 当たり判定（3回被弾までOK：33%刻みで約3回で100%）
+            if (!hitCooldown && eb.x > castleX && eb.x < castleX + castleWidth &&
+                eb.y > stageElem.clientHeight - castleHeight - 10 && eb.y < stageElem.clientHeight) {
+                
+                eb.element.remove();
+                enemyBullets.splice(i, 1);
+
+                sugarLevel += 34; // 3回で100%超え
+                if (sugarLevel > 100) sugarLevel = 100;
+                document.getElementById('sugar-text').innerText = sugarLevel;
+                document.getElementById('meter-bar').style.width = sugarLevel + '%';
+
+                castleElem.classList.add('hit-flash');
+                setTimeout(() => castleElem.classList.remove('hit-flash'), 400);
+
+                if (sugarLevel >= 100) {
+                    endGame(false, "血糖値が100%を超えてしまいました…！ゲームオーバー");
+                    return;
+                }
+
+                hitCooldown = true;
+                setTimeout(() => { hitCooldown = false; }, 600);
+                break;
+            }
+        }
+
         loopInterval = requestAnimationFrame(gameLoop);
     }
 
-    function endGame(message) {
+    function endGame(isClear, message) {
         if (!isPlaying) return;
         isPlaying = false;
         clearInterval(timerInterval);
+        clearInterval(enemyShootInterval);
         cancelAnimationFrame(loopInterval);
 
         document.getElementById('game-play-screen').classList.add('hidden');
         document.getElementById('game-result-screen').classList.remove('hidden');
 
-        document.getElementById('result-title').innerText = "✨ 大勝利（クリア）！";
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🏯🎉</div>' + message + '<br><br>倒した名古屋めし： <b>'+ score +' / 4 個</b>';
+        let titleText = isClear ? "✨ 大勝利（クリア）！" : "💥 血糖値オーバー！";
+        document.getElementById('result-title').innerText = titleText;
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">' + (isClear ? '🏯🎉' : '🍩⚠️') + '</div>' + message + '<br><br>倒した名古屋めし： <b>'+ score +' / 4 個</b><br>最終血糖値： <b>'+ sugarLevel +'%</b>';
 
-        var shareText = encodeURIComponent('名古屋めし防衛戦で名古屋めしを全制覇しました！\nあなたも名古屋城を守り抜こう！👇');
+        var shareText = encodeURIComponent('名古屋めし防衛戦で名古屋めしを ' + score + ' 個討伐！最終血糖値 ' + sugarLevel + '% でした！\nあなたも名古屋城を守り抜こう！👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋めし,健康防衛軍';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'nagoya_game', 'score': score, 'clear': true});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'nagoya_game', 'score': score, 'clear': isClear});
         }
     }
 </script>
