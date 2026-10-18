@@ -392,7 +392,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }, 1000);
 
-        // 敵の弾発射頻度（少しゆったりめのスリル）
         if (enemyShootInterval) clearInterval(enemyShootInterval);
         enemyShootInterval = setInterval(() => {
             if (!isPlaying) return;
@@ -449,7 +448,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (castleX > stageElem.clientWidth - castleWidth) castleX = stageElem.clientWidth - castleWidth;
         castleElem.style.left = castleX + 'px';
 
-        // 自機の弾移動
         for (let i = bullets.length - 1; i >= 0; i--) {
             let b = bullets[i];
             b.y -= 12;
@@ -488,7 +486,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }
 
-        // 敵の弾移動
         for (let i = enemyBullets.length - 1; i >= 0; i--) {
             let eb = enemyBullets[i];
             eb.y += eb.speed;
@@ -500,14 +497,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 continue;
             }
 
-            // 当たり判定（3回被弾までOK：33%刻みで約3回で100%）
             if (!hitCooldown && eb.x > castleX && eb.x < castleX + castleWidth &&
                 eb.y > stageElem.clientHeight - castleHeight - 10 && eb.y < stageElem.clientHeight) {
                 
                 eb.element.remove();
                 enemyBullets.splice(i, 1);
 
-                sugarLevel += 34; // 3回で100%超え
+                sugarLevel += 34;
                 if (sugarLevel > 100) sugarLevel = 100;
                 document.getElementById('sugar-text').innerText = sugarLevel;
                 document.getElementById('meter-bar').style.width = sugarLevel + '%';
