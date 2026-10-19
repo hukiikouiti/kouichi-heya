@@ -1,1 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コリンの神経衰弱 ～記憶力活性化チャレンジ～ - 皓一部屋</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-back: #34495e;
+            --card-front: #ffffff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .game-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        /* ゲーム盤：12枚（4列×3行） */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 75px);
+            gap: 10px;
+            margin: 0 auto 15px;
+            justify-content: center;
+        }
+        @media (max-width: 360px) {
+            .game-board {
+                grid-template-columns: repeat(4, 65px);
+                gap: 8px;
+            }
+        }
+        .card {
+            width: 75px;
+            height: 95px;
+            background-color: var(--card-back);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, background-color 0.3s;
+            user-select: none;
+        }
+        @media (max-width: 360px) {
+            .card {
+                width: 65px;
+                height: 85px;
+                font-size: 1.5rem;
+            }
+        }
+        .card.flipped {
+            background-color: var(--card-front);
+            border: 2px solid var(--primary-color);
+            transform: scale(1.05);
+        }
+        .card.matched {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            cursor: default;
+            opacity: 0.8;
+        }
+        /* メッセージ表示エリア */
+        #message-box {
+            width: 100%;
+            min-height: 50px;
+            background: #fff;
+            border-left: 5px solid var(--accent-color);
+            padding: 10px 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        /* クリア画面（リザルト） */
+        #result-screen {
+            display: none;
+            text-align: center;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .start-btn {
+            background-color: #0288d1;
+            color: #fff;
+            border-radius: 30px;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>🧠 コリンの神経衰弱</h1>
+    <p>カードをめくって脳内神経ネットワークを繋げ！星野青龍のボイス＆セリフ付き！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3.5rem; margin: 15px 0;">🧬🥚</div>
+        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+    </div>
+
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="game-board" id="board"></div>
+        <div id="message-box">カードをめくってペアを見つけよう！</div>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 style="color: #0288d1; font-size: 1.2rem; margin-top: 0;">🎉 脳内フル回転クリア！</h2>
+        
+        <!-- 結果メッセージ表示用 -->
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 12px; border-radius: 10px;"></div>
+
+        <!-- 1列目：LINEお友達追加 -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+        <!-- 2列目：予約する -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+        <!-- 3列目：Xで結果をシェア -->
+        <a id="share-link" target="_blank" class="game-link-btn" style="background: #000; color: #fff; font-size: 0.95rem;">𝕏 で結果をシェアする</a>
+
+        <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+        <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+            <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+            <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+        </div>
+
+        <!-- 5列目：トップに戻る -->
+        <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; font-size: 0.95rem; margin-bottom: 0;">🏠 トップに戻る</a>
+    </div>
+</div>
+
+<!-- 音声データ (korin1.wav 〜 korin6.wav) -->
+<audio id="voice1" src="korin1.wav" preload="auto"></audio>
+<audio id="voice2" src="korin2.wav" preload="auto"></audio>
+<audio id="voice3" src="korin3.wav" preload="auto"></audio>
+<audio id="voice4" src="korin4.wav" preload="auto"></audio>
+<audio id="voice5" src="korin5.wav" preload="auto"></audio>
+<audio id="voice6" src="korin6.wav" preload="auto"></audio>
+
+<script>
+    const cardData = [
+        { id: 1, icon: '🥚' }, { id: 1, icon: '🟡' }, // コリン×卵黄
+        { id: 2, icon: '⚡' }, { id: 2, icon: '🧬' }, // アセチルコリン×シナプス
+        { id: 3, icon: '🛡️' }, { id: 3, icon: '🦠' }, // レシチン×細胞膜
+        { id: 4, icon: '💡' }, { id: 4, icon: '🔥' }, // 集中力×ひらめき
+        { id: 5, icon: '🧘' }, { id: 5, icon: '💆' }, // 脳のストレッチ×リフレッシュ
+        { id: 6, icon: '✨' }, { id: 6, icon: '🏆' }  // 最終ゴール
+    ];
+
+    const voiceTexts = {
+        1: "「おっ、『コリン』を捉えたな。記憶の原材料がしっかりと脳内に届いたぞ……！」",
+        2: "「『アセチルコリン』分泌完了！ 神経のシナプスがバチバチに繋がっていく快感だな！」",
+        3: "「『レシチン』のパワーだ！ 脳の細胞膜がイキイキと蘇ってきたぞ……！」",
+        4: "「思考のモヤが綺麗に晴れた！ 集中力が限界突破レベルに突入したな！」",
+        5: "「疲れた脳ミソに極上のストレッチが染み渡る……！ ヘッドスパ級の整い具合だな。」",
+        6: "「【脳内フル回転クリア】神経も記憶力も完璧に整いました！ これもう君、天才的だな……。さあ、この冴えた頭で次の癒やしへ進むとしようか。」"
+    };
+
+    let board = document.getElementById('board');
+    let messageBox = document.getElementById('message-box');
+    let resultScreen = document.getElementById('result-screen');
+    let startScreen = document.getElementById('game-start-screen');
+    let playScreen = document.getElementById('game-play-screen');
+    let resultMsg = document.getElementById('result-message');
+
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let isLocked = false;
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function startGame() {
+        board.innerHTML = '';
+        messageBox.textContent = "カードをめくってペアを見つけよう！";
+        startScreen.classList.add('hidden');
+        playScreen.classList.remove('hidden');
+        resultScreen.classList.add('hidden');
+
+        flippedCards = [];
+        matchedPairs = 0;
+        isLocked = false;
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'korin_memory_game'});
+        }
+
+        let shuffledCards = shuffle([...cardData]);
+
+        shuffledCards.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.id = item.id;
+            card.dataset.index = index;
+            card.textContent = '？';
+            card.addEventListener('click', flipCard);
+            board.appendChild(card);
+        });
+    }
+
+    function flipCard() {
+        if (isLocked) return;
+        if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+        this.classList.add('flipped');
+        const originalData = cardData[this.dataset.index];
+        this.textContent = originalData.icon;
+        flippedCards.push(this);
+
+        if (flippedCards.length === 2) {
+            checkMatch();
+        }
+    }
+
+    function checkMatch() {
+        const [card1, card2] = flippedCards;
+        const pairId = parseInt(card1.dataset.id);
+
+        if (card1.dataset.id === card2.dataset.id) {
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            matchedPairs++;
+
+            playVoiceAndMessage(pairId);
+            flippedCards = [];
+
+            if (matchedPairs === 6) {
+                setTimeout(() => {
+                    playScreen.classList.add('hidden');
+                    resultMsg.innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
+                    resultScreen.classList.remove('hidden');
+
+                    var shareText = encodeURIComponent('コリンの神経衰弱をクリアしました！\n脳内神経ネットワークがバッチリ整いました✨\n\nあなたも脳をスッキリさせてみませんか？👇');
+                    document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/korin.html') + '&hashtags=皓一部屋,コリン,健康エンタメ,名古屋マッサージ';
+
+                    if (window.dataLayer) {
+                        window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
+                    }
+                }, 1000);
+            }
+        } else {
+            isLocked = true;
+            setTimeout(() => {
+                card1.classList.remove('flipped');
+                card1.textContent = '？';
+                card2.classList.remove('flipped');
+                card2.textContent = '？';
+                flippedCards = [];
+                isLocked = false;
+            }, 800);
+        }
+    }
+
+    function playVoiceAndMessage(id) {
+        messageBox.textContent = voiceTexts[id];
+
+        const audioElement = document.getElementById(`voice${id}`);
+        if (audioElement) {
+            audioElement.currentTime = 0;
+            audioElement.play().catch(error => {
+                console.log("音声の自動再生がブロックされたか、ファイルが見つかりません:", error);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
