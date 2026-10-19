@@ -158,11 +158,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🏃‍♂️ 血糖値デトックス迷路</h1>
-    <p>甘い誘惑（🍩）を避けて、ヘルシーな食事（🥗）のゴールを目指そう！</p>
+    <p>フタマタの道を選んで、甘い誘惑（🍩）を避けながらゴール（🥗）を目指そう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
-        <div style="font-size: 3.5rem; margin: 15px 0;">🧍‍♂️➡️🥗</div>
+        <div style="font-size: 3.5rem; margin: 15px 0;">🧍‍♂️🔀🥗</div>
         <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
     </div>
 
@@ -185,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <button class="ctrl-btn" onclick="movePlayer(0, 1)">⬇️</button>
             <button class="ctrl-btn" onclick="movePlayer(1, 0)">➡️</button>
         </div>
-        <p style="font-size:0.8rem; color:#888;">ボタンを押してキャラクターを動かそう！</p>
+        <p style="font-size:0.8rem; color:#888;">分岐で安全な道を選ぼう！</p>
     </div>
 
     <!-- 結果画面 -->
@@ -238,7 +238,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-play-screen').classList.remove('hidden');
         document.getElementById('game-result-screen').classList.add('hidden');
 
-        generateMaze();
+        generateMazeWithFumata();
         updateView();
 
         if (window.dataLayer) {
@@ -256,10 +256,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }, 100);
     }
 
-    // 穴掘り法による迷路自動生成
-    function generateMaze() {
+    // フタマタ分岐（複数ルート）を生み出す迷路自動生成
+    function generateMazeWithFumata() {
+        // 全体を壁で初期化
         maze = Array(rows).fill(0).map(() => Array(cols).fill(1));
         
+        // 穴掘り法ベース
         function carve(x, y) {
             maze[y][x] = 0;
             const dirs = [[0, -2], [0, 2], [-2, 0], [2, 0]].sort(() => Math.random() - 0.5);
@@ -272,6 +274,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }
         carve(1, 1);
+
+        // ★ フタマタ（分岐）を増やすため、ランダムな壁をいくつか壊してループや選択肢を作る
+        for (let i = 0; i < 6; i++) {
+            let rx = Math.floor(Math.random() * (cols - 2)) + 1;
+            let ry = Math.floor(Math.random() * (rows - 2)) + 1;
+            maze[ry][rx] = 0;
+        }
         
         pX = 1; pY = 1;
         maze[pY][pX] = 0;
@@ -282,9 +291,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         maze[gY-1][gX] = 0;
         maze[gY][gX-1] = 0;
 
-        // 罠（甘い誘惑 🍩）をランダムに配置
+        // 罠（甘い誘惑 🍩）を分岐の要所にランダム配置
         traps = [];
-        while (traps.length < 4) {
+        while (traps.length < 5) {
             let tx = Math.floor(Math.random() * (cols - 2)) + 1;
             let ty = Math.floor(Math.random() * (rows - 2)) + 1;
             if (maze[ty][tx] === 0 && !(tx === 1 && ty === 1) && !(tx === gX && ty === gY)) {
@@ -310,7 +319,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 traps.splice(trapIndex, 1);
                 if (navigator.vibrate) navigator.vibrate(40);
                 if (glucose >= 250) {
-                    endGame(false, "甘い誘惑に負けて血糖値スパイク発生…！");
+                    endGame(false, "フタマタの道で甘い誘惑を踏んでしまい、血糖値スパイク発生…！");
                     return;
                 }
             } else {
@@ -318,7 +327,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
             
             if (pX === gX && pY === gY) {
-                endGame(true, "見事なルート選択で血糖値を正常に保ちました！");
+                endGame(true, "賢いルート選択でフタマタを突破し、血糖値を正常に保ちました！");
             } else {
                 updateView();
             }
@@ -368,7 +377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">' + (success ? '🥗✨' : '🍩💦') + '</div>残りの時間： <b>' + timeLeft.toFixed(1) + ' 秒</b><br>最終血糖値： <b>' + glucose + ' mg/dL</b><br><br>' + message;
 
-        var text = encodeURIComponent('血糖値デトックス迷路をクリアしました！（残り時間: ' + timeLeft.toFixed(1) + '秒）\nあなたも健康ルートを探検してみる？👇');
+        var text = encodeURIComponent('フタマタ分岐の血糖値デトックス迷路をクリアしました！（残り時間: ' + timeLeft.toFixed(1) + '秒）\nあなたも安全なルートを選べる？👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/maze.html') + '&hashtags=皓一部屋,血糖値,健康エンタメ,名古屋マッサージ';
 
         if (window.dataLayer) {
