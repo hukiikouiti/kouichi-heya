@@ -224,7 +224,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <audio id="voice6" src="korin6.wav" preload="auto"></audio>
 
 <script>
-    // 6ペア（計12枚）：それぞれ「まったく同じ絵（アイコン）」のペアに修正
     const cardData = [
         { id: 1, icon: '🥚' }, { id: 1, icon: '🥚' }, // 1ペア目：卵
         { id: 2, icon: '⚡' }, { id: 2, icon: '⚡' }, // 2ペア目：電撃
@@ -272,6 +271,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         flippedCards = [];
         matchedPairs = 0;
         isLocked = false;
+
+        // ブラウザの音声再生制限を解除するため、スタートボタン押下時に無音ロードを試みる
+        for (let i = 1; i <= 6; i++) {
+            let v = document.getElementById(`voice${i}`);
+            if (v) {
+                v.load();
+            }
+        }
 
         if (window.dataLayer) {
             window.dataLayer.push({'event': 'game_start', 'game_name': 'korin_memory_game'});
@@ -322,6 +329,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     resultMsg.innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
                     resultScreen.classList.remove('hidden');
 
+                    // クリア時は音声6を再生
+                    let finalVoice = document.getElementById('voice6');
+                    if (finalVoice) {
+                        finalVoice.currentTime = 0;
+                        finalVoice.play().catch(e => console.log("クリア音声再生エラー:", e));
+                    }
+
                     var shareText = encodeURIComponent('コリンの神経衰弱をクリアしました！\n脳内神経ネットワークがバッチリ整いました✨\n\nあなたも脳をスッキリさせてみませんか？👇');
                     document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/korin.html') + '&hashtags=皓一部屋,コリン,健康エンタメ,名古屋マッサージ';
 
@@ -350,7 +364,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (audioElement) {
             audioElement.currentTime = 0;
             audioElement.play().catch(error => {
-                console.log("音声の自動再生がブロックされたか、ファイルが見つかりません:", error);
+                console.log("音声の再生に失敗しました:", error);
             });
         }
     }
