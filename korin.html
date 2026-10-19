@@ -224,13 +224,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <audio id="voice6" src="korin6.wav" preload="auto"></audio>
 
 <script>
-    const cardData = [
-        { id: 1, icon: '🥚' }, { id: 1, icon: '🥚' }, // ID 1：卵（1ペア目ボイス）
-        { id: 2, icon: '⚡' }, { id: 2, icon: '⚡' }, // ID 2：電撃（2ペア目ボイス）
-        { id: 3, icon: '🛡️' }, { id: 3, icon: '🛡️' }, // ID 3：盾（3ペア目ボイス）
-        { id: 4, icon: '💡' }, { id: 4, icon: '💡' }, // ID 4：電球（4ペア目ボイス）
-        { id: 5, icon: '🧘' }, { id: 5, icon: '🧘' }, // ID 5：ストレッチ（5ペア目ボイス）
-        { id: 6, icon: '✨' }, { id: 6, icon: '✨' }  // ID 6：キラキラ（最終ゴール）
+    const baseCards = [
+        { id: 1, icon: '🥚' }, { id: 1, icon: '🥚' },
+        { id: 2, icon: '⚡' }, { id: 2, icon: '⚡' },
+        { id: 3, icon: '🛡️' }, { id: 3, icon: '🛡️' },
+        { id: 4, icon: '💡' }, { id: 4, icon: '💡' },
+        { id: 5, icon: '🧘' }, { id: 5, icon: '🧘' },
+        { id: 6, icon: '✨' }, { id: 6, icon: '✨' }
     ];
 
     const voiceTexts = {
@@ -242,26 +242,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         6: "「【脳内フル回転クリア】神経も記憶力も完璧に整いました！ これもう君、天才的だな……。さあ、この冴えた頭で次の癒やしへ進むとしようか。」"
     };
 
-    let board = document.getElementById('board');
-    let messageBox = document.getElementById('message-box');
-    let resultScreen = document.getElementById('result-screen');
-    let startScreen = document.getElementById('game-start-screen');
-    let playScreen = document.getElementById('game-play-screen');
-    let resultMsg = document.getElementById('result-message');
-
+    let currentGameCards = [];
     let flippedCards = [];
     let matchedPairs = 0;
     let isLocked = false;
 
     function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-        return array;
+        return arr;
     }
 
     function startGame() {
+        const board = document.getElementById('board');
+        const messageBox = document.getElementById('message-box');
+        const startScreen = document.getElementById('game-start-screen');
+        const playScreen = document.getElementById('game-play-screen');
+        const resultScreen = document.getElementById('result-screen');
+
         board.innerHTML = '';
         messageBox.textContent = "カードをめくって同じ絵のペアを見つけよう！";
         startScreen.classList.add('hidden');
@@ -272,36 +273,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         matchedPairs = 0;
         isLocked = false;
 
-        for (let i = 1; i <= 6; i++) {
-            let v = document.getElementById(`voice${i}`);
-            if (v) v.load();
-        }
+        currentGameCards = shuffle(baseCards);
 
-        if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'korin_memory_game'});
-        }
-
-        let shuffledCards = shuffle([...cardData]);
-
-        shuffledCards.forEach((item, index) => {
+        currentGameCards.forEach((item, index) => {
             const card = document.createElement('div');
             card.classList.add('card');
-            card.dataset.id = item.id;
             card.dataset.index = index;
             card.textContent = '？';
             card.addEventListener('click', flipCard);
             board.appendChild(card);
         });
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'korin_memory_game'});
+        }
     }
 
     function flipCard() {
         if (isLocked) return;
         if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
+        const index = parseInt(this.dataset.index);
+        const cardInfo = currentGameCards[index];
+
         this.classList.add('flipped');
-        const originalData = cardData[this.dataset.index];
-        this.textContent = originalData.icon;
-        flippedCards.push(this);
+        this.textContent = cardInfo.icon;
+        flippedCards.push({ element: this, card: cardInfo });
 
         if (flippedCards.length === 2) {
             checkMatch();
@@ -309,28 +306,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function checkMatch() {
-        const [card1, card2] = flippedCards;
-        const pairId = parseInt(card1.dataset.id);
+        const [first, second] = flippedCards;
 
-        if (card1.dataset.id === card2.dataset.id) {
-            card1.classList.add('matched');
-            card2.classList.add('matched');
+        if (first.card.id === second.card.id) {
+            // ペア成立
+            first.element.classList.add('matched');
+            second.element.classList.add('matched');
             matchedPairs++;
 
-            // どのカード（ID 1〜5）が揃ったかに応じて対応するボイス＆セリフを再生する
-            playVoiceAndMessage(pairId);
+            playVoiceAndMessage(first.card.id);
             flippedCards = [];
 
             if (matchedPairs === 6) {
                 setTimeout(() => {
-                    playScreen.classList.add('hidden');
-                    resultMsg.innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
-                    resultScreen.classList.remove('hidden');
+                    document.getElementById('game-play-screen').classList.add('hidden');
+                    document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
+                    document.getElementById('result-screen').classList.remove('hidden');
 
-                    let finalVoice = document.getElementById('voice6');
-                    if (finalVoice) {
-                        finalVoice.currentTime = 0;
-                        finalVoice.play().catch(e => console.log("クリア音声再生エラー:", e));
+                    try {
+                        let finalVoice = document.getElementById('voice6');
+                        if (finalVoice) {
+                            finalVoice.currentTime = 0;
+                            finalVoice.play();
+                        }
+                    } catch (e) {
+                        console.log("クリア音声再生スキップ:", e);
                     }
 
                     var shareText = encodeURIComponent('コリンの神経衰弱をクリアしました！\n脳内神経ネットワークがバッチリ整いました✨\n\nあなたも脳をスッキリさせてみませんか？👇');
@@ -342,12 +342,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 }, 1000);
             }
         } else {
+            // 不一致
             isLocked = true;
             setTimeout(() => {
-                card1.classList.remove('flipped');
-                card1.textContent = '？';
-                card2.classList.remove('flipped');
-                card2.textContent = '？';
+                first.element.classList.remove('flipped');
+                first.element.textContent = '？';
+                second.element.classList.remove('flipped');
+                second.element.textContent = '？';
                 flippedCards = [];
                 isLocked = false;
             }, 800);
@@ -355,14 +356,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function playVoiceAndMessage(id) {
-        messageBox.textContent = voiceTexts[id];
+        document.getElementById('message-box').textContent = voiceTexts[id];
 
-        const audioElement = document.getElementById(`voice${id}`);
-        if (audioElement) {
-            audioElement.currentTime = 0;
-            audioElement.play().catch(error => {
-                console.log("音声の再生に失敗しました:", error);
-            });
+        try {
+            const audioElement = document.getElementById(`voice${id}`);
+            if (audioElement) {
+                audioElement.currentTime = 0;
+                audioElement.play().catch(error => {
+                    console.log("音声ファイル未検出またはブロック:", error);
+                });
+            }
+        } catch (e) {
+            console.log("音声再生処理エラー:", e);
         }
     }
 </script>
