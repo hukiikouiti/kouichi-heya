@@ -225,12 +225,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
     const cardData = [
-        { id: 1, icon: '🥚' }, { id: 1, icon: '🥚' }, // 1ペア目：卵
-        { id: 2, icon: '⚡' }, { id: 2, icon: '⚡' }, // 2ペア目：電撃
-        { id: 3, icon: '🛡️' }, { id: 3, icon: '🛡️' }, // 3ペア目：盾
-        { id: 4, icon: '💡' }, { id: 4, icon: '💡' }, // 4ペア目：電球
-        { id: 5, icon: '🧘' }, { id: 5, icon: '🧘' }, // 5ペア目：ストレッチ
-        { id: 6, icon: '✨' }, { id: 6, icon: '✨' }  // 6ペア目：キラキラ
+        { id: 1, icon: '🥚' }, { id: 1, icon: '🥚' }, // ID 1：卵（1ペア目ボイス）
+        { id: 2, icon: '⚡' }, { id: 2, icon: '⚡' }, // ID 2：電撃（2ペア目ボイス）
+        { id: 3, icon: '🛡️' }, { id: 3, icon: '🛡️' }, // ID 3：盾（3ペア目ボイス）
+        { id: 4, icon: '💡' }, { id: 4, icon: '💡' }, // ID 4：電球（4ペア目ボイス）
+        { id: 5, icon: '🧘' }, { id: 5, icon: '🧘' }, // ID 5：ストレッチ（5ペア目ボイス）
+        { id: 6, icon: '✨' }, { id: 6, icon: '✨' }  // ID 6：キラキラ（最終ゴール）
     ];
 
     const voiceTexts = {
@@ -272,12 +272,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         matchedPairs = 0;
         isLocked = false;
 
-        // ブラウザの音声再生制限を解除するため、スタートボタン押下時に無音ロードを試みる
         for (let i = 1; i <= 6; i++) {
             let v = document.getElementById(`voice${i}`);
-            if (v) {
-                v.load();
-            }
+            if (v) v.load();
         }
 
         if (window.dataLayer) {
@@ -320,6 +317,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             card2.classList.add('matched');
             matchedPairs++;
 
+            // どのカード（ID 1〜5）が揃ったかに応じて対応するボイス＆セリフを再生する
             playVoiceAndMessage(pairId);
             flippedCards = [];
 
@@ -329,7 +327,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     resultMsg.innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
                     resultScreen.classList.remove('hidden');
 
-                    // クリア時は音声6を再生
                     let finalVoice = document.getElementById('voice6');
                     if (finalVoice) {
                         finalVoice.currentTime = 0;
