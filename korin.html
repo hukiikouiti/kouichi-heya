@@ -82,7 +82,7 @@
             font-size: 1.8rem;
             color: #fff;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, background-color 0.3s;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
             user-select: none;
         }
         @media (max-width: 360px) {
@@ -98,6 +98,14 @@
             transform: scale(1.05);
             color: #333;
         }
+
+        /* 裏面のとき：ペアのカードが同じ色でうっすら光るヒント効果 */
+        .card.hint-1 { box-shadow: 0 0 10px 2px rgba(230, 126, 34, 0.6); border: 2px dashed #e67e22; }
+        .card.hint-2 { box-shadow: 0 0 10px 2px rgba(52, 152, 219, 0.6); border: 2px dashed #3498db; }
+        .card.hint-3 { box-shadow: 0 0 10px 2px rgba(39, 174, 96, 0.6); border: 2px dashed #27ae60; }
+        .card.hint-4 { box-shadow: 0 0 10px 2px rgba(155, 89, 182, 0.6); border: 2px dashed #9b59b6; }
+        .card.hint-5 { box-shadow: 0 0 10px 2px rgba(231, 76, 60, 0.6); border: 2px dashed #e74c3c; }
+        .card.hint-6 { box-shadow: 0 0 10px 2px rgba(241, 196, 15, 0.6); border: 2px dashed #f1c40f; }
 
         /* 揃ったペアごとの色別点滅・エフェクト */
         @keyframes pulseGlow1 { 0% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } 50% { border-color: #f39c12; box-shadow: 0 0 15px #f39c12; } 100% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } }
@@ -136,11 +144,6 @@
             align-items: center;
             box-sizing: border-box;
             text-align: left;
-        }
-        /* 結果画面（リザルト） */
-        #game-result-screen {
-            display: none;
-            text-align: center;
         }
         .game-link-btn {
             display: block;
@@ -207,7 +210,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-result-screen" class="hidden">
         <h2 style="color: #0288d1; font-size: 1.2rem; margin-top: 0;">🎉 脳内フル回転クリア！</h2>
         
-        <!-- 結果メッセージ表示用 -->
         <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 12px; border-radius: 10px;"></div>
 
         <!-- 1列目：LINEお友達追加 -->
@@ -248,7 +250,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { id: 6, icon: '✨' }, { id: 6, icon: '✨' }
     ];
 
-    // 1ペアごとの固定セリフ
     const voiceTexts = {
         1: "「おっ、『コリン』を捉えたな。記憶の原材料がしっかりと脳内に届いたぞ……！」",
         2: "「『アセチルコリン』分泌完了！ 神経のシナプスがバチバチに繋がっていく快感だな！」",
@@ -294,7 +295,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         currentGameCards.forEach((item, index) => {
             const card = document.createElement('div');
-            card.classList.add('card');
+            card.classList.add('card', `hint-${item.id}`); // 裏面のとき同じペア同士が同じ色でうっすら光るヒントクラス
             card.dataset.index = index;
             card.textContent = '？';
             card.addEventListener('click', flipCard);
@@ -307,7 +308,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function flipCard() {
-        // セリフ再生中や確認中のロック中はカードを開けない
         if (isLocked) return;
         if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
@@ -325,10 +325,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
-        isLocked = true; // セリフや判定の間は操作を完全にロック
+        isLocked = true;
 
         if (first.card.id === second.card.id) {
-            // ペア成立：色別クラス（pair-1 〜 pair-6）を付与して点滅させる
+            // ペア成立時：ヒントの光を消して、揃った専用のエフェクトクラスを付与
+            first.element.classList.remove(`hint-${first.card.id}`);
+            second.element.classList.remove(`hint-${second.card.id}`);
             first.element.classList.add('matched', `pair-${first.card.id}`);
             second.element.classList.add('matched', `pair-${second.card.id}`);
             matchedPairs++;
@@ -337,7 +339,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             flippedCards = [];
 
             if (matchedPairs === 6) {
-                // 全ペア完了時は少し長めにウェイトを置いてから結果画面（予約・LINEボタン）を表示
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
                     document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
@@ -359,15 +360,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
                     }
-                }, 2500); // セリフをしっかり読めるよう2.5秒後に結果画面へ
+                }, 2500);
             } else {
-                // 通常ペア成立時：セリフが終わるまで（約2秒間）新しいカードを開けないようにロック
                 setTimeout(() => {
                     isLocked = false;
                 }, 2000);
             }
         } else {
-            // 不一致の場合
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
