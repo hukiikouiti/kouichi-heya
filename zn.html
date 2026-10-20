@@ -1,1 +1,786 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格亜鉛・栄養代謝クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">亜鉛・栄養代謝クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+  </div>
+
+  <!-- 5列目：トップに戻る -->
+  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+</div>
+
+<script>
+const allQuestions = [
+  // カテゴリー1：亜鉛の基本代謝・生化学（25問）
+  {
+    category: "基本代謝・生化学",
+    question: "体内に存在する亜鉛の総量はおよそ何グラムといわれているか？",
+    options: ["約0.5g〜1g", "約2g〜4g", "約10g〜20g", "約50g〜100g"],
+    answer: 1,
+    explanation: "成人体内には約2〜4gの亜鉛が存在し、主に骨格筋や骨、皮膚、肝臓などに多く分布しています。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "体内で亜鉛が構成成分または活性化因子として関与している酵素の数は、およそ何種類以上とされているか？",
+    options: ["約10種類", "約50種類", "約300種類以上", "約2000種類"],
+    answer: 2,
+    explanation: "亜鉛はDNA合成やタンパク質代謝、抗酸化作用などに関わる300種類以上の酵素の必須構成成分です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "人間の身体で、亜鉛の濃度が最も高い臓器や組織はどれ？",
+    options: ["腎臓", "前立腺・脈絡膜・骨格筋", "胃や腸の粘膜", "心筋"],
+    answer: 1,
+    explanation: "前立腺や目の脈絡膜、骨格筋などは特に高濃度の亜鉛を含有しています。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "DNAの複製や転写を行う際に、亜鉛イオンがタンパク質と結合して安定な立体構造を作るドメインの名称はどれ？",
+    options: ["ヘム構造", "ジンクフィンガー（亜鉛指）", "ペプチド結合", "アルブミン結合体"],
+    answer: 1,
+    explanation: "ジンクフィンガーは遺伝子の発現調節に不可欠な、亜鉛を必要とする代表的なタンパク質構造です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "血液中で亜鉛の大部分（約70〜80%）を結合して運搬している主要なタンパク質はどれ？",
+    options: ["フェリチン", "アルブミン", "トランスフェリン", "ヘモグロビン"],
+    answer: 1,
+    explanation: "血清中の亜鉛の大部分はアルブミンに結合して全身へ運ばれます（一部はα2マクログロブリン）。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "亜鉛が不足した際、味蕾（みらい）の新陳代謝が低下して味覚障害が起きる直接的な理由はどれ？",
+    options: ["舌の神経が完全に消滅するため", "味覚を感知する細胞の生まれ変わり（ターンオーバー）が滞るため", "唾液が全く分泌されなくなるため", "味蕾が亜鉛でコーティングされるため"],
+    answer: 1,
+    explanation: "味蕾の細胞は非常に早いスピードで生まれ変わるため、タンパク質合成や細胞分裂を支える亜鉛が不足すると味覚障害が生じます。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "皮膚や粘膜の修復、ターンオーバーに亜鉛が不可欠である最大の理由はどれ？",
+    options: ["皮膚を熱く保つため", "細胞分裂とタンパク質合成（DNA polymerase等の働き）に直接関与するため", "皮脂の分泌を完全に止めるため", "コラーゲンを破壊するため"],
+    answer: 1,
+    explanation: "亜鉛は新しい細胞を作り出すDNA合成や細胞分裂のフェーズで中心的な役割を果たします。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "男性ホルモン（テストステロン）の合成や代謝において、亜鉛が深く関わっている主な器官はどれ？",
+    options: ["小脳", "精巣（睾丸）および前立腺", "甲状腺", "膵臓のランゲルハンス島"],
+    answer: 1,
+    explanation: "精巣や前立腺には高濃度の亜鉛が存在し、生殖機能やホルモン代謝の維持に大きく寄与しています。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "免疫システムの維持において、亜鉛が果たす重要な役割として正しいものはどれ？",
+    options: ["白血球の働きを抑え込む", "T細胞の分化・成熟や、NK細胞の活性化をサポートする", "体温を急激に下げる", "抗体を完全に破壊する"],
+    answer: 1,
+    explanation: "亜鉛は免疫の司令塔であるT細胞の分化や、免疫機能全体の正常な維持に不可欠です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "活性酸素を分解する強力な抗酸化酵素「SOD（スーパーオキシドディスムターゼ）」の構成金属として、銅と共に中心的な役割を担うものはどれ？",
+    options: ["鉄", "亜鉛", "カルシウム", "マグネシウム"],
+    answer: 1,
+    explanation: "細胞質にあるCu/Zn-SODには、銅と亜鉛がそれぞれ結合して抗酸化作用を発揮します。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "インスリンの合成・貯蔵・分泌のプロセスにおいて、膵臓のβ細胞内でインスリン分子を結晶化・安定させるために不可欠なミネラルはどれ？",
+    options: ["ナトリウム", "亜鉛", "カリウム", "ヨウ素"],
+    answer: 1,
+    explanation: "インスリンは亜鉛と結合することで六量体を形成し、安定して貯蔵・分泌されます。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "小児期において、亜鉛が極端に不足すると発育障害や低身長（成長遅延）を引き起こす主因はどれ？",
+    options: ["骨や軟骨の成長に必要な細胞分裂やタンパク質合成が滞るため", "骨が溶け続けるため", "筋肉が硬直して伸びなくなるため", "食欲が異常に増進するため"],
+    answer: 1,
+    explanation: "成長期の骨や組織の伸長には活発な細胞分裂が必要であり、亜鉛不足は成長遅延の大きな原因となります。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "胎児の正常な発育や妊娠維持において、母体の亜鉛が不足した際に生じやすいリスクとして最も懸念されるものはどれ？",
+    options: ["骨の密度が急激に上がる", "胎児の低出生体重や先天異常のリスク上昇", "母親の身長が伸びる", "血圧が常に低下する"],
+    answer: 1,
+    explanation: "妊娠中の亜鉛不足は細胞分裂の盛んな胎児の成長に直結するため、非常に重要な栄養素です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "人間の身体が体内で亜鉛を長期間大量に貯蔵・キープできない最大の構造的理由はどれ？",
+    options: ["鉄のような大型の貯蔵タンパク質（フェリチンに相当する専用の大きな備蓄構造）が体内に潤沢に存在しないため", "常に汗としてすべて排出されるため", "骨にしか結合できないため", "胃で完全に分解されるため"],
+    answer: 1,
+    explanation: "鉄のフェリチンのような巨大な備蓄タンクが乏しいため、亜鉛は毎日の食事からコンスタントに補給する必要があります（メタロチオネイン等による一時的結合はあるが限定的）。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "アルコールを分解する肝臓の酵素「アルコール脱水素酵素」の働きに不可欠な必須ミネラルはどれ？",
+    options: ["カルシウム", "亜鉛", "鉄", "ナトリウム"],
+    answer: 1,
+    explanation: "アルコールをアセトアルデヒドに分解する酵素にも亜鉛が必須であり、飲酒時に亜鉛が消費されやすくなります。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "骨の代謝（骨形成と骨吸収のバランス）において、骨芽細胞の働きを活性化させ、健康な骨づくりを支えるミネラルはどれ？",
+    options: ["鉛", "亜鉛", "水銀", "アルミニウム"],
+    answer: 1,
+    explanation: "亜鉛は骨代謝やコラーゲン合成にも関与し、骨の健康維持をサポートします。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "網膜においてビタミンAの代謝や視覚サイクルを正常に保つために、亜鉛が多く存在する組織はどれ？",
+    options: ["角膜", "水晶体", "脈絡膜および網膜色素上皮", "虹彩"],
+    answer: 1,
+    explanation: "網膜や脈絡膜には高濃度の亜鉛が存在し、ビタミンAを運ぶタンパク質の合成を支えています。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "傷口の治癒（創傷治癒）のプロセスにおいて、亜鉛が最も強く求められるタイミングや作用はどれ？",
+    options: ["傷を化膿させる時", "コラーゲン合成や線維芽細胞の増殖、免疫防御が働く時", "傷を冷やす時", "出血を促進する時"],
+    answer: 1,
+    explanation: "皮膚や組織が修復される際、盛んなタンパク質合成と免疫防御のために多量の亜鉛が消費されます。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "ストレスを受けた際に副腎皮質ホルモンが分泌されるが、生体内の亜鉛代謝や分布にどのような影響を与えやすいか？",
+    options: ["体内の亜鉛が激増する", "ストレスや炎症によって血中亜鉛が一時的に低下し、肝臓のメタロチオネインに取り込まれる", "亜鉛がすべて体外に消滅する", "一切影響はない"],
+    answer: 1,
+    explanation: "身体的・精神的ストレスや炎症が生じると、防衛反応として血中亜鉛が低下する動態が知られています。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "遺伝情報の伝達（DNAからmRNAへの転写）を司る「RNAポリメラーゼ」の活性中心に必ず含まれている金属元素はどれ？",
+    options: ["亜鉛", "銅", "マンガン", "クロム"],
+    answer: 1,
+    explanation: "RNAポリメラーゼは亜鉛酵素であり、遺伝子の読み取りに不可欠です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "アトピー性皮膚炎や肌荒れなどの皮膚トラブルにおいて、亜鉛の補給が着目される主な栄養学的理由はどれ？",
+    options: ["皮膚を漂白するため", "皮膚のバリア機能維持、細胞分裂、抗炎症・抗酸化作用を支えるため", "汗を一切出なくするため", "皮脂を硬化させるため"],
+    answer: 1,
+    explanation: "皮膚の正常なターンオーバーやバリア修復に亜鉛の働きが深く関与しているためです。"
+  },
+  {
+    category: "基本体制・生化学", // ※カテゴリ名調整
+    question: "脳の神経伝達物質の放出やシナプス可塑性（記憶や学習メカニズム）において、亜鉛がシナプス小胞内に高濃度で蓄えられている部位の通称はどれ？",
+    options: ["グリア細胞", "亜鉛作動性ニューロン（シナプス）", "ミエリン鞘", "髄鞘"],
+    answer: 1,
+    explanation: "脳内には亜鉛をシグナルとして放出して神経伝達を調節する神経回路が存在します。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "細胞内の恒常性維持やシグナル伝達において、過剰な亜鉛から細胞を守る役割を持つ、結合タンパク質の名称はどれ？",
+    options: ["アルブミン", "メタロチオネイン", "ヘモグロビン", "フィブリノーゲン"],
+    answer: 1,
+    explanation: "メタロチオネインは亜鉛やカドミウムなどの金属と結合してその毒性を和らげ、調節するタンパク質です。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "生体の免疫力低下や脱毛、皮膚炎などが複合的に現れる「亜鉛欠乏症」の診断において、血液検査で一般的に測定される指標はどれ？",
+    options: ["血清フェリチン値", "血清亜鉛値", "尿素窒素（BUN）値", "ヘマトクリット値"],
+    answer: 1,
+    explanation: "血液検査では血清亜鉛値（通常80〜130μg/dL程度）を測定して評価します。"
+  },
+  {
+    category: "基本代謝・生化学",
+    question: "日本人の食事摂取基準（2025年版など）において、成人男性・女性ともに亜鉛の摂取が不足しやすい背景として最も当てはまるものはどれ？",
+    options: ["肉を全く食べない人が増えているため", "加工食品や精製された穀物の摂取により、食材本来に含まれていた亜鉛の摂取量が減りがちであること", "太陽光を浴びすぎると亜鉛が破壊されるため", "水だけで生活する人が主流なため"],
+    answer: 1,
+    explanation: "現代の食生活では精製された食品が多く、食品添加物（後述のフィチン酸等も含む）の影響もあり不足しやすくなっています。"
+  },
+
+  // カテゴリー2：亜鉛の吸収・排泄と栄養阻害要因（25問）
+  {
+    category: "吸収・阻害要因",
+    question: "食物として摂取された亜鉛が、人間の消化管で主に吸収される部位はどこか？",
+    options: ["胃および食道", "十二指腸および上部空腸（小腸上部）", "大腸および直腸", "肝臓内"],
+    answer: 1,
+    explanation: "亜鉛は主に胃を通過した後、小腸の上部（十二指腸〜空腸）で効率よく吸収されます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "穀類や豆類、ナッツ類などに多く含まれ、ミネラル（亜鉛や鉄など）と結合してその吸収を強く阻害する代表的な物質はどれ？",
+    options: ["ビタミンC", "フィチン酸（フィテート）", "クエン酸", "乳糖"],
+    answer: 1,
+    explanation: "フィチン酸は亜鉛や鉄、カルシウムなどのミネラルとキレート結合して不溶性となり、吸収を妨げます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "加工食品やスナック菓子などに広く使われている食品添加物「ポリリン酸塩」などのリン酸塩が、亜鉛の吸収に与える影響はどれ？",
+    options: ["亜鉛の吸収を爆発的に高める", "亜鉛と結合して吸収を阻害する", "亜鉛を完全に体内で増殖させる", "全く影響を与えない"],
+    answer: 1,
+    explanation: "過剰なリン酸塩はミネラルと結びつき、腸管からの亜鉛吸収を妨げる要因となります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "食物繊維の過剰摂取が亜鉛の吸収を妨げることがあるが、その主なメカニズムはどれ？",
+    options: ["食物繊維が亜鉛を直接吸着し、そのまま体外へ排泄してしまうため", "食物繊維が胃を溶かすため", "食物繊維が亜鉛を糖に変えてしまうため", "食物繊維が腸の長さを短くするため"],
+    answer: 1,
+    explanation: "不溶性食物繊維などはミネラルを吸着して排泄を促す作用があるため、極端な偏食では注意が必要です。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "特定の医薬品（胃酸分泌抑制薬であるプロトンポンプ阻害薬：PPIなど）の長期使用が亜鉛の吸収を低下させる主な理由はどれ？",
+    options: ["胃酸の分泌が減ることで、亜鉛がイオン化して溶け出しにくくなるため", "胃の形が変形するため", "腸の絨毛がすべて消えるため", "肝臓が停止するため"],
+    answer: 1,
+    explanation: "ミネラル類は胃酸によって酸性環境でイオン化（溶出）されるため、胃酸を抑えると吸収効率が低下します。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "タンパク質を一緒に摂取することで、亜鉛の吸収率が向上する理由として正しいものはどれ？",
+    options: ["タンパク質が亜鉛を包み込んで消化酵素から守り、アミノ酸とキレートを形成して吸収を助けるため", "タンパク質が胃酸を大量に発生させるため", "タンパク質が腸壁を広げるため", "理由はない"],
+    answer: 1,
+    explanation: "肉や魚などの良質なタンパク質に含まれるアミノ酸（ペプチド）は、亜鉛の吸収を高める働きがあります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "ビタミンC（アスコルビン酸）が亜鉛の吸収に与える影響についての一般的な見解はどれ？",
+    options: ["亜鉛の吸収を完全にゼロにする", "還元作用により亜鉛が腸管で吸収されやすい状態（イオン化）を保つのを助ける", "亜鉛を毒に変える", "何の意味もない"],
+    answer: 1,
+    explanation: "ビタミンCなどの抗酸化物質や有機酸は、ミネラルの溶解・吸収をサポートする働きがあります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "体内に入った余分な亜鉛や、代謝された亜鉛が主に排泄される経路はどこか？",
+    options: ["呼気（肺）のみ", "主に便（消化管・胆汁分泌を介して）および汗や尿", "皮膚の毛穴からのみ", "髪の毛だけ"],
+    answer: 1,
+    explanation: "体外への亜鉛の排泄経路の大部分は便（腸管からの排出・胆汁）であり、一部が尿や汗から失われます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "多量の汗をかいたとき、汗と一緒に失われるミネラルとしてナトリウムやカリウムのほかに注意すべきものはどれ？",
+    options: ["亜鉛や銅", "金や銀", "鉛", "ウラン"],
+    answer: 1,
+    explanation: "汗腺からも微量の亜鉛が排泄されるため、大量の発汗や激しいスポーツをする人は亜鉛の消耗に配慮が必要です。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "発酵食品（味噌や納豆、パンのサワードウ発酵など）が、フィチン酸による亜鉛の吸収阻害を和らげる仕組みはどれ？",
+    options: ["発酵菌の持つ「フィターゼ」という酵素がフィチン酸を分解してくれるため", "発酵すると亜鉛が消滅するため", "発酵により塩分がすべて亜鉛に変わるため", "特に意味はない"],
+    answer: 1,
+    explanation: "伝統的な発酵や長時間発酵によってフィターゼが働き、フィチン酸が分解されるためミネラルの吸収が良くなります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "鉄のサプリメントを過剰に大量摂取した際、亜鉛の吸収が干渉されて低下してしまう主な原因はどれ？",
+    options: ["鉄と亜鉛が腸管の同じトランスポーター（取り込み口）を競合して奪い合うため", "鉄が亜鉛をすべて燃やすため", "鉄が胃を塞ぐため", "干渉は絶対に起きない"],
+    answer: 1,
+    explanation: "高用量の鉄と亜鉛を同時に多量摂取すると、腸管での取り込みにおいて競合阻害が起きることが知られています。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "銅の過剰摂取が亜鉛の吸収や体内のバランスに与える影響と逆の現象として、亜鉛を過剰に摂りすぎたときに引き起こされる問題はどれ？",
+    options: ["銅の吸収が阻害され、「銅欠乏性貧血」を引き起こす", "鉄が体内で増えすぎる", "カルシウムがすべて溶ける", "何も起きない"],
+    answer: 1,
+    explanation: "亜鉛を過剰摂取すると腸管でメタロチオネインが誘導され、銅が優先的に捕捉されて体外へ排出されるため銅欠乏症を招くリスクがあります。"
+    },
+    {
+    category: "吸収・阻害要因",
+    question: "アルコール常習者や肝障害を持つ人が亜鉛不足になりやすい複合的な理由として正しいものはどれ？",
+    options: ["アルコール分解で亜鉛が大量消費され、さらに尿中排泄が増加し、食事からの摂取も偏りがちになるため", "お酒の中に亜鉛が入っていないから", "肝臓が亜鉛をすべて吸収して貯め込むから", "水分でお腹がいっぱいになるから"],
+    answer: 1,
+    explanation: "アルコールの代謝には亜鉛が必要不可欠であり、尿中排泄も促進されるため慢性的な亜鉛不足を招きやすくなります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "クエン酸やリンゴ酸などの有機酸が亜鉛の吸収に良い影響を与える理由はどれ？",
+    options: ["キレートを形成して腸管での溶解度（可溶性）を高めるため", "胃酸を完全に中和するため", "亜鉛を糖に変えるため", "腸の運動を止めるため"],
+    answer: 1,
+    explanation: "有機酸はミネラルとキレートを組んで溶けやすい状態を維持し、吸収を助けます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "加齢に伴い、胃酸の分泌低下（低胃酸症）や腸管の吸収能力が落ちた場合に起きやすい栄養学的現象はどれ？",
+    options: ["あらゆるミネラルの吸収効率が低下し、亜鉛不足になりやすくなる", "亜鉛の吸収が逆に何倍にも跳ね上がる", "体内で亜鉛が自動合成されるようになる", "特に変化はない"],
+    answer: 1,
+    explanation: "高齢者では胃酸や消化酵素の分泌低下に伴い、亜鉛をはじめとする微量栄養素の吸収効率が低下しやすくなります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "利尿剤（腎臓での排泄を促す薬）の長期使用が、体内の亜鉛状態に与える影響として警戒すべきものはどれ？",
+    options: ["尿からの亜鉛排泄量が促進され、体外へ失われやすくなる", "尿中の亜鉛が完全にゼロになる", "亜鉛が腎臓で結晶化して宝石になる", "影響はない"],
+    answer: 1,
+    explanation: "利尿剤の種類によっては、尿と一緒に必須ミネラルが過剰に排泄されるケースがあります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "「キレート加工された亜鉛サプリメント（グルコン酸亜鉛やピコリン酸亜鉛など）」が一般的な無機亜鉛と比べて選ばれる主な理由はどれ？",
+    options: ["価格が無限に高いため", "吸収率や生体内利用効率を高める工夫がされているため", "絶対に副作用が起きないため", "味を甘くするため"],
+    answer: 1,
+    explanation: "吸収性を高めるためにアミノ酸や有機酸とキレート（結合）させたサプリメントが多く流通しています。"
+    },
+    {
+    category: "吸収・阻害要因",
+    question: "糖尿病やインスリン抵抗性がある体質において、亜鉛の代謝や排泄にどのような特徴が見られやすいか？",
+    options: ["尿からの亜鉛排泄量が増加しやすく、体内プールが枯渇しやすい", "体内で亜鉛が勝手に合成される", "亜鉛の排泄が完全に停止する", "影響は全くない"],
+    answer: 1,
+    explanation: "高血糖状態や糖尿病患者では、尿細管での再吸収低下などにより亜鉛の尿中排泄が増加する傾向が報告されています。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "精製された白米や小麦粉（白いパンやパスタ）の食生活中心になると、全粒穀物に比べて亜鉛の摂取量が激減する理由はどれ？",
+    options: ["精製の過程で、表皮や胚芽部分（ミネラルやビタミンが豊富な部位）が取り除かれてしまうため", "白い食品には亜鉛が毒として作用するため", "精製すると重さが消えるため", "理由はない"],
+    answer: 1,
+    explanation: "穀物の栄養の多くは胚芽やぬか層に偏っており、精製によって大部分が失われてしまいます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "植物性食品に含まれるシュウ酸が、亜鉛の吸収に与える影響についての正確な理解はどれ？",
+    options: ["フィチン酸と同様にミネラルと結びついて吸収を阻害する要因の一つになる", "亜鉛の吸収を100%促進する", "亜鉛をビタミンに変える", "一切関係ない"],
+    answer: 1,
+    explanation: "シュウ酸もカルシウムや亜鉛などのミネラルと結合して吸収を妨げるキレート要因の一つです。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "過激なダイエットや偏ったカロリー制限食を続けたときに亜鉛欠乏に陥りやすい最大の構造的要因はどれ？",
+    options: ["食べる総量が減ることで、微量栄養素（亜鉛を含むタンパク質源）の絶対摂取量が不足するため", "ダイエットすると亜鉛が体内で発火するため", "脂肪がすべて亜鉛に変わるため", "特に問題はない"],
+    answer: 1,
+    explanation: "食事量自体の減少は、必須ミネラルやタンパク質の全体的な不足を直結させます。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "肉類や魚介類に含まれる動物性タンパク質が、植物性食品のミネラル吸収阻害を相殺する現象（ファクター）の通称はどれ？",
+    options: ["ミート・ファクター", "プロテイン・シールド", "アミノ・バリア", "キレート・ブロック"],
+    answer: 1,
+    explanation: "動物性タンパク質（肉や魚）と一緒に植物性食品を摂ると、ミネラルの吸収が高まる現象は「ミート・ファクター」と呼ばれています。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "激しい下痢や消化管の炎症疾患（クローン病や潰瘍性大腸炎など）が亜鉛不足を招く主因はどれ？",
+    options: ["栄養素が小腸で十分に吸収される前に排出されてしまい、消化管からの喪失が増えるため", "腸の長さが毎日伸びるため", "腸内細菌が亜鉛をすべて食べるため", "影響はない"],
+    answer: 1,
+    explanation: "消化管の吸収不良や炎症による漏出は、体内の亜鉛を急速に枯渇させる大きな原因となります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "サプリメントなどで亜鉛を過剰摂取しすぎた場合、急性期に起こりやすい不快な症状はどれ？",
+    options: ["髪の毛が急に黄金色になる", "吐き気、嘔吐、胃のムカつきなどの消化器症状", "視力が3.0になる", "眠気が一切なくなる"],
+    answer: 1,
+    explanation: "高用量の亜鉛を一度に摂取すると、強い胃腸刺激による吐き気や嘔吐を引き起こすことがあります。"
+    },
+  {
+    category: "吸収・阻害要因",
+    question: "毎日の食生活において、亜鉛の吸収を高めるための最も賢明な組み合わせの工夫はどれ？",
+    options: ["フィチン酸の多い食材だけで固める", "良質な動物性タンパク質（肉・魚・牡蠣など）とビタミンCや有機酸を一緒にバランスよく摂る", "サプリメントを空腹時に大量の水なしで飲む", "すべて加熱して栄養を壊す"],
+    answer: 1,
+    explanation: "吸収を阻害する要因を理解し、吸収を高める食材の組み合わせや調理法を取り入れることが大切です。"
+    },
+
+  // カテゴリー3：亜鉛を豊富に含む食材と食習慣（25問）
+  {
+    category: "食材・食習慣",
+    question: "食品の中で、圧倒的な量の亜鉛を含んでおり「海のミルク」とも称される代表的な食材はどれ？",
+    options: ["ワカメ", "カキ（牡蠣）", "キュウリ", "こんにゃく"],
+    answer: 1,
+    explanation: "牡蠣はあらゆる食品の中でもトップクラスの亜鉛含有量を誇る代表的な食材です。"
+  },
+  {
+    category: "食材・食習慣",
+    question: "肉類の中で、特に亜鉛が豊富に含まれている部位の代表格はどれ？",
+    options: ["鶏のささみ", "牛の赤身肉や豚のレバー", "豚の脂身", "鶏の皮"],
+    answer: 1,
+    explanation: "牛肉の赤身やレバーなどの肉類は、吸収性の高い動物性亜鉛を効率よく摂れる優れた供給源です。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "魚介類の中で、牡蠣以外に亜鉛が比較的豊富に含まれているものの組み合わせはどれ？",
+    options: ["ホタテ、煮干し（カタクチイワシ）、カツオ、ウニ", "クラゲと寒天", "昆布と水のみ", "マグロの脂身"],
+    answer: 1,
+    explanation: "魚介類や乾物（煮干しやウニなど）にも亜鉛が豊富に含まれています。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "種実類（ナッツ・シード）の中で、特にずば抜けて高い亜鉛含有量を持つことで知られるものはどれ？",
+    options: ["カボチャの種（パンプキンシード）やゴマ", "スイカの白い部分", "サツマイモの皮", "リンゴの芯"],
+    answer: 1,
+    explanation: "カボチャの種やゴマなどの種実類は、植物性食品のなかでも有数の亜鉛含有量を誇ります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "大豆製品の中で、比較的亜鉛を手軽に補給できる代表的な食材はどれ？",
+    options: ["高野豆腐や納豆、きな粉", "サラダ油", "醤油の絞りかす", "豆腐の水分のみ"],
+    answer: 1,
+    explanation: "大豆そのものや高野豆腐、納豆などは植物性タンパク質とともに亜鉛を含んでいます。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "卵における亜鉛の含有量と効率的な食べ方についての特徴はどれ？",
+    options: ["卵黄（黄身）のほうに亜鉛が集中しているため、全卵をしっかり食べることが大切", "白身だけに亜鉛が凝縮されている", "卵の殻にしか存在しない", "卵には一切入っていない"],
+    answer: 1,
+    explanation: "卵黄にはビタミンやミネラル（亜鉛や鉄など）が集中しており、栄養価に優れています。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "海藻類（ノリやワカメ、昆布など）の亜鉛に関する位置づけとして正しいものはどれ？",
+    options: ["ミネラル全体は豊富だが、亜鉛の含有量は肉や魚、種実に比べると控えめである", "世界一の亜鉛含有量を誇る", "海藻には亜鉛が毒として蓄積される", "一切含まれない"],
+    answer: 1,
+    explanation: "海藻類はヨウ素やミネラル全般の補給源になりますが、亜鉛の主要な供給源は肉・魚介・種実類となります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "チーズや牛乳などの乳製品における亜鉛の含有量と吸収性の特徴はどれ？",
+    options: ["乳製品に含まれる乳糖やカゼインペプチドの働きもあり、比較的吸収されやすい形で亜鉛が含まれている", "亜鉛が全く吸収されない構造になっている", "牛乳は亜鉛をすべて破壊する", "チーズは毒になる"],
+    answer: 1,
+    explanation: "チーズなどの乳製品も日常の食生活で手軽に亜鉛を補える便利な供給源です。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "レバー（豚・牛・鶏）を食べることで、亜鉛のほかに同時に効率よく補給できる造血・代謝に不可欠な栄養素の組み合わせはどれ？",
+    options: ["鉄分、ビタミンB12、ビタミンA（レチノール）", "糖分と脂質のみ", "水分と塩分のみ", "食物繊維のみ"],
+    answer: 1,
+    explanation: "レバーは亜鉛だけでなく、鉄やビタミンA・B群が凝縮されたスーパーフードです。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "カカオ成分を多く含む「高カカオチョコレート」が、実は隠れた亜鉛の供給源になり得る理由はどれ？",
+    options: ["カカオ豆の種子自体にミネラル（亜鉛やマグネシウム）が豊富に含まれているため", "砂糖が亜鉛に変形するため", "チョコレートのパッケージが亜鉛製だから", "理由はない"],
+    answer: 1,
+    explanation: "カカオマスの含有量が高いチョコレートは、マグネシウムや亜鉛などのミネラルを含んでいます。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "玄米や全粒粉パンを食べる際、フィチン酸による亜鉛の吸収阻害を少しでも和らげるための伝統的な調理の知恵はどれ？",
+    options: ["水に長時間浸漬（浸け置き）したり、発酵・発芽させてから調理する", "そのまま生のまま大量にバリバリ食べる", "熱湯で10秒で茹でる", "冷凍してカチカチのまま食べる"],
+    answer: 1,
+    explanation: "浸け置きや発酵によりフィターゼが活性化し、フィチン酸が分解されるためミネラルが吸収しやすくなります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "外食やコンビニ弁当中心の生活になりがちな現代人が亜鉛不足に陥りやすい最大の食習慣上の罠はどれ？",
+    options: ["精製された穀物（白米・小麦）や添加物の多用により、食材本来の亜鉛やタンパク質が不足するため", "野菜を一切見ないから", "水が重すぎるから", "お皿の色が悪いから"],
+    answer: 1,
+    explanation: "加工度が高い食事はカロリーや脂質が過剰な一方で、亜鉛などの微量栄養素が削ぎ落とされているケースが多く見られます。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "日常の食事で「ま・ご・わ・や・さ・し・い」の和食の基本を意識することが、亜鉛の摂取に好ましい理由はどれ？",
+    options: ["豆類（ま）、海藻（わ）、種実（ご）、魚（さ）などを通じて、多様なミネラルやタンパク質をバランスよく網羅できるから", "呪文を唱えると亜鉛が湧くから", "お腹いっぱいになるから", "特に意味はない"],
+    answer: 1,
+    explanation: "伝統的な和食の食材バリエーションは、微量ミネラルを偏りなく補給する上で非常に理にかなっています。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "貝類（アサリ、ハマグリ、シジミなど）を味噌汁やスープにして汁ごと食べるメリットはどれ？",
+    options: ["貝から出汁と一緒に溶け出した水溶性のミネラルや栄養素を余すことなく摂取できるから", "貝の殻が溶けてカルシウムになるから", "汁が熱くなるから", "意味はない"],
+    answer: 1,
+    explanation: "スープや味噌汁に溶け出した微量栄養素を汁ごといただくことは、効率的な栄養摂取の基本です。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "ビーガンや完全菜食主義の食生活を送る人が、特に亜鉛の摂取において意識的な工夫（発芽、浸け置き、種実の活用など）を求められる理由はどれ？",
+    options: ["植物性食品にはフィチン酸が含まれており、動物性食品に比べて亜鉛の吸収率が低くなりがちだから", "植物には亜鉛が一切存在しないから", "植物を食べると亜鉛が体外に吹き飛ぶから", "理由はない"],
+    answer: 1,
+    explanation: "植物性の亜鉛はフィチン酸の影響を受けやすいため、下処理や吸収を高める工夫（ミート・ファクターの代わりとなる酸の活用等）が重要になります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "煮干しや小魚を丸ごと食べる食習慣が、ミネラル補給の観点で優れている理由はどれ？",
+    options: ["骨や内臓ごと食べることで、カルシウムだけでなく亜鉛や鉄などの微量ミネラルも丸ごと摂取できるから", "骨が丈夫になるから", "噛む回数が増えすぎるから", "特に優れていない"],
+    answer: 1,
+    explanation: "丸ごと食べる小魚は、微量栄養素の宝庫であり手軽な補給源になります。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "サプリメントで亜鉛を補給する場合、胃腸への負担を和らげたり吸収効率を安定させたりするための推奨される飲み方のタイミングはどれ？",
+    options: ["極度の空腹時に一気に大量の水なしで飲む", "食中または食後など、胃酸や食べ物が適度にあるタイミングで分けて飲む", "寝る直前に10錠飲む", "絶対に噛み砕いて粉にして飲む"],
+    answer: 1,
+    explanation: "空腹時のサプリメント摂取は胃腸への刺激（吐き気など）を強めることがあるため、食事中や食後の摂取が安心です。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "日常の料理において、鉄鍋や鉄瓶、あるいは特定の調理器具を使うことが亜鉛やミネラルに与える影響についての一般的な知識はどれ？",
+    options: ["鉄分は溶け出すが、亜鉛の主要な供給源はやはり食材そのもの（肉・魚・種実）の選択にある", "鉄鍋を使うと亜鉛がすべて消滅する", "鍋が金色に光る", "影響はない"],
+    answer: 1,
+    explanation: "鉄器からは鉄分が溶け出しますが、亜鉛は主に肉類や魚介類、種実類を日々の食事にしっかり取り入れることが不可欠です。"
+    },
+    {
+    category: "食材・食習慣",
+    question: "お酒（ビールや日本酒など）を飲むときに、スナック菓子や加工食品ばかりをつまみにする習慣が亜鉛代謝に与えるマイナス影響はどれ？",
+    options: ["アルコール代謝で亜鉛が消費される上に、高リン酸・高脂質・精製糖質のつまみによってミネラルの吸収がさらに阻害される", "肝臓が休まる", "お腹がスッキリする", "特に影響はない"],
+    answer: 1,
+    explanation: "お酒の席でも、ナッツ類や刺身、赤身肉などの栄養価の高いおつまみを意識的に選ぶことが大切です。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "「まぐろの赤身」や「カツオ」などの回遊魚の血合い肉に多く含まれる成分と亜鉛の関係はどれ？",
+    options: ["血合いには鉄分やミネラル（亜鉛を含む）が豊富に詰まっており、栄養的価値が高い", "血合いは毒である", "亜鉛を破壊する", "特に何もない"],
+    answer: 1,
+    explanation: "魚の血合い部分には、健康維持に役立つ鉄や亜鉛などの微量ミネラルが凝縮されています。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "朝食を抜いたり、極端な単品ダイエット（バナナだけ、サラダだけ等）を繰り返す食習慣がもたらす亜鉛プールの枯渇リスクはどれ？",
+    options: ["必須アミノ酸と亜鉛の供給が絶たれ、細胞の修復や免疫機能がじわじわと低下する", "体が軽くなりすぎる", "寿命が無限に延びる", "リスクはない"],
+    answer: 1,
+    explanation: "偏った食生活や欠食の継続は、確実に体内の必須栄養素の備蓄を削り取っていきます。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "日常の食事でタンパク質（肉・魚・卵・大豆）を毎食しっかり確保することが、結果的に亜鉛の摂取にも直結する理由はどれ？",
+    options: ["亜鉛はタンパク質と結合して存在し、タンパク質と一緒に摂ることで吸収率も高まるため", "タンパク質と亜鉛は全く同じ分子だから", "タンパク質が亜鉛を人工合成するから", "理由はない"],
+    answer: 1,
+    explanation: "亜鉛の豊かな食材（肉や魚介）は良質なタンパク質の宝庫であり、両者は切り離せない関係にあります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "ドライフルーツやナッツを間食として賢く取り入れることの栄養学的メリットはどれ？",
+    options: ["小腹を満たしながら、マグネシウムや亜鉛、食物繊維などの不足しがちな微量栄養素を補える", "糖分だけで体に悪い", "歯がすべて折れる", "意味がない"],
+    answer: 1,
+    explanation: "質の良いナッツ類などは、良質な脂質とともに貴重なミネラルを補給するスマートなおやつになります。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "亜鉛をはじめとする微量栄養素のバランスを崩さないために、最も理想的な食習慣の基本姿勢はどれ？",
+    options: ["一つの食材だけに頼らず、多彩な食材（動物性・植物性）をバランスよく、美味しく楽しく継続すること", "毎日同じカロリーメイトだけを食べる", "食事を一切やめて光合成する", "サプリメントだけで生きる"],
+    answer: 1,
+    explanation: "多様な食材から偏りなく栄養を補うことこそが、健やかな身体と代謝を維持する不変の王道です。"
+    },
+  {
+    category: "食材・食習慣",
+    question: "「皓一部屋」が提案するボディケアや健康のトータルアプローチにおいて、施術（外側からのアプローチ）と栄養・食事（内側からのアプローチ）を両立させることの真の価値はどれ？",
+    options: ["見た目を偽ること", "硬くなった筋肉や血流をプロの手で解きほぐしつつ、身体の構成材料となる栄養素（亜鉛やタンパク質等）を正しく補うことで、根本からのコンディショニングと若々しい巡りを実現できること", "特になし", "医療行為を行うこと"],
+    answer: 1,
+    explanation: "外からの極上のボディケアと、内からの確かな栄養・代謝アプローチが噛み合うことで、最高のコンディションが花開きます。"
+    }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "亜鉛・栄養代謝クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい亜鉛・栄養代謝の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの栄養学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格亜鉛・栄養代謝クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🧬✨\n#皓一部屋 #亜鉛クイズ #栄養学");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
