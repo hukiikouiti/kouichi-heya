@@ -69,17 +69,20 @@
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
         }
-        /* 落ちてくるアイテム */
+        /* 出現するアイテム */
         .falling-item {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            font-size: 2rem;
+            width: 55px;
+            height: 55px;
+            font-size: 2.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.05s linear;
+            transition: transform 0.1s ease;
+        }
+        .falling-item:active {
+            transform: scale(0.85);
         }
         .btn {
             display: inline-block;
@@ -200,7 +203,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.getElementById('timer').innerText = timeLeft.toFixed(1);
         }, 100);
 
-        spawnerInterval = setInterval(spawnItem, 500);
+        spawnerInterval = setInterval(spawnItem, 600);
     }
 
     function spawnItem() {
@@ -224,8 +227,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
         item.dataset.type = itemType;
 
-        const maxX = stage.clientWidth - 50;
-        const maxY = stage.clientHeight - 50;
+        const maxX = stage.clientWidth - 55;
+        const maxY = stage.clientHeight - 55;
         const randomX = Math.floor(Math.random() * Math.max(0, maxX));
         const randomY = Math.floor(Math.random() * Math.max(0, maxY));
 
@@ -236,9 +239,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (item.parentNode) {
                 item.remove();
             }
-        }, 1000);
+        }, 1300);
 
-        item.onmousedown = item.ontouchstart = (e) => {
+        const handleTap = (e) => {
             e.preventDefault();
             if (!isPlaying) return;
 
@@ -259,6 +262,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 endGame();
             }
         };
+
+        item.addEventListener('mousedown', handleTap);
+        item.addEventListener('touchstart', handleTap);
 
         stage.appendChild(item);
     }
