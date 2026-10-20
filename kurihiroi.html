@@ -206,7 +206,7 @@ function startGame() {
   if (spawnerId) clearInterval(spawnerId);
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
-  }, 700);
+  }, 550); // 出現間隔も少し短くしてテンポアップ
 }
 
 function spawnItem() {
@@ -226,7 +226,8 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  const fallSpeed = Math.random() * 1.2 + 1.2;
+  // 落下スピードを従来（1.2〜2.4）から（2.5〜4.5）へアップ！
+  const fallSpeed = Math.random() * 2.0 + 2.5;
 
   const fallInterval = setInterval(() => {
     if (!gameActive) {
