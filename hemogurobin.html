@@ -57,7 +57,7 @@
             margin-bottom: 12px;
             color: #c73650;
         }
-        /* ゲームステージ */
+        /* ゲームステージ（落下型） */
         .game-stage {
             width: 100%;
             height: 280px;
@@ -69,20 +69,17 @@
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
         }
-        /* 出現するアイテム */
+        /* 上から落ちてくるアイテム */
         .falling-item {
             position: absolute;
-            width: 55px;
-            height: 55px;
-            font-size: 2.2rem;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-        .falling-item:active {
-            transform: scale(0.85);
+            transition: transform 0.05s linear;
         }
         .btn {
             display: inline-block;
@@ -131,7 +128,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🩺 HbA1c 改善大作戦</h1>
-    <p>制限時間20秒！野菜や肉を取ってHbA1cを目標の5.5%まで下げよう！</p>
+    <p>制限時間20秒！上から落ちてくる野菜や肉をキャッチしてHbA1cを5.5%まで下げよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -147,14 +144,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         
         <div class="game-stage" id="game-stage"></div>
-        <p style="font-size:0.8rem; color:#888;">野菜（🥦）や肉（🥩）をタップして数値改善！</p>
+        <p style="font-size:0.8rem; color:#888;">落ちてくる野菜（🥦）や肉（🥩）をタップしてキャッチ！</p>
     </div>
 
-    <!-- 結果画面 -->
+    <!-- 結果画面（お医者さん・専門家の診断コメント付き） -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #c73650; font-size: 1.2rem;">✨ 作戦終了！</h2>
+        <h2 id="result-title" style="color: #c73650; font-size: 1.2rem;">👨‍⚕️ 医師の定期健診コメント</h2>
         
-        <div id="result-message" style="font-size: 1rem; margin: 15px 0; color: #333; line-height: 1.6;"></div>
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #fff3f5; padding: 12px; border-radius: 10px; border-left: 5px solid #c73650;"></div>
 
         <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
@@ -203,7 +200,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.getElementById('timer').innerText = timeLeft.toFixed(1);
         }, 100);
 
-        spawnerInterval = setInterval(spawnItem, 600);
+        spawnerInterval = setInterval(spawnItem, 500);
     }
 
     function spawnItem() {
@@ -227,25 +224,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
         item.dataset.type = itemType;
 
-        const maxX = stage.clientWidth - 55;
-        const maxY = stage.clientHeight - 55;
+        const maxX = stage.clientWidth - 50;
         const randomX = Math.floor(Math.random() * Math.max(0, maxX));
-        const randomY = Math.floor(Math.random() * Math.max(0, maxY));
-
         item.style.left = randomX + 'px';
-        item.style.top = randomY + 'px';
+        item.style.top = '-50px';
 
-        const disappearTimer = setTimeout(() => {
-            if (item.parentNode) {
+        let posY = -50;
+        const fallSpeed = 2.0 + Math.random() * 2.0;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
                 item.remove();
             }
-        }, 1300);
+        }, 30);
 
-        const handleTap = (e) => {
+        item.onmousedown = item.ontouchstart = (e) => {
             e.preventDefault();
             if (!isPlaying) return;
 
-            clearTimeout(disappearTimer);
+            clearInterval(fallInterval);
 
             if (item.dataset.type === 'veg' || item.dataset.type === 'meat') {
                 currentHbA1c = Math.max(5.5, currentHbA1c - 0.1);
@@ -262,9 +269,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 endGame();
             }
         };
-
-        item.addEventListener('mousedown', handleTap);
-        item.addEventListener('touchstart', handleTap);
 
         stage.appendChild(item);
     }
@@ -289,15 +293,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-result-screen').classList.remove('hidden');
 
         let judge = "";
+        let doctorComment = "";
+
         if (currentHbA1c <= 5.5) {
             judge = "【理想の数値達成！ヘモグロビンマスター】";
+            doctorComment = "「素晴らしい数値ですね！完璧な食事管理とセルフケアの賜物です。この調子で身体のメンテナンスを続けていきましょう！」";
         } else if (currentHbA1c <= 6.2) {
             judge = "【改善傾向あり！健康優良生】";
+            doctorComment = "「良い傾向が見られますね。あともう一歩で理想の領域です。日頃のストレッチや食習慣の意識をさらに高めていきましょう。」";
         } else {
             judge = "【甘い誘惑に負けた生活習慣】";
+            doctorComment = "「おや、少し数値が高めに出ていますね……！ 甘いものの食べ過ぎには注意が必要です。しっかり身体をほぐして代謝を上げていきましょう！」";
         }
 
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🩺✨</div>最終HbA1c： <b>' + currentHbA1c.toFixed(1) + ' %</b><br><span style="font-size:0.8rem; color:#c73650; font-weight:bold;">' + judge + '</span><br><br>HbA1c改善大作戦の結果発表！';
+        document.getElementById('result-message').innerHTML = '<b>最終HbA1c： ' + currentHbA1c.toFixed(1) + ' %</b><br><span style="color:#c73650; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
 
         var text = encodeURIComponent('HbA1c改善大作戦で最終数値 ' + currentHbA1c.toFixed(1) + '% を達成しました！\n称号：' + judge + '\n\n健康管理のエンタメゲーム、あなたも挑戦してみる？👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/hemogurobin.html') + '&hashtags=皓一部屋,HbA1c,健康エンタメ,名古屋マッサージ';
