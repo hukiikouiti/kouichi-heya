@@ -298,7 +298,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             card.classList.add('card', `hint-${item.id}`);
             card.dataset.index = index;
             card.textContent = '？';
-            card.addEventListener('click', flipCard);
+            card.addEventListener('pointerdown', handleCardClick);
             board.appendChild(card);
         });
 
@@ -307,7 +307,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     }
 
-    function flipCard() {
+    function handleCardClick(e) {
+        e.preventDefault();
+        // isLockedが真（セリフ再生中や確認中）のときは絶対にカードを開けない
         if (isLocked) return;
         if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
@@ -325,7 +327,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
-        isLocked = true; // 判定およびセリフ再生中はカードを一切開けないようにロック
+        isLocked = true; // 即座にロックをかけてセリフ中のカードタッチを完全ブロック
 
         if (first.card.id === second.card.id) {
             first.element.classList.remove(`hint-${first.card.id}`);
@@ -338,7 +340,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             flippedCards = [];
 
             if (matchedPairs === 6) {
-                // クリア時はセリフをしっかり表示・再生させたあと、結果画面（メニュー）を表示
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
                     document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
@@ -362,13 +363,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     }
                 }, 2800);
             } else {
-                // 通常ペア成立時：セリフ再生中（2.2秒間）はロックを継続し、終了後に次のカードを開けるようにする
+                // セリフ再生中（2.2秒間）はロックを維持し、終了後に次のカードを開けられるようにする
                 setTimeout(() => {
                     isLocked = false;
                 }, 2200);
             }
         } else {
-            // 不一致の場合
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
