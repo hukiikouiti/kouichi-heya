@@ -99,7 +99,7 @@
             color: #333;
         }
 
-        /* 裏面のとき：ペアのカードが同じ色でうっすら光るヒント効果 */
+        /* 裏面のときのヒントの光 */
         .card.hint-1 { box-shadow: 0 0 10px 2px rgba(230, 126, 34, 0.6); border: 2px dashed #e67e22; }
         .card.hint-2 { box-shadow: 0 0 10px 2px rgba(52, 152, 219, 0.6); border: 2px dashed #3498db; }
         .card.hint-3 { box-shadow: 0 0 10px 2px rgba(39, 174, 96, 0.6); border: 2px dashed #27ae60; }
@@ -107,7 +107,7 @@
         .card.hint-5 { box-shadow: 0 0 10px 2px rgba(231, 76, 60, 0.6); border: 2px dashed #e74c3c; }
         .card.hint-6 { box-shadow: 0 0 10px 2px rgba(241, 196, 15, 0.6); border: 2px dashed #f1c40f; }
 
-        /* 揃ったペアごとの色別点滅・エフェクト */
+        /* 揃ったペアのエフェクト */
         @keyframes pulseGlow1 { 0% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } 50% { border-color: #f39c12; box-shadow: 0 0 15px #f39c12; } 100% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } }
         @keyframes pulseGlow2 { 0% { border-color: #3498db; box-shadow: 0 0 5px #3498db; } 50% { border-color: #2980b9; box-shadow: 0 0 15px #2980b9; } 100% { border-color: #3498db; box-shadow: 0 0 5px #3498db; } }
         @keyframes pulseGlow3 { 0% { border-color: #27ae60; box-shadow: 0 0 5px #27ae60; } 50% { border-color: #2ecc71; box-shadow: 0 0 15px #2ecc71; } 100% { border-color: #27ae60; box-shadow: 0 0 5px #27ae60; } }
@@ -295,7 +295,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         currentGameCards.forEach((item, index) => {
             const card = document.createElement('div');
-            card.classList.add('card', `hint-${item.id}`); // 裏面のとき同じペア同士が同じ色でうっすら光るヒントクラス
+            card.classList.add('card', `hint-${item.id}`);
             card.dataset.index = index;
             card.textContent = '？';
             card.addEventListener('click', flipCard);
@@ -325,10 +325,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
-        isLocked = true;
+        isLocked = true; // 判定およびセリフ再生中はカードを一切開けないようにロック
 
         if (first.card.id === second.card.id) {
-            // ペア成立時：ヒントの光を消して、揃った専用のエフェクトクラスを付与
             first.element.classList.remove(`hint-${first.card.id}`);
             second.element.classList.remove(`hint-${second.card.id}`);
             first.element.classList.add('matched', `pair-${first.card.id}`);
@@ -339,10 +338,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             flippedCards = [];
 
             if (matchedPairs === 6) {
+                // クリア時はセリフをしっかり表示・再生させたあと、結果画面（メニュー）を表示
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
                     document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
-                    document.getElementById('result-screen').classList.remove('hidden');
+                    document.getElementById('game-result-screen').classList.remove('hidden');
 
                     try {
                         let finalVoice = document.getElementById('voice6');
@@ -360,13 +360,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
                     }
-                }, 2500);
+                }, 2800);
             } else {
+                // 通常ペア成立時：セリフ再生中（2.2秒間）はロックを継続し、終了後に次のカードを開けるようにする
                 setTimeout(() => {
                     isLocked = false;
-                }, 2000);
+                }, 2200);
             }
         } else {
+            // 不一致の場合
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
