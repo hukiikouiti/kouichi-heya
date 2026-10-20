@@ -98,17 +98,32 @@
             transform: scale(1.05);
             color: #333;
         }
+
+        /* 揃ったペアごとの色別点滅・エフェクト */
+        @keyframes pulseGlow1 { 0% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } 50% { border-color: #f39c12; box-shadow: 0 0 15px #f39c12; } 100% { border-color: #e67e22; box-shadow: 0 0 5px #e67e22; } }
+        @keyframes pulseGlow2 { 0% { border-color: #3498db; box-shadow: 0 0 5px #3498db; } 50% { border-color: #2980b9; box-shadow: 0 0 15px #2980b9; } 100% { border-color: #3498db; box-shadow: 0 0 5px #3498db; } }
+        @keyframes pulseGlow3 { 0% { border-color: #27ae60; box-shadow: 0 0 5px #27ae60; } 50% { border-color: #2ecc71; box-shadow: 0 0 15px #2ecc71; } 100% { border-color: #27ae60; box-shadow: 0 0 5px #27ae60; } }
+        @keyframes pulseGlow4 { 0% { border-color: #9b59b6; box-shadow: 0 0 5px #9b59b6; } 50% { border-color: #8e44ad; box-shadow: 0 0 15px #8e44ad; } 100% { border-color: #9b59b6; box-shadow: 0 0 5px #9b59b6; } }
+        @keyframes pulseGlow5 { 0% { border-color: #e74c3c; box-shadow: 0 0 5px #e74c3c; } 50% { border-color: #c0392b; box-shadow: 0 0 15px #c0392b; } 100% { border-color: #e74c3c; box-shadow: 0 0 5px #e74c3c; } }
+        @keyframes pulseGlow6 { 0% { border-color: #f1c40f; box-shadow: 0 0 5px #f1c40f; } 50% { border-color: #f39c12; box-shadow: 0 0 15px #f39c12; } 100% { border-color: #f1c40f; box-shadow: 0 0 5px #f1c40f; } }
+
+        .matched.pair-1 { background-color: #fef5e7; border: 3px solid #e67e22; animation: pulseGlow1 1.2s infinite; }
+        .matched.pair-2 { background-color: #ebf5fb; border: 3px solid #3498db; animation: pulseGlow2 1.2s infinite; }
+        .matched.pair-3 { background-color: #e8f8f5; border: 3px solid #27ae60; animation: pulseGlow3 1.2s infinite; }
+        .matched.pair-4 { background-color: #f4ecf7; border: 3px solid #9b59b6; animation: pulseGlow4 1.2s infinite; }
+        .matched.pair-5 { background-color: #f5b7b1; border: 3px solid #e74c3c; animation: pulseGlow5 1.2s infinite; }
+        .matched.pair-6 { background-color: #fef9e7; border: 3px solid #f1c40f; animation: pulseGlow6 1.2s infinite; }
+
         .card.matched {
-            background-color: #d4edda;
-            border: 2px solid #28a745;
             cursor: default;
-            opacity: 0.8;
+            opacity: 0.95;
             color: #333;
         }
+
         /* メッセージ表示エリア */
         #message-box {
             width: 100%;
-            min-height: 50px;
+            min-height: 55px;
             background: #fff;
             border-left: 5px solid var(--accent-color);
             padding: 10px 15px;
@@ -122,7 +137,11 @@
             box-sizing: border-box;
             text-align: left;
         }
-        /* リザルト画面・スタート画面の制御 */
+        /* 結果画面（リザルト） */
+        #game-result-screen {
+            display: none;
+            text-align: center;
+        }
         .game-link-btn {
             display: block;
             width: 100%;
@@ -172,19 +191,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1>🧠 コリンの神経衰弱</h1>
     <p>同じ絵柄のカードを揃えて脳内神経ネットワークを繋げ！星野青龍のボイス＆セリフ付き！</p>
 
-    <!-- スタート画面（初期状態で確実に表示） -->
+    <!-- スタート画面 -->
     <div id="game-start-screen">
         <div style="font-size: 3.5rem; margin: 15px 0;">🧬🥚</div>
         <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
     </div>
 
-    <!-- プレイ画面（初期状態は非表示） -->
+    <!-- プレイ画面 -->
     <div id="game-play-screen" class="hidden">
         <div class="game-board" id="board"></div>
         <div id="message-box">カードをめくって同じ絵のペアを見つけよう！</div>
     </div>
 
-    <!-- 結果画面（初期状態は非表示） -->
+    <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
         <h2 style="color: #0288d1; font-size: 1.2rem; margin-top: 0;">🎉 脳内フル回転クリア！</h2>
         
@@ -229,6 +248,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { id: 6, icon: '✨' }, { id: 6, icon: '✨' }
     ];
 
+    // 1ペアごとの固定セリフ
     const voiceTexts = {
         1: "「おっ、『コリン』を捉えたな。記憶の原材料がしっかりと脳内に届いたぞ……！」",
         2: "「『アセチルコリン』分泌完了！ 神経のシナプスがバチバチに繋がっていく快感だな！」",
@@ -262,7 +282,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         board.innerHTML = '';
         messageBox.textContent = "カードをめくって同じ絵のペアを見つけよう！";
         
-        // 画面の切り替えを確実に実行
         startScreen.classList.add('hidden');
         resultScreen.classList.add('hidden');
         playScreen.classList.remove('hidden');
@@ -288,6 +307,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function flipCard() {
+        // セリフ再生中や確認中のロック中はカードを開けない
         if (isLocked) return;
         if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
@@ -305,18 +325,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
+        isLocked = true; // セリフや判定の間は操作を完全にロック
 
         if (first.card.id === second.card.id) {
-            // ペア成立
-            first.element.classList.add('matched');
-            second.element.classList.add('matched');
+            // ペア成立：色別クラス（pair-1 〜 pair-6）を付与して点滅させる
+            first.element.classList.add('matched', `pair-${first.card.id}`);
+            second.element.classList.add('matched', `pair-${second.card.id}`);
             matchedPairs++;
 
             playVoiceAndMessage(first.card.id);
             flippedCards = [];
 
-            // 全6ペア揃ったら結果画面（ボタン選択）を表示
             if (matchedPairs === 6) {
+                // 全ペア完了時は少し長めにウェイトを置いてから結果画面（予約・LINEボタン）を表示
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
                     document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
@@ -338,11 +359,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
                     }
-                }, 1000);
+                }, 2500); // セリフをしっかり読めるよう2.5秒後に結果画面へ
+            } else {
+                // 通常ペア成立時：セリフが終わるまで（約2秒間）新しいカードを開けないようにロック
+                setTimeout(() => {
+                    isLocked = false;
+                }, 2000);
             }
         } else {
-            // 不一致
-            isLocked = true;
+            // 不一致の場合
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
@@ -350,7 +375,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 second.element.textContent = '？';
                 flippedCards = [];
                 isLocked = false;
-            }, 800);
+            }, 900);
         }
     }
 
