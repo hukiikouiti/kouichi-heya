@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="screen hidden" id="result-screen">
   <h1>🎉 記録発表！</h1>
-  <p id="result-score" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+  <div id="result-message" style="font-size: 1rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #fff8f0; padding: 12px; border-radius: 10px; border-left: 5px solid #d35400;"></div>
 
   <!-- 1列目：LINEお友達追加（太ボタン） -->
   <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
@@ -206,7 +206,7 @@ function startGame() {
   if (spawnerId) clearInterval(spawnerId);
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
-  }, 550); // 出現間隔も少し短くしてテンポアップ
+  }, 550);
 }
 
 function spawnItem() {
@@ -226,7 +226,6 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  // 落下スピードを従来（1.2〜2.4）から（2.5〜4.5）へアップ！
   const fallSpeed = Math.random() * 2.0 + 2.5;
 
   const fallInterval = setInterval(() => {
@@ -275,14 +274,13 @@ function endGame() {
 
   document.getElementById('game-screen').classList.add('hidden');
   document.getElementById('result-screen').classList.remove('hidden');
-  document.getElementById('result-score').innerText = "獲得した栗: " + score + "個！";
-}
 
-function shareToX() {
-  const text = encodeURIComponent("【秋の栗拾いゲーム】で栗を " + score + "個拾いました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
-  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
-}
-</script>
+  let judge = "";
+  let comment = "";
 
-</body>
-</html>
+  if (score >= 30) {
+    judge = "【伝説の人間栗拾いマスター】";
+    comment = "「素晴らしい反射神経と集中力ですね！葉っぱを巧みにかわし、次々と栗を収穫する手際はもはや職人芸の域です！」";
+  } else if (score >= 20) {
+    judge = "【秋の味覚ハンター】";
+  ... (comment続き)
