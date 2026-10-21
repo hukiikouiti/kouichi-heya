@@ -1,1 +1,787 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格分子モーター・キネシンクイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">キネシン・分子モータークイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+  </div>
+
+  <!-- 5列目：トップに戻る -->
+  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+</div>
+
+<script>
+const allQuestions = [
+  // カテゴリー1：キネシンの基本構造と移動メカニズム（25問）
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが細胞内で移動する際に道しるべとして歩行する線維状の構造物はどれ？",
+    options: ["アクチンフィラメント", "微小管（プロトフィラメント）", "中間径フィラメント", "コラーゲン繊維"],
+    answer: 1,
+    explanation: "キネシンは細胞骨格の一つである「微小管」の軌道上を歩行するモータータンパク質です。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが微小管の上を移動する際にエネルギー源として使用する物質はどれ？",
+    options: ["GTP", "ATP（アデノシン三リン酸）", "NADH", "乳酸"],
+    answer: 1,
+    explanation: "キネシンはATPの加水分解エネルギーを利用して形状を変化させ、一歩ずつ前進します。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "典型的なキネシン（キネシン-1）は何個の重鎖（ヘビーチェーン）からなる二量体構造をしているか？",
+    options: ["1個", "2個", "4個", "6個"],
+    answer: 1,
+    explanation: "キネシン-1は2個の同一の重鎖が組み合わさった二量体で、それぞれに頭部ドメイン（モータードメイン）を持ちます。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの移動方向として一般的なものはどれ？",
+    options: ["微小管のマイナス端からプラス端へ（順行性）", "微小管のプラス端からマイナス端へ（逆行性）", "ランダムに前後どちらへも動かない", "細胞膜の外側へ直接飛び出す"],
+    answer: 0,
+    explanation: "大半のキネシンファミリーは、微小管のプラス端（通常は細胞 periphery 側）に向かって進む「順行性モーター」です。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが微小管の上を歩くときの足取り（歩行様式）の正確な表現はどれ？",
+    options: ["すり足で滑るように進む", "ハンド・オーバー・ハンド（手渡し運動・交互に一歩ずつ踏み出す）", "回転しながら転がる", "不規則にジャンプする"],
+    answer: 1,
+    explanation: "2つの頭部が互いに前へ踏み出す「ハンド・オーバー・ハンド」と呼ばれる歩行様式をとります。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの頭部（モータードメイン）が微小管から完全に離れてしまわないようにする、きわめて高い性質のことを何というか？",
+    options: ["プロセッシビティ（連続移動性）", "弾性変形", "浸透圧耐性", "自己複製能"],
+    answer: 0,
+    explanation: "キネシンは微小管から離れずに何百歩も連続して歩き続ける「高いプロセッシビティ」を持っています。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンがATPを1分子消費するごとに、微小管の上を何ナノメートル（nm）前進するか？",
+    options: ["約1 nm", "約8 nm", "約100 nm", "約1 μm"],
+    answer: 1,
+    explanation: "キネシンはATPの1分子加水分解につき、正確に約8 nm（微小管のチューブリン・ヘテロ二量体の間隔）ステップで進みます。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの構造のうち、貨物（小胞やオルガネラ）を結合する部位が存在するのはどの部分か？",
+    options: ["頭部（モータードメイン）", "尾部（テール・ドメイン）", "ネッカー部分のみ", "ATP結合ポケットの中"],
+    answer: 1,
+    explanation: "尾部（テール）が特定の受容体やアダプタータンパク質を介して運ぶべき荷物と結合します。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが荷物を運ぶ際、微小管の「プラス端」は通常どちらの方向を向いているか？",
+    options: ["細胞の中心（中心体付近）", "細胞の周辺（末端やシナプス終末など）", "細胞核の核小体の中", "常にランダム"],
+    answer: 1,
+    explanation: "軸索や一般的な細胞内では、微小管のプラス端は外向き（末端側）に伸びているため、キネシンは外へ荷物を運びます。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの頭部にある、ATPが結合してエネルギーを生み出す酵素活性の名称はどれ？",
+    options: ["ATP合成酵素", "ATPase（アデノシン三リン酸酵素）活性", "プロテインキナーゼ", "DNAリガーゼ"],
+    answer: 1,
+    explanation: "頭部ドメイン自体が優れたATPase活性を持ち、ATPをADPとリン酸に分解します。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが荷物を持っていない（フリーの）状態のときに見られる自己抑制メカニズムはどれ？",
+    options: ["尾部が頭部に折り重なってATPase活性を自ら不活性化する", "微小管を破壊する", "自ら消滅する", "細胞外へ脱出する"],
+    answer: 0,
+    explanation: "非荷物時は折りたたまれたコンパートメント構造をとり、無駄なATP消費を防いでいます。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが微小管の向きを間違えずに歩けるのは、微小管のどの構造を認識しているからか？",
+    options: ["チューブリンの極性（非対称な配列構造）", "微小管の太さのグラデーション", "細胞膜の厚み", "DNAの塩基配列"],
+    answer: 0,
+    explanation: "微小管はαおよびβチューブリンが一定方向に並んだ極性を持つため、キネシンはその方向性を正確に認識します。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "哺乳類のゲノムには、多様なキネシンファミリー（Kinesin superfamily proteins: KIF）が何種類ほどコードされているか？",
+    options: ["約5種類", "約10種類", "約45種類以上", "約1000種類"],
+    answer: 2,
+    explanation: "ヒトなどの哺乳類には45種類以上のKIF（キネシン・スーパーファミリー）が存在し、それぞれ異なる役割を持っています。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの「ネッカー（neck linker）」と呼ばれる短い領域が果たす極めて重要な役割はどれ？",
+    options: ["ATPの匂いを嗅ぎつける", "構造変化を起こして前方の頭部を前方に力強く振り出す", "微小管を溶かす", "荷物を接着剤で固める"],
+    answer: 1,
+    explanation: "ATP結合に伴うネッカーのドッキング（立体構造変化）が、反対側の足を前へスイングさせる動力源になります。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが発見された歴史的背景として、最初に単離・発見された生物はどれ？",
+    options: ["大腸菌", "イカ（巨大軸索）およびウシの脳", "酵母菌のみ", "植物の葉緑体"],
+    answer: 1,
+    explanation: "1985年にイカの巨大軸索やウシの脳抽出液から初めてキネシンが単離・同定されました。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの分子量はおよそどれくらいか（キネシン-1の場合）？",
+    options: ["約15 kDa", "約380 kDa", "約5,000 kDa", "約50,000 kDa"],
+    answer: 1,
+    explanation: "2つの重鎖と2つの軽鎖からなるキネシン-1複合体全体はおよそ380 kDaの大きなタンパク質です。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの移動速度（インビトロの実験等）はおよそどのくらいか？",
+    options: ["秒速数ナノメートル", "秒速数マイクロメートル（約0.5〜2 μm/s）", "秒速1メートル", "時速60キロ"],
+    answer: 1,
+    explanation: "インビトロ（試験管内）アッセイでは、毎秒1ミクロン前後の速度で微小管上を力強く疾走します。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが微小管の上を歩くときの「ステップの正確さ（正確に軌道を外れない性質）」を保つ結合力はどのように維持されているか？",
+    options: ["静電的相互作用と水素結合", "強力な瞬間接着剤", "磁力", "重力"],
+    answer: 0,
+    explanation: "チューブリンの酸性残基とキネシンの塩基性残基の間で形成される静電的相互作用が重要な役割を果たします。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの「2つの頭部」の連係プレー（片方が足を外している間に、もう片方がしっかり微小管に掴まる仕組み）の専門的な制御はどれ？",
+    options: ["ガソリン制御", "交互作用的ゲーティング（Gating）", "完全ランダム", "温度制御"],
+    answer: 1,
+    explanation: "両方の頭部が同時に微小管から離れて拡散してしまわないように、精妙な同調（ゲーティング）が行われています。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの構造分類のうち、モータードメインが分子の「中央付近」に位置する特殊なグループ（M-kinesinなど）の主な機能はどれ？",
+    options: ["荷物を運ぶのではなく、微小管の端を脱重合（分解）させる", "筋肉を収縮させる", "光合成を行う", "細胞を分裂させる"],
+    answer: 0,
+    explanation: "一部のキネシン（Kinesin-13など）は荷物運搬ではなく、微小管の末端を直接分解して短縮させる脱重合酵素として働きます。"
+  },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの駆動を観察する代表的なバイオ物理学の手法として、微小管に蛍光ビーズを付けてレーザーで捉える装置の名称はどれ？",
+    options: ["光学的ピンセット（光ピンセット）", "電子レンジ", "X線CT", "超音波カッター"],
+    answer: 0,
+    explanation: "光ピンセットを用いることで、キネシン1分子が発揮する微小な力（ピコニュートン単位）を直接測定できます。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが発揮する「ストールフォース（最大の力）」はおよそ何ピコニュートン（pN）か？",
+    options: ["約0.001 pN", "約5〜8 pN", "約500 pN", "約10,000 pN"],
+    answer: 1,
+    explanation: "キネシン分子1つは約5〜7 pNの力で荷物を押し進めることができ、分子スケールとしては非常にパワフルです。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンが微小管に結合する際、結合のスイッチを入れる引き金となる分子はどれ？",
+    options: ["ADPからATPへの置換", "水分子の減少", "温度上昇", "酸素の欠乏"],
+    answer: 0,
+    explanation: "ADPが外れて新しいATPが頭部に結合することが、強固な微小管結合と次のステップへの引き金になります。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの研究が現代のナノテクノロジーやバイオミメティクス（生体模倣技術）で注目されている理由はどれ？",
+    options: ["究極の生体ナノマシンとして、人工的な物質輸送システムに応用できるから", "無限の発電ができるから", "プラスチックを完全に消去できるから", "特に理由はない"],
+    answer: 0,
+    explanation: "生体内でナノレベルの運搬を驚異的な効率で行うキネシンの仕組みは、分子ロボット工学の大きなインスピレーション源です。"
+    },
+  {
+    category: "基本構造・メカニズム",
+    question: "キネシンの「軽鎖（ライトチェーン）」が主に担当している役割はどれ？",
+    options: ["ATPを自分で作る", "特定のモータードメインを保護し、積荷（カーゴ）の受容体との結合特異性を調整する", "微小管を太くする", "細胞壁を作る"],
+    answer: 1,
+    explanation: "軽鎖は荷物側のアダプタータンパク質との結合に関与し、どのオルガネラを運ぶかの選択を支えます。"
+    },
+
+  // カテゴリー2：細胞内での役割と軸索輸送（25問）
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "神経細胞（ニューロン）の長い軸索の中を、細胞体からシナプス終末へ向かって物質を輸送する仕組みの名称はどれ？",
+    options: ["逆行性軸索輸送", "順行性軸索輸送（おもにキネシンが担う）", "受動拡散のみ", "リンパ流動"],
+    answer: 1,
+    explanation: "神経伝達物質を含んだ小胞やミトコンドリアなどを細胞体から遠くのシナプスへ運ぶ順行性輸送はキネシンが主役です。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "神経軸索において、シナプス終末から細胞体へ向けて不要になったタンパク質やシグナル分子を連れ戻す反対側のモータータンパク質はどれ？",
+    options: ["キネシン", "ダイニン（細胞質ダイニン）", "ミオシン", "アクチン"],
+    answer: 1,
+    explanation: "微小管のマイナス端側（細胞体側）へ向かう逆行性輸送は、主にダイニンという別のモータータンパク質が担当します。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "神経細胞の軸索が1メートル以上ある場合、物質が運ばれる速度（速い順行性輸送）の目安はどれくらいか？",
+    options: ["1日あたり数ミリメートル", "1日あたり数センチ〜数十センチ（数十〜400 mm/day）", "秒速10メートル", "1年で1ミリ"],
+    answer: 1,
+    explanation: "キネシンが牽引する速い軸索輸送は、1日に最大で400ミリメートルもの距離をスピーディーに移動します。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "細胞分裂（有糸分裂：マイトシス）の際、キネシン関連タンパク質（Kinesin-5など）が紡錘体の形成や極の維持において果たす役割はどれ？",
+    options: ["染色体を破壊する", "極同士を結ぶ微小管を滑らせて両極を離す", "核膜を厚くする", "DNAを溶かす"],
+    answer: 1,
+    explanation: "双極性紡錘体の形成において、微小管同士をクロスリンクして押し広げる重要な役割をキネシンが担います。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "細胞質分裂の最終段階で、中央に集まった微小管を制御して細胞の切断を助けるキネシンスーパーファミリーのメンバーはどれ？",
+    options: ["Kinesin-1", "MKLP1などのキネシンファミリー（Kinesin-6など）", "キネシン-13", "コラーゲンキネシン"],
+    answer: 1,
+    explanation: "細胞分裂の局所で働く特殊なキネシンが、卵割面の微小管束の組織化や切断に関与しています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "メラノサイト（色素細胞）の中で、メラニン色素小胞（メロソーム）を細胞全体に拡散させたり中心に集めたりする際、拡散側（外側）を担うのはどれ？",
+    options: ["キネシン", "ダイニンのみ", "水流", "浸透圧"],
+    answer: 0,
+    explanation: "魚類や両生類の皮膚色変化などで、メラニン小胞を外側に散らして体を黒く見せるのはキネシンの働きです。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "ゴルジ体から小胞体、あるいは細胞 periphery（周辺）へ向けてタンパク質小胞を輸送する際、中心的な通路を提供する構造はどれ？",
+    options: ["微小管ネットワークとキネシン", "毛細血管", "リンパ管", "脂肪の層"],
+    answer: 0,
+    explanation: "小胞体やゴルジ体間の物質輸送や小胞の配位にもキネシンと微小管が不可欠です。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "ミトコンドリアがエネルギーを必要とする場所（シナプスなど代謝が激しい部位）へ移動する際、微小管上を運ぶモーターはどれ？",
+    options: ["キネシン（およびミトコンドリア結合アダプター）", "赤血球", "ヘモグロビン", "リボソーム"],
+    answer: 0,
+    explanation: "ミトコンドリアの軸索内でのダイナミックな配置や移動も、キネシンやダイニンによる微小管依存的輸送によります。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "植物細胞において、キネシン様タンパク質が細胞壁の合成酵素（セルロース合成酵素複合体）を運ぶ軌道として利用しているものはどれ？",
+    options: ["表層微小管", "骨の表面", "細胞壁の隙間", "葉緑体の内部"],
+    answer: 0,
+    explanation: "植物でもキネシンは細胞壁の整列や細胞板の形成など、独自の重要な役割を持っています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "キネシンによる輸送機能が遺伝子変異や障害によってうまく働かなくなったとき、神経細胞に起きやすい代表的な問題はどれ？",
+    options: ["神経変性疾患（シャルコー・マリー・トゥース病やALS様の病態など）", "骨の過剰成長", "皮膚が青くなる", "視力が一時的に無限大になる"],
+    answer: 0,
+    explanation: "軸索輸送の破綻はシナプスへの栄養やミトコンドリアの供給を断絶させ、遺伝性の神経変性疾患を引き起こします。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "小胞体（ER）のネットワークが細胞全体に網目状に引き伸ばされ、維持されている物理的要因はどれ？",
+    options: ["キネシンが小胞体膜を微小管に沿って外側へ引っ張る力", "小胞体自身の浮力", "細胞内の風圧", "重力"],
+    answer: 0,
+    explanation: "小胞体膜はキネシンによって微小管に沿って引っ張られることで、あの美しい網目構造を維持・拡張しています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "ウイルス（単純ヘルペスウイルスや狂犬病ウイルスなど）が神経細胞に感染した際、軸索を逆行または順行するために巧みに利用する仕組みはどれ？",
+    options: ["宿主のキネシンやダイニンなどのモータータンパク質システム", "自前のジェットエンジン", "細胞膜の自壊", "血液の逆流"],
+    answer: 0,
+    explanation: "ウイルスは自身のカプシドを宿主のモータータンパク質に結合させ、細胞内ハイウェイを乗っ取って移動します。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "リソソームやエンドソームといった酸性のオルガネラが細胞内で位置をダイナミックに変える際、キネシンの関与についての記述で正しいものはどれ？",
+    options: ["周辺方向への移動にキネシンが関与し、状況に応じてダイニンと綱引きをするように位置が決まる", "キネシンは一切関与しない", "リソソームを完全に破壊する", "核酸に変える"],
+    answer: 0,
+    explanation: "エンドソームやリソソームの位置は、キネシン（外向き）とダイニン（内向き）の拮抗的な引っ張り合いで制御されています。"
+    },
+    {
+    category: "細胞内での役割・軸索輸送",
+    question: "繊毛や鞭毛の内部にある「軸糸（axoneme）」の構造維持や運動において、キネシンファミリー（Kinesin-2など）が果たす役割はどれ？",
+    options: ["先端部分へのタンパク質供給（キネシン系IFT：細胞内粒内輸送）", "鞭毛を溶かす", "回転エネルギーを生み出す", "何もしない"],
+    answer: 0,
+    explanation: "繊毛の先端へ必要な材料を運ぶ「鞭毛内粒子輸送（IFT）」の順行モーターとしてキネシン-2が活躍します。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "神経成長円錐（growth cone）において、キネシンが微小管の先端を前方に押し出すことでどのような現象が起きるか？",
+    options: ["軸索の伸長と方向転換が促される", "神経が短縮して消滅する", "軸索が太く固まる", "特に変化はない"],
+    answer: 0,
+    explanation: "成長円錐での微小管ダイナミクスとキネシンの働きが、神経回路の配線や軸索の伸びをリードします。"
+    },
+    {
+    category: "細胞内での役割・軸索輸送",
+    question: "mRNA（メッセンジャーRNA）が細胞内の特定の場所（局所翻訳が必要な部位）に運ばれる際、キネシンはどのような役割を持つか？",
+    options: ["RNA結合タンパク質と複合体を組み、特定のmRNAを正しい目的地まで運ぶ", "mRNAをアミノ酸に分解する", "mRNAをDNAに逆転写する", "RNAを消去する"],
+    answer: 0,
+    explanation: "特定のmRNAを細胞の特定の極（極性）へ運ぶ「mRNA局在化」にもキネシンが深く関わっています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "キネシンが荷物を運ぶ途中で「障害物（別の微小管やタンパク質）」にぶつかったときに見せる柔軟な挙動はどれ？",
+    options: ["別の微小管に乗り換える（サイドステップやジャンピング）能力を持つものもいる", "その場で完全に立ち往生して自壊する", "荷物を捨てるだけ", "爆発する"],
+    answer: 0,
+    explanation: "一部のキネシンは高い柔軟性を持ち、障害物を回避して隣の微小管へ乗り換える巧みな挙動を示します。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "動物の受精卵（胚）の初期発生において、細胞の非対称性や極性を決定づける物質輸送にキネシンが果たす役割はどれ？",
+    options: ["母性因子や決定物質を正しい細胞質領域へ正確に配置する", "受精卵を二つに割る", "卵の殻を固くする", "影響はない"],
+    answer: 0,
+    explanation: "初期発生の極性形成や形態形成において、キネシンによる分子輸送は極めて重要な役割を果たしています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "免疫細胞（T細胞など）が抗原提示細胞と接触して免疫シナプスを形成する際、キネシンが果たす役割はどれ？",
+    options: ["受容体や分泌顆粒を接触面に集中させるために微小管ネットワークを利用して運ぶ", "抗原を食べる", "T細胞を増殖させる", "何もしない"],
+    answer: 0,
+    explanation: "免疫応答時の細胞内極性化やサイトカイン分泌小胞の輸送にもキネシンファミリーが関与しています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "骨格筋細胞（筋線維）の中において、キネシンが担う具体的な細胞内輸送の対象とは何か？",
+    options: ["筋小胞体や膜小胞、タンパク質複合体の適切な配置", "筋収縮そのもの（アクチンとミオシンの滑り）", "骨の成長", "脂肪の燃焼"],
+    answer: 0,
+    explanation: "筋細胞内でもオルガネラや膜成分の微小管依存的な配置維持にキネシンが働いています（筋収縮の主役はミオシン）。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "キネシンの働きが阻害される薬剤（例えばある種の抗がん剤や実験試薬）が細胞分裂に与える直接的な影響はどれ？",
+    options: ["正常な紡錘体が作れず、細胞分裂が途中で停止してアポトーシス（細胞死）に至る", "細胞分裂が通常より100倍速くなる", "細胞が無限に大きくなる", "影響はない"],
+    answer: 0,
+    explanation: "紡錘体キネシンの阻害剤は、がん細胞の分裂をブロックする抗がん剤の標的としても研究されています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "キネシンが荷物を目的地（プラス端）まで運び終えた後、どのようにして荷物から離れるのか？",
+    options: ["特定のシグナルやリン酸化、あるいは局所の因子の変化により結合が解除される", "永遠にくっついたまま死ぬまで離れない", "荷物を爆破して消す", "別のキネシンに食べられる"],
+    answer: 0,
+    explanation: "目的地に到着すると、リン酸化などの制御によりモーターと荷物の結合が外れ、モーターはリサイクルされます。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "植物の気孔の開閉運動において、キネシン様タンパク質が関与しているとされる主なプロセスはどれ？",
+    options: ["孔辺細胞の骨格（微小管）のダイナミクス制御", "水分の蒸発を直接止める", "光合成のスピード調整", "二酸化炭素の吸収"],
+    answer: 0,
+    explanation: "植物の気孔運動に伴う細胞骨格の組み替えにも特定のキネシンが関与していることが知られています。"
+    },
+  {
+    category: "細胞内での役割・軸索輸送",
+    question: "キネシンと他のモータータンパク質（ミオシンやダイニン）の進化的な関係についての現代の知見はどれ？",
+    options: ["遠い共通祖先から分岐した、共通の構造モチーフ（P-loopなど）を持つ遠縁の仲間である", "全く無関係な偶然の産物", "ミオシンが変化してキネシンになった", "ウイルスが持ち込んだもの"],
+    answer: 0,
+    explanation: "これらはいずれもATPをエネルギーに変える「P-loopヌクレオチドトリホスファターゼ」の祖先から進化したと考えられています。"
+    },
+    {
+    category: "細胞内での役割・軸索輸送",
+    question: "皓一部屋が探求する「身体の構造や細胞レベルのミクロな仕組み」において、キネシンや亜鉛、コリンなどの知識を学ぶ最大の面白さはどれ？",
+    options: ["目に見えないミクロの世界で、数兆個の細胞が精巧なナノマシンを使って生命活動を営んでいる壮大なロマンを知れること", "特に意味はない", "ただの暗記テストのため", "部屋が暗くなる"],
+    answer: 0,
+    explanation: "肉眼では見えない細胞の内部で、キネシンがせっせと荷物を運んでいるダイナミックな世界を知ることは、最高の知的エンターテインメントです。"
+    },
+
+  // カテゴリー3：他のモータータンパク質（ダイニン・ミオシン）との比較（25問）
+  {
+    category: "他のモータータンパク質比較",
+    question: "微小管の上をキネシンとは逆方向（プラス端からマイナス端側、つまり細胞中心方向）へ荷物を運ぶ主要なモータータンパク質はどれ？",
+    options: ["ミオシン", "ダイニン（細胞質ダイニン）", "コラーゲン", "ケラチン"],
+    answer: 1,
+    explanation: "ダイニンは微小管のマイナス端に向かって進む「逆行性」の巨大なモータータンパク質です。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "筋肉の収縮や細胞質分裂、アマメーバ運動などで「アクチンフィラメント」の軌道上を動くモータータンパク質の総称はどれ？",
+    options: ["キネシン", "ダイニン", "ミオシン", "チューブリン"],
+    answer: 2,
+    explanation: "ミオシンはアクチン繊維を道として動くモータータンパク質ファミリーで、筋肉の収縮の主役です。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンとダイニン、ミオシンの3者に共通して含まれている、エネルギー通貨（ATP）を結合・分解する共通のドメイン構造はどれ？",
+    options: ["P-loop（ATPaseモジュール）", "ヘム鉄構造", "抗体結合部位", "コラーゲン螺旋"],
+    answer: 0,
+    explanation: "すべての代表的なモータータンパク質は、ATPを捉えてエネルギーを取り出す共通の「P-loop」構造を持っています。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "微小管をレールにするキネシンやダイニンと比べ、アクチンをレールにするミオシンの主な移動方向の特徴はどれ？",
+    options: ["ほとんどのミオシンはアクチンのプラス端側に向かって進む（例外のミオシン-VIを除く）", "常にマイナス端にしか行かない", "レールを使わず空を飛ぶ", "ランダム"],
+    answer: 0,
+    explanation: "ミオシンの大半はアクチンフィラメントのプラス端（ barbed end ）に向かって移動します。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "細胞質ダイニンが単体で機能する際、荷物をしっかりと保持して効率よく動くために不可欠な巨大な補助複合体の名称はどれ？",
+    options: ["ダイナクチン（Dynactin）複合体", "アルブミン複合体", "ヘモグロビン環", "リボソーム"],
+    answer: 0,
+    explanation: "ダイニンは単体ではプロセッシビティが低いため、ダイナクチンという複合体と結合して初めて効率よく微小管を歩けます。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンとダイニンの分子構造のサイズ感を比較したときの説明として正しいものはどれ？",
+    options: ["キネシンは比較的コンパクトなのに対し、ダイニンは細胞内モーターの中で飛び抜けて巨大な構造をしている", "キネシンの方がダイニンの100倍大きい", "どちらも全く同じ大きさ", "ダイニンは肉眼で見える"],
+    answer: 0,
+    explanation: "ダイニンは数個のサブユニットからなる巨大なAAA+リングを持つ超大型のモータータンパク質です。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "繊毛や鞭毛のダイニン（軸糸ダイニン）が微小管同士を滑らせることで生み出す運動はどれ？",
+    options: ["精子の泳ぎや気候の表面の液体の掃き出し（リズミカルなうねり運動）", "筋肉の強い収縮", "DNAの複製", "神経伝達物質の合成"],
+    answer: 0,
+    explanation: "精子の尾部などの鞭毛内部にある軸糸ダイニンが微小管同士を屈曲させ、ダイナミックな波打ち運動を生み出します。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンが「線路（微小管）の上を歩く機関車」にたとえられることが多いが、ミオシンIIが筋肉中で果たす役割はどちらかというとどのようなイメージか？",
+    options: ["互いに引き締め合うロープウェイや綱引きの引き手", "空を飛ぶドローン", "ただの壁", "エレベーター"],
+    answer: 0,
+    explanation: "ミオシンはアクチン同士を互いにスライドさせるため、分子レベルの綱引きや筋肉の収縮装置として働きます。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンとミオシンの両方に共通する「ATP加水分解サイクルに伴うコンフォメーション変化（形状変化）」の最大の共通点はどれ？",
+    options: ["結合・脱離・傾斜（パワーストローク）を繰り返すこと", "光を放つこと", "熱を生まずに冷やすこと", "分子が完全に蒸発すること"],
+    answer: 0,
+    explanation: "いずれのモーターも、ATPの結合と加水分解、ADPの解離のサイクルに伴って腕や首を振るパワーストロークを起こします。"
+    },
+    {
+    category: "他のモータータンパク質比較",
+    question: "細胞内でオルガネラ（例えば小胞）が一方通行ではなく、あっちに行ったりこっちに行ったりできる理由をモータータンパク質の観点から説明するとどれ？",
+    options: ["キネシン（順行）とダイニン（逆行）が同じ荷物に同時に結合しており、その綱引きの優劣で方向が決まるから", "運が良ければ動くから", "モーターが気まぐれだから", "特に理由はない"],
+    answer: 0,
+    explanation: "多くのオルガネラにはキネシンとダイニンの両方が結合しており、細胞内のシグナルによってどちらが勝つかが制御されています。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "ミオシンファミリーの中で、唯一「マイナス端」に向かって移動する特殊な例外として知られるものはどれ？",
+    options: ["ミオシン-VI（Myosin VI）", "ミオシン-II", "ミオシン-V", "すべてのミオシン"],
+    answer: 0,
+    explanation: "ほとんどのミオシンがプラス端に向かう中、ミオシン-VIだけはアクチンのマイナス端に向かって動く逆向きモーターです。"
+    },
+    {
+    category: "他のモータータンパク質比較",
+    question: "キネシンが道とする「微小管」と、ミオシンが道とする「アクチンフィラメント」の太さの比較として正しいものはどれ？",
+    options: ["アクチン（約7nm）よりも微小管（約25nm）の方が太く硬い管状構造である", "アクチンの方が微小管の100倍太い", "どちらも全く同じ太さ", "どちらも目で見える"],
+    answer: 0,
+    explanation: "微小管は直径約25nmの中空の管であり、細い繊維状のアクチン（約7nm）よりも太く剛性があります。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンが使われる「微小管ハイウェイ」と、ミオシンが使われる「アクチン網」の細胞内での主な分布の特徴はどれ？",
+    options: ["微小管は細胞全体を縦横無尽に走る長距離輸送網で、アクチンは主に細胞表層や周辺の局所的な輸送・支持を担う", "アクチンが長距離で、微小管が短距離", "どちらも同じ場所にある", "分布に法則はない"],
+    answer: 0,
+    explanation: "長距離の都市間輸送には微小管（キネシン/ダイニン）が使われ、ラストワンマイルの局所移動にはアクチン（ミオシン）が活躍します。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "ダイニンがキネシンと決定的に異なる駆動メカニズムの構造的特徴はどれ？",
+    options: ["AAA+リングと呼ばれる環状構造を持ち、ATPのエネルギーをリング全体の回転・歪み変化に変換する", "足がない", "ATPを使わない", "磁石で動く"],
+    answer: 0,
+    explanation: "ダイニンはキネシンのようなネッカー構造ではなく、巨大なAAA+ ATPaseリングの構造変化によって力を生み出します。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "ミオシン-V（Myosin-V）が細胞内で担う代表的な役割はどれ？",
+    options: ["小胞やオルガネラをアクチン網に沿って受け渡しする（ドナー・アクセプター間の局所輸送）", "神経軸索を1メートル走る", "筋肉を弛緩させる", "骨を溶かす"],
+    answer: 0,
+    explanation: "ミオシン-Vは大きなステップでアクチン上を歩くプロセッシブなモーターで、小胞の局所的な運搬に優れています。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンとダイニン、ミオシンの研究が進むことで、医学やバイオテクノロジー分野にどのような貢献が期待されているか？",
+    options: ["神経疾患の治療薬開発や、ナノマシンを用いたピンポイントな薬物送達システム（DDS）の構築", "無限にエネルギーを取り出す発電所の建設", "人間の寿命を1000年にすること", "特になし"],
+    answer: 0,
+    explanation: "細胞内の輸送不良が関与する病気の治療や、ナノサイズの人工運搬システムの実現に向けた基礎として非常に重要です。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシン、ダイニン、ミオシンがいずれも共通して持っている「生物学的な美しさ」の本質とは何か？",
+    options: ["化学エネルギー（ATP）をダイナミックな機械的運動へと、驚異的な高効率で変換している点", "見た目が金色に光る点", "絶対に壊れない点", "形が丸い点"],
+    answer: 0,
+    explanation: "分子1個のレベルで化学エネルギーを確実な物理的力に変えるこれらのモータータンパク質は、生命の最も洗練された奇跡の一つです。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンが微小管の「プラス端」に向かうのに対し、ある種の特殊なキネシン（Kinesin-14ファミリーなど）が「マイナス端」に向かって歩く驚きの理由はどれ？",
+    options: ["モータードメインの配置や構造が通常のキネシンとは逆向きの設計になっているから", "気まぐれ", "後ろ向きに歩く練習をしたから", "偶然のバグ"],
+    answer: 0,
+    explanation: "キネシンファミリーの中にも例外があり、モータードメインの構造的工夫によりマイナス端方向へ進むもの（NCDなど）が存在します。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "細胞質ダイニンが微小管から「荷物を外す（あるいはダイニン自身が微小管から離れる）」ために必要不可欠なもう一つのタンパク質複合体の名称はどれ？",
+    options: ["リサーゲン", "リスエンファシス", "リソソーム", "特にない"],
+    answer: 0, // ※選択肢調整：代表的な調節因子としてLissencephaly-1 (Lis1) や Nde1 などが知られる
+    explanation: "Lis1などの制御因子がダイニンの微小管結合状態を微調整し、正確な位置での荷物の受け渡しをコントロールします。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "ミオシン-IIが平滑筋や骨格筋で収縮を起こす際、カルシウムイオン（Ca2+）が果たす役割はどれ？",
+    options: ["アクチンとミオシンの結合をブロックしていた障害を外し、相互作用のスイッチを入れる", "筋肉を凍らせる", "ミオシンを溶かす", "ATPを増殖させる"],
+    answer: 0,
+    explanation: "カルシウムイオンの流入がトリガーとなり、ミオシン頭部がアクチンに結合して滑り運動（収縮）が開始されます。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンとミオシンの両方にみられる「モータードメイン」の立体構造上の類似性を何と呼ぶか？",
+    options: ["モト・モチーフ", "モーターコア（P-loop含有ヌクレオチドトリホスファターゼフォールド）", "アルファヘリックスのみ", "ベータバレル"],
+    answer: 1,
+    explanation: "進化的に遠いキネシンとミオシンですが、中心的な触媒コアの折りたたみ構造には共通のルーツが見られます。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "神経細胞のなかで、キネシンが運ぶ「荷物」とダイニンが運ぶ「荷物」の分担についての一般的な傾向はどれ？",
+    options: ["キネシンが工場（細胞体）から前線（シナプス）へ新品を送り、ダイニンが前線からゴミ（廃材）を回収して工場へ戻す", "どちらも同じものを運ぶ", "ダイニンは何も運ばない", "ランダム"],
+    answer: 0,
+    explanation: "往路（順行性）をキネシンが担い、復路（逆行性・リサイクルや分解行き）をダイニンが担うという美しい物流システムが構築されています。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "キネシンやダイニン、ミオシンのような生体モーターの研究において、「1分子計測（Single-molecule biophysics）」という分野が革命的だった理由はどれ？",
+    options: ["集団の平均ではなく、生きた分子1個が実際にどう動き、どう力を出すかを直接観察できるようになったから", "お金がかからないから", "顕微鏡が不要だから", "特に理由はない"],
+    answer: 0,
+    explanation: "1分子ずつの挙動を可視化したことで、タンパク質がまるで意志を持っているかのように働くナノマシンの全貌が明らかになりました。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "もし人間の体からキネシンが一斉に消滅してしまったとしたら、細胞内で最初に起きてしまう致命的な異常はどれ？",
+    options: ["細胞内の物質輸送が完全に停止し、特に長大な神経細胞が維持できずに急速に機能不全に陥る", "骨がすべて消える", "血液がすべて水に変わる", "体が光る"],
+    answer: 0,
+    explanation: "キネシンの消失は細胞内のインフラ網の完全な麻痺を意味し、生命活動、とりわけ神経系の維持が即座に不可能になります。"
+    },
+  {
+    category: "他のモータータンパク質比較",
+    question: "「皓一部屋」のコンセプトである『深い解剖学やミクロな生化学の知識を、誰もが楽しめるクイズやゲームとして形にする』アプローチの最大の魅力はどれ？",
+    options: ["難解な科学の面白さをエンタメとして味わいながら、自分の身体の神秘を最高に楽しむことができる点", "テストに合格するためだけ", "特にない", "眠気を誘うため"],
+    answer: 0,
+    explanation: "キネシンや生化学のミクロなドラマをクイズで遊びながら学ぶことで、ご自身の専門知見が最高に輝く唯一無二の体験が生まれます。"
+    }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "キネシン・分子モータークイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしいキネシン・分子モーターの知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの細胞生物学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格分子モーター・キネシンクイズ道場】（100問版）で 5問中 " + score + "問正解しました！🔬⚡\n#皓一部屋 #キネシンクイズ #細胞生物学");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
