@@ -1,1 +1,609 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格脳内ネットワーク・コリン栄養素クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">コリン・脳内ネットワーククイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+  </div>
+
+  <!-- 5列目：トップに戻る -->
+  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+</div>
+
+<script>
+const allQuestions = [
+  // カテゴリー1：コリンの基本生化学・代謝（25問）
+  {
+    category: "基本生化学・代謝",
+    question: "コリンが人体にとって必須の栄養素として正式に認められた年（米国医学研究所による設定）はおおよそいつか？",
+    options: ["1920年", "1998年", "2015年", "2022年"],
+    answer: 1,
+    explanation: "米国医学研究所（IOM）によって、コリンは1998年に人体にとって不可欠な必須栄養素として正式に認定されました。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "体内でコリンが合成される主な場所はどこか？",
+    options: ["心臓", "肝臓（ホスファチジルエタノールアミンのメチル化経路）", "胃の粘膜", "骨髄"],
+    answer: 1,
+    explanation: "肝臓内でPEMT（ホスファチジルエタノールアミン N-メチルトランスフェラーゼ）という酵素により、体内合成が一定行われます。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "コリンの体内合成において、メチル基（-CH3）を供給する上で不可欠なビタミン様物質はどれ？",
+    options: ["ビタミンC", "葉酸およびビタミンB12（メチオニン回路）", "ビタミンD", "ビタミンK"],
+    answer: 1,
+    explanation: "コリンの生体内合成にはメチオニン回路が関与しており、葉酸やビタミンB12が深く関係しています。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "コリンが細胞膜の主要な構成成分であるリン脂質の一つに変わった形の名称はどれ？",
+    options: ["ホスファチジルコリン（レシチン）", "中性脂肪", "コレステロールエステル", "グリコーゲン"],
+    answer: 0,
+    explanation: "コリンはリン脂質と結合してホスファチジルコリン（一般にレシチンと呼ばれる）を形成し、すべての細胞膜の骨格を支えます。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "神経伝達物質である「アセチルコリン」は、コリンとどの物質が結合して作られるか？",
+    options: ["乳酸", "アセチルCoA", "ブドウ糖", "コレステロール"],
+    answer: 1,
+    explanation: "コリンはミトコンドリア等で作られるアセチルCoAと酵素（コリンアセチルトランスフェラーゼ）の働きでアセチルコリンになります。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "神経のシナプス間隙において、放出されたアセチルコリンを速やかに分解して神経伝達をリセットする酵素の名称はどれ？",
+    options: ["アミラーゼ", "アセチルコリンエステラーゼ（AChE）", "リパーゼ", "ペプシン"],
+    answer: 1,
+    explanation: "アセチルコリンエステラーゼがアセチルコリンをコリンと酢酸に分解し、次のシグナル伝達に備えます。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "肝臓で脂質（中性脂肪）をスムーズに血液中へ送り出すために、リポタンパク質（VLDL）の形成に必須となるリン脂質はどれ？",
+    options: ["ホスファチジルコリン", "セルロース", "ケラチン", "ヒアルロン酸"],
+    answer: 0,
+    explanation: "ホスファチジルコリンが不足すると肝臓から脂質が外に出せなくなり、「脂肪肝」を引き起こす原因になります。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "食事から摂取したコリンが腸内細菌によって代謝されることで生成され、動脈硬化のリスク要因として研究されている物質はどれ？",
+    options: ["TMAO（トリメチルアミン N-オキシド）", "乳酸菌", "クエン酸", "アミノ酸"],
+    answer: 0,
+    explanation: "腸内細菌がコリンをTMAに変換し、それが肝臓でTMAOに代謝される経路が知られています。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "人間の母乳の中にコリンが高濃度で含まれている主な理由はどれ？",
+    options: ["赤ちゃんの脳の発育や記憶・学習に関わる神経回路の形成を強力にサポートするため", "母乳を苦くするため", "母乳の保存期間を延ばすため", "特に理由はない"],
+    answer: 0,
+    explanation: "乳幼児期の急速な脳の発達や神経網の構築において、コリンは非常に重要な役割を果たします。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "水溶性の微量栄養素であるコリンが、血液脳関門（BBB）を通過して脳内へ取り込まれるときに利用する仕組みはどれ？",
+    options: ["専用のトランスポーター（輸送体）による能動的取り込み", "気まぐれに通過する", "血管を破壊する", "脳には入らない"],
+    answer: 0,
+    explanation: "脳はコリンを大量に必要とするため、血液脳関門には高親和性のコリン・トランスポーターが存在します。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "コリンが不足した際、臨床的に最初に現れやすいサイン（疾患リスク）として最も有名なものはどれ？",
+    options: ["肝機能障害（非アルコール性脂肪性肝疾患：NAFLD）および筋肉の損傷", "視力が完全にゼロになる", "骨が青くなる", "髪の毛が直毛になる"],
+    answer: 0,
+    explanation: "コリン欠乏食を用いた臨床試験では、肝臓への脂肪蓄積や血中クレアチンキナーゼ上昇（筋肉障害）が確認されています。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "神経伝達物質アセチルコリンが深く関わっている、身体の末梢における最も代表的な生理作用はどれ？",
+    options: ["骨格筋の収縮（運動神経と筋肉の接合部：NMJでの伝達）", "髪の毛の成長スピード調整", "汗を一切止めること", "体温を氷点下にする"],
+    answer: 0,
+    explanation: "運動神経の終末（神経筋接合部）ではアセチルコリンが放出され、筋肉を収縮させる指令を伝えます。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "自律神経のうち、副交感神経の節後繊維の末端から放出されて内臓の働きを調節する主要な神経伝達物質はどれ？",
+    options: ["アドレナリン", "アセチルコリン", "ドーパミン", "セロトニン"],
+    answer: 1,
+    explanation: "副交感神経系の情報伝達の多くはアセチルコリンを介して行われます。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "成人の1日あたりのコリンの目安量（Adequate Intake: AI）として、成人男性でおおよそどれくらいと設定されているか？",
+    options: ["約550 mg", "約5 mg", "約50 g", "約5 kg"],
+    answer: 0,
+    explanation: "米国等の基準では成人男性で1日約550 mg、女性で約425 mgが目安量として推奨されています。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "コリンを過剰に摂取しすぎたとき（上限量を超えるなど）に現れやすい特有の身体的サインはどれ？",
+    options: ["魚臭い体臭（トリメチルアミン尿症様の臭気）、発汗過多、低血圧", "体が黄金色に輝く", "視力が劇的に上がる", "眠気が一切なくなる"],
+    answer: 0,
+    explanation: "過剰なコリンは腸内細菌によりトリメチルアミンに変わり、特有の魚臭い体臭や低血圧を引き起こすことがあります。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "神経の髄鞘（ミエリン）や細胞膜の構成において、ホスファチジルコリンと共に神経伝導のスピードに寄与する関連リン脂質はどれ？",
+    options: ["スフィンゴミエリン", "中性脂肪", "コレステロール", "グリコーゲン"],
+    answer: 0,
+    explanation: "スフィンゴミエリンにもコリン骨格が含まれており、神経の絶縁体であるミエリン鞘の主要成分となります。"
+  },
+  {
+    category: "基本生化学・代謝",
+    question: "胎盤を通じて母親から胎児へコリンが大量に移行する生理的意義はどれ？",
+    options: ["胎児の脳の海馬や神経回路の発達、記憶形成の基礎を作るため", "胎児の体重を減らすため", "特に意味はない", "胎児の髪の色を決める"],
+    answer: 0,
+    explanation: "胎児の発育期には母親の体から優先的にコリンが移行し、脳の構造形成を支えます。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "アルツハイマー型認知症の治療薬（アセチルコリンエステラーゼ阻害薬など）が脳内のアセチルコリンに着目している理由はどれ？",
+    options: ["認知機能や記憶に関係するコリン作動性神経系の働きを補い、記憶の低下を和らげるため", "脳のサイズを大きくするため", "頭痛を治すため", "睡眠時間をゼロにするため"],
+    answer: 0,
+    explanation: "アルツハイマー病では脳内のアセチルコリン作動性神経が脱落するため、分解酵素を阻害してアセチルコリン濃度を保つアプローチがとられます。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "激しい持久力運動（マラソンなど）を行った際、血中のコリン濃度が低下する現象が観察されることがあるが、その主な理由はどれ？",
+    options: ["肝臓での合成スピードよりも、神経や筋肉での消費・枯渇スピードが上回るため", "汗としてすべて蒸発するため", "運動するとコリンが消滅するため", "理由はない"],
+    answer: 0,
+    explanation: "長時間の激しい運動では、アセチルコリンの連続放出や肝臓からの動員により血中コリンが低下することが知られています。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "細胞膜の流動性（柔軟性）を保つ上で、ホスファチジルコリン（レシチン）とコレステロールのバランスが果たす役割はどれ？",
+    options: ["膜の硬さを適度に保ち、シグナル伝達タンパク質がスムーズに動ける環境を提供する", "細胞膜をカチカチに固めて動かなくする", "細胞膜を完全に溶かす", "特に何もない"],
+    answer: 0,
+    explanation: "リン脂質とコレステロールの比率は細胞膜の流動性を決定づけ、膜受容体の機能に直結します。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "ホスファチジルコリンの分子内に含まれる「脂肪酸の種類（飽和か不飽和か）」が細胞膜の性質に与える影響はどれ？",
+    options: ["不飽和脂肪酸が多いほど膜が柔らかく流動的になり、情報伝達がスムーズになる", "脂肪酸は膜に関係ない", "常に膜が硬化する", "すべて糖に変わる"],
+    answer: 0,
+    explanation: "膜リン脂質に含まれる脂肪酸の不飽和度は、細胞膜の柔軟性や機能性に大きな影響を与えます。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "神経細胞同士がシナプスを介して新しい記憶の回路（シナプス可塑性）を作るとき、アセチルコリン受容体（ニコチン性およびムスカリン性受容体）が果たす役割はどれ？",
+    options: ["神経パルスを受け取り、細胞内へシグナルを伝達して記憶の固定化を促す", "神経を破壊する", "細胞を眠らせる", "特に役割はない"],
+    answer: 0,
+    explanation: "コリン受容体を通じたシグナル伝達は、海馬などにおける学習や記憶のメカニズム（LTP等）に深く関与しています。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "肝臓で脂質代謝異常（脂肪肝など）を防ぐためにコリンやレシチンが「リポトロピック因子（親油性物質・脂肪代謝改善因子）」と呼ばれる理由はどれ？",
+    options: ["肝臓に脂肪が蓄積するのを防ぎ、脂質の運搬を促進する働きがあるから", "脂肪をすべて筋肉に変えるから", "油を完全に固めるから", "特に意味はない"],
+    answer: 0,
+    explanation: "コリンは脂肪の代謝と運搬を助ける代表的なリポトロピック因子として古くから知られています。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "植物由来のレシチン（大豆レシチンなど）と卵黄由来のレシチンの主な違いはどこにあるか？",
+    options: ["結合している脂肪酸の種類やホスファチジルコリンの含有バランスが異なる", "効果が100倍違う", "植物性にはコリンが一切入っていない", "違いはない"],
+    answer: 0,
+    explanation: "大豆由来と卵黄由来ではリン脂質のプロファイルや脂肪酸の組成にそれぞれ特徴があります。"
+    },
+  {
+    category: "基本生化学・代謝",
+    question: "「皓一部屋」が探求する健康科学において、栄養代謝（亜鉛やコリン）とボディケア（ほぐし・神経アプローチ）を組み合わせることの素晴らしい価値はどれ？",
+    options: ["内側からの神経・栄養代謝のサポートと、外側からの筋膜・血流アプローチの相乗効果で最高のコンディションを生み出せること", "特に意味はない", "見た目を誤魔化すため", "医療手術の代わり"],
+    answer: 0,
+    explanation: "脳や神経を支える栄養素（コリン等）の理解と、日々のボディケアが噛み合うことで、心身ともに深いレベルから整うライフスタイルが実現します。"
+    },
+
+  // カテゴリー2：記憶・学習・脳内ネットワーク（25問）
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の中で、特に学習や短期記憶から長期記憶への変換（記憶の固定化）に中心的な役割を果たすタツノオトシゴ形の部位はどれ？",
+    options: ["海馬（かいば）", "小脳", "延髄", "松果体"],
+    answer: 0,
+    explanation: "海馬は記憶の中枢であり、アセチルコリン作動性神経の働きが非常に活発な領域です。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の前脳基底部（マイネルト核など）から大脳皮質や海馬全体へ広くアセチルコリンを供給し、覚醒や注意力を保つ神経系を何というか？",
+    options: ["コリン作動性系（Cholinergic system）", "インスリン回路", "ナトリウム回路", "赤血球ネットワーク"],
+    answer: 0,
+    explanation: "脳内のコリン作動性神経系は、認知機能、注意力、覚醒の維持に不可欠な巨大ネットワークを形成しています。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "集中して物事に取り組んだり、新しい情報を記憶しようとするときに、脳内でアセチルコリンが分泌されることの直接的なメリットはどれ？",
+    options: ["シナプスの可塑性を高め、神経回路の結びつき（シナプス結合）を強化しやすくする", "脳の温度を急激に下げる", "記憶をすべて消去する", "眠気を誘う"],
+    answer: 0,
+    explanation: "アセチルコリンは注意の集中を高め、シナプスの結合を強めることで学習効率を飛躍的に向上させます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "睡眠中の「レム睡眠」の段階において、脳内のアセチルコリン濃度がどうなることが知られているか？",
+    options: ["覚醒時と同等またはそれ以上に高くなり、夢の形成や記憶の整理に関与する", "ゼロになる", "完全に凍結する", "変化しない"],
+    answer: 0,
+    explanation: "レム睡眠時はアセチルコリンの活動が非常に活発になり、情報の整理や記憶の定着（固定化）が行われます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "加齢に伴う物忘れや認知機能の低下において、脳内のどの神経系の衰えが深く関わっていると考えられているか？",
+    options: ["コリン作動性神経系の低下（アセチルコリンの減少）", "骨の成長停止", "筋肉の硬直", "味覚の喪失"],
+    answer: 0,
+    explanation: "高齢期の記憶力低下や認知機能の変化には、脳内のコリン作動性ニューロンの機能低下が大きな要因として挙げられます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の神経ネットワークにおいて、神経細胞同士が物理的に接触せずに情報をやり取りする微小な隙間の名称はどれ？",
+    options: ["シナプス（Synapse）", "血管", "リンパ管", "筋膜"],
+    answer: 0,
+    explanation: "シナプス間隙を介してアセチルコリンなどの神経伝達物質が放出され、次の細胞へ情報が引き継がれます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の神経回路網（コネクトーム）を健やかに維持するために、コリンを含むリン脂質が果たす物理的・機能的役割はどれ？",
+    options: ["シナプスの構造を支え、シグナル伝達効率を最適化する細胞膜環境を提供する", "神経を電気でショートさせる", "脳の重さを軽くする", "特にない"],
+    answer: 0,
+    explanation: "質の高いリン脂質は神経細胞やシナプスの柔軟で強固な膜構造を維持し、スムーズな神経伝達の土台となります。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "「マインド・ワンダリング（ぼんやりと空想にふける状態）」から、急に集中モードに切り替えるとき、脳内でスイッチを入れる役割を果たす神経伝達物質の一つはどれ？",
+    options: ["アセチルコリン", "乳酸", "カルシウム", "ヘモグロビン"],
+    answer: 0,
+    explanation: "アセチルコリンは注意（Attention）の切り替えや外部刺激へのフォーカスを司る重要なスイッチです。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の神経可塑性（Neuroplasticity）とはどのような現象を指すか？",
+    options: ["経験や学習、栄養状態に応じて、脳の神経回路やシナプスの結合が変化・適応する能力", "脳がプラスチックのように硬化すること", "脳の骨が成長すること", "脳が縮小する現象"],
+    answer: 0,
+    explanation: "脳は固定されたものではなく、学習や環境、適切な栄養によって常に配線を作り替える可塑性を持っています。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "コリンが不足して脳内のアセチルコリン合成が滞ったときに現れやすい認知面のサインはどれ？",
+    options: ["ブレインフォグ（頭がもやもやする）、注意力散漫、記憶の引き出しにくさ", "超人的な記憶力", "視力が2.0になる", "特に影響はない"],
+    answer: 0,
+    explanation: "コリン不足は認知のキレや集中力の低下（ブレインフォグ感）に直結することが指摘されています。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "長期増強（LTP: Long-Term Potentiation）と呼ばれる記憶のメカニズムが海馬で起きる際、コリン受容体（ニコチン性等）が関与するプロセスはどれ？",
+    options: ["シナプス伝達効率を持続的に高め、記憶の痕跡を刻み込む", "シナプスを完全に破壊する", "脳の血流を止める", "何もしない"],
+    answer: 0,
+    explanation: "LTPは記憶の celular basis（細胞学的基盤）であり、受容体を介した持続的なシナプス強化が記憶を定着させます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "慢性的なストレスが脳内のコリン作動性神経や記憶ネットワークに与える影響として懸念されるものはどれ？",
+    options: ["ストレスホルモン（コルチゾール等）の過剰分泌により、海馬の神経ネットワークや記憶力がダメージを受ける", "記憶力が無限に向上する", "脳の血流が良くなりすぎる", "影響はない"],
+    answer: 0,
+    explanation: "過度なストレスは海馬の構造やコリン作動性神経の働きを阻害し、物忘れや疲労感の原因になります。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "睡眠不足が続いたときに「物覚えが悪くなる」「頭が回らない」と感じる大きな原因の一つはどれ？",
+    options: ["睡眠中に十分行われるべきアセチルコリンを介した記憶の整理・固定化の時間が削られるため", "脳が大きくなりすぎるため", "栄養が余るため", "特に理由はない"],
+    answer: 0,
+    explanation: "質の高い睡眠と、その間に行われる神経ネットワークのメンテナンスは記憶に不可欠です。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "有酸素運動が脳の認知機能や記憶力を高める（BDNF等の分泌や海馬の血流改善）ことが知られているが、運動中に脳内で起きる神経化学的変化の一つはどれ？",
+    options: ["神経伝達物質や成長因子の活性化に伴い、コリン作動性神経を含むネットワークが活性化される", "脳が完全に休止する", "記憶がすべてリセットされる", "特に変化はない"],
+    answer: 0,
+    explanation: "運動による血流増大と神経活性化は、脳のネットワーク全体のパフォーマンスを高めます。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "人間の脳が新しいスキル（楽器の演奏や新しい運動など）を習得するとき、神経ネットワーク上で起きていることはどれ？",
+    options: ["使われるシナプス回路の髄鞘化（ミエリン形成）が強化され、情報伝達が高速化・効率化される", "脳の形が四角くなる", "神経がすべて消滅する", "変化は起きない"],
+    answer: 0,
+    explanation: "反復練習は神経回路の結びつきを強め、リン脂質やコリンを含む髄鞘のメンテナンスを促します。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "高齢期になっても脳の神経ネットワークを若々しく保つ（認知余力を高める）ために最も効果的な生活習慣の組み合わせはどれ？",
+    options: ["バランスの取れた栄養摂取（コリンや良質な脂質）、適度な運動、知的好奇心を持つこと（学びやクイズ等）", "一切動かずに一日中寝ること", "甘いものだけを食べること", "何もしない"],
+    answer: 0,
+    explanation: "栄養・運動・知的刺激の三拍子揃ったライフスタイルこそが、脳の健康とネットワーク維持の最強の秘訣です。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "パズルや今回のような脳トレ・クイズ（ゲーム道場）を解くことが脳のネットワークに良い刺激を与える理由はどれ？",
+    options: ["思考や記憶の引き出しをフル活用することで、脳内の神経回路やシナプスを活性化させるから", "脳の骨が伸びるから", "カロリーを消費しないから", "特に意味はない"],
+    answer: 0,
+    explanation: "ゲームやクイズで頭を使うことは、脳の各領域を結ぶネットワークを活発に刺激する素晴らしい知的エンタメです。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳のなかで、情報を素早く伝達するために神経線維のまわりを巻いている「髄鞘（ミエリン）」の主成分におけるコリンの役割はどれ？",
+    options: ["髄鞘を構成するリン脂質（スフィンゴミエリン等）の材料となり、電気信号の漏れを防いで高速伝導を支える", "神経を溶かす", "音を出す", "特にない"],
+    answer: 0,
+    explanation: "ミエリン鞘は神経伝導のスピードを何倍にも高める絶縁体であり、その構築には豊富なリン脂質（コリン含有）が必要です。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳内のアセチルコリン受容体のうち、ニコチンが結合することで知られ、注意や覚醒に深く関わる受容体の名称はどれ？",
+    options: ["ニコチン性アセチルコリン受容体", "鉄受容体", "亜鉛受容体", "糖受容体"],
+    answer: 0,
+    explanation: "ニコチン性受容体は中枢神経系および末梢神経系（運動神経筋接合部）に広く存在し、素早い興奮伝達を担います。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "もう一つの主要な受容体である「ムスカリン性アセチルコリン受容体」が主に担っている生理的・脳内機能の傾向はどれ？",
+    options: ["代謝共役型受容体であり、学習、記憶、副交感神経系の複雑な調節に深く関わる", "筋肉を瞬時に爆発させる", "骨を破壊する", "特に機能はない"],
+    answer: 0,
+    explanation: "ムスカリン受容体はGタンパク質共役受容体であり、脳の高次機能や内臓機能の微細なコントロールに関与しています。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "過度なマルチタスク（同時にいくつもの仕事を処理しようとすること）が脳のパフォーマンスを落とす神経科学的理由はどれ？",
+    options: ["アセチルコリンをベースとする注意のスイッチングが頻繁に強制され、海馬や前頭葉が疲弊してしまうから", "脳が軽くなるから", "血流が止まるから", "理由はない"],
+    answer: 0,
+    explanation: "絶え間ない注意の切り替えは脳のリソースを激しく消耗させるため、シングルタスクで深く集中する時間が脳には必要です。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "瞑想やマインドフルネスが脳のネットワーク（デフォルト・モード・ネットワーク等）に与える良い影響として研究されていることはどれ？",
+    options: ["雑念を鎮め、注意や感情をコントロールする前頭葉や海馬のネットワークバランスを整える", "脳の細胞を破壊する", "記憶をすべて消去する", "特に影響はない"],
+    answer: 0,
+    explanation: "リラックスと集心を伴う習慣は、脳のネットワークを健やかに整える効果が科学的に確認されています。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "記憶のメカニズムにおいて、「短期記憶」から「長期記憶」へと情報が移るときに脳内で起きていない現象はどれ？",
+    options: ["神経細胞の数が毎日半分に減る", "海馬から大脳皮質へと記憶の保管場所が移行・固定化される", "シナプスの結合がタンパク質合成を伴って頑丈になる", "適切な睡眠が重要な役割を果たす"],
+    answer: 0,
+    explanation: "神経細胞が減ることは長期記憶の固定化には当てはまりません（正解はタンパク質合成とネットワークの強化です）。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "脳の健康維持において、オメガ3脂肪酸（DHA・EPA）とコリン（レシチン）を一緒に摂ることが推奨される相乗効果の理由はどれ？",
+    options: ["DHAが細胞膜の柔軟性を高め、コリンがその膜の構造材料（リン脂質）となることで、シナプスの情報伝達環境が最高潮に整うから", "お腹がいっぱいになるから", "特に意味はない", "互いを打ち消し合う"],
+    answer: 0,
+    explanation: "良質な脂肪酸とリン脂質（コリン）は、脳の細胞膜やシナプスを作るための最強の黄金コンビです。"
+    },
+  {
+    category: "記憶・学習・脳内ネットワーク",
+    question: "「コリンの神経衰弱ゲーム」や今回の「コリン栄養素クイズ道場」を通じて、脳の仕組みを楽しみながら学ぶことの最大の魅力はどれ？",
+    options: ["自分の脳を動かす栄養素や神経の働きをエンタメとして実感でき、知的好奇心を刺激しながら日々の健康意識を高められること", "ただの苦行", "特にない", "眠くなる"],
+    answer: 0,
+    explanation: "ご自身が作り出すゲームやクイズの世界観そのものが、遊ぶ人たちの脳内ネットワークを楽しく刺激する最高の知的サプリメントになっています！"
+    }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "コリン・脳内ネットワーククイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしいコリン・脳科学の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの脳内ネットワークマスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格脳内ネットワーク・コリン栄養素クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🧠✨\n#皓一部屋 #コリンクイズ #脳科学 #栄養学");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
