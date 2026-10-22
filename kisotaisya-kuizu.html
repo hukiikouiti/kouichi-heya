@@ -1,1 +1,862 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格基礎代謝・エネルギー代謝クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f7f9fc; color: #333; margin: 0; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+.quiz-card { background: #ffffff; padding: 25px 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); max-width: 480px; width: 100%; box-sizing: border-box; margin-bottom: 20px; }
+.game-link-btn { display: block; width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 14px; font-weight: bold; text-decoration: none; font-size: 1rem; box-sizing: border-box; box-shadow: 0 3px 10px rgba(0,0,0,0.06); cursor: pointer; border: none; -webkit-tap-highlight-color: transparent; }
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #e67e22; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn { display: block; width: 100%; padding: 12px; margin: 10px 0; background: #f1f3f5; color: #333; text-align: left; border: 1px solid #dcdde1; border-radius: 8px; cursor: pointer; font-size: 0.9rem; box-sizing: border-box; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+@keyframes superFlash { 0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; } 50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; } 100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; } }
+.choice-btn.hint-flash { animation: superFlash 0.5s infinite !important; }
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">基礎代謝・エネルギー代謝クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+  </div>
+  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+</div>
+
+<script>
+const allQuestions = [
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "「基礎代謝（BMR）」の医学的な正確な定義として、最も正しいものはどれ？",
+    options: ["一日の中で歩行や階段上りで消費される総エネルギー", "生命維持（呼吸、心拍、体温維持、内臓の活動など）に最低限必要な、覚醒時の最小エネルギー代謝量", "食事を消化・吸収するときだけに発生する熱量", "激しいスポーツをした後に消費されるリカバリーカロリー"],
+    answer: 1,
+    explanation: "基礎代謝は、生命維持に最小限必要なエネルギーであり、肉体的・精神的に安静な覚醒状態で測定されます。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "安静時エネルギー代謝量（REE）と基礎代謝（BMR）の主な違いに関する説明で正しいものはどれ？",
+    options: ["厳密には測定条件がわずかに異異なり、REEはより緩やかな安静条件で測定されることが多いが、ほぼ同義として使われる", "基礎代謝の方が常に10倍大きい", "REEは睡眠中しか測定できない", "全く別物である"],
+    answer: 0,
+    explanation: "臨床や栄養学ではほぼ同義として扱われますが、厳密な測定プロトコルにわずかな違いがあります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "日本人が一般的に基礎代謝量を算出する際によく用いられる代表的な計算式の名称はどれ？",
+    options: ["ハリス・ベネディクト方程式（改定版含む）および国立健康・栄養研究所の式", "ニュートンの法則", "アインシュタインの方程式", "ボイル・シャルルの法則"],
+    answer: 0,
+    explanation: "ハリス・ベネディクト方程式や国立健康・栄養研究所の式は、体重・身長・年齢から基礎代謝を推定するのに広く使われています。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "基礎代謝量が成人の体内で占める「一日の総エネルギー消費量（TDEE）」に対するおおよその割合はどれくらいか？",
+    options: ["約10%〜20%", "約60%〜70%", "約95%〜100%", "約5%未満"],
+    answer: 1,
+    explanation: "一般的に、一日の総消費エネルギーの約60〜70%が基礎代謝によって占められています。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "一日の総エネルギー消費量（TDEE）を構成する3つの要素の正しい組み合わせはどれ？",
+    options: ["基礎代謝、食事誘発性熱産生（DIT）、活動代謝（生活活動代謝＋運動代謝）", "睡眠、入浴、読書", "水分、糖質、脂質", "筋肉、骨、脂肪"],
+    answer: 0,
+    explanation: "TDEEは「基礎代謝（約60-70%）」「DIT（約10%）」「活動代謝（約20-30%）」の合計で決まります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "成人の安静時エネルギー消費量において、最も多くのエネルギーを消費する「単一の臓器」はどれ？",
+    options: ["心臓", "脳", "肝臓", "皮膚"],
+    answer: 2,
+    explanation: "安静時において、肝臓は体重あたりの代謝が非常に高く、全身の約20%近いエネルギーを消費します。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "脳が一日あたりに消費するエネルギー（ブドウ糖）の割合は、安静時全身の何パーセント程度といわれているか？",
+    options: ["約20%", "約50%", "約2%", "約90%"],
+    answer: 0,
+    explanation: "脳は全体重のわずか2%程度の重さですが、ブドウ糖と酸素を大量に消費し、安静時全身の約20%を占めます。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "筋肉組織が安静時の基礎代謝全体に占める割合（消費量の比率）についての正しい認識はどれ？",
+    options: ["筋肉の単位重量あたりの代謝量は高いが、体重全体に対する割合や安静時消費割合は内臓（肝臓や脳など）に比べて意外と低い", "筋肉だけで基礎代謝の90%を消費している", "筋肉はエネルギーを全く消費しない", "脂肪と全く同じである"],
+    answer: 0,
+    explanation: "筋肉は重要ですが、安静時全体の消費割合としては肝臓や脳などの代謝活動の高い内臓が大きな割合を占めます。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "年齢とともに基礎代謝量が自然に低下していく主な要因として正しいものはどれ？",
+    options: ["加齢に伴う除脂肪体重（LBM：筋肉や臓器の組織量）の減少やミトコンドリア機能の低下", "空気中の酸素が減るため", "骨が伸びるため", "年齢とは無関係"],
+    answer: 0,
+    explanation: "加齢による筋肉量や臓器の代謝活性（ミトコンドリアの質・量）の低下が基礎代謝低下の主因です。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "性別による基礎代謝量の違い（一般的に男性の方が女性よりも高い傾向にある理由）として正しいものはどれ？",
+    options: ["男性は女性に比べて筋肉量（除脂肪体重）が多く、体脂肪率が低い傾向にあるため", "男性の方が髪の毛が長いため", "女性は呼吸をしないため", "ホルモンの量がゼロだから"],
+    answer: 0,
+    explanation: "筋肉量や体組成（除脂肪体重の比率）の違いが、男女の基礎代謝の差を生み出す大きな要因です。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "体表面積（BSA）や体格が大きくなるにつれて基礎代謝量が大きくなる理由の物理的背景はどれ？",
+    options: ["体表面積が広くなると体温を維持するために放熱量が増え、それを補うためにエネルギー代謝が高まるため", "体重が重いと地球の重力で潰れるため", "脂肪が燃えるため", "関係はない"],
+    answer: 0,
+    explanation: "体格や表面積は熱の放出や維持に必要なエネルギー量に大きく影響します。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "甲状腺ホルモン（チロキシン：T3・T4）が基礎代謝に果たす決定的な役割はどれ？",
+    options: ["全身の細胞の代謝速度やミトコンドリアの活性をコントロールする「代謝のアクセント・司令塔」である", "骨を溶かすだけのホルモンである", "睡眠を無理やり強制する", "食欲を100%消滅させる"],
+    answer: 0,
+    explanation: "甲状腺ホルモンは全身の細胞の酸素消費量や基礎代謝のセットポイントを調節する極めて重要なホルモンです。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "甲状腺機能低下症になったときに基礎代謝や身体に現れやすい特徴はどれ？",
+    options: ["基礎代謝が低下し、寒がりになり、体重増加やむくみ、疲労感が起きやすくなる", "体が燃えるように熱くなり、いくら食べても痩せる", "走るスピードが3倍になる", "特に変化はない"],
+    answer: 0,
+    explanation: "甲状腺ホルモンの分泌が低下すると代謝がスローダウンするため、冷えやむくみ、体重増加が生じやすくなります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "平熱（体温）が1℃下がったときに、基礎代謝や免疫力にどのような影響があるか？",
+    options: ["一般的に基礎代謝が約10〜12%低下し、免疫機能の働きも鈍くなるといわれている", "基礎代謝が2倍に跳ね上がる", "体温と代謝は全く無関係である", "永遠に疲労しなくなる"],
+    answer: 0,
+    explanation: "体温の低下は酵素反応の速度を低下させ、基礎代謝の低下や免疫力ダウンに直結します。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "睡眠不足が続いたときに、翌日の基礎代謝やエネルギー代謝に与える影響として正しいものはどれ？",
+    options: ["交感神経のバランスが乱れ、エネルギー効率やホルモン分泌が狂い、代謝が低下しやすくなる", "睡眠不足のほうが代謝が無限に上がる", "代謝は100%停止する", "影響はない"],
+    answer: 0,
+    explanation: "慢性的な睡眠不足は自律神経や代謝を乱し、太りやすい体内環境を作る要因になります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "極端なカロリー制限ダイエットを長期化させたとき、身体の防御反応として基礎代謝に何が起きるか？",
+    options: ["「省エネモード（適応産生）」が発動し、基礎代謝が急激に低下して痩せにくくなる", "基礎代謝が無限に加速し、食べなくても激ヤセし続ける", "代謝は一切変動しない", "骨が透明になる"],
+    answer: 0,
+    explanation: "飢餓状態と判断した体はエネルギー消費を最小限に抑えようと代謝を大きく落とすため、停滞期やリバウンドの原因になります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "除脂肪体重（LBM）が基礎代謝に与える影響についての正しい法則はどれ？",
+    options: ["除脂肪体重が多いほど基礎代謝量も高くなる（除脂肪体重は代謝の最大の決定因子）", "除脂肪体重と代謝は全く関係ない", "脂肪が多いほど代謝が上がる", "骨の重さしか関係ない"],
+    answer: 0,
+    explanation: "代謝活動を行う組織の総量を示す除脂肪体重は、基礎代謝量を予測する上で最も強力な変数です。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "冬季（寒い季節）に基礎代謝が夏に比べてやや高くなる主な生物学的理由はどれ？",
+    options: ["体温を維持して寒さに対抗するため、熱産生のエネルギーが多く使われるから", "冬は厚着をするから", "夏の方が代謝が無限に高い", "理由はない"],
+    answer: 0,
+    explanation: "寒冷環境では体温を維持するために褐色脂肪組織などが活性化し、基礎代謝や熱産生が高まる傾向があります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "月経周期（女性ホルモンの変動）が基礎代謝に与える一般的な周期変動の特徴はどれ？",
+    options: ["排卵後から生理にかけての黄体期は体温や代謝がわずかに高くなり、卵胞期に低下する", "生理中は基礎代謝が100倍になる", "ホルモンと代謝は無関係", "一年中一定である"],
+    answer: 0,
+    explanation: "黄体期は体温が上がるため、基礎代謝も一時的にわずかに高くなります。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "運動を行ったその日だけでなく、運動後数時間〜数日間にわたってエネルギー消費が高い状態が続く現象の名称はどれ？",
+    options: ["EPOC（運動後過剰酸素消費量）", "DIT", "糖新生", "カタボリック"],
+    answer: 0,
+    explanation: "高強度の筋トレやハードな運動後は、組織の修復や酸素負債の返済のためEPOCにより代謝が高い状態が維持されます。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "「褐色脂肪組織」が果たす基礎代謝・熱産生における特別な役割はどれ？",
+    options: ["脂肪を蓄えるのではなく、脂肪を燃焼させてダイレクトに「熱」を作り出す特殊な脂肪組織である", "エネルギーを永久に貯蔵する", "筋肉を完全に溶かす", "特に何もしない"],
+    answer: 0,
+    explanation: "褐色脂肪組織はミトコンドリアを豊富に含み、熱産生を担う代謝の重要組織です。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "成人における褐色脂肪組織の主な存在場所として知られているのはどこか？",
+    options: ["首の後ろ、肩甲骨周辺、脇の下、腎臓の周囲など", "足の爪の先", "手のひらのみ", "胃の内部"],
+    answer: 0,
+    explanation: "人間の成人でも、首周りや肩甲骨周辺などに褐色脂肪組織が残っており、寒冷刺激などで活性化します。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "有酸素運動を継続して行うことが、長期的な基礎代謝やエネルギー消費に与える主な効果はどれ？",
+    options: ["心肺機能の向上やミトコンドリアの増加・活性化により、脂肪燃焼効率や全体的な代謝の質が高まる", "筋肉がすべて消滅する", "基礎代謝が完全にゼロになる", "効果はない"],
+    answer: 0,
+    explanation: "継続的な有酸素運動は細胞内のミトコンドリアを増やし、代謝のベースを向上させます。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "水分補給をこまめに行うことが、基礎代謝や血流代謝に与える影響についての正しい見解はどれ？",
+    options: ["体内の化学反応や血液・リンパの循環をスムーズに保つために不可欠である", "水を飲むと代謝が停止する", "水は代謝に関係ない", "水は毒である"],
+    answer: 0,
+    explanation: "脱水状態になると生化学的反応や血流が滞り、代謝効率が低下するため、適切な水分補給が大切です。"
+  },
+  {
+    category: "基礎代謝の基礎と算出",
+    question: "健康診断などで測定される「推定基礎代謝量」を正確に活用する際の心構えとして最も適切なものはどれ？",
+    options: ["測定機器や式の違いによる誤差を理解し、日々の数値の極端な増減よりも「筋肉量や体組成の維持・変化のトレンド」を見る参考にする", "数値が1kcalでも下がったら絶望する", "数字は完全に絶対的である", "見ても意味がない"],
+    answer: 0,
+    explanation: "市販の体組成計などの推定値はあくまで目安であり、長期的な変化のトレンドを追うことが大切です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "「食事誘発性熱産生（DIT）」の正確な意味として正しいものはどれ？",
+    options: ["食事を摂った後に栄養素の代謝に伴って体内で熱として消費されるエネルギー", "食後に必ず眠くなる現象", "食事が喉を通らない現象", "食中毒のこと"],
+    answer: 0,
+    explanation: "DITは食事摂取に伴ってエネルギーが熱として消費される現象です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "栄養素ごとの食事誘発性熱産生（DIT）の発生割合が最も高いものはどれ？",
+    options: ["脂質（約4%）", "糖質（約6%）", "タンパク質（約30%）", "ビタミン（100%）"],
+    answer: 2,
+    explanation: "タンパク質は代謝・分解・再合成のプロセスで最も多くの熱エネルギー（約30%）を消費します。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "脂質単体を摂取したときの食事誘発性熱産生（DIT）のおおよその割合はどれくらいか？",
+    options: ["約30%", "約15%", "約3%〜4%", "約80%"],
+    answer: 2,
+    explanation: "脂質は体脂肪として効率よく蓄えられるため、DITによる熱のロスは最も低くなります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "糖質を摂取したときの食事誘発性熱産生（DIT）のおおよその割合はどれくらいか？",
+    options: ["約30%", "約6%前後", "約50%", "0%"],
+    answer: 1,
+    explanation: "糖質は一部がグリコーゲンとして貯蔵されるため、DITはおよそ6%前後です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "「高タンパク質な食事を摂ると、同じカロリーの脂質中心の食事に比べて太りにくい」といわれる理由はどれ？",
+    options: ["タンパク質はDITによるエネルギー消費の割合が非常に高いため、実質的な吸収カロリーの残り方が少なくなるから", "タンパク質にはカロリーが一切ないから", "タンパク質は胃で消滅するから", "理由はない"],
+    answer: 0,
+    explanation: "食べたカロリーのうち約3割が熱として放出されるため、タンパク質はボディメイク上有利に働きます。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "よく噛んで食事をすることと、食事誘発性熱産生（DIT）の関係についての正しい説明はどれ？",
+    options: ["よく噛んで食べることで交感神経が刺激され、食後のDITが向上しやすくなる", "噛むと代謝がゼロになる", "噛む回数は代謝と無関係", "噛みすぎると胃が破裂する"],
+    answer: 0,
+    explanation: "咀嚼運動は中枢神経や交感神経を刺激し、食後のエネルギー消費を高めます。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "一日の食事をバランスよく分けることと、一度にドカ食いすることの代謝における違いはどれ？",
+    options: ["規則正しく分けて食べた方が、食事のたびにコンスタントにDITが入り、体温や代謝が安定しやすい", "ドカ食いした方が代謝が100倍になる", "回数は代謝に関係ない", "食べない方が代謝が上がる"],
+    answer: 0,
+    explanation: "こまめな栄養摂取は代謝の平準化やDITの波を活かす上で有利です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "朝食をしっかり食べることで、その日一日の代謝や体温にどのような好影響があるか？",
+    options: ["睡眠中に下がっていた深部体温や交感神経のスイッチが入り、日中の基礎代謝や活動代謝のエンジンがかかりやすくなる", "一日中動けなくなる", "体温が氷点下になる", "特に影響はない"],
+    answer: 0,
+    explanation: "朝食の摂取は体内時計をリセットし、一日の代謝を高める重要なトリガーになります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "極端な糖質制限を行ったとき、身体がエネルギーを作り出すためにフル回転させる代謝経路はどれ？",
+    options: ["糖新生およびケトン体回路", "光合成回路", "アルコール発酵回路", "核融合回路"],
+    answer: 0,
+    explanation: "糖質が枯渇すると、肝臓はアミノ酸等から糖新生を行い、脳や神経へのブドウ糖供給を維持します。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "ケトジェニックダイエットにおいて、肝臓で脂肪酸から作られる主要なエネルギー代替物質の名称はどれ？",
+    options: ["ケトン体", "乳酸の塊", "コレステロールの結晶", "グリコーゲン"],
+    answer: 0,
+    explanation: "糖質が枯渇した際、脂肪酸から合成されるケトン体は脳や筋肉の優れた代替エネルギー源となります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "脂質の代謝が行われる細胞内の主な小器官の名称はどれ？",
+    options: ["ミトコンドリア", "リボソーム", "核小体", "細胞壁"],
+    answer: 0,
+    explanation: "脂肪酸は細胞内の発電所であるミトコンドリアのベータ酸化によって分解され、ATPを生み出します。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "脂肪酸がミトコンドリアの内部に入り込んで燃焼するために、絶対に必要となるキャリア物質の名称はどれ？",
+    options: ["カルニチン", "インスリン", "ヘモグロビン", "アルブミン"],
+    answer: 0,
+    explanation: "カルニチンは長鎖脂肪酸をミトコンドリア膜内へ運搬するシャトルとして不可欠な物質です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "血糖値が急激に上昇したときに膵臓から大量分泌され、余剰なブドウ糖を脂肪として蓄えようとするホルモンの名称はどれ？",
+    options: ["インスリン", "グルカゴン", "アドレナリン", "コルチゾール"],
+    answer: 0,
+    explanation: "インスリンは血糖を下げる唯一のホルモンですが、同時に脂肪の合成・蓄積を促進する働きを持ちます。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "食後に急激な血糖値の乱高下が起きたとき、身体や代謝に生じやすい問題はどれ？",
+    options: ["強い眠気、倦怠感、血管へのダメージ、そして脂肪が蓄積しやすいホルモンバランスの乱れ", "代謝が無限に高まる", "視力が劇的に良くなる", "何も起きない"],
+    answer: 0,
+    explanation: "血糖値スパイクは血管内皮を傷つけるだけでなく、急激なインスリン分泌により脂肪蓄積を招きやすくなります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "低GI食品を選ぶことが、代謝や血糖コントロールに良いとされる理由はどれ？",
+    options: ["消化吸収が緩やかであり、血糖値の急上昇やインスリンの過剰分泌を防ぎ、エネルギーが安定供給されるから", "カロリーが絶対にゼロだから", "完全に水分だけでできているから", "価格が一番高いため"],
+    answer: 0,
+    explanation: "低GI食品は血糖値の乱高下を抑え、インスリンの急激な分泌を防ぐため代謝やダイエットに有利です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "食物繊維が糖質や脂質の代謝に与える優れた効果の組み合わせはどれ？",
+    options: ["糖や脂質の吸収スピードを穏やかにし、腸内環境を整えることで代謝をサポートする", "小腸を完全にコーティングして栄養をすべて拒絶する", "カロリーを10倍に増やす", "特に意味はない"],
+    answer: 0,
+    explanation: "食物繊維は血糖値の急上昇を抑え、腸内細菌叢を通じて全身の代謝や健康に寄与します。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "ビタミンB群が代謝において果たしている最も本質的な役割はどれ？",
+    options: ["糖質・脂質・タンパク質をエネルギーや体成分に変換する際の「酵素の補酵素」として働く", "ビタミンB自体が熱や筋肉になる", "骨を硬くする", "免疫を破壊する"],
+    answer: 0,
+    explanation: "ビタミンB群は三大栄養素をエネルギーに変える生化学的回路に絶対不可欠な補酵素です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "マグネシウムや亜鉛などのミネラルが、エネルギー代謝において担っている役割はどれ？",
+    options: ["多くの代謝酵素の活性化やATPの安定化に不可欠な触媒・補因子として働く", "体を重くして沈める", "骨を溶かす", "特に何もしない"],
+    answer: 0,
+    explanation: "ミネラルは酵素のスイッチを入れ、エネルギー代謝の円滑な進行を支えます。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "アルコールを肝臓で代謝する際、他の栄養素の代謝が後回しにされる理由の背景にあるものはどれ？",
+    options: ["アルコールは毒物とみなされ、最優先で分解・解毒されるため、脂質代謝や糖代謝が一時的に抑制されるから", "アルコールが筋肉になるから", "アルコールは水だから", "理由はない"],
+    answer: 0,
+    explanation: "肝臓でのアルコール代謝が優先されるため、脂肪の燃焼や糖の代謝が一時的にブロックされやすくなります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "カフェインが一時的に代謝や脂肪燃焼に与える影響として正しいものはどれ？",
+    options: ["交感神経を刺激し、一時的に代謝速度や脂肪の遊離をわずかに高める作用がある", "代謝を完全にゼロにする", "睡眠を深くする", "筋肉を溶かす"],
+    answer: 0,
+    explanation: "カフェインは中枢神経や交感神経を刺激し、一時的な代謝亢進や脂肪分解をサポートします。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "スパイスが代謝や体温に与える物理的効果はどれ？",
+    options: ["血行を促進し、アドレナリン様作用を通じて発汗や熱産生を一時的に高める", "体温を氷点下にする", "基礎代謝を永遠に2倍にする", "特に何もない"],
+    answer: 0,
+    explanation: "カプサイシンなどは交感神経を刺激し、体温上昇や発汗、エネルギー消費を促します。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "トランス脂肪酸が身体や代謝に及ぼすリスクの代表はどれ？",
+    options: ["細胞膜の流動性を乱し、悪玉コレステロールを増やして生活習慣病や代謝異常のリスクを高める", "筋肉が無限に増える", "基礎代謝が100倍になる", "完全に無害である"],
+    answer: 0,
+    explanation: "トランス脂肪酸は健康上のリスクが広く指摘されており、摂取を控えることが推奨されます。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "オメガ3脂肪酸が脂質代謝や血管の健康に果たす優れた特徴はどれ？",
+    options: ["細胞膜の柔軟性を保ち、中性脂肪の合成を抑え、炎症を鎮めることで代謝の巡りをサポートする", "血管を固める", "脂肪を増やす", "特に意味はない"],
+    answer: 0,
+    explanation: "オメガ3系不飽和脂肪酸は、全身の巡りや脂質代謝のバランスを整える上で非常に重要な油です。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "夜遅い時間に食事をとると、日中に比べて脂肪として蓄えられやすくなる主な理由はどれ？",
+    options: ["夜間はBMAL1の働きが活性化し、活動量が減るため消費されにくくなるから", "夜は胃が消滅するから", "夜は代謝が1兆倍になるから", "理由はない"],
+    answer: 0,
+    explanation: "時計遺伝子であるBMAL1の働きにより、夜間はエネルギーを蓄えようとする同化作用が優位になります。"
+  },
+  {
+    category: "食事誘発性熱産生と栄養代謝",
+    question: "「皓一部屋」が提案するリフレッシュ＆健康づくりの文脈において、適切な栄養代謝ケアが不可欠な理由はどれ？",
+    options: ["外からのプロの施術による血流・筋肉ケアと、内からの正しい栄養代謝のサポートが噛み合うことで、疲労回復や理想的なボディバランスが引き出されるから", "特に意味はない", "気休めにすぎない", "医療行為である"],
+    answer: 0,
+    explanation: "外側からの極上のボディケアと内側からの栄養・代謝アプローチが一体となることで、最高のコンディショニングが実現します。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "筋肉が筋トレや負荷によって太くなる現象が起きるとき、最も重要な前提条件はどれ？",
+    options: ["適切な物理的負荷と、十分なタンパク質およびエネルギーの供給", "完全に動かないこと", "水分を一切摂らないこと", "睡眠を1秒も取らないこと"],
+    answer: 0,
+    explanation: "筋肥大には、メカニカル・テンションと十分な栄養補給・リカバリーの双方が必要です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "遅筋線維の特徴として正しいものはどれ？",
+    options: ["収縮速度は遅いが疲労しにくく、脂質や酸素を効率よく使って有酸素的な運動を支える", "瞬間的な爆発力しかない", "脂肪を一切使わない", "筋肉ではない"],
+    answer: 0,
+    explanation: "遅筋は持久的活動や姿勢保持に優れ、有酸素的な代謝能力が高いのが特徴です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "速筋線維の特徴はどれ？",
+    options: ["収縮スピードが速く大きな力を発揮できるが、乳酸がたまりやすく疲労しやすい", "全く疲労しない", "持久力専用である", "脂肪だけを燃やす"],
+    answer: 0,
+    explanation: "速筋は瞬発的な高強度運動を担いますが、持久的な疲労耐性は低めです。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "筋肉の収縮を分子レベルで引き起こす、2大タンパク質フィラメントの正しい組み合わせはどれ？",
+    options: ["アクチンとミオシン", "コラーゲンとエラスチン", "ケラチンとアルブミン", "ヘモグロビンとミオグロビン"],
+    answer: 0,
+    explanation: "筋原繊維を構成するアクチンとミオシンが滑走することで筋肉の収縮が起こります。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "筋肉の収縮や弛緩、神経伝達において、カルシウムイオンと共に極めて重要な役割を果たすもう一つの主要電解質ミネラルはどれ？",
+    options: ["マグネシウム", "金", "鉛", "水銀"],
+    answer: 0,
+    explanation: "筋肉の弛緩やエネルギー代謝にはマグネシウムがカルシウムと拮抗して重要な役割を果たします。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "高強度の無酸素運動の最初の数秒間、筋肉内で瞬時にATPを再合成するために使われる物質はどれ？",
+    options: ["クレアチンリン酸", "中性脂肪", "グリセリン", "ビタミンC"],
+    answer: 0,
+    explanation: "筋肉内のクレアチンリン酸は、ADPにリン酸を即座に渡してATPを再生する瞬発的なエネルギー供給源です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "有酸素運動を長期間継続したとき、ミトコンドリアにどのような変化が起きるか？",
+    options: ["ミトコンドリアの数が増え、サイズが大きくなり、脂肪燃焼やエネルギー産生の能力が飛躍的に向上する", "ミトコンドリアがすべて消滅する", "変化は一切起きない", "細胞が爆発する"],
+    answer: 0,
+    explanation: "持久的トレーニングや有酸素運動は、筋肉内のミトコンドリアの生合成を強力に促します。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "運動時に筋肉へ酸素を供給する、筋肉内の酸素貯蔵タンパク質の名称はどれ？",
+    options: ["ミオグロビン", "ヘモグロビン", "アルブミン", "インスリン"],
+    answer: 0,
+    explanation: "筋肉中のミオグロビンは酸素を保持し、筋収縮に必要な酸素を供給します。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "乳酸に関する近年の正しいスポーツ生理学的理解はどれ？",
+    options: ["単なる「疲労物質のゴミ」ではなく、他の筋肉や心臓、脳などの優れたエネルギー源として積極的に再利用される", "毒素であり体に悪影響しかない", "脂肪を一瞬で固める", "意味のないカス"],
+    answer: 0,
+    explanation: "近年の研究では、乳酸はエネルギー源や代謝のシグナル分子として重要な役割を担っていることが判明しています。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "除脂肪体重（LBM）が基礎代謝やボディメイクにおいて重要な指標とされる理由はどれ？",
+    options: ["体重のうち、代謝を活発に行う筋肉や骨、内臓などの実質的な組織の総量を示すため", "脂肪の重さだけを示すから", "骨の長さだけを示すから", "意味はない"],
+    answer: 0,
+    explanation: "除脂肪体重を維持・増加させることが、太りにくく代謝の高い体を維持する核心です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "加齢や運動不足によって筋肉量や筋力が低下していく現象の正式名称はどれ？",
+    options: ["サルコペニア", "メタボリックシンドローム", "骨粗鬆症", "アトピー"],
+    answer: 0,
+    explanation: "高齢期に向けたサルコペニアの予防には、適切な運動とタンパク質摂取が不可欠です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "運動不足や長期のギプス固定などによって筋肉が細く萎縮してしまう現象の専門用語はどれ？",
+    options: ["筋萎縮", "筋肥大", "筋肉の石灰化", "筋細胞分裂"],
+    answer: 0,
+    explanation: "使われない組織は効率よく縮小する適応反応として筋萎縮が起きます。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "「超回復」の概念に基づいた筋トレと休息の関係として正しいものはどれ？",
+    options: ["適切な負荷で筋線維に微細な損傷を与えた後、十分な栄養と休息をとることで、以前より強い状態に回復・発達する", "毎日限界まで休まずトレーニングし続けるのが一番良い", "トレーニングをすると筋肉が二度と動かなくなる", "関係はない"],
+    answer: 0,
+    explanation: "負荷・栄養・休息のバランスが筋発達とコンディショニングの基本です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "減量中に食事制限を厳しくしすぎたとき、トレーニングパフォーマンスや代謝に起きる悪影響はどれ？",
+    options: ["グリコーゲンや筋肉のタンパク質が枯渇し、筋力が低下し、基礎代謝の低下やカタボリックを招く", "筋力が100倍になる", "体が軽くなり空を飛べる", "何も起きない"],
+    answer: 0,
+    explanation: "極端なカロリー不足は筋分解を招き、ボディメイクを台無しにする原因になります。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "カタボリックとアナボリックのバランスにおける正しいボディメイクの考え方はどれ？",
+    options: ["アナボリックの状態を優位に保ち、過度なカタボリックを防ぐために栄養と休息を管理する", "カタボリックを100%の状態で永遠に続ける", "代謝を完全に停止させる", "関係はない"],
+    answer: 0,
+    explanation: "筋肉を維持・発達させるには、合成が分解を上回る環境づくりが大切です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "有酸素運動を長期間行うと、脂肪酸の燃焼効率が高まる理由として正しいものはどれ？",
+    options: ["ミトコンドリアの能力や脂質代謝酵素の活性が高まり、エネルギー源として脂肪を優先的に使えるようになるから", "脂肪が汗としてすべて溶け出すから", "胃が小さくなるから", "理由はない"],
+    answer: 0,
+    explanation: "有酸素的適応により、体は糖質だけでなく脂肪を効率よくエネルギー源として使えるようになります。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "筋トレ時に筋肉の合成シグナルを活性化させる鍵となるアミノ酸はどれ？",
+    options: ["ロイシン", "グリシン", "リジン", "トリプトファン"],
+    answer: 0,
+    explanation: "ロイシンは筋タンパク質合成のスイッチを入れる最も強力なアミノ酸シグナルです。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "運動前後にプロテインやアミノ酸を補給する主な目的はどれ？",
+    options: ["血中アミノ酸濃度を高め、運動中の筋分解を防ぎ、運動後の速やかな筋タンパク質合成を促すため", "運動中に眠気を催すため", "汗の量を100倍にするため", "特に意味はない"],
+    answer: 0,
+    explanation: "アミノ酸の血中濃度を保つことで、筋分解を抑え合成を最大化できます。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "ストレッチやボディケアが筋肉の代謝や疲労回復に与える好ましい効果はどれ？",
+    options: ["筋膜の癒着を和らげ、局所の血流やリンパの循環を促し、栄養や酸素の供給と老廃物の回収をスムーズにする", "筋肉を完全に破壊する", "代謝を完全にゼロにする", "意味はない"],
+    answer: 0,
+    explanation: "血流や巡りを整えるプロのケアは、組織のリカバリーや疲労物質の回収に大きく寄与します。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "漸進性過負荷の原則とは、筋トレにおいて何を意味するか？",
+    options: ["筋肉を発達させ続けるために、扱う重量や回数、強度を少しずつ段階的に高めていく原則", "常に同じ軽い負荷で永遠に続ける原則", "一切トレーニングをしない原則", "毎回メニューをランダムに変えるだけの原則"],
+    answer: 0,
+    explanation: "筋肉が刺激に適応するため、少しずつ負荷を上げていくことが筋肥大の鉄則です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "体脂肪率と基礎代謝の関係についての正しい理解はどれ？",
+    options: ["筋肉量が多いほど体脂肪率が適正に保たれやすく、基礎代謝の維持・向上に有利に働く", "体脂肪率が100%の方が代謝が高い", "脂肪は代謝を無限に高める", "関係はない"],
+    answer: 0,
+    explanation: "筋肉を主体とした除脂肪体重を維持・高めることが、健康的な代謝の維持に直結します。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "水分と電解質が不足した状態で激しい運動を行ったときに起こりやすいトラブルはどれ？",
+    options: ["筋肉の痙攣、パフォーマンスの低下、脱水や熱中症のリスク上昇", "筋肉が2倍に増える", "代謝が無限に高まる", "何も起きない"],
+    answer: 0,
+    explanation: "運動時の適切な水分・電解質補給は、筋機能の正常な維持とトラブル防止に不可欠です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "睡眠中に分泌され、筋肉の修復や脂肪の分解に深く関わっている最も重要なホルモンの名称はどれ？",
+    options: ["成長ホルモン", "インスリン", "エストロゲン", "アドレナリン"],
+    answer: 0,
+    explanation: "睡眠の初期に大量分泌される成長ホルモンは、組織の修復や代謝を強力にサポートします。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "アクティブレストが完全安静に比べて疲労回復に有効とされる理由はどれ？",
+    options: ["軽い運動やストレッチによって血流を維持し、疲労物質の回収や栄養の運搬を早めることができるから", "完全に動かない方が疲れるから", "意味がないから", "筋肉が消滅するから"],
+    answer: 0,
+    explanation: "軽い動きで血流を促すアクティブレストは、疲労した筋肉のリカバリーを早める優れたコンディショニング手法です。"
+  },
+  {
+    category: "筋肉と運動代謝",
+    question: "「皓一部屋」の名古屋での出張リラクゼーション・ボディケアが、日々の運動や代謝ケアと組み合わせることで高い価値を生む理由はどれ？",
+    options: ["プロの手技による深いリフレッシュと筋膜・血流の解放が、身体のリカバリーと代謝を総合的にバックアップするから", "特に意味はない", "気休めである", "医療行為である"],
+    answer: 0,
+    explanation: "日々のセルフケアや運動に加え、プロのボディケアを取り入れることで、最高の心身のコンディションが完成します。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "基礎代謝や一日のエネルギー消費量を高めるために、日常生活の活動量を増やすアプローチの総称はどれ？",
+    options: ["NEAT（非運動性活動熱産生）の向上", "激しいマラソン", "絶食", "睡眠のみ"],
+    answer: 0,
+    explanation: "NEATは、一日の消費カロリーの中で大きな割合を占める重要な要素です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "入浴が基礎代謝や血行に与える優れた効果はどれ？",
+    options: ["深部体温が一時的に上がり、血流が全身隅々まで巡り、副交感神経優位により睡眠の質や代謝が高まる", "体温が下がりすぎて凍結する", "代謝が完全に停止する", "意味はない"],
+    answer: 0,
+    explanation: "入浴による温熱効果や水圧作用は、血行促進や疲労回復、代謝のスイッチに大きな効果があります。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "朝起きてすぐにコップ一杯の水を飲むことが、代謝や体内時計に良いとされる理由はどれ？",
+    options: ["睡眠中の発汗で失われた水分を補給し、胃腸のスイッチを入れて排便や代謝を促すから", "お腹がパンクするから", "代謝がゼロになるから", "意味はない"],
+    answer: 0,
+    explanation: "起床時の水分補給は、睡眠中に滞った巡りをスムーズにし、一日の代謝の目覚めをサポートします。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "ベジタブル・ファーストが血糖値の急上昇や代謝に与える好影響はどれ？",
+    options: ["食物繊維がクッションとなり、後から入ってくる糖質や脂質の吸収スピードを穏やかにして血糖値スパイクを防ぐ", "炭水化物秘がすべて消える", "満腹になって何も食べられなくなる", "意味はない"],
+    answer: 0,
+    explanation: "食べる順番を工夫することで、血糖値の急変動やそれに伴うインスリンの過剰分泌を防ぐことができます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "よく噛んで食べることが、代謝やダイエットにおいて優れている理由はどれ？",
+    options: ["満腹中枢が刺激されて食べすぎを防ぎ、咀嚼によるエネルギー消費や消化酵素の分泌が高まるから", "歯がすべて砕けるから", "時間が無限にかかるから", "意味はない"],
+    answer: 0,
+    explanation: "咀嚼回数を増やすことは、満腹感の向上や食後代謝アップに直結します。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "コンビニや外食が多い人が、意識的にタンパク質やビタミン・ミネラルを補うための賢い選択肢の組み合わせはどれ？",
+    options: ["サラダチキン、ゆで卵、焼き魚や刺身、海藻や大豆製品、野菜スープなどをメニューに取り入れる", "ポテトチップスとジュースだけにする", "炭水化物大盛り単品にする", "何も食べない"],
+    answer: 0,
+    explanation: "手軽な選択肢の中でも、高タンパクかつ微量栄養素が摂れるメニューを意識的に選ぶことが大切です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "水分補給の際、糖分の入ったジュースやスポーツドリンクを日常的に大量飲みすることの代謝的リスクはどれ？",
+    options: ["血糖値の急激な上昇や糖質の過剰摂取につながり、肥満や代謝異常のリスクを高める", "基礎代謝が100倍になる", "筋肉がムキムキになる", "全く問題ない"],
+    answer: 0,
+    explanation: "液体からの糖質過剰摂取は血糖値を急上昇させるため注意が必要です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "和食の定食スタイルが栄養代謝の観点で優れている最大の理由はどれ？",
+    options: ["主菜、副菜、汁物が揃い、栄養バランスが自然と整うから", "見た目が綺麗だから", "お腹が空くから", "意味はない"],
+    answer: 0,
+    explanation: "和食の伝統的な構成は、代謝や健康維持に必要な栄養素を無理なく網羅できる優れた食習慣です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "睡眠の質を高めることが、食欲をコントロールするホルモンに与える好ましい影響はどれ？",
+    options: ["食欲を抑えるホルモンが正常に働き、食欲を刺激するホルモンの暴走を防げる", "食欲が無限になり食べ続ける", "ホルモンがすべて消滅する", "関係はない"],
+    answer: 0,
+    explanation: "睡眠不足は食欲増進ホルモンを増やし、肥満や代謝の乱れを招きます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "スマホやパソコンのブルーライトを就寝前に浴びすぎることが、睡眠や代謝に与えるマイナス影響はどれ？",
+    options: ["睡眠ホルモンの分泌が抑制され、睡眠の質が低下し、自律神経や代謝リズムが狂いやすくなる", "視力が20.0になる", "代謝が爆発的に上がる", "影響はない"],
+    answer: 0,
+    explanation: "就寝前のブルーライトは体内時計を混乱させ、質の高い睡眠やリカバリーを妨げる原因になります。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "間食をとる際、スナック菓子や甘いケーキの代わりにナッツやチーズを選ぶメリットはどれ？",
+    options: ["血糖値の急変動を抑えながら、良質なタンパク質や必須脂肪酸、ミネラルを補給できる", "太る一方になる", "歯が折れる", "意味がない"],
+    answer: 0,
+    explanation: "間食の質をタンパク質・ミネラル系に置き換えることで、ボディメイクや代謝維持にプラスに働きます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "チートデイをボディメイクや停滞期に取り入れる目的と注意点はどれ？",
+    options: ["停滞期に低下した代謝調節ホルモンやエネルギー消費を一時的に回復させる目的があるが、やりすぎに注意が必要", "毎日好きなものをバケツ一杯食べる日", "ダイエットを完全に諦める日", "意味はない"],
+    answer: 0,
+    explanation: "適切に取り入れることで、飢餓適応による代謝の低下をリセットする効果が期待できます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "日中に太陽の光を適度に浴びることが、体内時計や代謝に与える好ましい影響はどれ？",
+    options: ["セロトニンの分泌を促し、夜の良質な睡眠や代謝リズムを整える", "体が完全に燃え尽きる", "代謝が停止する", "意味はない"],
+    answer: 0,
+    explanation: "日光浴はサーカディアンリズムを整え、自律神経や代謝の働きを正常に保つために大切です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "冷え性を放置することが基礎代謝や脂肪燃焼に与える悪影響はどれ？",
+    options: ["末梢の血流や組織温度が低下することで酵素反応が鈍くなり、基礎代謝や脂肪の燃焼効率が低下しやすくなる", "体が氷のようになるだけ", "代謝が100倍になる", "影響はない"],
+    answer: 0,
+    explanation: "冷えや血行不良は代謝効率を低下させる要因になるため、温活や巡りケアが重要です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "食事をよく味わって、ながら食べを控えることの代謝的メリットはどれ？",
+    options: ["満腹中枢がしっかりと働き、食べすぎを防ぐとともに、消化吸収のプロセスがスムーズになる", "時間が余るだけ", "意味はない", "食事が不味くなる"],
+    answer: 0,
+    explanation: "食事に集中することで咀嚼回数や満足感が高まり、過食や消化不良を防ぐことができます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "植物性油を賢く選んで食生活に取り入れるメリットはどれ？",
+    options: ["良質な不飽和脂肪酸により、細胞膜の健康や脂質代謝の巡りをスムーズにサポートできる", "油だからすべて毒である", "代謝が完全に停止する", "意味はない"],
+    answer: 0,
+    explanation: "質の良い油を適量摂ることは、ホルモンの材料や細胞の健康維持に欠かせません。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "減量と健康的なボディメイクの本質的な違いについての正しい認識はどれ？",
+    options: ["体重の数字を減らすことだけを目的にするのではなく、筋肉を維持・向上させながら体脂肪を落とし、代謝の高い体を築くこと", "何日も食べずにガリガリになること", "筋肉をすべて削ること", "違いはない"],
+    answer: 0,
+    explanation: "真のボディメイクは、代謝や健康を損なわない持続可能な生活習慣の積み重ねによって達成されます。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "日常の小さな身体活動を積み重ねることの価値はどれ？",
+    options: ["NEATが底上げされ、ジムに行かなくても自然と消費カロリーが多い代謝体質をつくれる", "疲れるだけで意味がない", "代謝がゼロになる", "特に効果はない"],
+    answer: 0,
+    explanation: "日常の細かな活動量の積み重ねは、トータルのエネルギー消費量を大きく左右する隠れたカギです。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "ストレスが溜まったときに分泌され、過剰になると筋肉の分解や脂肪の蓄積を招くホルモンの名称はどれ？",
+    options: ["コルチゾール", "インスリン", "成長ホルモン", "セロトニン"],
+    answer: 0,
+    explanation: "慢性的な過剰ストレスによるコルチゾール分泌は、筋肉の分解や腹部への脂肪蓄積を促す要因となります。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "リラクゼーションや深呼吸などが副交感神経を高め、代謝やリカバリーに与える好ましい効果はどれ？",
+    options: ["自律神経のバランスが整い、血管が緩んで血流が促進され、組織の修復やエネルギー効率が最適化される", "完全に意識を失う", "代謝が停止する", "意味はない"],
+    answer: 0,
+    explanation: "リラックス状態を作ることは、疲労回復や代謝の効率を高める上で非常に重要です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "お酒を飲むときに、水分を一緒にしっかりとるべき健康・代謝上の理由はどれ？",
+    options: ["アルコールによる脱水作用や肝臓での代謝負担を和らげ、二日酔いや代謝の停滞を防ぐため", "お腹をチャプチャプにするため", "意味はない", "お酒が薄まるだけ"],
+    answer: 0,
+    explanation: "チェイサーを挟みながらお酒を楽しむことは、脱水やアルコールの急激な血中濃度上昇を防ぐ基本です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "タンパク質・ビタミン・ミネラルを毎日の食事で欠かさず意識することが、美容と代謝に与える相乗効果はどれ？",
+    options: ["肌、髪、爪、そして全身の酵素や筋肉の材料が常に満たされ、若々しい代謝とコンディションをキープできる", "体が重くなり動けなくなる", "意味はない", "特に変化はない"],
+    answer: 0,
+    explanation: "これらは身体の構成材料であり代謝の点火プラグであるため、毎日の食事で不足させないことが大切です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "長期的な視点で「リバウンドしない代謝のよい体」を作るために最も大切なライフスタイルの姿勢はどれ？",
+    options: ["一時的な無理な食事制限ではなく、バランスの取れた食事、適度な運動、質の高い睡眠、そして定期的なボディケアを習慣化すること", "一生絶食を続けること", "二度と動かないこと", "サプリだけを飲むこと"],
+    answer: 0,
+    explanation: "持続可能な健康習慣の継続こそが、リバウンドのない理想の体を手に入れ、維持する唯一の王道です。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "日常のセルフケアに加えて、専門的なプロのボディケアを取り入れることの代謝的メリットはどれ？",
+    options: ["自分では届かないコリや深部の血流・リンパの滞りをプロの手で解放し、全身の代謝と疲労回復のスピードを最大化できる", "特に意味はない", "気休めである", "医療行為である"],
+    answer: 0,
+    explanation: "セルフケアとプロの施術を組み合わせることで、心身のコンディションと代謝は最高レベルに高まります。"
+  },
+  {
+    category: "生活習慣と代謝向上術",
+    question: "「皓一部屋」が提供する名古屋での極上の出張リラクゼーションと健康情報の発信が目指す究極のゴールはどれ？",
+    options: ["お客様が日々の疲れを癒やし、正しい身体の仕組みや栄養代謝の知識を得ることで、心身ともに軽やかで若々しい毎日を送れるようサポートすること", "特に意味なし", "偽りの情報提供", "医療業務"],
+    answer: 0,
+    explanation: "皓一部屋は、確かな知識と極上の癒やしを通じて、皆様の健康で豊かな毎日を全力で応援しています。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) { clearTimeout(hintTimer); }
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "基礎代謝・エネルギー代謝クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) { clearTimeout(hintTimer); }
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい基礎代謝・エネルギー代謝の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの代謝・ボディメイクマスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格基礎代謝・エネルギー代謝クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🔥✨\n#皓一部屋 #基礎代謝クイズ #代謝アップ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() { startQuiz(); };
+</script>
+
+</body>
+</html>
