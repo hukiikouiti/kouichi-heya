@@ -1,1 +1,964 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格基礎代謝・タンパク質クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
+
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">基礎代謝・タンパク質クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- 4列目：もう一度あそぶ ＆ ゲーム選択に戻る -->
+  <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+    <button onclick="startQuiz()" style="background: #3498db; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">もう一度あそぶ</button>
+    <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 14px 10px; border-radius: 14px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); font-size: 0.95rem;">ゲーム選択に戻る</a>
+  </div>
+
+  <!-- 5列目：トップに戻る -->
+  <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; display: block; width: 100%; padding: 14px 20px; box-sizing: border-box; text-decoration: none; font-size: 0.95rem;">🏠 トップに戻る</a>
+</div>
+
+<script>
+const allQuestions = [
+  // 1. 基礎代謝・メカニズム（25問）
+  {
+    category: "基礎代謝・メカニズム",
+    question: "人間の体の乾燥重量（水分を除いた重さ）のうち、脂質や骨の成分を除いて最も大きな割合を占める高分子物質はどれ？",
+    options: ["糖質", "タンパク質", "ビタミン", "ミネラル"],
+    answer: 1,
+    explanation: "人間の体（水分を除く）の大部分はタンパク質（筋肉、皮膚、臓器、血液など）で構成されています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "体内で合成することができず、必ず食事から摂取しなければならないアミノ酸の総称はどれ？",
+    options: ["非必須アミノ酸", "必須アミノ酸（不可欠アミノ酸）", "分岐鎖アミノ酸", "グルタミン酸"],
+    answer: 1,
+    explanation: "成人では9種類の必須アミノ酸があり、体内で合成できないため食事からの補給が必須です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "成人の必須アミノ酸は何種類あるか？",
+    options: ["5種類", "9種類", "15種類", "20種類"],
+    answer: 1,
+    explanation: "バリン、ロイシン、イソロイシン、スレオニン、メチオニン、リジン、フェニルアラニン、トリプトファン、ヒスチジンの9種類が必須アミノ酸です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "タンパク質を構成するアミノ酸同士を結びつけている結合の名称はどれ？",
+    options: ["ペプチド結合", "グリコシド結合", "水素結合", "エステル結合"],
+    answer: 0,
+    explanation: "アミノ酸のカルボキシ基とアミノ基が脱水縮合して形成される結合をペプチド結合と呼びます。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "基礎代謝（Basal Metabolism）の定義として最も正確なものはどれ？",
+    options: ["一日のうちに歩いた歩数で消費されるエネルギー", "生命を維持するために最低限必要なエネルギー代謝量", "運動したときに消費されるカロリー", "食事を消化するときだけに消費される熱量"],
+    answer: 1,
+    explanation: "基礎代謝は、覚醒状態でする生命維持（呼吸、心拍、体温維持など）に不可欠な最小限のエネルギー代謝です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "成人の安静時エネルギー消費量のうち、最も多くのエネルギー（約20〜30%）を消費する臓器または組織はどれ？",
+    options: ["肝臓", "脳", "骨格筋", "心臓"],
+    answer: 0,
+    explanation: "安静時の代謝量は肝臓や脳などの内臓が大きな割合を占め、次いで骨格筋や心臓が消費します。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "筋肉量が増えることによって基礎代謝にどのような変化が起きるか？",
+    options: ["基礎代謝が上昇し、太りにくくエネルギーを消費しやすい体になる", "基礎代謝がゼロになる", "基礎代謝は一切変わらない", "筋肉が増えると代謝は低下する"],
+    answer: 0,
+    explanation: "筋肉はエネルギーを消費する組織であるため、筋肉量（および除脂肪体重）の維持・増加は基礎代謝を高めるカギとなります。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "タンパク質の栄養価値（質）を評価する指標で、体内でどれだけ効率よく利用されるかを示す数値の名称はどれ？",
+    options: ["カロリー密度", "タンパク質効率（PER）およびアミノ酸スコア", "糖化指数", "水分含有率"],
+    answer: 1,
+    explanation: "アミノ酸スコアやタンパク質効率は、必須アミノ酸の含有バランスを評価する世界的な基準です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "アミノ酸スコアが「100」である食品の条件として正しいものはどれ？",
+    options: ["必須アミノ酸がすべて十分なバランスと量で含まれている", "糖質が一切含まれていない", "脂質が100%である", "価格が一番高い"],
+    answer: 0,
+    explanation: "アミノ酸スコア100の食品（肉、魚、卵、大豆など）は、必須アミノ酸が理想的な比率で揃っています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "複数のタンパク質源を組み合わせて食べることで、単体では不足していた必須アミノ酸を補い合う現象を何と呼ぶか？",
+    options: ["アミノ酸の補完効果（樽の法則・桶の理論）", "タンパク質の中和作用", "脂質変換", "アミノ酸の暴走"],
+    answer: 0,
+    explanation: "例えば穀類（リジンがやや少ない）に豆類や肉を組み合わせることで、全体のタンパク質利用効率を高めることができます。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "人間が摂取したタンパク質は、体内でいったん何にまで分解されてから吸収されるか？",
+    options: ["ブドウ糖", "アミノ酸（およびジ・トリペプチド）", "中性脂肪", "乳酸"],
+    answer: 1,
+    explanation: "タンパク質は消化酵素によって最小単位であるアミノ酸やペプチドまで分解されてから小腸で吸収されます。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "体内で合成できる「非必須アミノ酸」の役割や重要性についての正しい説明はどれ？",
+    options: ["体内で作れるからといって重要ではないわけではなく、代謝や生合成に不可欠である", "一切体に必要ない", "すべて毒である", "筋肉以外には使われない"],
+    answer: 0,
+    explanation: "非必須アミノ酸も、体の構造維持や免疫、神経伝達など多岐にわたる重要な役割を担っています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "プロテインスコアやアミノ酸スコアにおいて、最も含有量が少なく全体の利用効率を制限してしまうアミノ酸の通称はどれ？",
+    options: ["リミティング・アミノ酸（制限アミノ酸）", "マスターアミノ酸", "ファーストアミノ酸", "ゼロアミノ酸"],
+    answer: 0,
+    explanation: "最も不足しているアミノ酸（制限アミノ酸）のレベルに合わせて全体のタンパク質合成効率が制限されます。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "成人における1日あたりのタンパク質推奨量（日本人の食事摂取基準）の基本的な考え方として正しいものはどれ？",
+    options: ["体重1kgあたり約0.8g〜1.0g（成人男性で約60g、女性で約50g目安、活動量により変動）", "1日に3kg", "一切摂らなくてよい", "体重に関わらず一律10g"],
+    answer: 0,
+    explanation: "健康な成人の維持には、体重や身体活動レベルに応じた十分なタンパク質摂取が推奨されています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "加齢とともに筋肉量が減少していく現象の医学的な名称はどれ？",
+    options: ["サルコペニア", "メタボリックシンドローム", "骨粗鬆症", "アトピー"],
+    answer: 0,
+    explanation: "加齢や運動不足による筋肉量・筋力の低下をサルコペニアと呼びます。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "極端なカロリー制限ダイエットで食事を減らしすぎた際、体重と一緒に真っ先に削られやすい組織はどれ？",
+    options: ["骨のカルシウム", "筋肉のタンパク質（および水分・グリコーゲン）", "髪の毛の色素", "爪の硬度"],
+    answer: 1,
+    explanation: "エネルギー不足に陥ると、体は筋肉のタンパク質を分解してエネルギー源として利用するため、筋肉が落ちて代謝が低下します。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "タンパク質1gあたりが生体内で生み出すエネルギー量（カロリー）はおよそ何kcalか？",
+    options: ["約2kcal", "約4kcal", "約7kcal", "約9kcal"],
+    answer: 1,
+    explanation: "タンパク質および糖質は1gあたり約4kcal、脂質は約9kcalのエネルギーを生み出します。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "食事誘発性熱産生（DIT：食事を摂った後に代謝が上がる現象）において、最も熱として消費されやすい栄養素はどれ？",
+    options: ["脂質", "糖質", "タンパク質", "水"],
+    answer: 2,
+    explanation: "タンパク質は食事によるエネルギー産生（DIT）の割合が約30%と、糖質（約6%）や脂質（約4%）に比べて高くなります。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "ホルモンや酵素、抗体の主成分となっている基本の栄養素はどれ？",
+    options: ["タンパク質", "食物繊維", "コレステロール", "トランス脂肪酸"],
+    answer: 0,
+    explanation: "体内のホルモン（インスリンなど）、消化酵素、免疫抗体などはすべてタンパク質から作られています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "血液の浸透圧を維持し、水分が血管外へ漏れ出すのを防ぐ血漿タンパク質の代表格はどれ？",
+    options: ["アルブミン", "ケラチン", "コラーゲン", "エラスチン"],
+    answer: 0,
+    explanation: "血中アルブミンは血液の水分バランスを保つ非常に重要な役割を持っています。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "髪の毛や爪の主成分であり、硬いたんぱく質の一種であるものの名称はどれ？",
+    options: ["ケラチン", "ヘモグロビン", "インスリン", "ミオシン"],
+    answer: 0,
+    explanation: "ケラチンは硫黄を多く含む堅牢な繊維状タンパク質で、髪や爪、皮膚の角質層を形作ります。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "皮膚のハリや弾力を保ち、血管や骨の構造を支える線維状タンパク質の代表はどれ？",
+    options: ["コラーゲン", "ペプシン", "トリプシン", "アミラーゼ"],
+    answer: 0,
+    explanation: "コラーゲンは全身の結合組織の主要なタンパク質です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "筋肉の収縮（アクチンとミオシンの滑走）において直接エネルギー源となる物質はどれ？",
+    options: ["ATP（アデノシン三リン酸）", "塩化ナトリウム", "ビタミンC", "ブドウ糖単体"],
+    answer: 0,
+    explanation: "筋肉の収縮には、タンパク質の構造変化とATPのエネルギーが不可欠です。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "体内におけるタンパク質の合成と分解のバランスを何と呼ぶか？",
+    options: ["窒素出納（たんぱく質出納）", "水分平衡", "血糖コントロール", "酸塩基平衡"],
+    answer: 0,
+    explanation: "摂取した窒素量と排泄された窒素量のバランス（窒素出納）でタンパク質の体内動態を評価します。"
+  },
+  {
+    category: "基礎代謝・メカニズム",
+    question: "タンパク質不足が慢性化すると、免疫細胞や抗体の産生がどうなるか？",
+    options: ["免疫力が低下し、感染症にかかりやすくなる", "免疫力が無限に高まる", "全く変化しない", "体温が常に42度になる"],
+    answer: 0,
+    explanation: "免疫を担う抗体も白血球もタンパク質からできているため、不足すると免疫機能が低下します。"
+  },
+
+  // 2. 消化・吸収とアミノ酸（25問）
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "胃において、タンパク質を消化するために分泌される強力な消化酵素の前駆体（活性化前の物質）はどれ？",
+    options: ["ペプシノーゲン（胃酸でペプシンに変化）", "アミラーゼ", "リパーゼ", "インスリン"],
+    answer: 0,
+    explanation: "胃では主細胞からペプシノーゲンが分泌され、胃酸（塩酸）によって活性型のペプシンとなりタンパク質を分解します。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "胃酸（塩酸）がタンパク質の消化において最初に果たす物理化学的な役割はどれ？",
+    options: ["タンパク質の立体構造を変性させ、消化酵素が働きやすくすること", "タンパク質を完全に糖に変えること", "胃の温度を急上昇させること", "何の意味もない"],
+    answer: 0,
+    explanation: "強酸性の胃酸はタンパク質の高次構造（立体構造）をほどく（変性させる）ことで、酵素が作用しやすくします。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "すい臓から小腸へと分泌され、タンパク質やペプチドをさらに細かく分解する代表的な消化酵素の組み合わせはどれ？",
+    options: ["トリプシン、キモトリプシン、カルボキシペプチダーゼ", "プティリンとペプシン", "ラクターゼとマルターゼ", "リパーゼのみ"],
+    answer: 0,
+    explanation: "すい液に含まれるタンパク質分解酵素（プロテアーゼ）が小腸でペプチドをアミノ酸へ分解します。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "小腸の粘膜（刷子縁）で分泌され、ペプチドを最小単位のアミノ酸にまで仕上げる酵素の名称はどれ？",
+    options: ["ペプチダーゼ（アミノペプチダーゼなど）", "アミラーゼ", "ペプシン", "胃酸"],
+    answer: 0,
+    explanation: "小腸表面の酵素によってジ・トリペプチドやアミノ酸にまで分解され、腸管から吸収されます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "小腸から吸収されたアミノ酸が、全身へ運ばれる前に最初に通過する最大の代謝臓器はどこか？",
+    options: ["腎臓", "肝臓", "心臓", "肺"],
+    answer: 1,
+    explanation: "小腸で吸収されたアミノ酸は門脈を通って肝臓に運ばれ、各組織への分配や再合成、代謝が行われます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "体内でアミノ酸から余分なアミノ基を取り除く化学反応の名称はどれ？",
+    options: ["脱アミノ反応（アミノ基転移反応）", "糖化反応", "酸化還元反応", "水素結合"],
+    answer: 0,
+    explanation: "アミノ基転移酵素（ASTやALTなど）の働きにより、アミノ酸の代謝やエネルギー化が行われます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "アミノ酸からアミノ基を取り除いた後に残る炭素骨格部分は、体内でどう利用されるか？",
+    options: ["エネルギー源（糖やケトン体の生成）または脂質への変換", "すべて尿として即座に排出される", "骨になる", "消滅する"],
+    answer: 0,
+    explanation: "余剰となったアミノ酸の炭素骨格はエネルギー源になったり、糖新生に利用されたりします。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "タンパク質代謝の最終老廃物として、肝臓の「尿素回路（オルニチン回路）」で解毒される物質はどれ？",
+    options: ["アンモニア", "乳酸", "二酸化炭素", "ブドウ糖"],
+    answer: 0,
+    explanation: "アミノ酸代謝で生じる有害なアンモニアは、肝臓で無毒な尿素に変換されて尿から排泄されます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "肝機能が低下した際に、血中のアンモニア濃度が上昇して脳に悪影響を及ぼす疾患の名称はどれ？",
+    options: ["肝性脳症", "骨粗鬆症", "白内障", "高血圧"],
+    answer: 0,
+    explanation: "肝臓で尿素への解毒が追いつかなくなると高アンモニア血症や肝性脳症を引き起こすリスクがあります。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "筋肉や肝臓でエネルギー不足時に優先的に代謝される、分岐鎖アミノ酸（BCAA）の3つのアミノ酸はどれ？",
+    options: ["ロイシン、イソロイシン、バリン", "グリシン、アラニン、セリン", "リジン、メチオニン、スレオニン", "フェニルアラニン、チロシン、トリプトファン"],
+    answer: 0,
+    explanation: "BCAA（Branched-Chain Amino Acids）は骨格筋で直接エネルギー源として利用される特殊なアミノ酸です。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "BCAAの中で、筋肉のタンパク質合成シグナル（mTOR）を最も強力に刺激・活性化するアミノ酸はどれ？",
+    options: ["ロイシン", "バリン", "グリシン", "プロリン"],
+    answer: 0,
+    explanation: "ロイシンは筋肉合成のスイッチをオンにする強力な引き金となるアミノ酸として知られています。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "必須アミノ酸の一つであり、セロトニン（神経伝達物質）の原料となることで精神の安定や睡眠に関わるものはどれ？",
+    options: ["トリプトファン", "アラニン", "アスパラギン酸", "グルタミン"],
+    answer: 0,
+    explanation: "トリプトファンは脳内で幸せホルモンと呼ばれるセロトニンやメラトニンの材料になります。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "コラーゲンの構成成分として最も多く含まれ、分子量が最もシンプルなおおもとのアミノ酸はどれ？",
+    options: ["グリシン", "ロイシン", "リジン", "メチオニン"],
+    answer: 0,
+    explanation: "グリシンは最小のアミノ酸であり、コラーゲンの三重らせん構造を支える中心的な存在です。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "疲労回復や免疫機能の維持、腸管粘膜の栄養源としてサプリメントにもよく使われる、体内で最も存在量の多い遊離アミノ酸はどれ？",
+    options: ["グルタミン", "タウリン", "フェニルアラニン", "バリン"],
+    answer: 0,
+    explanation: "グルタミンは免疫細胞や腸管上皮のエネルギー源として大量に消費される条件付き必須アミノ酸です。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "肝臓の解毒作用やコラーゲン合成のサポート、抗酸化物質（グルタチオン）の合成に関わる、硫黄を含むアミノ酸はどれ？",
+    options: ["システインおよびメチオニン", "グリシンのみ", "アラニンのみ", "バリン"],
+    answer: 0,
+    explanation: "メチオニンやシステインは硫黄（S）を含み、強力な抗酸化物質グルタチオンの材料になります。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "尿酸値の上昇やプリン体代謝とアミノ酸・タンパク質代謝の関係についての正しい知識はどれ？",
+    options: ["核酸（プリン塩基）を含む細胞質や肉類を過剰摂取すると、代謝されて尿酸が産生される", "タンパク質を摂ると尿酸が完全になくなる", "関係はない", "プリン体はビタミンである"],
+    answer: 0,
+    explanation: "細胞核を多く含む肉・魚介類やアルコールの代謝は尿酸値に影響するため、バランスが大切です。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "タンパク質を加熱しすぎたとき（焦げなど）に生成され、健康リスクが懸念される物質についての正しい見解はどれ？",
+    options: ["強すぎる直火での焦げ焦げの調理は避け、適切な温度で調理することが望ましい", "焦げは体に良い", "全く無害である", "タンパク質自体が存在しなくなる"],
+    answer: 0,
+    explanation: "過度な高温調理や炭化を防ぐヘルシーな調理法を選ぶことが栄養学的に推奨されます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "プロテインサプリメント（ホエイプロテイン）の原料となる乳清（ホエイ）の大きな特徴はどれ？",
+    options: ["水溶性で吸収スピードが非常に速く、BCAAが豊富に含まれている", "脂肪のかたまりである", "全く消化されない", "植物性である"],
+    answer: 0,
+    explanation: "ホエイプロテインは吸収が速く、筋肉合成に必要なBCAAや必須アミノ酸が豊富です。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "牛乳のタンパク質の約80%を占め、固まりやすく吸収が緩やかなタンパク質の名称はどれ？",
+    options: ["カゼインプロテイン", "ホエイプロテイン", "大豆プロテイン", "コラーゲンペプチド"],
+    answer: 0,
+    explanation: "カゼインは胃酸でゲル状に固まるため、アミノ酸がゆっくり長時間かけて持続的に供給されます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "大豆を原料とした植物性プロテイン（ソイプロテイン）の特徴として正しいものはどれ？",
+    options: ["吸収が緩やかでイソフラボンを含み、脂質やカロリーを抑えたい場合に適している", "筋肉が完全に溶ける", "消化酵素をすべて破壊する", "動物性より価格が100倍高い"],
+    answer: 0,
+    explanation: "ソイプロテインは大豆由来であり、植物性ならではのメリットや持続的な吸収特性を持ちます。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "アミノ酸が数個〜数十個つながったものの一般的な名称はどれ？",
+    options: ["ペプチド", "単糖類", "中性脂肪", "ミネラル塩"],
+    answer: 0,
+    explanation: "アミノ酸がいくつか結合したものをペプチドと呼び、アミノ酸単体よりもスムーズに吸収される経路があります。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "肉や魚の旨味成分として知られるアミノ酸の一種で、神経伝達や代謝にも関わるものはどれ？",
+    options: ["グルタミン酸やアスパラギン酸", "カフェイン", "セルロース", "コレステロール"],
+    answer: 0,
+    explanation: "グルタミン酸などは旨味成分であると同時に、脳や神経の代謝において重要な役割を果たします。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "生体内でタンパク質が糖と結合して劣化・変性し、老化物質（AGEs：終末糖化産物）を形成する現象の名称はどれ？",
+    options: ["糖化（メイラード反応）", "酸化", "還元", "発酵"],
+    answer: 0,
+    explanation: "体内の余分な糖とタンパク質が結びつくと、コラーゲンや組織が硬化・劣化する「糖化」が進行します。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "タンパク質の「変性」を引き起こす要因の代表例はどれ？",
+    options: ["熱、pH（酸・アルカリ）の変化、重金属、アルコール", "完全な無菌状態", "極度の低温", "光合成"],
+    answer: 0,
+    explanation: "タンパク質は熱やpHの変化によって立体構造が変わり、性質が変化します（卵の白身が加熱で固まる現象など）。"
+  },
+  {
+    category: "消化・吸収とアミノ酸",
+    question: "アミノ酸の「D体」と「L体」のうち、生物の体内のタンパク質を構成している基本の立体配置はどちらか？",
+    options: ["L体", "D体", "両方完全に半々", "無関係"],
+    answer: 0,
+    explanation: "地球上の生物のタンパク質を構成するアミノ酸は基本的にL体（左旋性光学異性体）が使われています。"
+  },
+
+  // 3. 筋肉・ボディメイク（25問）
+  {
+    category: "筋肉・ボディメイク",
+    question: "骨格筋がトレーニングや負荷によって太くなる現象の専門用語はどれ？",
+    options: ["筋肥大（Muscle Hypertrophy）", "筋萎縮", "骨粗鬆症", "脂肪蓄積"],
+    answer: 0,
+    explanation: "筋トレや適切な負荷と栄養補給により、筋繊維の太さが増す現象を筋肥大と呼びます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉が合成されるスイッチ（mTORC1シグナル）を最大化するために、トレーニング後や食事で特に重要視されるアミノ酸はどれ？",
+    options: ["ロイシン", "リジン", "メチオニン", "トリプトファン"],
+    answer: 0,
+    explanation: "BCAA中のロイシンは、筋タンパク質合成のマスターレギュレータであるmTORC1を強力に活性化します。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋トレなどの無酸素運動の主なエネルギー源として、筋肉内に蓄えられている高エネルギーリン酸化合物の名称はどれ？",
+    options: ["クレアチンリン酸およびATP", "グリセリン", "中性脂肪", "コレステロール"],
+    answer: 0,
+    explanation: "瞬発的な運動には筋肉内のATPやクレアチンリン酸が素早くエネルギー供給を行います。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "長時間の有酸素運動やエネルギー不足時に、筋肉のタンパク質を分解してアミノ酸からブドウ糖を作り出す代謝経路の名称はどれ？",
+    options: ["糖新生（Gluconeogenesis）", "グリコーゲン合成", "脂肪酸β酸化", "解糖系"],
+    answer: 0,
+    explanation: "肝臓や腎臓で行われる糖新生により、アミノ酸等からブドウ糖が合成されます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉の収縮を担う2大タンパク質フィラメントの正しい組み合わせはどれ？",
+    options: ["アクチンとミオシン", "コラーゲンとエラスチン", "ケラチンとアルブミン", "ヘモグロビンとミオグロビン"],
+    answer: 0,
+    explanation: "骨格筋の筋原繊維はアクチンフィラメントとミオシンフィラメントが滑走することで収縮します。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉内に酸素を貯蔵し、赤色の色調を与えるタンパク質の名称はどれ？",
+    options: ["ミオグロビン", "ヘモグロビン", "アルブミン", "インスリン"],
+    answer: 0,
+    explanation: "筋肉中に存在するミオグロビンは、血液中のヘモグロビンから酸素を受け取って筋肉内で保持します。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "持久力運動（マラソンなど）で主に動員される「遅筋線維（Type I）」の主な特徴はどれ？",
+    options: ["収縮速度は遅いが、ミトコンドリアと毛細血管が豊富で疲労しにくい（有酸素的）", "瞬間的な爆発力があるがすぐ疲れる", "タンパク質をまったく含まない", "脂肪だけでできている"],
+    answer: 0,
+    explanation: "遅筋（赤筋）は持久力に優れ、脂質や酸素を効率よく使って持続的な運動を支えます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "瞬発的なダッシュや重いウエイトリフティングで主に動員される「速筋線維（Type II）」の特徴はどれ？",
+    options: ["瞬発的な大きな力を発揮できるが、乳酸がたまりやすく疲労しやすい（無酸素的）", "疲労しない", "脂肪燃焼しかしない", "心臓にしかない"],
+    answer: 0,
+    explanation: "速筋（白筋）は爆発的なパワーを生み出す代わりに持久力は低めです。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉が使われずに長期間固定されたり寝たきりになると細くなってしまう現象の名称はどれ？",
+    options: ["筋萎縮（Muscle Atrophy）", "筋肥大", "筋肉の石灰化", "筋細胞分裂"],
+    answer: 0,
+    explanation: "不活動や除神経によりタンパク質合成が低下し、分解が優位になることで筋萎縮が起きます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉痛（EIMD）が起きたとき、筋肉の修復と超回復をスムーズに進めるために最も必要な栄養素の組み合わせはどれ？",
+    options: ["十分なタンパク質（アミノ酸）とエネルギー、休養と睡眠", "水分のみ", "糖質ゼロ", "塩分のみ"],
+    answer: 0,
+    explanation: "傷ついた筋線維の修復にはタンパク質の材料と十分なエネルギー、休息が不可欠です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "「超回復」理論におけるボディメイクの基本的な考え方として正しいものはどれ？",
+    options: ["適度な負荷で筋組織を刺激したあと、適切な栄養と休息をとることで元の水準よりも強い状態に回復する", "トレーニングすればするほど筋肉が削れる", "休むと筋肉が消滅する", "関係はない"],
+    answer: 0,
+    explanation: "適切な負荷・栄養・休息のサイクルが筋発達の基本です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "ボディメイクや筋トレ中における「タンパク質の1回あたりの最大同化効率」について近年のスポーツ栄養学で言われていることはどれ？",
+    options: ["一度に大量に摂るよりも、体重や体格に応じ20g〜40g程度をこまめに分けるのが効率的", "1日1回バケツ一杯飲めば十分", "タンパク質は1秒で体外に出る", "意味はない"],
+    answer: 0,
+    explanation: "こまめにタンパク質を分割摂取することが筋タンパク質合成の維持に効果的です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "減量中（ダイエット中）に筋肉量を極力落とさずに体脂肪だけを落とすために最も重要な食事のポイントはどれ？",
+    options: ["高タンパク質を維持し、極端なカロリー不足や糖質カットをしすぎないこと", "水を一滴も飲まないこと", "脂質を100%カットすること", "何も食べないこと"],
+    answer: 0,
+    explanation: "減量時の筋分解（カタボリック）を防ぐには、高タンパク質な食事と適度な筋トレが必須です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "運動直後の「ゴールデンタイム」と呼ばれるタンパク質補給の重要性についての近年の見解はどれ？",
+    options: ["直後だけでなく、1日を通じたトータルのタンパク質摂取量とこまめな配分が重要である", "直後1分以内に飲まないと意味がない", "運動後3日間は何も食べてはいけない", "タンパク質は関係ない"],
+    answer: 0,
+    explanation: "直後の補給も大切ですが、それ以上に1日を通したタンパク質摂取量の確保が最も重要です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "体内でクレアチンと結合し、瞬発的なエネルギー供給回路（ATP再合成）を支えるアミノ酸由来の物質はどれ？",
+    options: ["クレアチンリン酸", "コレステロール", "乳酸", "クエン酸"],
+    answer: 0,
+    explanation: "クレアチンは筋肉内のエネルギー貯蔵を助け、高強度運動のパフォーマンスをサポートします。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋肉の痙攣（こむら返り）や神経伝達、ミネラルバランスにおいて、タンパク質代謝と密接に関わる電解質の代表はどれ？",
+    options: ["マグネシウム、カルシウム、カリウム、ナトリウム", "金、銀、銅", "鉛、水銀", "ウラン"],
+    answer: 0,
+    explanation: "筋肉の収縮と弛緩にはカルシウムやマグネシウム、ナトリウム、カリウムなどのバランスが不可欠です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "有酸素運動を長時間やりすぎたときに起きやすい、筋肉の分解（カタボリック）を防ぐための対策はどれ？",
+    options: ["運動前後に適切なBCAAやアミノ酸、タンパク質、糖質を補給する", "走るスピードを限界まで上げる", "水を飲むな", "息を止める"],
+    answer: 0,
+    explanation: "長時間の有酸素運動による筋分解を防ぐため、アミノ酸の補給が効果的です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "「除脂肪体重（LBM）」とは何を指すか？",
+    options: ["体重から体脂肪の重さをすべて引いた、筋肉や骨、内臓などの重さ", "脂肪だけの重さ", "水分だけの重さ", "骨の重さのみ"],
+    answer: 0,
+    explanation: "除脂肪体重は代謝の基準やボディメイクの評価で非常に重要な指標です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "基礎代謝量を計算する代表的な数式に必ず含まれている変数の組み合わせはどれ？",
+    options: ["体重、身長、年齢、性別", "靴のサイズ、星座、血液型", "趣味、職業、スマートフォンの機種", "名前の文字数"],
+    answer: 0,
+    explanation: "基礎代謝は体重・身長・年齢・性別によって大きく異なります。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "プロテインを飲むタイミングとして、就寝前や起床後にカゼインやホエイが選ばれる理由の背景にあるものはどれ？",
+    options: ["睡眠中の長時間の絶食による筋分解を防ぐ、または起床後の速やかな栄養補給のため", "眠れなくなるため", "味が苦いから", "特に意味はない"],
+    answer: 0,
+    explanation: "就寝中は栄養補給ができないため、吸収の緩やかなカゼインや食事との組み合わせが役立ちます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "「タンパク質オーバー（過剰摂取）」になったとき、余剰分はどうなるか？",
+    options: ["エネルギー源として利用されるか、体脂肪に変換される", "すべて筋肉に変換されてムキムキになる", "ダイヤモンドに変わる", "永遠に胃に留まる"],
+    answer: 0,
+    explanation: "必要量を超えた過剰なタンパク質はエネルギー代謝に回るか、体脂肪の蓄積に繋がることがあります。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "高齢者が転倒や寝たきりを防ぐために、若い人以上に意識してタンパク質と筋トレを行うべき医学的理由はどれ？",
+    options: ["加齢によるタンパク質同化抵抗性があるため、より多くのタンパク質と刺激が必要だから", "高齢者は筋肉が不要だから", "骨が溶けるから", "意味はない"],
+    answer: 0,
+    explanation: "高齢期は同化抵抗性を考慮し、体重あたりのタンパク質摂取量をしっかり確保することが推奨されます。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "筋トレの負荷を少しずつ上げていく「漸進性過負荷の原則」が筋肉の成長に必要な理由はどれ？",
+    options: ["筋肉が同じ負荷に適応してしまうため、常に少しずつ強い負荷を与え続けることでさらなる筋肥大を引き起こせるから", "一発で全力を出せば一生トレーニングしなくてよいから", "負荷を下げると筋肉が増えるから", "関係ない"],
+    answer: 0,
+    explanation: "漸進性の原則はトレーニング科学の根幹です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "タンパク質とビタミンB6の栄養学的な関係として正しいものはどれ？",
+    options: ["ビタミンB6はアミノ酸の代謝やタンパク質の合成において補酵素として働くため、タンパク質とセットで重要である", "ビタミンB6はタンパク質を破壊する", "全く関係ない", "ビタミンB6は毒である"],
+    answer: 0,
+    explanation: "タンパク質を多く摂る人は、その代謝を支えるビタミンB6（マグロや鶏肉、バナナ等に豊富）も意識すると効果的です。"
+  },
+  {
+    category: "筋肉・ボディメイク",
+    question: "ボディメイクや健康維持において、「睡眠」が筋肉の成長やタンパク質合成に果たす役割はどれ？",
+    options: ["睡眠中に成長ホルモンが分泌され、筋タンパク質の合成や組織の修復が最も活発に行われる", "寝ている間は代謝が完全に停止する", "睡眠は筋肉を減らす", "関係ない"],
+    answer: 0,
+    explanation: "質の高い睡眠は、成長ホルモンの分泌と組織のリカバリーに不可欠です。"
+  },
+
+  // 4. 食材・食習慣の工夫（25問）
+  {
+    category: "食材・食習慣の工夫",
+    question: "動物性タンパク質と植物性タンパク質の理想的な摂取バランスについての一般的な見解はどれ？",
+    options: ["動物性と植物性を偏りなく「半々（1:1）またはバランスよく」組み合わせるのが健康維持に最も理想的", "動物性だけを100%食べる", "植物性だけを100%食べる", "タンパク質自体を一切食べない"],
+    answer: 0,
+    explanation: "動物性と植物性のタンパク質をバランスよく摂取することで、脂質の質や多様な栄養素を網羅できます。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「高タンパク・低脂質」な食材の代表格として、ダイエットやボディメイクで重宝される肉の部位はどれ？",
+    options: ["鶏のささみ、鶏むね肉（皮なし）、牛・豚の赤身肉", "豚のバラ肉、鶏の皮", "牛の霜降りカルビ", "ラード"],
+    answer: 0,
+    explanation: "これらの部位は余分な脂質を抑えつつ良質なタンパク質をしっかり摂ることができます。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "青魚（サバ、サンマ、アジ、イワシなど）を食べることで、タンパク質と一緒に効率よく摂取できる良質な脂質の名称はどれ？",
+    options: ["n-3系不飽和脂肪酸（EPA・DHA）", "トランス脂肪酸", "飽和脂肪酸の塊", "マーガリン"],
+    answer: 0,
+    explanation: "青魚は良質なタンパク質に加え、血流や代謝をサポートするEPAやDHA（オメガ3脂肪酸）が豊富です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "大豆製品（豆腐、納豆、豆乳など）が「畑の肉」と呼ばれる理由はどれ？",
+    options: ["肉に匹敵する良質な植物性タンパク質を含んでいるから", "木から肉が生えるから", "脂質が肉より多いから", "色がお肉に似ているから"],
+    answer: 0,
+    explanation: "大豆は植物性でありながらアミノ酸スコア100の優れたタンパク質源です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "ギリシャヨーグルトやカッテージチーズが、通常のヨーグルトやチーズと比べてダイエットやタンパク質補給に優れている理由はどれ？",
+    options: ["製造過程で水分（ホエイ）が絞られており、高タンパク質かつ低糖質・低カロリーに仕上がっているから", "糖質が100%含まれているから", "完全に凍っているから", "高価だから"],
+    answer: 0,
+    explanation: "水切りヨーグルトなどはタンパク質が濃縮されており、手軽な高タンパクおやつとして人気です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "卵が「完全栄養食品」と呼ばれる主な理由はどれ？",
+    options: ["ビタミンCと食物繊維以外のほぼすべての必須栄養素をバランスよく含んでいるから", "食べると永遠に老化しないから", "カロリーがゼロだから", "殻が食べられるから"],
+    answer: 0,
+    explanation: "ビタミンCと食物繊維を除くすべての栄養素を含み、アミノ酸スコア100を誇る優れた食品です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "納豆や味噌などの発酵大豆食品が、タンパク質の消化・吸収という点で優れている理由はどれ？",
+    options: ["発酵の過程で大豆のタンパク質が事前に分解され、消化吸収されやすくなっているから", "発酵するとタンパク質が消えるから", "塩分だけでできているから", "特に意味はない"],
+    answer: 0,
+    explanation: "発酵により高分子タンパク質がアミノ酸やペプチドに分解されているため、胃腸への負担が少なく消化が良いです。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "ツナ缶を選ぶ際、タンパク質を効率よくカロリー控えめに摂るための賢い選択はどれ？",
+    options: ["オイル漬けよりも「水煮（ノンオイル）」タイプを選ぶ、または油をしっかり切る", "缶のフタごと食べる", "オイル漬けを大量に飲む", "ツナは食べない"],
+    answer: 0,
+    explanation: "水煮タイプを選ぶことで、余分な脂質やカロリーを大幅にカットできます。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "日常の食事でタンパク質不足を防ぐために、朝食にタンパク質を取り入れるメリットはどれ？",
+    options: ["一日の代謝スイッチが入り、筋肉の分解を防ぎ、食欲の暴走を抑えやすくなる", "一日中眠くなる", "特に意味はない", "夕食が食べられなくなる"],
+    answer: 0,
+    explanation: "朝食でのタンパク質摂取は、体内時計を整え、筋タンパク質合成のトリガーを引く上で非常に効果的です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "オートミールなどの全粒穀物をタンパク質源と一緒に食べるメリットはどれ？",
+    options: ["食物繊維と良質な植物性タンパク質・糖質を同時に摂り、アミノ酸スコアを高められる", "お腹が破裂する", "カロリーがマイナスになる", "意味はない"],
+    answer: 0,
+    explanation: "オートミール自体にも植物性タンパク質が含まれており、組み合わせ次第で栄養バランスの良い一食になります。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「ま・ご・わ・や・さ・し・い」の食材のうち、タンパク質の主な供給源となる「ま（豆類）」と「さ（魚介類）」を取り入れる効果はどれ？",
+    options: ["植物性と動物性の良質なタンパク質やミネラルを無理なく日々の食事に直結させられる", "呪文である", "お菓子作りができる", "意味はない"],
+    answer: 0,
+    explanation: "伝統的な和食の知恵は、タンパク質や微量栄養素をバランスよく補う優れた指針です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "外食やコンビニ食でタンパク質をスマートに補給するための定番の選び方として適切なものはどれ？",
+    options: ["サラダチキン、ゆで卵、焼き魚定食、豆腐ハンバーグ、納豆巻きなどを選ぶ", "ポテトチップスだけを食べる", "炭水化物大盛りラーメンのみにする", "何も食べない"],
+    answer: 0,
+    explanation: "コンビニや外食でも、タンパク質が豊富で脂質が抑えられたメニューを選ぶ工夫が大切です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "プロテインシェイクを作るとき、水ではなく「牛乳」や「豆乳」で割るメリットはどれ？",
+    options: ["タンパク質やカルシウム、エネルギーを上乗せして補給できる（目的やカロリーに合わせて調整可能）", "必ず爆発する", "プロテインが溶けなくなる", "意味はない"],
+    answer: 0,
+    explanation: "カロリーを増やしたい時や栄養価を上げたい時は牛乳や豆乳割り、絞りたい時は水割りと使い分けられます。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "サラダを食べる際、ドレッシングや野菜だけに頼らず、タンパク質食材をトッピングするべき理由はどれ？",
+    options: ["単なるビタミンだけでなくタンパク質や良質な脂質をプラスすることで、満足感と栄養価が飛躍的に高まるから", "サラダが重くなるから", "ドレッシングを消すため", "意味はない"],
+    answer: 0,
+    explanation: "サラダにタンパク質をトッピングすることで、栄養バランスの取れた一品に変化します。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "おやつや間食を、ナッツ類や小魚、プロテインバー、チーズなどに置き換えるメリットはどれ？",
+    options: ["血糖値の急変動を抑えつつ、貴重なタンパク質やミネラルを補給できる", "太る一方になる", "歯が折れる", "意味がない"],
+    answer: 0,
+    explanation: "間食をタンパク質・ミネラル系に置き換えることは、ボディメイク成功の大きな秘訣です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "汁物に、卵、豆腐、豚肉、アサリなどを具だくさんで入れることの栄養学的メリットはどれ？",
+    options: ["一品で多様なアミノ酸やミネラルを効率よく摂取でき、満足感もアップする", "塩分がゼロになる", "スープが凍る", "意味はない"],
+    answer: 0,
+    explanation: "具だくさんの汁物は、手軽に栄養素のバランスを整えられる優れた知恵です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "ダイエット中に「肉を食べると太る」という誤解を解くための正しい知識はどれ？",
+    options: ["肉の種類や調理法を選べば、筋肉を守り代謝を上げる最高の味方になる", "肉を食べると100%脂肪になる", "野菜だけが正義である", "肉は存在してはいけない"],
+    answer: 0,
+    explanation: "脂質の少ない部位や調理法を選べば、肉はダイエットやボディメイクに欠かせない重要食材です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「豆腐」の種類（絹ごしと木綿）によるタンパク質含有量の違いについての正しい知識はどれ？",
+    options: ["木綿豆腐のほうが水分が少なく圧縮されているため、同じ重さあたりでタンパク質やカルシウムがより豊富に含まれる", "絹ごしの方が100倍タンパク質が多い", "全く同じである", "豆腐にはタンパク質がない"],
+    answer: 0,
+    explanation: "木綿豆腐は製造時にプレスされているため、単位重量あたりの栄養密度が高めです。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "チアシードやヘンプシードなどのスーパーフードが、植物性タンパク質・脂質源として注目される理由はどれ？",
+    options: ["必須アミノ酸やオメガ3脂肪酸、ミネラルをバランスよく含んでいるから", "食べた瞬間に空を飛べるから", "糖質がゼロ兆%だから", "意味はない"],
+    answer: 0,
+    explanation: "種実類やスーパーフードは、植物性の良質なタンパク質や脂質を補うアクセントになります。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "夜遅い時間に食事をとる際、タンパク質源としてどのようなものを選ぶのが胃腸に優しいか？",
+    options: ["消化のよい白身魚や豆腐、ささみ、温かいスープなど、脂質が少なめのもの", "脂身たっぷりの豚骨ラーメンと特大カルビ", "揚げ物特盛", "生肉の塊"],
+    answer: 0,
+    explanation: "夜遅くの食事は、消化器への負担を減らすため脂質控えめで消化の良いタンパク質が適しています。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「減量＝タンパク質を減らす」ではなく「減量＝脂質や糖質を調整し、タンパク質は死守する」べき最大の理由はどれ？",
+    options: ["タンパク質を減らすと筋肉が分解されて代謝が落ち、リバウンドしやすい体になってしまうから", "タンパク質を食べると重力で沈むから", "意味はない", "タンパク質は太る"],
+    answer: 0,
+    explanation: "減量中こそタンパク質をしっかりキープすることが、美しく引き締まった体を残す絶対条件です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「和食」の定食スタイルが、タンパク質・栄養代謝の観点で非常に優れている理由はどれ？",
+    options: ["動物性と植物性のタンパク質、ビタミン、ミネラル、食物繊維が自然と網羅できるから", "見た目が伝統的だから", "お腹いっぱいにならないから", "意味はない"],
+    answer: 0,
+    explanation: "和食の定食は、栄養学的に見ても理想的なバランスを体現した食事スタイルです。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "水分補給の際、ただの水だけでなく、プロテインやアミノ酸ドリンク、牛乳などを活用する意義はどれ？",
+    options: ["運動前後や間食時に、水分とともに失われやすいアミノ酸をスムーズに補給できるから", "喉が詰まるから", "水分が蒸発するから", "意味はない"],
+    answer: 0,
+    explanation: "水分と栄養の同時補給は、コンディショニングを高める上で非常に合理的です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "食品表示の栄養成分表示を見る際、「タンパク質」のグラム数を確認することの重要性はどれ？",
+    options: ["自分が1日にどれだけのタンパク質を摂れているかを客観的に把握し、不足を防ぐことができるから", "カロリーが増えるから", "文字数が増えるから", "意味はない"],
+    answer: 0,
+    explanation: "ラベルの栄養成分表示をチェックする習慣は、食事管理とボディメイクの第一歩です。"
+  },
+  {
+    category: "食材・食習慣の工夫",
+    question: "「皓一部屋」が提案する、施術によるリフレッシュと日々の食生活（タンパク質・栄養・代謝）の相乗効果についての総仕上げの考え方はどれ？",
+    options: ["プロのボディケアで巡りと筋肉のコリを整えつつ、日々の正しいタンパク質補給と代謝ケアを行うことで、いつまでも若々しく動ける最高の身体とコンディションを築き上げること", "特に意味はない", "形だけの偽り", "医療行為"],
+    answer: 0,
+    explanation: "外からの極上の癒やしと、内からの確かな栄養代謝のケアが噛み合うことで、真の健康とコンディショニングが完成します。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "基礎代謝・タンパク質クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい基礎代謝・タンパク質の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりのボディメイク＆栄養学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格基礎代謝・タンパク質クイズ道場】（100問版）で 5問中 " + score + "問正解しました！💪✨\n#皓一部屋 #タンパク質クイズ #基礎代謝");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
