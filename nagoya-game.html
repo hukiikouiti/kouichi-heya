@@ -248,16 +248,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 3：Xで結果をシェア -->
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
 
-        <!-- 4：もう一度あそぶ ＆ ゲーム選択に戻る（修正：game.htmlへ） -->
-        <div style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px; box-sizing: border-box;">
-            <button onclick="startGame()" style="background: #3498db; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; font-size: 0.85rem;">もう一度あそぶ</button>
-            <a href="game.html" style="background: #95a5a6; color: #fff; flex: 1; padding: 12px 8px; border-radius: 12px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">ゲーム選択に戻る</a>
-        </div>
+       <!-- ボタンを格納するエリア -->
+<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
 
-        <!-- 5：トップに戻る -->
-        <a href="index.html" class="game-link-btn" style="background: #7f8c8d; color: #fff; width: 100%; padding: 12px 15px; box-sizing: border-box; text-decoration: none; font-size: 0.85rem;">🏠 トップに戻る</a>
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
     </div>
 
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並びにする場合 -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <!-- ゲーム選択のページ（例: ミニゲーム一覧など）へのリンク -->
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+</div>
     <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
 </div>
 
