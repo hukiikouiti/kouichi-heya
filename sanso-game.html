@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>活性酸素 10秒バトル＆呼吸リフレッシュ道場 - 皓一部屋</title>
+    <title>活性酸素 20秒バトル＆呼吸リフレッシュ道場 - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -173,8 +173,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>🧬 活性酸素 10秒バトル道場</h1>
-    <p>前半5秒は「👾 悪玉ウイルス攻撃」、後半5秒は「💨 新鮮な空気で呼吸」を連打しよう！</p>
+    <h1>🧬 活性酸素 20秒バトル道場</h1>
+    <p>前半10秒は「👾 悪玉ウイルス攻撃」、後半10秒は「💨 新鮮な空気で呼吸」を連打しよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -185,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- プレイ画面 -->
     <div id="game-play-screen" class="hidden">
         <div class="timer-score">
-            <div>残り時間: <span id="timer">10</span>秒</div>
+            <div>残り時間: <span id="timer">20</span>秒</div>
             <div><span id="score-label">撃退数</span>: <span id="score-count">0</span></div>
         </div>
         <div style="font-size: 0.75rem; color: #ff4757; font-weight: bold; margin-bottom: 2px;">活性酸素バランス (<span id="sugar-text">50</span>%)</div>
@@ -236,13 +236,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    let timeLeft = 10; // 総合10秒スタート
+    let timeLeft = 20; // 総合20秒スタート（前半10秒＋後半10秒）
     let isPlaying = false;
     let attackScore = 0; // ウイルス撃退数
     let breathCount = 0; // 呼吸数
     let oxygen = 50; // 活性酸素メーター (0〜100)
     let timerInterval = null;
-    let currentPhase = 1; // 1: 前半攻撃 (10〜6秒), 2: 後半呼吸 (5〜0秒)
+    let currentPhase = 1; // 1: 前半攻撃 (20〜11秒), 2: 後半呼吸 (10〜0秒)
     let virusCleared = false; // 20回タップしてウイルスが消えたかどうか
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -266,7 +266,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function startGame() {
         if (isPlaying) return;
         isPlaying = true;
-        timeLeft = 10;
+        timeLeft = 20; // スタート時20秒
         attackScore = 0;
         breathCount = 0;
         oxygen = 50;
@@ -286,7 +286,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         updatePhaseUI();
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'sanso_game_10s'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'sanso_game_20s'});
         }
 
         if (timerInterval) clearInterval(timerInterval);
@@ -294,8 +294,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
 
-            // 残り5秒で後半（呼吸リフレッシュフェーズ）に切り替え
-            if (timeLeft === 5) {
+            // 残り10秒になったら後半（呼吸リフレッシュフェーズ・10秒間）に切り替え
+            if (timeLeft === 10) {
                 currentPhase = 2;
                 virusCleared = false; // 後半用にリセット
                 updatePhaseUI();
@@ -315,14 +315,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         actionBtn.style.display = "flex"; // ボタンを再表示
 
         if (currentPhase === 1) {
-            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（5秒）";
+            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（10秒）";
             phaseTitle.style.color = "#e74c3c";
             scoreLabel.innerText = "撃退数";
             document.getElementById('score-count').innerText = attackScore;
             actionBtn.innerHTML = '<span style="font-size: 1.3rem;">👾⚡</span><span style="font-size: 0.7rem; margin-top: 2px;">稲妻ダメージ</span>';
             actionBtn.classList.remove('defense-mode');
         } else {
-            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！（5秒）";
+            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！（10秒）";
             phaseTitle.style.color = "#27ae60";
             scoreLabel.innerText = "呼吸数";
             document.getElementById('score-count').innerText = breathCount;
@@ -348,7 +348,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else {
             // 後半：呼吸フェーズ
             breathCount++;
-            oxygen = Math.max(0, oxygen - 4);
+            oxygen = Math.max(0, oxygen - 2); // 10秒間に調整したため微調整
             document.getElementById('score-count').innerText = breathCount;
         }
 
@@ -382,11 +382,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-title').innerText = titleText;
         document.getElementById('result-message').innerHTML = messageText + '<br><br>ウイルス撃退数： <b>'+ attackScore +' 回</b><br>呼吸数： <b>'+ breathCount +' 回</b><br>最終活性酸素量： <b>'+ Math.round(oxygen) +'%</b>';
 
-        var shareText = encodeURIComponent('活性酸素10秒バトル道場をクリア！呼吸数 ' + breathCount + '回、最終バランス ' + Math.round(oxygen) + '% でした！\nあなたも体内のサビをリセットしよう！👇');
+        var shareText = encodeURIComponent('活性酸素20秒バトル道場をクリア！呼吸数 ' + breathCount + '回、最終バランス ' + Math.round(oxygen) + '% でした！\nあなたも体内のサビをリセットしよう！👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,活性酸素,健康防衛軍';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'sanso_game_10s', 'attack_score': attackScore, 'breath_count': breathCount, 'oxygen': Math.round(oxygen)});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'sanso_game_20s', 'attack_score': attackScore, 'breath_count': breathCount, 'oxygen': Math.round(oxygen)});
         }
     }
 </script>
