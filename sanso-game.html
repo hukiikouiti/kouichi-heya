@@ -174,7 +174,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🧬 活性酸素 10秒バトル道場</h1>
-    <p>前半10秒は「⚡️稲妻タップでウイルス攻撃」、後半10秒は「💨新鮮な空気で呼吸」を連打しよう！</p>
+    <p>前半5秒は「👾 悪玉ウイルス攻撃」、後半5秒は「💨 新鮮な空気で呼吸」を連打しよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -185,8 +185,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- プレイ画面 -->
     <div id="game-play-screen" class="hidden">
         <div class="timer-score">
-            <div>残り時間: <span id="timer">20</span>秒</div>
-            <div>撃退数: <span id="score-count">0</span></div>
+            <div>残り時間: <span id="timer">10</span>秒</div>
+            <div><span id="score-label">撃退数</span>: <span id="score-count">0</span></div>
         </div>
         <div style="font-size: 0.75rem; color: #ff4757; font-weight: bold; margin-bottom: 2px;">活性酸素バランス (<span id="sugar-text">50</span>%)</div>
         <div id="meter-container">
@@ -198,7 +198,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="phase-title" class="phase-indicator">前半：悪玉ウイルスを攻撃！</div>
             <button id="action-tap-btn" class="action-main-btn">
                 <span style="font-size: 1.3rem;">👾⚡</span>
-                <span id="btn-label" style="font-size: 0.75rem; margin-top: 2px;">ウイルス攻撃</span>
+                <span id="btn-label" style="font-size: 0.7rem; margin-top: 2px;">稲妻ダメージ</span>
             </button>
         </div>
     </div>
@@ -236,13 +236,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    let timeLeft = 20;
+    let timeLeft = 10; // 総合10秒スタート
     let isPlaying = false;
     let attackScore = 0; // ウイルス撃退数
-    let breathCount = 0; // 新鮮な空気で呼吸のタップ回数
+    let breathCount = 0; // 呼吸数
     let oxygen = 50; // 活性酸素メーター (0〜100)
     let timerInterval = null;
-    let currentPhase = 1; // 1: 前半攻撃 (20〜11秒), 2: 後半回復 (10〜0秒)
+    let currentPhase = 1; // 1: 前半攻撃 (10〜6秒), 2: 後半呼吸 (5〜0秒)
+    let virusCleared = false; // 20回タップしてウイルスが消えたかどうか
 
     document.addEventListener('DOMContentLoaded', () => {
         const startBtn = document.getElementById('start-btn');
@@ -265,13 +266,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function startGame() {
         if (isPlaying) return;
         isPlaying = true;
-        timeLeft = 20;
+        timeLeft = 10;
         attackScore = 0;
         breathCount = 0;
         oxygen = 50;
         currentPhase = 1;
+        virusCleared = false;
 
         document.getElementById('timer').innerText = timeLeft;
+        document.getElementById('score-label').innerText = "撃退数";
         document.getElementById('score-count').innerText = attackScore;
         document.getElementById('sugar-text').innerText = oxygen;
         document.getElementById('meter-bar').style.width = oxygen + '%';
@@ -291,9 +294,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
 
-            // 残り10秒（10秒経過）で後半（呼吸リフレッシュ・回復フェーズ）に切り替え
-            if (timeLeft === 10) {
+            // 残り5秒で後半（呼吸リフレッシュフェーズ）に切り替え
+            if (timeLeft === 5) {
                 currentPhase = 2;
+                virusCleared = false; // 後半用にリセット
                 updatePhaseUI();
             }
 
@@ -306,39 +310,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function updatePhaseUI() {
         const phaseTitle = document.getElementById('phase-title');
         const actionBtn = document.getElementById('action-tap-btn');
-        const btnLabel = document.getElementById('btn-label');
+        const scoreLabel = document.getElementById('score-label');
+
+        actionBtn.style.display = "flex"; // ボタンを再表示
 
         if (currentPhase === 1) {
-            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（10秒）";
+            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（5秒）";
             phaseTitle.style.color = "#e74c3c";
-            actionBtn.innerHTML = '<span style="font-size: 1.3rem;">👾⚡</span><span id="btn-label" style="font-size: 0.7rem; margin-top: 2px;">稲妻ダメージ</span>';
+            scoreLabel.innerText = "撃退数";
+            document.getElementById('score-count').innerText = attackScore;
+            actionBtn.innerHTML = '<span style="font-size: 1.3rem;">👾⚡</span><span style="font-size: 0.7rem; margin-top: 2px;">稲妻ダメージ</span>';
             actionBtn.classList.remove('defense-mode');
         } else {
-            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！（10秒）";
+            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！（5秒）";
             phaseTitle.style.color = "#27ae60";
-            actionBtn.innerHTML = '<span style="font-size: 1.3rem;">💨🧘</span><span id="btn-label" style="font-size: 0.7rem; margin-top: 2px;">深呼吸する</span>';
+            scoreLabel.innerText = "呼吸数";
+            document.getElementById('score-count').innerText = breathCount;
+            actionBtn.innerHTML = '<span style="font-size: 1.3rem;">💨🧘</span><span style="font-size: 0.7rem; margin-top: 2px;">深呼吸する</span>';
             actionBtn.classList.add('defense-mode');
         }
     }
 
     function handleGameAction() {
         if (currentPhase === 1) {
-            // 前半：攻撃（ウイルスに稲妻ダメージ）
+            if (virusCleared) return; // 20回タップ済みの場合は無効化
+            
             attackScore++;
             oxygen = Math.min(100, oxygen + 2);
+            document.getElementById('score-count').innerText = attackScore;
 
-            // タップが20回を超えたらウイルスが消滅する演出（ボーナス）
-            if (attackScore >= 20 && attackScore === 20) {
+            // 20回タップでウイルスを倒してボタンを消す
+            if (attackScore >= 20) {
+                virusCleared = true;
                 document.getElementById('phase-title').innerText = "✨ ウイルス消滅！お見事！";
+                document.getElementById('action-tap-btn').style.display = "none"; // ボタンごと消す
             }
         } else {
-            // 後半：新鮮な空気で呼吸（回復）
+            // 後半：呼吸フェーズ
             breathCount++;
-            oxygen = Math.max(0, oxygen - 3);
+            oxygen = Math.max(0, oxygen - 4);
+            document.getElementById('score-count').innerText = breathCount;
         }
 
-        // プレイ中のスコア表示は現在のフェーズに合わせて切り替え
-        document.getElementById('score-count').innerText = (currentPhase === 1) ? attackScore : breathCount;
         document.getElementById('sugar-text').innerText = Math.round(oxygen);
         document.getElementById('meter-bar').style.width = oxygen + '%';
     }
@@ -355,21 +368,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         let messageText = "";
 
         // ハッピーエンド・グッドエンド・バッドエンドの判定
-        if (oxygen <= 40 && attackScore >= 15) {
+        if (oxygen <= 40 && (attackScore >= 15 || virusCleared)) {
             titleText = "🎉 【ハッピーエンド】ベストコンディション達成！";
-            messageText = "<b>【判定：ハッピーエンド】</b><br>素晴らしい！悪玉ウイルスを素早く撃退し、新鮮な空気の呼吸（タップ回数: <b>" + breathCount + "回</b>）で活性酸素のバランスを完璧に整えられました！あなたの体内環境は最高状態です！";
+            messageText = "<b>【判定：ハッピーエンド】</b><br>素晴らしい！悪玉ウイルスを素早く撃退し、新鮮な空気の呼吸数（<b>" + breathCount + "回</b>）で活性酸素のバランスを完璧に整えられました！あなたの体内環境は最高状態です！";
         } else if (oxygen > 40 && oxygen <= 75) {
             titleText = "👍 【グッドエンド】まずまずのリフレッシュ！";
-            messageText = "<b>【判定：グッドエンド】</b><br>しっかりウイルスを攻撃し、呼吸（タップ回数: <b>" + breathCount + "回</b>）でケアできました。少しサビが残っていますが、日常のメンテナンスで十分カバーできます！";
+            messageText = "<b>【判定：グッドエンド】</b><br>しっかりウイルスを攻撃し、呼吸数（<b>" + breathCount + "回</b>）でケアできました。少しサビが残っていますが、日常のメンテナンスで十分カバーできます！";
         } else {
             titleText = "🚨 【バッドエンド】活性酸素が優勢…！";
-            messageText = "<b>【判定：バッドエンド】</b><br>呼吸によるケア（タップ回数: <b>" + breathCount + "回</b>）が少し足りず、活性酸素が溜まってしまいました…。深いリラクゼーションとデトックスが必要です！";
+            messageText = "<b>【判定：バッドエンド】</b><br>呼吸によるケア（呼吸数: <b>" + breathCount + "回</b>）が少し足りず、活性酸素が溜まってしまいました…。深いリラクゼーションとデトックスが必要です！";
         }
 
         document.getElementById('result-title').innerText = titleText;
-        document.getElementById('result-message').innerHTML = messageText + '<br><br>ウイルス撃退数： <b>'+ attackScore +' 回</b><br>呼吸タップ回数： <b>'+ breathCount +' 回</b><br>最終活性酸素量： <b>'+ Math.round(oxygen) +'%</b>';
+        document.getElementById('result-message').innerHTML = messageText + '<br><br>ウイルス撃退数： <b>'+ attackScore +' 回</b><br>呼吸数： <b>'+ breathCount +' 回</b><br>最終活性酸素量： <b>'+ Math.round(oxygen) +'%</b>';
 
-        var shareText = encodeURIComponent('活性酸素10秒バトル道場をクリア！呼吸タップ数 ' + breathCount + '回、最終バランス ' + Math.round(oxygen) + '% でした！\nあなたも体内のサビをリセットしよう！👇');
+        var shareText = encodeURIComponent('活性酸素10秒バトル道場をクリア！呼吸数 ' + breathCount + '回、最終バランス ' + Math.round(oxygen) + '% でした！\nあなたも体内のサビをリセットしよう！👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,活性酸素,健康防衛軍';
 
         if (window.dataLayer) {
