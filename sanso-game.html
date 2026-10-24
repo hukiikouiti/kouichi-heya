@@ -174,7 +174,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>🧬 活性酸素 20秒バトル道場</h1>
-    <p>前半10秒は「👾 悪玉ウイルス攻撃」、後半10秒は「💨 新鮮な空気で呼吸」を連打しよう！</p>
+    <p>前半は「👾 悪玉ウイルス攻撃（20回達成で即次へ）」、後半は「💨 新鮮な空気で呼吸」を連打しよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -236,13 +236,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    let timeLeft = 20; // 総合20秒スタート（前半10秒＋後半10秒）
+    let timeLeft = 20; // 総合20秒スタート
     let isPlaying = false;
     let attackScore = 0; // ウイルス撃退数
     let breathCount = 0; // 呼吸数
     let oxygen = 50; // 活性酸素メーター (0〜100)
     let timerInterval = null;
-    let currentPhase = 1; // 1: 前半攻撃 (20〜11秒), 2: 後半呼吸 (10〜0秒)
+    let currentPhase = 1; // 1: 前半攻撃, 2: 後半呼吸
     let virusCleared = false; // 20回タップしてウイルスが消えたかどうか
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -266,7 +266,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function startGame() {
         if (isPlaying) return;
         isPlaying = true;
-        timeLeft = 20; // スタート時20秒
+        timeLeft = 20;
         attackScore = 0;
         breathCount = 0;
         oxygen = 50;
@@ -294,17 +294,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
 
-            // 残り10秒になったら後半（呼吸リフレッシュフェーズ・10秒間）に切り替え
-            if (timeLeft === 10) {
-                currentPhase = 2;
-                virusCleared = false; // 後半用にリセット
-                updatePhaseUI();
+            // 残り10秒になるか、あるいは通常のタイマー進行（フォールバック）
+            if (timeLeft === 10 && currentPhase === 1) {
+                switchToBreathPhase();
             }
 
             if (timeLeft <= 0) {
                 endGame();
             }
         }, 1000);
+    }
+
+    function switchToBreathPhase() {
+        currentPhase = 2;
+        virusCleared = false;
+        updatePhaseUI();
     }
 
     function updatePhaseUI() {
@@ -315,14 +319,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         actionBtn.style.display = "flex"; // ボタンを再表示
 
         if (currentPhase === 1) {
-            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（10秒）";
+            phaseTitle.innerText = "前半：👾 悪玉ウイルスを攻撃！（20回で即次へ）";
             phaseTitle.style.color = "#e74c3c";
             scoreLabel.innerText = "撃退数";
             document.getElementById('score-count').innerText = attackScore;
             actionBtn.innerHTML = '<span style="font-size: 1.3rem;">👾⚡</span><span style="font-size: 0.7rem; margin-top: 2px;">稲妻ダメージ</span>';
             actionBtn.classList.remove('defense-mode');
         } else {
-            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！（10秒）";
+            phaseTitle.innerText = "後半：💨 新鮮な空気で呼吸！";
             phaseTitle.style.color = "#27ae60";
             scoreLabel.innerText = "呼吸数";
             document.getElementById('score-count').innerText = breathCount;
@@ -333,22 +337,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function handleGameAction() {
         if (currentPhase === 1) {
-            if (virusCleared) return; // 20回タップ済みの場合は無効化
+            if (virusCleared) return; 
             
             attackScore++;
             oxygen = Math.min(100, oxygen + 2);
             document.getElementById('score-count').innerText = attackScore;
 
-            // 20回タップでウイルスを倒してボタンを消す
+            // ★20回タップ達成でウイルス消滅＆即座に後半の呼吸フェーズへ移行！
             if (attackScore >= 20) {
                 virusCleared = true;
-                document.getElementById('phase-title').innerText = "✨ ウイルス消滅！お見事！";
-                document.getElementById('action-tap-btn').style.display = "none"; // ボタンごと消す
+                document.getElementById('phase-title').innerText = "✨ ウイルス消滅！呼吸フェーズへ！";
+                document.getElementById('action-tap-btn').style.display = "none"; // ボタンをいったん消す
+                
+                // 0.6秒後に自動で後半（呼吸フェーズ）へ切り替え
+                setTimeout(() => {
+                    if (isPlaying && currentPhase === 1) {
+                        switchToBreathPhase();
+                    }
+                }, 600);
             }
         } else {
             // 後半：呼吸フェーズ
             breathCount++;
-            oxygen = Math.max(0, oxygen - 2); // 10秒間に調整したため微調整
+            oxygen = Math.max(0, oxygen - 2);
             document.getElementById('score-count').innerText = breathCount;
         }
 
