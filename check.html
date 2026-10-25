@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手と足の隠れ疲労度チェック - 皓一部屋</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .game-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        h1 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #b8860b;
+            text-align: center;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .question-box {
+            background: #f9f9f9;
+            border-left: 4px solid #b8860b;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+        }
+        .q-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .options {
+            display: flex;
+            gap: 10px;
+        }
+        .opt-btn {
+            flex: 1;
+            padding: 8px 0;
+            border: 2px solid #d4af37;
+            background: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #b8860b;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .opt-btn.selected {
+            background: #d4af37;
+            color: #fff;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 0;
+            background: linear-gradient(135deg, #d4af37, #b8860b);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+            text-align: center;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>✋🦶 手と足の隠れ疲労度チェック</h1>
+    <p>3問ずつ・計6問の質問に答えて、あなたの隠れ疲労度をチェックしよう！</p>
+
+    <!-- 質問フォーム -->
+    <div id="quiz-form">
+        <!-- 【手編】 -->
+        <div style="font-weight: bold; color: #b8860b; font-size: 0.9rem; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">■ 手の疲労チェック</div>
+        
+        <div class="question-box">
+            <div class="q-title">Q1. スマホやパソコンの操作で、手のひらや親指の付け根がパンパンに張っていませんか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('h1', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('h1', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="q-title">Q2. 無意識に手をグーに握りしめていたり、指先が冷えやすかったりしますか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('h2', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('h2', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="q-title">Q3. ひじから手首にかけての前腕（ぜんわん）に、重だるさやコリを感じることが多いですか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('h3', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('h3', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <!-- 【足編】 -->
+        <div style="font-weight: bold; color: #b8860b; font-size: 0.9rem; margin: 15px 0 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">■ 足の疲労チェック</div>
+
+        <div class="question-box">
+            <div class="q-title">Q4. 夕方になると靴がきつく感じたり、足首やふくらはぎがパンパンにむくみますか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('f1', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('f1', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="q-title">Q5. 足の裏や土踏まずが、歩くときや朝起きたときにピキッと痛む・だるいですか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('f2', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('f2', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="q-title">Q6. 家に帰って横になるとトイレに行きたくなることがよくありますか？</div>
+            <div class="options">
+                <button type="button" class="opt-btn" onclick="selectOpt('f3', 'yes', this)">はい</button>
+                <button type="button" class="opt-btn" onclick="selectOpt('f3', 'no', this)">いいえ</button>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="calculateResult()">結果を見る！</button>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="result-screen" class="hidden">
+        <h2 id="result-title" style="color: #b8860b; font-size: 1.2rem; margin-bottom: 10px;"></h2>
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 12px; border-radius: 8px;"></div>
+
+        <p style="font-size: 0.9rem; font-weight: bold; color: #333; margin-bottom: 12px;">プロの本格ケアで、その隠れ疲労をリセットしませんか？</p>
+        
+        <!-- 1列目：LINEお友達追加 -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEで気軽に相談する</a>
+
+        <!-- 2列目：予約する -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+        <!-- ボタン格納エリア（戻る・トップなど） -->
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; box-sizing: border-box;">
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="resetQuiz()" style="flex: 1; padding: 12px 5px; background: #b8860b; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+                    もう一度診断する
+                </button>
+                <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🎮 ゲーム選択
+                </a>
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let answers = { h1: '', h2: '', h3: '', f1: '', f2: '', f3: '' };
+
+    function selectOpt(qId, val, btn) {
+        answers[qId] = val;
+        const parent = btn.parentElement;
+        const buttons = parent.getElementsByClassName('opt-btn');
+        for (let b of buttons) {
+            b.classList.remove('selected');
+        }
+        btn.classList.add('selected');
+    }
+
+    function calculateResult() {
+        for (let key in answers) {
+            if (!answers[key]) {
+                alert('すべての質問（全6問）に回答してくださいね！');
+                return;
+            }
+        }
+
+        let yesCount = 0;
+        for (let key in answers) {
+            if (answers[key] === 'yes') yesCount++;
+        }
+
+        let title = "";
+        let message = "";
+
+        if (yesCount >= 5) {
+            title = "🚨 【危険レベル】全身すっきりと慢性疲労状態です！";
+            message = "あなたの手足は現在、日々のデスクワークやスマホ操作による蓄積ダメージで悲鳴を上げています。「家に帰るとトイレに行きたくなる（血流循環の変化）」などのサインも出ており、プロの本格的なもみほぐしやリンパケアによる深いリセットが必要です。";
+        } else if (yesCount >= 2) {
+            title = "⚠️ 【注意レベル】隠れ疲労が溜まり始めています";
+            message = "手や足のあちこちに、知らず知らずのうちにコリや緊張が溜まっています。今のうちにしっかりケアしてあげることで、身体の軽さが全然違ってきますよ。";
+        } else {
+            title = "✨ 【良好レベル】お身体の状態は比較的バッチリです！";
+            message = "日頃からご自身の身体を上手にケアできていますね！この調子を維持しつつ、さらに極上のリラクゼーションで癒やされたい時はいつでもお待ちしております。";
+        }
+
+        document.getElementById('result-title').innerText = title;
+        document.getElementById('result-message').innerHTML = message + '<br><br><b>「はい」の回答数： ' + yesCount + ' / 6問</b>';
+
+        document.getElementById('quiz-form').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'check_finish', 'yes_count': yesCount});
+        }
+    }
+
+    function resetQuiz() {
+        answers = { h1: '', h2: '', h3: '', f1: '', f2: '', f3: '' };
+        const buttons = document.getElementsByClassName('opt-btn');
+        for (let b of buttons) {
+            b.classList.remove('selected');
+        }
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('quiz-form').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
