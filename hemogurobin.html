@@ -159,13 +159,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 2列目：予約する -->
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
 
-        <!-- 3列目：Xで結果をシェア（share-link IDを付与） -->
+        <!-- 3列目：Xで結果をシェア -->
         <a id="share-link" href="#" target="_blank" class="game-link-btn" style="background: #000; color: #fff; text-align: center;">𝕏 で結果をシェアする</a>
 
         <!-- ボタンを格納するエリア -->
         <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
 
-            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」 -->
+            <!-- 1段目：「もう一度あそぶ」＆・「クイズ選択に戻る」 -->
             <div style="display: flex; gap: 8px; width: 100%;">
                 <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
                     もう一度あそぶ
@@ -198,7 +198,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function startGame() {
         if (isPlaying) {
-            // すでにプレイ中の場合はタイマーなどをいったんリセットして安全に再スタート
             clearInterval(timerInterval);
             clearInterval(spawnerInterval);
             isPlaying = false;
@@ -243,4 +242,108 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         let itemType = 'veg';
         if (rand < 0.5) {
             item.innerHTML = '🥦';
-            itemType = 'veg
+            itemType = 'veg';
+        } else if (rand < 0.8) {
+            item.innerHTML = '🥩';
+            itemType = 'meat';
+        } else {
+            item.innerHTML = '🍩';
+            itemType = 'sweet';
+        }
+        item.dataset.type = itemType;
+
+        const maxX = stage.clientWidth - 50;
+        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+        item.style.left = randomX + 'px';
+        item.style.top = '-50px';
+
+        let posY = -50;
+        const fallSpeed = 2.0 + Math.random() * 2.0;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
+                item.remove();
+            }
+        }, 30);
+
+        item.onmousedown = item.ontouchstart = (e) => {
+            e.preventDefault();
+            if (!isPlaying) return;
+
+            clearInterval(fallInterval);
+
+            if (item.dataset.type === 'veg' || item.dataset.type === 'meat') {
+                currentHbA1c = Math.max(5.5, currentHbA1c - 0.1);
+                if (navigator.vibrate) navigator.vibrate(30);
+            } else {
+                currentHbA1c = Math.min(9.0, currentHbA1c + 0.2);
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+
+            document.getElementById('hba1c-val').innerText = currentHbA1c.toFixed(1);
+            item.remove();
+
+            if (currentHbA1c <= 5.5) {
+                endGame();
+            }
+        };
+
+        stage.appendChild(item);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('game-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        let doctorComment = "";
+
+        if (currentHbA1c <= 5.5) {
+            judge = "【理想の数値達成！ヘモグロビンマスター】";
+            doctorComment = "「素晴らしい数値ですね！完璧な食事管理とセルフケアの賜物です。この調子で身体のメンテナンスを続けていきましょう！」";
+        } else if (currentHbA1c <= 6.2) {
+            judge = "【改善傾向あり！健康優良生】";
+            doctorComment = "「良い傾向が見られますね。あともう一歩で理想の領域です。日頃のストレッチや食習慣の意識をさらに高めていきましょう。」";
+        } else {
+            judge = "【甘い誘惑に負けた生活習慣】";
+            doctorComment = "「おや、少し数値が高めに出ていますね……！ 甘いものの食べ過ぎには注意が必要です。しっかり身体をほぐして代謝を上げていきましょう！」";
+        }
+
+        document.getElementById('result-message').innerHTML = '<b>最終HbA1c： ' + currentHbA1c.toFixed(1) + ' %</b><br><span style="color:#c73650; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
+
+        var text = encodeURIComponent('HbA1c改善大作戦で最終数値 ' + currentHbA1c.toFixed(1) + '% を達成しました！\n称号：' + judge + '\n\n健康管理のエンタメゲーム、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/hemogurobin.html') + '&hashtags=皓一部屋,HbA1c,健康エンタメ,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'hba1c_game', 'score': currentHbA1c});
+        }
+    }
+</script>
+
+</body>
+</html>
