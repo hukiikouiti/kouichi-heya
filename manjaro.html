@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -129,7 +128,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="game-card">
     <h1>💉 マンジャロ注射＆食欲コントロール大作戦</h1>
-    <p>制限時間20秒！上から落ちてくる野菜（🥦）やマンジャロ（💉）をキャッチして、誘惑のスイーツ（🍩）を避けまくれ！</p>
+    <p>制限時間20秒！体重100kgからスタート！マンジャロ（💉）と野菜（🥦）で体重を落とし、スイーツ（🍩）を避けまくれ！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -160,7 +159,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 2列目：予約する -->
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
 
-        <!-- 3列目：Xで結果をシェア（リンク形式で修正済み） -->
+        <!-- 3列目：Xで結果をシェア -->
         <a id="share-link" href="#" target="_blank" class="game-link-btn" style="background: #000; color: #fff; text-align: center;">𝕏 で結果をシェアする</a>
 
         <!-- ボタンを格納するエリア -->
@@ -186,16 +185,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    let currentWeight = 75.0;
+    let currentWeight = 100.0; // 100kgスタート
     let timeLeft = 20.0;
     let timerInterval = null;
     let spawnerInterval = null;
     let isPlaying = false;
 
     function startGame() {
-        if (isPlaying) return;
+        if (isPlaying) {
+            clearInterval(timerInterval);
+            clearInterval(spawnerInterval);
+            isPlaying = false;
+        }
+
         isPlaying = true;
-        currentWeight = 75.0;
+        currentWeight = 100.0; // 100kgリセット
         timeLeft = 20.0;
         document.getElementById('timer').innerText = '20.0';
         document.getElementById('weight-val').innerText = currentWeight.toFixed(1);
@@ -274,13 +278,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             clearInterval(fallInterval);
 
             if (item.dataset.type === 'manjaro') {
-                currentWeight = Math.max(60.0, currentWeight - 1.5); // マンジャロの効果で大幅減量
+                currentWeight = Math.max(70.0, currentWeight - 1.5); // マンジャロの効果で大幅減量
                 if (navigator.vibrate) navigator.vibrate(40);
             } else if (item.dataset.type === 'veg') {
-                currentWeight = Math.max(60.0, currentWeight - 0.5);
+                currentWeight = Math.max(70.0, currentWeight - 0.5);
                 if (navigator.vibrate) navigator.vibrate(20);
             } else {
-                currentWeight = Math.min(90.0, currentWeight + 1.0); // スイーツは体重増
+                currentWeight = Math.min(120.0, currentWeight + 1.0); // スイーツは体重増
                 if (navigator.vibrate) navigator.vibrate(60);
             }
 
@@ -312,22 +316,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         let judge = "";
         let doctorComment = "";
-        let diff = 75.0 - currentWeight;
+        let diff = 100.0 - currentWeight;
 
-        if (diff >= 8.0) {
-            judge = "【マンジャロマスター・驚異の減量成功！】";
-            doctorComment = "「見事な食欲コントロールです！マンジャロの効果を最大限に引き出し、理想的なボディメイクを達成されましたね。この調子で維持していきましょう！」";
-        } else if (diff >= 3.0) {
-            judge = "【順調なダイエット成功者！】";
-            doctorComment = "「素晴らしい成果です！甘いものの誘惑に負けず、上手にコントロールできましたね。日々のケアの積み重ねが実を結んでいます。」";
+        if (diff >= 15.0) {
+            judge = "【マンジャロマスター・驚異の激ヤセ達成！】";
+            doctorComment = "「100kgからここまで落とすとは見事な食欲コントロールです！マンジャロの効果と日頃のケアが完璧に噛み合いましたね！」";
+        } else if (diff >= 7.0) {
+            judge = "【順調な大幅ダイエット成功者！】";
+            doctorComment = "「素晴らしい成果です！100kgの大台からしっかり減量できましたね。この調子で理想の体型を維持していきましょう。」";
         } else {
-            judge = "【スイーツの誘惑に負けた生活】";
-            doctorComment = "「おや、甘いものに手が伸びてしまいましたね……！ マンジャロの力を借りつつ、生活習慣や身体のメンテナンスも一緒に見直していきましょう！」";
+            judge = "【スイーツの誘惑に負けた100kg台】";
+            doctorComment = "「おや、甘いものに手が伸びてしまい100kgからあまり減りませんでしたね……！ しっかり身体をほぐして代謝を上げていきましょう！」";
         }
 
-        document.getElementById('result-message').innerHTML = '<b>最終体重： ' + currentWeight.toFixed(1) + ' kg （変動: ' + (diff >= 0 ? '-' + diff.toFixed(1) : '+' + Math.abs(diff).toFixed(1)) + 'kg）</b><br><span style="color:#2980b9; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
+        document.getElementById('result-message').innerHTML = '<b>最終体重： ' + currentWeight.toFixed(1) + ' kg （変動: -' + diff.toFixed(1) + 'kg）</b><br><span style="color:#2980b9; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
 
-        var text = encodeURIComponent('マンジャロ注射ゲームで最終体重 ' + currentWeight.toFixed(1) + 'kg を達成しました！\n称号：' + judge + '\n\nリアルな実体験（？）を元にした健康エンタメゲーム、あなたも挑戦してみる？👇');
+        var text = encodeURIComponent('マンジャロ注射ゲームで100kgから最終体重 ' + currentWeight.toFixed(1) + 'kg になりました！\n称号：' + judge + '\n\n健康エンタメゲーム、あなたも挑戦してみる？👇');
         document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/manjaro.html') + '&hashtags=皓一部屋,マンジャロ,ダイエット,名古屋マッサージ';
 
         if (window.dataLayer) {
