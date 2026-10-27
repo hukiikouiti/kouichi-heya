@@ -167,7 +167,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 2列目：予約する -->
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
 
-        <!-- 3列目：Xで結果をシェア（share-link IDを付与） -->
+        <!-- 3列目：Xで結果をシェア -->
         <a id="share-link" href="#" target="_blank" class="game-link-btn" style="background: #000; color: #fff; text-align: center;">𝕏 で結果をシェアする</a>
 
         <!-- ボタンを格納するエリア -->
@@ -205,7 +205,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let isPlaying = false;
 
     function startGame() {
-        if (isPlaying) return;
+        if (isPlaying) {
+            clearInterval(timerInterval);
+            clearInterval(spawnerInterval);
+            isPlaying = false;
+        }
+
         isPlaying = true;
         score = 0;
         timeLeft = 20.0;
@@ -262,4 +267,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             clearTimeout(disappearTimer);
             score++;
-            if (navigator.vibrate) navigator.vibrate
+            if (navigator.vibrate) navigator.vibrate(30);
+
+            document.getElementById('score-count').innerText = score;
+            kinoko.remove();
+        };
+
+    // 修正: ここが閉じられていなかった部分を補完
+        stage.appendChild(kinoko);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('game-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        if (score >= 35) {
+            judge = "【伝説の椎茸マスター大名人】";
+        } else if (score >= 25) {
+            judge = "【キノコ狩り上級者】";
+        } else if (score >= 15) {
+            judge = "【見習いシイタケ収穫人】";
+        } else {
+            judge = "【原木を見守る人】";
+        }
+
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2rem; margin:5px 0;">🍄🏆</div>収穫数： <b>' + score + ' 本</b><br><span style="font-size:0.85rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>キノコ抜き道場での修行完了！';
+
+        var text = encodeURIComponent('キノコ抜き道場で ' + score + '本 の椎茸を収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも道場に入門する？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/kinoko.html') + '&hashtags=皓一部屋,キノコ抜き道場,健康エンタメ,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kinoko_game', 'score': score});
+        }
+    }
+</script>
+
+</body>
+</html>
