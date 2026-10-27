@@ -57,7 +57,7 @@
             margin-bottom: 12px;
             color: #8b5a2b;
         }
-        /* ゲームステージ：ご指定の茶色系に変更 */
+        /* ゲームステージ：茶色系 */
         .game-stage {
             width: 100%;
             height: 280px;
@@ -69,7 +69,7 @@
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
         }
-        /* 生えてくるキノコ：周りを白い丸で囲むデザインに変更 */
+        /* 生えてくるキノコ */
         .kinoko-item {
             position: absolute;
             width: 60px;
@@ -158,40 +158,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-result-screen" class="hidden">
         <h2 id="result-title" style="color: #8b5a2b; font-size: 1.2rem;">✨ 修行終了！</h2>
         
-        <!-- 1列目：LINEお友達追加（太ボタン） -->
-  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+        <!-- 結果メッセージを表示するエリア -->
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #efebe9; padding: 12px; border-radius: 10px; border-left: 5px solid #8b5a2b;"></div>
 
-  <!-- 2列目：予約する（太ボタン） -->
-  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+        <!-- 1列目：LINEお友達追加 -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
 
-  <!-- 3列目：Xで結果をシェア（確実に反応するように修正） -->
-  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem; border: none;">𝕏 で結果をシェアする</button>
+        <!-- 2列目：予約する -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
 
-<!-- ボタンを格納するエリア -->
-<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+        <!-- 3列目：Xで結果をシェア（share-link IDを付与） -->
+        <a id="share-link" href="#" target="_blank" class="game-link-btn" style="background: #000; color: #fff; text-align: center;">𝕏 で結果をシェアする</a>
 
-    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
-    <div style="display: flex; gap: 8px; width: 100%;">
-        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
-            もう一度あそぶ
-        </button>
-        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            クイズ選択に戻る
-        </a>
+        <!-- ボタンを格納するエリア -->
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」 -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+                    もう一度あそぶ
+                </button>
+                <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    クイズ選択に戻る
+                </a>
+            </div>
+
+            <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」 -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🎮 ゲーム選択に戻る
+                </a>
+                <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+
+        </div>
     </div>
-
-    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並びにする場合 -->
-    <div style="display: flex; gap: 8px; width: 100%;">
-        <!-- ゲーム選択のページ（例: ミニゲーム一覧など）へのリンク -->
-        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            🎮 ゲーム選択に戻る
-        </a>
-        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            🏠 トップに戻る
-        </a>
-    </div>
-
 </div>
+
 <script>
     let score = 0;
     let timeLeft = 20.0;
@@ -245,7 +250,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         kinoko.style.left = randomX + 'px';
         kinoko.style.top = randomY + 'px';
 
-        // 一定時間で消える
         const disappearTimer = setTimeout(() => {
             if (kinoko.parentNode) {
                 kinoko.remove();
@@ -258,55 +262,4 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             clearTimeout(disappearTimer);
             score++;
-            if (navigator.vibrate) navigator.vibrate(30);
-
-            document.getElementById('score-count').innerText = score;
-            kinoko.remove();
-        };
-
-        stage.appendChild(kinoko);
-    }
-
-    function clearItems() {
-        const stage = document.getElementById('game-stage');
-        stage.innerHTML = '';
-    }
-
-    function endGame() {
-        if (!isPlaying) return;
-        isPlaying = false;
-        clearInterval(timerInterval);
-        clearInterval(spawnerInterval);
-        clearItems();
-
-        if (navigator.vibrate) {
-            navigator.vibrate([100, 50, 100]);
-        }
-
-        document.getElementById('game-play-screen').classList.add('hidden');
-        document.getElementById('game-result-screen').classList.remove('hidden');
-
-        let judge = "";
-        if (score >= 35) {
-            judge = "【伝説の椎茸マスター大名人】";
-        } else if (score >= 25) {
-            judge = "【キノコ狩り上級者】";
-        } else if (score >= 15) {
-            judge = "【見習いシイタケ収穫人】";
-        } else {
-            judge = "【原木を見守る人】";
-        }
-
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2.5rem; margin:5px 0;">🍄🏆</div>収穫数： <b>' + score + ' 本</b><br><span style="font-size:0.8rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>キノコ抜き道場での修行完了！';
-
-        var text = encodeURIComponent('キノコ抜き道場で ' + score + '本 の椎茸を収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも道場に入門する？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/kinoko.html') + '&hashtags=皓一部屋,キノコ抜き道場,健康エンタメ,名古屋マッサージ';
-
-        if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kinoko_game', 'score': score});
-        }
-    }
-</script>
-
-</body>
-</html>
+            if (navigator.vibrate) navigator.vibrate
