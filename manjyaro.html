@@ -1,1 +1,340 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マンジャロ注射ゲーム - 皓一部屋</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .game-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #2980b9;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .timer-score {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #2980b9;
+        }
+        /* ゲームステージ（落下型） */
+        .game-stage {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #ebf5fb 0%, #d4e6f1 100%);
+            border: 3px solid #2980b9;
+            border-radius: 16px;
+            position: relative;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* 上から落ちてくるアイテム */
+        .falling-item {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.05s linear;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .start-btn {
+            background-color: #2980b9;
+            color: #fff;
+            border-radius: 30px;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>💉 マンジャロ注射＆食欲コントロール大作戦</h1>
+    <p>制限時間20秒！上から落ちてくる野菜（🥦）やマンジャロ（💉）をキャッチして、誘惑のスイーツ（🍩）を避けまくれ！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3.5rem; margin: 15px 0;">💉🥦</div>
+        <button class="btn start-btn" onclick="startGame()">治療スタート！</button>
+    </div>
+
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="timer-score">
+            <div>残り時間: <span id="timer">20.0</span>秒</div>
+            <div>体重: <span id="weight-val">75.0</span>kg</div>
+        </div>
+        
+        <div class="game-stage" id="game-stage"></div>
+        <p style="font-size:0.8rem; color:#888;">マンジャロ（💉）と野菜（🥦）で体重ダウン！甘いもの（🍩）は＋1kg増えるぞ！</p>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 id="result-title" style="color: #2980b9; font-size: 1.2rem;">👨‍⚕️ 減量外来 医師の診断</h2>
+        
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #ebf5fb; padding: 12px; border-radius: 10px; border-left: 5px solid #2980b9;"></div>
+
+        <!-- 1列目：LINEお友達追加 -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+        <!-- 2列目：予約する -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+        <!-- 3列目：Xで結果をシェア（リンク形式で修正済み） -->
+        <a id="share-link" href="#" target="_blank" class="game-link-btn" style="background: #000; color: #fff; text-align: center;">𝕏 で結果をシェアする</a>
+
+        <!-- ボタンを格納するエリア -->
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px;">
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem;">
+                    もう一度あそぶ
+                </button>
+                <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; line-height: 1.4;">
+                    クイズ選択に戻る
+                </a>
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; line-height: 1.4;">
+                    🎮 ゲーム選択に戻る
+                </a>
+                <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentWeight = 75.0;
+    let timeLeft = 20.0;
+    let timerInterval = null;
+    let spawnerInterval = null;
+    let isPlaying = false;
+
+    function startGame() {
+        if (isPlaying) return;
+        isPlaying = true;
+        currentWeight = 75.0;
+        timeLeft = 20.0;
+        document.getElementById('timer').innerText = '20.0';
+        document.getElementById('weight-val').innerText = currentWeight.toFixed(1);
+
+        document.getElementById('game-start-screen').classList.add('hidden');
+        document.getElementById('game-play-screen').classList.remove('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+
+        clearItems();
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'manjaro_game'});
+        }
+
+        timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                endGame();
+            }
+            document.getElementById('timer').innerText = timeLeft.toFixed(1);
+        }, 100);
+
+        spawnerInterval = setInterval(spawnItem, 450);
+    }
+
+    function spawnItem() {
+        if (!isPlaying) return;
+        const stage = document.getElementById('game-stage');
+        
+        const item = document.createElement('div');
+        item.className = 'falling-item';
+
+        const rand = Math.random();
+        let itemType = 'veg';
+        if (rand < 0.35) {
+            item.innerHTML = '💉'; // マンジャロ
+            itemType = 'manjaro';
+        } else if (rand < 0.7) {
+            item.innerHTML = '🥦'; // 野菜
+            itemType = 'veg';
+        } else {
+            item.innerHTML = '🍩'; // スイーツ（誘惑）
+            itemType = 'sweet';
+        }
+        item.dataset.type = itemType;
+
+        const maxX = stage.clientWidth - 50;
+        const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+        item.style.left = randomX + 'px';
+        item.style.top = '-50px';
+
+        let posY = -50;
+        const fallSpeed = 2.2 + Math.random() * 2.2;
+
+        const fallInterval = setInterval(() => {
+            if (!isPlaying) {
+                clearInterval(fallInterval);
+                item.remove();
+                return;
+            }
+
+            posY += fallSpeed;
+            item.style.top = posY + 'px';
+
+            if (posY > stage.clientHeight) {
+                clearInterval(fallInterval);
+                item.remove();
+            }
+        }, 30);
+
+        item.onmousedown = item.ontouchstart = (e) => {
+            e.preventDefault();
+            if (!isPlaying) return;
+
+            clearInterval(fallInterval);
+
+            if (item.dataset.type === 'manjaro') {
+                currentWeight = Math.max(60.0, currentWeight - 1.5); // マンジャロの効果で大幅減量
+                if (navigator.vibrate) navigator.vibrate(40);
+            } else if (item.dataset.type === 'veg') {
+                currentWeight = Math.max(60.0, currentWeight - 0.5);
+                if (navigator.vibrate) navigator.vibrate(20);
+            } else {
+                currentWeight = Math.min(90.0, currentWeight + 1.0); // スイーツは体重増
+                if (navigator.vibrate) navigator.vibrate(60);
+            }
+
+            document.getElementById('weight-val').innerText = currentWeight.toFixed(1);
+            item.remove();
+        };
+
+        stage.appendChild(item);
+    }
+
+    function clearItems() {
+        const stage = document.getElementById('game-stage');
+        stage.innerHTML = '';
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(spawnerInterval);
+        clearItems();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        let doctorComment = "";
+        let diff = 75.0 - currentWeight;
+
+        if (diff >= 8.0) {
+            judge = "【マンジャロマスター・驚異の減量成功！】";
+            doctorComment = "「見事な食欲コントロールです！マンジャロの効果を最大限に引き出し、理想的なボディメイクを達成されましたね。この調子で維持していきましょう！」";
+        } else if (diff >= 3.0) {
+            judge = "【順調なダイエット成功者！】";
+            doctorComment = "「素晴らしい成果です！甘いものの誘惑に負けず、上手にコントロールできましたね。日々のケアの積み重ねが実を結んでいます。」";
+        } else {
+            judge = "【スイーツの誘惑に負けた生活】";
+            doctorComment = "「おや、甘いものに手が伸びてしまいましたね……！ マンジャロの力を借りつつ、生活習慣や身体のメンテナンスも一緒に見直していきましょう！」";
+        }
+
+        document.getElementById('result-message').innerHTML = '<b>最終体重： ' + currentWeight.toFixed(1) + ' kg （変動: ' + (diff >= 0 ? '-' + diff.toFixed(1) : '+' + Math.abs(diff).toFixed(1)) + 'kg）</b><br><span style="color:#2980b9; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
+
+        var text = encodeURIComponent('マンジャロ注射ゲームで最終体重 ' + currentWeight.toFixed(1) + 'kg を達成しました！\n称号：' + judge + '\n\nリアルな実体験（？）を元にした健康エンタメゲーム、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/manjaro.html') + '&hashtags=皓一部屋,マンジャロ,ダイエット,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'manjaro_game', 'score': currentWeight});
+        }
+    }
+</script>
+
+</body>
+</html>
