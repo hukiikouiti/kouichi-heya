@@ -203,10 +203,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1>🦵 下腿三頭筋・リンパ流しゲーム</h1>
     <p>アキレス腱から膝下に向かって、下から上へスワイプ＆連打しよう！</p>
 
-    <!-- スタート画面 -->
+    <!-- スタート画面（onclickを直接埋め込んで確実に動くように修正） -->
     <div id="game-start-screen">
         <div style="font-size: 3.5rem; margin: 15px 0;">✨🦵✨</div>
-        <button id="start-btn" class="btn start-btn">ゲームスタート！（20秒）</button>
+        <button onclick="startGame()" class="btn start-btn">ゲームスタート！（20秒）</button>
     </div>
 
     <!-- プレイ画面 -->
@@ -219,7 +219,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         <!-- リンパ流しステージ -->
         <div class="rinpa-stage" id="rinpa-stage">
-            <!-- 流れを演出する矢印たち -->
             <div class="flow-arrow" style="left: 30%; bottom: 40%; animation-delay: 0s;">▲</div>
             <div class="flow-arrow" style="left: 50%; bottom: 30%; animation-delay: 0.4s;">▲</div>
             <div class="flow-arrow" style="left: 70%; bottom: 50%; animation-delay: 0.8s;">▲</div>
@@ -232,15 +231,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-result-screen" class="hidden">
         <h2 id="result-title" style="color: #27ae60; font-size: 1.2rem;">🌟 トリートメント完了！</h2>
         
-        <!-- 結果メッセージ表示用 -->
         <div id="result-message" style="font-size: 0.95rem; margin: 12px 0; color: #333; line-height: 1.5;"></div>
 
-        <!-- 予約・LINE・シェアボタン群 -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
 
-        <!-- ナビゲーションボタン格納エリア -->
         <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
             <div style="display: flex; gap: 8px; width: 100%;">
                 <button onclick="restartGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem;">
@@ -267,7 +263,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let lastScrapeTime = 0;
     let audioCtx = null;
 
-    // JavaScriptによる電子音生成（Web Audio API）
     function playBeep(freq = 523.25, type = 'sine', duration = 0.06) {
         try {
             if (!audioCtx) {
@@ -289,17 +284,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } catch(e) {}
     }
 
-    // イベントリスナーの登録
+    // ステージのイベント登録（マウスやタッチでのこすり判定）
     document.addEventListener('DOMContentLoaded', () => {
-        const startBtn = document.getElementById('start-btn');
-        if (startBtn) {
-            startBtn.addEventListener('click', startGame);
-            startBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                startGame();
-            });
-        }
-
         const stage = document.getElementById('rinpa-stage');
         if (stage) {
             stage.addEventListener('mousemove', handleScrape);
@@ -333,10 +319,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             timeLeft--;
             document.getElementById('timer').innerText = timeLeft;
 
-            // 10秒経過したタイミングで左足へ切り替え
             if (timeLeft === 10) {
                 document.getElementById('phase-indicator').innerText = "👉 次は左足！しっかり流そう！";
-                playBeep(659.25, 'triangle', 0.2); // 切り替え音
+                playBeep(659.25, 'triangle', 0.2);
             }
 
             if (timeLeft <= 0) {
@@ -353,13 +338,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         const now = Date.now();
-        if (now - lastScrapeTime < 40) return; // レート制限で軽快に
+        if (now - lastScrapeTime < 40) return;
         lastScrapeTime = now;
 
         score++;
-        playBeep(587.33 + (score % 5) * 30, 'sine', 0.05); // こするたびに軽快な音
+        playBeep(587.33 + (score % 5) * 30, 'sine', 0.05);
         
-        // 20秒間で約120回を上限の100%とするゲージ設計
         let percentage = Math.min((score / 120) * 100, 100);
         document.getElementById('gauge-bar').style.width = percentage + '%';
 
@@ -397,4 +381,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('result-message').innerHTML = 
             '20秒間で計 <b>' + score + ' 回</b> リンパを流しました！<br>' +
             '<span style="font-size:0.85rem; color:#27ae60; font-weight:bold;">' + judge + '</span><br><br>' +
-            '
+            'プロのオールハンド施術で、さらにスッキリ感を実感してみませんか？';
+
+        var text = encodeURIComponent('ふくらはぎリンパ流しゲームで ' + score + ' 回ケアしました！\n判定：' + judge + '\n\n足のむくみスッキリ！あなたも体験してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,名古屋マッサージ,足のむくみ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'rinpa_nagashi_game', 'score': score});
+        }
+    }
+
+    function restartGame() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('game-start-screen').classList.remove('hidden');
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+        isPlaying = false;
+    }
+</script>
+
+</body>
+</html>
