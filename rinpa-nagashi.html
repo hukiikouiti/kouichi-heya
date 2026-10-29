@@ -79,7 +79,7 @@
             background: linear-gradient(90deg, #3498db, #2ecc71);
             transition: width 0.1s ease;
         }
-        /* リンパ流しステージ（左右分割エリア） */
+        /* リンパ流しステージ（全体背景） */
         .rinpa-stage {
             width: 100%;
             height: 320px;
@@ -93,16 +93,15 @@
             display: flex;
             position: relative;
             margin: 0 auto 15px;
-            cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             touch-action: none;
         }
-        /* 左右の判定エリア（見た目は透明で重なっている） */
+        /* 左右の判定エリア（完全に左右半分ずつに独立） */
         .leg-area {
-            flex: 1;
+            width: 50%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -110,6 +109,7 @@
             justify-content: flex-end;
             padding-bottom: 15px;
             position: relative;
+            cursor: pointer;
         }
         .leg-area:active {
             background-color: rgba(52, 152, 219, 0.1);
@@ -126,10 +126,10 @@
             text-shadow: 0 0 4px rgba(255,255,255,0.8);
         }
         @keyframes flowUp {
-            0% { transform: translateY(120px); opacity: 0; }
+            0% { transform: translateY(80px); opacity: 0; }
             30% { opacity: 1; }
             70% { opacity: 1; }
-            100% { transform: translateY(-120px); opacity: 0; }
+            100% { transform: translateY(-80px); opacity: 0; }
         }
 
         .action-hint {
@@ -139,7 +139,7 @@
             font-weight: bold;
             color: #2980b9;
             background: rgba(255, 255, 255, 0.9);
-            padding: 3px 10px;
+            padding: 3px 8px;
             border-radius: 20px;
             border: 1px solid #a9cce3;
             pointer-events: none;
@@ -226,20 +226,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="gauge-bar" class="gauge-bar"></div>
         </div>
         
-        <!-- リンパ流しステージ（左右に分割） -->
+        <!-- リンパ流しステージ（左右に完全分割） -->
         <div class="rinpa-stage" id="rinpa-stage">
-            <!-- 左エリア（画面に向かって右側の足 / ユーザー視点では右） -->
+            <!-- 右足エリア（画面に向かって左側：ユーザーの右足） -->
             <div class="leg-area" id="area-right">
-                <div class="flow-arrow" style="left: 50%; bottom: 40%; animation-delay: 0s;">▲</div>
+                <!-- 矢印は右足フェーズの時だけ表示 -->
+                <div class="flow-arrow arrow-right" style="left: 50%; bottom: 40%;">▲</div>
                 <div class="action-hint" id="hint-right">👆 右足をこする</div>
             </div>
-            <!-- 右エリア（画面に向かって左側の足 / ユーザー視点では左） -->
+            <!-- 左足エリア（画面に向かって右側：ユーザーの左足） -->
             <div class="leg-area" id="area-left">
-                <div class="flow-arrow" style="left: 50%; bottom: 40%; animation-delay: 0.5s;">▲</div>
+                <!-- 矢印は左足フェーズの時だけ表示 -->
+                <div class="flow-arrow arrow-left" style="left: 50%; bottom: 40%; display: none;">▲</div>
                 <div class="action-hint" id="hint-left" style="display: none;">👆 左足をこする</div>
             </div>
         </div>
-        <p style="font-size:0.8rem; color:#888;">右足80回達成で左足エリアへ！</p>
+        <p style="font-size:0.8rem; color:#888;">指定された足のエリアをこすって進めよう！</p>
     </div>
 
     <!-- 結果画面 -->
@@ -301,7 +303,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        // 左右それぞれのエリアにイベントを登録
         const areaRight = document.getElementById('area-right');
         const areaLeft = document.getElementById('area-left');
 
@@ -329,7 +330,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('timer').innerText = timeLeft;
         document.getElementById('gauge-bar').style.width = '0%';
         document.getElementById('phase-indicator').innerText = "👉 右足をマッサージ中！（前半80回）";
+        
+        // 最初の表示：右足だけに矢印とヒントを表示、左足は非表示
+        document.querySelector('.arrow-right').style.display = 'block';
         document.getElementById('hint-right').style.display = 'block';
+        document.querySelector('.arrow-left').style.display = 'none';
         document.getElementById('hint-left').style.display = 'none';
 
         document.getElementById('game-start-screen').classList.add('hidden');
@@ -356,7 +361,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function handleScrape(legName, e) {
         if (!isPlaying) return;
         
-        // 今のフェーズと触られた足が一致している時だけカウントする
+        // 現在のフェーズの足以外を触っても一切反応させない
         if (legName !== currentLeg) return;
 
         if (e && e.cancelable) {
@@ -374,8 +379,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (currentLeg === 'right' && score >= 80) {
             currentLeg = 'left';
             document.getElementById('phase-indicator').innerText = "👉 次は左足！しっかり流そう！（後半80回）";
+            
+            // 切り替え：右足の矢印とヒントを消し、左足の矢印とヒントを表示
+            document.querySelector('.arrow-right').style.display = 'none';
             document.getElementById('hint-right').style.display = 'none';
+            document.querySelector('.arrow-left').style.display = 'block';
             document.getElementById('hint-left').style.display = 'block';
+
             playBeep(659.25, 'triangle', 0.2); // 切り替え音
         }
 
