@@ -1,1 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふくらはぎリンパ流しゲーム - 皓一部屋</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+        .game-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #2c3e50;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .timer-box {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 6px 0;
+        }
+        .phase-indicator {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #2980b9;
+            background: #ebf5fb;
+            padding: 6px 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #d4e6f1;
+        }
+        /* リンパ流しゲージ */
+        .gauge-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 16px;
+            margin: 8px 0 12px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .gauge-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.1s ease;
+        }
+        /* リンパ流しステージ（背景に hifukukin.png） */
+        .rinpa-stage {
+            width: 100%;
+            height: 320px;
+            background-image: url('hifukukin.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 15px;
+            position: relative;
+            margin: 0 auto 15px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            touch-action: none;
+        }
+        .rinpa-stage:active {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        /* 下から上に流れる矢印エフェクト */
+        .flow-arrow {
+            position: absolute;
+            color: #3498db;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: flowUp 1.2s infinite linear;
+            pointer-events: none;
+            text-shadow: 0 0 4px rgba(255,255,255,0.8);
+        }
+        @keyframes flowUp {
+            0% { transform: translateY(120px); opacity: 0; }
+            30% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translateY(-120px); opacity: 0; }
+        }
+
+        .action-hint {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #2980b9;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid #a9cce3;
+            pointer-events: none;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .start-btn {
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            padding: 15px 0;
+        }
+        .share-btn {
+            background-color: #000000;
+            color: #fff;
+            margin-top: 5px;
+        }
+        .line-btn {
+            background: linear-gradient(135deg, #06c755, #05b34c);
+            color: #fff;
+            margin-top: 5px;
+        }
+        .reserve-btn {
+            background: linear-gradient(135deg, #27ae60, #219653);
+            color: #fff;
+            margin-top: 5px;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>🦵 下腿三頭筋・リンパ流しゲーム</h1>
+    <p>アキレス腱から膝下に向かって、下から上へスワイプ＆連打しよう！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3.5rem; margin: 15px 0;">✨🦵✨</div>
+        <button id="start-btn" class="btn start-btn">ゲームスタート！（20秒）</button>
+    </div>
+
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="timer-box">残り <span id="timer">20</span> 秒</div>
+        <div id="phase-indicator" class="phase-indicator">👉 右足をマッサージ中！</div>
+        <div class="gauge-container">
+            <div id="gauge-bar" class="gauge-bar"></div>
+        </div>
+        
+        <!-- リンパ流しステージ -->
+        <div class="rinpa-stage" id="rinpa-stage">
+            <!-- 流れを演出する矢印たち -->
+            <div class="flow-arrow" style="left: 30%; bottom: 40%; animation-delay: 0s;">▲</div>
+            <div class="flow-arrow" style="left: 50%; bottom: 30%; animation-delay: 0.4s;">▲</div>
+            <div class="flow-arrow" style="left: 70%; bottom: 50%; animation-delay: 0.8s;">▲</div>
+            <div class="action-hint">👆 下から上へこする！</div>
+        </div>
+        <p style="font-size:0.8rem; color:#888;">前半10秒：右足 ➔ 後半10秒：左足</p>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 id="result-title" style="color: #27ae60; font-size: 1.2rem;">🌟 トリートメント完了！</h2>
+        
+        <!-- 結果メッセージ表示用 -->
+        <div id="result-message" style="font-size: 0.95rem; margin: 12px 0; color: #333; line-height: 1.5;"></div>
+
+        <!-- 予約・LINE・シェアボタン群 -->
+        <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn line-btn">🟢 LINEお友達追加</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn reserve-btn">📅 予約する（空き状況確認・ご予約）</a>
+        <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn share-btn">𝕏 で結果をシェアする</a>
+
+        <!-- ナビゲーションボタン格納エリア -->
+        <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="restartGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem;">
+                    もう一度あそぶ
+                </button>
+                <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; line-height: 1.4;">
+                    🎮 ゲーム一覧
+                </a>
+            </div>
+            <div>
+                <a href="index.html" style="display: block; width: 100%; padding: 10px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let timeLeft = 20;
+    let timerInterval = null;
+    let isPlaying = false;
+    let lastScrapeTime = 0;
+    let audioCtx = null;
+
+    // JavaScriptによる電子音生成（Web Audio API）
+    function playBeep(freq = 523.25, type = 'sine', duration = 0.06) {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch(e) {}
+    }
+
+    // イベントリスナーの登録
+    document.addEventListener('DOMContentLoaded', () => {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', startGame);
+            startBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                startGame();
+            });
+        }
+
+        const stage = document.getElementById('rinpa-stage');
+        if (stage) {
+            stage.addEventListener('mousemove', handleScrape);
+            stage.addEventListener('touchmove', handleScrape);
+            stage.addEventListener('click', handleScrape);
+            stage.addEventListener('touchstart', handleScrape);
+        }
+    });
+
+    function startGame() {
+        if (isPlaying) return;
+        isPlaying = true;
+        score = 0;
+        timeLeft = 20;
+        document.getElementById('timer').innerText = timeLeft;
+        document.getElementById('gauge-bar').style.width = '0%';
+        document.getElementById('phase-indicator').innerText = "👉 右足をマッサージ中！";
+
+        document.getElementById('game-start-screen').classList.add('hidden');
+        document.getElementById('game-play-screen').classList.remove('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+
+        playBeep(440, 'sine', 0.15);
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'rinpa_nagashi_game'});
+        }
+
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+
+            // 10秒経過したタイミングで左足へ切り替え
+            if (timeLeft === 10) {
+                document.getElementById('phase-indicator').innerText = "👉 次は左足！しっかり流そう！";
+                playBeep(659.25, 'triangle', 0.2); // 切り替え音
+            }
+
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
+    }
+
+    function handleScrape(e) {
+        if (!isPlaying) return;
+        
+        if (e && e.cancelable) {
+            e.preventDefault();
+        }
+
+        const now = Date.now();
+        if (now - lastScrapeTime < 40) return; // レート制限で軽快に
+        lastScrapeTime = now;
+
+        score++;
+        playBeep(587.33 + (score % 5) * 30, 'sine', 0.05); // こするたびに軽快な音
+        
+        // 20秒間で約120回を上限の100%とするゲージ設計
+        let percentage = Math.min((score / 120) * 100, 100);
+        document.getElementById('gauge-bar').style.width = percentage + '%';
+
+        if (score >= 120) {
+            endGame(true);
+        }
+    }
+
+    function endGame(isCompleted = false) {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+
+        playBeep(880, 'sine', 0.3);
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100, 50, 150]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        if (score < 40) {
+            judge = "【お疲れ溜まり気味モード】";
+        } else if (score < 80) {
+            judge = "【すっきり軽やかモード】";
+        } else if (score < 120) {
+            judge = "【むくみ解消バッチリ上級者】";
+        } else {
+            judge = "【極上のリフレッシュ・マスター✨】";
+        }
+
+        document.getElementById('result-title').innerText = isCompleted ? "✨ 完璧なリンパ流し達成！" : "👏 お疲れ様でした！";
+        document.getElementById('result-message').innerHTML = 
+            '20秒間で計 <b>' + score + ' 回</b> リンパを流しました！<br>' +
+            '<span style="font-size:0.85rem; color:#27ae60; font-weight:bold;">' + judge + '</span><br><br>' +
+            '
