@@ -99,7 +99,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             touch-action: none;
         }
-        /* 左右の判定エリア（完全に左右半分ずつに独立） */
+        /* 左右の判定エリア（左側＝向かって左の足、右側＝向かって右の足） */
         .leg-area {
             width: 50%;
             height: 100%;
@@ -226,17 +226,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="gauge-bar" class="gauge-bar"></div>
         </div>
         
-        <!-- リンパ流しステージ（左右に完全分割） -->
+        <!-- リンパ流しステージ（左右の割り当てを修正：画面左＝右足、画面右＝左足） -->
         <div class="rinpa-stage" id="rinpa-stage">
-            <!-- 右足エリア（画面に向かって左側：ユーザーの右足） -->
+            <!-- 画面に向かって左側の足（ユーザーの右足） -->
             <div class="leg-area" id="area-right">
-                <!-- 矢印は右足フェーズの時だけ表示 -->
                 <div class="flow-arrow arrow-right" style="left: 50%; bottom: 40%;">▲</div>
                 <div class="action-hint" id="hint-right">👆 右足をこする</div>
             </div>
-            <!-- 左足エリア（画面に向かって右側：ユーザーの左足） -->
+            <!-- 画面に向かって右側の足（ユーザーの左足） -->
             <div class="leg-area" id="area-left">
-                <!-- 矢印は左足フェーズの時だけ表示 -->
                 <div class="flow-arrow arrow-left" style="left: 50%; bottom: 40%; display: none;">▲</div>
                 <div class="action-hint" id="hint-left" style="display: none;">👆 左足をこする</div>
             </div>
@@ -331,7 +329,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('gauge-bar').style.width = '0%';
         document.getElementById('phase-indicator').innerText = "👉 右足をマッサージ中！（前半80回）";
         
-        // 最初の表示：右足だけに矢印とヒントを表示、左足は非表示
+        // 右足（画面左側）だけに矢印とヒントを表示、左足は非表示
         document.querySelector('.arrow-right').style.display = 'block';
         document.getElementById('hint-right').style.display = 'block';
         document.querySelector('.arrow-left').style.display = 'none';
@@ -361,7 +359,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function handleScrape(legName, e) {
         if (!isPlaying) return;
         
-        // 現在のフェーズの足以外を触っても一切反応させない
         if (legName !== currentLeg) return;
 
         if (e && e.cancelable) {
@@ -380,7 +377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             currentLeg = 'left';
             document.getElementById('phase-indicator').innerText = "👉 次は左足！しっかり流そう！（後半80回）";
             
-            // 切り替え：右足の矢印とヒントを消し、左足の矢印とヒントを表示
+            // 切り替え：右足の矢印とヒントを消し、左足（画面右側）の矢印とヒントを表示
             document.querySelector('.arrow-right').style.display = 'none';
             document.getElementById('hint-right').style.display = 'none';
             document.querySelector('.arrow-left').style.display = 'block';
