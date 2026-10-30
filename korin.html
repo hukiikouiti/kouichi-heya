@@ -222,29 +222,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a id="share-link" target="_blank" class="game-link-btn" style="background: #000; color: #fff; font-size: 0.95rem;">𝕏 で結果をシェアする</a>
 
         <!-- ボタンを格納するエリア -->
-<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
 
-    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
-    <div style="display: flex; gap: 8px; width: 100%;">
-        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
-            もう一度あそぶ
-        </button>
-        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            クイズ選択に戻る
-        </a>
+            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+                    もう一度あそぶ
+                </button>
+                <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    クイズ選択に戻る
+                </a>
+            </div>
+
+            <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🎮 ゲーム選択に戻る
+                </a>
+                <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+
+        </div>
     </div>
-
-    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並びにする場合 -->
-    <div style="display: flex; gap: 8px; width: 100%;">
-        <!-- ゲーム選択のページ（例: ミニゲーム一覧など）へのリンク -->
-        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            🎮 ゲーム選択に戻る
-        </a>
-        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
-            🏠 トップに戻る
-        </a>
-    </div>
-
 </div>
 
 <!-- 音声データ (korin1.wav 〜 korin6.wav) -->
@@ -322,9 +323,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     }
 
+    function restartQuiz() {
+        startGame();
+    }
+
     function handleCardClick(e) {
         e.preventDefault();
-        // isLockedが真（セリフ再生中や確認中）のときは絶対にカードを開けない
         if (isLocked) return;
         if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
@@ -342,7 +346,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
-        isLocked = true; // 即座にロックをかけてセリフ中のカードタッチを完全ブロック
+        isLocked = true; // ロックをかける
 
         if (first.card.id === second.card.id) {
             first.element.classList.remove(`hint-${first.card.id}`);
@@ -350,11 +354,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             first.element.classList.add('matched', `pair-${first.card.id}`);
             second.element.classList.add('matched', `pair-${second.card.id}`);
             matchedPairs++;
-
-            playVoiceAndMessage(first.card.id);
             flippedCards = [];
 
+            // 6組目（クリア）に達した場合は、通常の個別セリフをスキップして即クリア画面へ移行
             if (matchedPairs === 6) {
+                document.getElementById('message-box'].textContent = voiceTexts[6];
+                
+                // 少しだけウェイトを置いてクリア画面に切り替え
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
                     document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
@@ -376,14 +382,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
                     }
-                }, 2800);
+                }, 400);
+
             } else {
-                // セリフ再生中（2.2秒間）はロックを維持し、終了後に次のカードを開けられるようにする
+                // 1〜5組目のペア成功時
+                playVoiceAndMessage(first.card.id);
+                
+                // セリフ再生中の2.2秒間はロックを維持し、その後解除
                 setTimeout(() => {
                     isLocked = false;
                 }, 2200);
             }
         } else {
+            // 不正解のとき
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
