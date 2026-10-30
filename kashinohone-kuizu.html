@@ -1,1 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格解剖学・下肢の骨クイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">下肢の骨格解剖学クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
+</div>
+
+<!-- 結果発表用のカード（LINE・予約・Xシェア・各種戻るボタンのコンバージョン動線） -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- 大腿骨・膝蓋骨パート ---
+  {
+    category: "大腿骨・膝蓋骨",
+    question: "人体の中で最も長く、強靭な管状骨であり、全体重を支える太ももの骨はどれ？",
+    options: ["脛骨", "腓骨", "大腿骨", "上腕骨"],
+    answer: 2,
+    explanation: "大腿骨は下半身の柱となる人体最大の長骨です。"
+  },
+  {
+    category: "大腿骨・膝蓋骨",
+    question: "骨盤の寛骨臼と噛み合い、股関節を形成する大腿骨上端の丸い部分の名称はどれ？",
+    options: ["大転子", "大腿骨頭", "小転子", "外側上顆"],
+    answer: 1,
+    explanation: "大腿骨頭は骨盤のくぼみに収まり、自由な股関節の回旋運動を可能にします。"
+  },
+  {
+    category: "大腿骨・膝蓋骨",
+    question: "大腿骨の上端外側にあり、お尻の筋肉（中殿筋など）が付着する触知しやすい大きな出っ張りはどれ？",
+    options: ["小転子", "大転子", "内果", "脛骨粗面"],
+    answer: 1,
+    explanation: "大転子は太ももの付け根の外側で確認できる重要なランドマークです。"
+  },
+  {
+    category: "大腿骨・膝蓋骨",
+    question: "人体最大の種子骨であり、大腿四頭筋の腱の中に存在して膝の曲げ伸ばしを効率化する骨はどれ？",
+    options: ["脛骨", "腓骨", "膝蓋骨（皿）", "距骨"],
+    answer: 2,
+    explanation: "膝蓋骨は太ももの力を効率よく脛に伝えるための重要な種子骨です。"
+  },
+  {
+    category: "大腿骨・膝蓋骨",
+    question: "膝を深く曲げたとき、膝蓋骨が滑り込む大腿骨側の溝の名称はどれ？",
+    options: ["烏口突起", "大腿骨滑車", "外果", "内果"],
+    answer: 1,
+    explanation: "膝蓋骨は大腿骨前面の溝（大腿骨滑車）に沿ってスムーズにスライドします。"
+  },
+
+  // --- 脛骨・腓骨パート ---
+  {
+    category: "脛骨・腓骨",
+    question: "すねの内側にあって体重の大部分を支える、足首の内くるぶしを形成する太い骨はどれ？",
+    options: ["腓骨", "脛骨", "距骨", "踵骨"],
+    answer: 1,
+    explanation: "脛骨は下腿（すね）の内側に位置し、体重を足元へ伝えるメインの太い骨です。"
+  },
+  {
+    category: "脛骨・腓骨",
+    question: "すねの外側を走り、足首の外くるぶしへと繋がる細い骨の名称はどれ？",
+    options: ["腓骨", "脛骨", "橈骨", "尺骨"],
+    answer: 0,
+    explanation: "腓骨はすねの外側を支える細い骨で、足関節の外側の安定や筋肉の付着部となります。"
+  },
+  {
+    category: "脛骨・腓骨",
+    question: "成長期のスポーツ少年に多く見られる、膝蓋靭帯が付着する脛骨粗面付近の牽引性障害の通称はどれ？",
+    options: ["テニス肘", "オスグッド病（オスグッド・シュラッター病）", "シンスプリント", "外反母趾"],
+    answer: 1,
+    explanation: "オスグッド病は、大腿四頭筋の牽引力により脛骨粗面に負担がかかり痛みや隆起が生じる疾患です。"
+  },
+  {
+    category: "脛骨・腓骨",
+    question: "足首の内側にある「内くるぶし」を形成している骨はどれ？",
+    options: ["腓骨の遠位端", "脛骨の遠位端（内果）", "距骨", "踵骨"],
+    answer: 1,
+    explanation: "内果は脛骨の下端が内側に突き出た部分です。"
+  },
+  {
+    category: "脛骨・腓骨",
+    question: "足首の外側にある「外くるぶし」を形成している骨はどれ？",
+    options: ["脛骨", "腓骨の遠位端（外果）", "立方骨", "舟状骨"],
+    answer: 1,
+    explanation: "外果は腓骨の下端が外側に突き出た部分です。"
+  },
+  {
+    category: "脛骨・腓骨",
+    question: "下腿の骨である脛骨と腓骨の間を強固に繋ぎ、安定性を保っている線維性結合の組織はどれ？",
+    options: ["関節唇", "骨間膜", "アキレス腱", "足底腱膜"],
+    answer: 1,
+    explanation: "下腿骨間膜は両骨の間を結合し、多くの筋肉の起始部にもなっています。"
+  },
+
+  // --- 足根骨パート ---
+  {
+    category: "足根骨",
+    question: "足根骨の中で最も上方にあり、下腿の骨（脛骨・腓骨）と噛み合って足首の上下の動きを作る骨はどれ？",
+    options: ["踵骨", "距骨", "舟状骨", "立方骨"],
+    answer: 1,
+    explanation: "距骨は足関節（距腿関節）を構成する土台の骨で、筋肉が付着していない特殊な骨です。"
+  },
+  {
+    category: "足根骨",
+    question: "足のかかとを形成し、全体の中で最も大きい足根骨の名称はどれ？",
+    options: ["距骨", "踵骨", "舟状骨", "内側楔状骨"],
+    answer: 1,
+    explanation: "踵骨は全体重の着地衝撃を受け止める最大の足根骨です。"
+  },
+  {
+    category: "足根骨",
+    question: "成人片足の足根骨の数は全部でいくつあるか？",
+    options: ["5個", "7個", "8個", "14個"],
+    answer: 1,
+    explanation: "足根骨は距骨、踵骨、舟状骨、立方骨、3つの楔状骨の合計7個です。"
+  },
+  {
+    category: "足根骨",
+    question: "足の内側縦アーチを最も高く保ち、バネの役割をする上で中心となる舟状骨は、どこと関節を作っているか？",
+    options: ["距骨の前方", "踵骨の外側", "第5中足骨の先端", "膝蓋骨の裏側"],
+    answer: 0,
+    explanation: "舟状骨は距骨の前に位置し、内側縦アーチのキーストーン（要石）の役割を果たします。"
+  },
+  {
+    category: "足根骨",
+    question: "足の外側縦アーチの要となり、外側縁の安定を保つ足根骨はどれ？",
+    options: ["舟状骨", "立方骨", "距骨", "内側楔状骨"],
+    answer: 1,
+    explanation: "立方骨は外側アーチを支え、歩行時の体重移動を安定させます。"
+  },
+  {
+    category: "足根骨",
+    question: "ショパール関節（横足根関節）を構成する骨の組み合わせとして正しいものはどれ？",
+    options: ["脛骨と腓骨", "距骨と踵骨、および舟状骨と立方骨", "中足骨と趾骨", "楔状骨と中足骨"],
+    answer: 1,
+    explanation: "ショパール関節は足部を前後に分ける関節で、足の柔軟性を生み出します。"
+  },
+  {
+    category: "足根骨",
+    question: "内側楔状骨、中間楔状骨、外側楔状骨の3つの骨が位置するおおまかな場所はどこか？",
+    options: ["足首の後方（かかと）", "足の甲の中央部（舟状骨と中足骨の間）", "足の指の先端", "すねの中央"],
+    answer: 1,
+    explanation: "楔状骨は舟状骨の前方に3つ並び、横アーチの形成に寄与します。"
+  },
+
+  // --- 中足骨・趾骨パート ---
+  {
+    category: "中足骨・趾骨",
+    question: "成人片足の中足骨（足の甲の骨）の数は全部でいくつあるか？",
+    options: ["4本", "5本", "7本", "14本"],
+    answer: 1,
+    explanation: "親指側を第1として、小指側の第5まで計5本の中足骨が存在します。"
+  },
+  {
+    category: "中足骨・趾骨",
+    question: "成人片足の趾骨（足の指の骨）の総数はいくつあるか？",
+    options: ["10個", "12個", "14個", "16個"],
+    answer: 2,
+    explanation: "母趾（親指）が2節、第2〜5趾が3節ずつの合計14個です。"
+  },
+  {
+    category: "中足骨・趾骨",
+    question: "足の指の骨（趾骨）のうち、親指（母趾）に存在しない骨の名称はどれ？",
+    options: ["基節骨", "中節骨", "末節骨", "すべて存在する"],
+    answer: 1,
+    explanation: "母趾には中節骨がなく、基節骨と末節骨の2つのみで構成されています。"
+  },
+  {
+    category: "中足骨・趾骨",
+    question: "リスフラン関節（足根中足関節）が位置している場所として正しいものはどれ？",
+    options: ["足首とすねの間", "足根骨と中足骨の間", "中足骨と足の指の間", "かかとの裏"],
+    answer: 1,
+    explanation: "リスフラン関節は足根骨と中足骨の間の関節で、足の剛性を高める要所です。"
+  },
+  {
+    category: "中足骨・趾骨",
+    question: "足の指の付け根にある関節の一般的な医学的呼称はどれ？",
+    options: ["IP関節", "MP関節（中足趾節関節）", "DIP関節", "ひざ関節"],
+    answer: 1,
+    explanation: "MP関節は歩行時の蹴り出しにおいて大きく曲がる重要な関節です。"
+  },
+
+  // --- アーチ構造・バイオメカニクスパート ---
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "人間の足にある3つのアーチの組み合わせとして正しいものはどれ？",
+    options: ["前方アーチ・後方アーチ・中央アーチ", "内側縦アーチ・外側縦アーチ・横アーチ", "大アーチ・小アーチ・中アーチ", "上アーチ・下アーチ・横アーチ"],
+    answer: 1,
+    explanation: "足には縦に2つ、横に1つの合計3つのアーチがあり、三点で体重を支えます。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "足のアーチ構造が果たす最も重要な物理的役割はどれ？",
+    options: ["足首を温めること", "衝撃の吸収と推進力のバネ（エネルギー貯蔵）", "靴のサイズを調整すること", "足の汗を外に逃がすこと"],
+    answer: 1,
+    explanation: "アーチのバネ構造があることで、歩行や走行の衝撃を効率よく和らげます。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "偏平足（扁平足）の最大の特徴として正しいものはどれ？",
+    options: ["足の甲が異常に高くなる", "内側縦アーチが低下し、足裏全体が地面に近づく", "踵が地面につかなくなる", "外側の骨が完全に消滅する"],
+    answer: 1,
+    explanation: "偏平足はアーチのクッション機能が低下し、足や膝の疲労・痛みの原因になりやすいです。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "ハイアーチ（凹足）の最大の特徴として当てはまるものはどれ？",
+    options: ["足裏全体が平らになる", "足のアーチが高すぎて衝撃吸収性が低下し硬い", "プロネーションが過剰になる", "足のサイズが毎月大きくなる"],
+    answer: 1,
+    explanation: "ハイアーチはクッション性に乏しく、着地時の衝撃がダイレクトに伝わりやすい特性があります。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "足の指の付け根の横幅が広がり、横アーチが消失してしまう状態の名称はどれ？",
+    options: ["ハイアーチ", "開張足", "内反足", "長足"],
+    answer: 1,
+    explanation: "開張足は中足骨が扇状に開き、タコや痛みの原因になります。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "足の親指（母趾）が外側（小指側）へ「くの字」に曲がってしまう変形の名称はどれ？",
+    options: ["内反小趾", "外反母趾", "ハンマートゥ", "扁平足"],
+    answer: 1,
+    explanation: "外反母趾はヒールの高い靴やアーチの崩れなどが複合して起こりやすい変形です。"
+  },
+  {
+    category: "アーチ構造・バイオメカニクス",
+    question: "人間の片足の骨の数（種子骨除く）の合計はいくつ？",
+    options: ["24個", "26個", "28個", "30個"],
+    answer: 1,
+    explanation: "足根骨7個＋中足骨5個＋趾骨14個＝合計26個です。これに下腿や大腿の骨が加わります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "下肢の骨格解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい下肢骨格の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの解剖学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【下肢の骨格解剖学クイズ道場】で 5問中 " + score + "問正解しました！🦴✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
