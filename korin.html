@@ -226,7 +226,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
             <div style="display: flex; gap: 8px; width: 100%;">
-                <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
                     もう一度あそぶ
                 </button>
                 <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
@@ -248,12 +248,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-<!-- 音声データ (korin1.wav 〜 korin6.wav) -->
-<audio id="voice1" src="korin1.wav" preload="auto"></audio>
-<audio id="voice2" src="korin2.wav" preload="auto"></audio>
-<audio id="voice3" src="korin3.wav" preload="auto"></audio>
-<audio id="voice4" src="korin4.wav" preload="auto"></audio>
-<audio id="voice5" src="korin5.wav" preload="auto"></audio>
+<!-- 効果音用（Web Audio APIで自動生成するためファイル不要） -->
 <audio id="voice6" src="korin6.wav" preload="auto"></audio>
 
 <script>
@@ -266,19 +261,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { id: 6, icon: '✨' }, { id: 6, icon: '✨' }
     ];
 
-    const voiceTexts = {
-        1: "「おっ、『コリン』を捉えたな。記憶の原材料がしっかりと脳内に届いたぞ……！」",
-        2: "「『アセチルコリン』分泌完了！ 神経のシナプスがバチバチに繋がっていく快感だな！」",
-        3: "「『レシチン』のパワーだ！ 脳の細胞膜がイキイキと蘇ってきたぞ……！」",
-        4: "「思考のモヤが綺麗に晴れた！ 集中力が限界突破レベルに突入したな！」",
-        5: "「疲れた脳ミソに極上のストレッチが染み渡る……！ ヘッドスパ級の整い具合だな。」",
-        6: "「【脳内フル回転クリア】神経も記憶力も完璧に整いました！ これもう君、天才的だな……。さあ、この冴えた頭で次の癒やしへ進むとしようか。」"
-    };
+    const finalMessage = "「【脳内フル回転クリア】神経も記憶力も完璧に整いました！ これもう君、天才的だな……。さあ、この冴えた頭で次の癒やしへ進むとしようか。」";
 
     let currentGameCards = [];
     let flippedCards = [];
     let matchedPairs = 0;
     let isLocked = false;
+    let audioCtx = null;
+
+    // 効果音（Web Audio API）
+    function playSound(type) {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                // 正解チャイム（高めの明るい2音）
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                osc.start(now);
+                osc.stop(now + 0.5);
+            } else if (type === 'wrong') {
+                // 不正解ブザー（低めの低い2音）
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.setValueAtTime(110, now + 0.15);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            }
+        } catch (e) {
+            console.log("Web Audio再生エラー:", e);
+        }
+    }
 
     function shuffle(array) {
         let arr = [...array];
@@ -323,10 +353,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     }
 
-    function restartQuiz() {
-        startGame();
-    }
-
     function handleCardClick(e) {
         e.preventDefault();
         if (isLocked) return;
@@ -346,7 +372,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function checkMatch() {
         const [first, second] = flippedCards;
-        isLocked = true; // ロックをかける
+        isLocked = true;
 
         if (first.card.id === second.card.id) {
             first.element.classList.remove(`hint-${first.card.id}`);
@@ -356,14 +382,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             matchedPairs++;
             flippedCards = [];
 
-            // 6組目（クリア）に達した場合は、通常の個別セリフをスキップして即クリア画面へ移行
             if (matchedPairs === 6) {
-                document.getElementById('message-box'].textContent = voiceTexts[6];
-                
-                // 少しだけウェイトを置いてクリア画面に切り替え
+                // クリア時：チャイムを鳴らしてから少し遅れてクリア画面と青龍ボイス
+                playSound('correct');
+                document.getElementById('message-box'].textContent = "🎉 神経ネットワーク完全接続！";
+
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
-                    document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + voiceTexts[6];
+                    document.getElementById('result-message').innerHTML = '<b>星野青龍のメッセージ：</b><br>' + finalMessage;
                     document.getElementById('game-result-screen').classList.remove('hidden');
 
                     try {
@@ -382,43 +408,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'game_finish', 'game_name': 'korin_memory_game'});
                     }
-                }, 400);
+                }, 800);
 
             } else {
-                // 1〜5組目のペア成功時
-                playVoiceAndMessage(first.card.id);
-                
-                // セリフ再生中の2.2秒間はロックを維持し、その後解除
+                // 通常ペア成立：正解チャイム音
+                playSound('correct');
+                document.getElementById('message-box'].textContent = "✨ ペア成立！神経ネットワークがつながった！";
                 setTimeout(() => {
                     isLocked = false;
-                }, 2200);
+                }, 600);
             }
         } else {
-            // 不正解のとき
+            // 不正解：ブザー音
+            playSound('wrong');
+            document.getElementById('message-box'].textContent = "❌ 残念、違うペアでした…";
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
                 second.element.classList.remove('flipped');
                 second.element.textContent = '？';
                 flippedCards = [];
+                document.getElementById('message-box'].textContent = "カードをめくって同じ絵のペアを見つけよう！";
                 isLocked = false;
             }, 900);
-        }
-    }
-
-    function playVoiceAndMessage(id) {
-        document.getElementById('message-box').textContent = voiceTexts[id];
-
-        try {
-            const audioElement = document.getElementById(`voice${id}`);
-            if (audioElement) {
-                audioElement.currentTime = 0;
-                audioElement.play().catch(error => {
-                    console.log("音声ファイル未検出またはブロック:", error);
-                });
-            }
-        } catch (e) {
-            console.log("音声再生処理エラー:", e);
         }
     }
 </script>
