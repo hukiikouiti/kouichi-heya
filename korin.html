@@ -385,7 +385,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (matchedPairs === 6) {
                 // クリア時：チャイムを鳴らしてから少し遅れてクリア画面と青龍ボイス
                 playSound('correct');
-                document.getElementById('message-box'].textContent = "🎉 神経ネットワーク完全接続！";
+                document.getElementById('message-box').textContent = "🎉 神経ネットワーク完全接続！";
 
                 setTimeout(() => {
                     document.getElementById('game-play-screen').classList.add('hidden');
@@ -413,7 +413,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             } else {
                 // 通常ペア成立：正解チャイム音
                 playSound('correct');
-                document.getElementById('message-box'].textContent = "✨ ペア成立！神経ネットワークがつながった！";
+                document.getElementById('message-box').textContent = "✨ ペア成立！神経ネットワークがつながった！";
                 setTimeout(() => {
                     isLocked = false;
                 }, 600);
@@ -421,14 +421,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else {
             // 不正解：ブザー音
             playSound('wrong');
-            document.getElementById('message-box'].textContent = "❌ 残念、違うペアでした…";
+            document.getElementById('message-box').textContent = "❌ 残念、違うペアでした…";
             setTimeout(() => {
                 first.element.classList.remove('flipped');
                 first.element.textContent = '？';
                 second.element.classList.remove('flipped');
                 second.element.textContent = '？';
                 flippedCards = [];
-                document.getElementById('message-box'].textContent = "カードをめくって同じ絵のペアを見つけよう！";
+                document.getElementById('message-box').textContent = "カードをめくって同じ絵のペアを見つけよう！";
                 isLocked = false;
             }, 900);
         }
