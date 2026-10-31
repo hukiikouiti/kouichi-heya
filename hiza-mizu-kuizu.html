@@ -1,1 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>膝の水・構造解剖学マルバツクイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: center;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">膝の水・構造解剖学マルバツクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
+</div>
+
+<!-- 結果発表用のカード（LINE・予約・Xシェア・各種戻るボタンのコンバージョン動線） -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- 膝の水・関節液の仕組み（1〜15） ---
+  {
+    category: "膝の水・基礎",
+    question: "膝にたまる「水」の正体は、外から侵入した水分や汗ではなく、関節液（滑液）である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "膝にたまる液体の正体は、関節をスムーズに動かすために分泌される「関節液（滑液）」です。"
+  },
+  {
+    category: "膝の水・基礎",
+    question: "膝に関節液が過剰に分泌されるのは、関節が壊れたときの防衛反応（炎症反応）の一種である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これ以上関節が傷つかないように、クッションや潤滑油を増やして守ろうとする体の防御反応として水がたまります。"
+  },
+  {
+    category: "膝の水・基礎",
+    question: "健康な状態の膝関節の中には、関節液はまったく存在せず、常にカラカラに乾いている。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "健康な状態でも数mlの関節液が存在し、軟骨に栄養を供給したり摩擦を減らしたりする潤滑油の役割をしています。"
+  },
+  {
+    category: "膝の水・基礎",
+    question: "膝の水を注射器で抜くと、「クセになって二度と元に戻らなくなる（何度も溜まりやすくなる）」という噂は医学的な事実である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "クセになるわけではなく、中の炎症（原因）が治まっていないからまた溜まるだけであり、必要なときは抜いて圧迫を和らげるのが一般的です。"
+  },
+  {
+    category: "膝の水・基礎",
+    question: "膝に水がたまると、お皿（膝蓋骨）の周りがボテッと腫れ上がり、「タノコンテスト（膝蓋跳動）」というお皿が浮くような現象が起きることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "水がたまると膝蓋骨が浮き上がり、上から押すとタプタプと沈み込むような特徴的な反応が見られます。"
+  },
+  {
+    category: "膝の水・原因",
+    question: "半月板の損傷や靭帯の断裂などの大きなケガがきっかけで、膝に大量の水がたまることは少ない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "半月板や前十字靭帯などの大きな損傷が起きると、強い炎症が起きて急激に水（あるいは血）がたまることがよくあります。"
+  },
+  {
+    category: "膝の水・原因",
+    question: "変形性膝関節症において、軟骨がすり減って削れたカスが関節内で刺激となり、水がたまる原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "摩耗した軟骨の微小な破片などが滑膜を刺激し、炎症を起こして関節液が過剰分泌されます。"
+  },
+  {
+    category: "膝の水・原因",
+    question: "激しいスポーツだけでなく、日常生活での慢性的な使いすぎ（オーバーユース）でも膝に水がたまることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "過度なランニングや立ち仕事による負担の蓄積でも、関節包や滑膜に炎症が起きて水がたまります。"
+  },
+  {
+    category: "膝の水・原因",
+    question: "膝にたまる液体は、常に透明なサラサラした液体であり、血液が混じることは絶対にない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "靭帯損傷や骨折などの強い外傷が同時に起きた場合、関節内に出血して血液が混ざる（血関節）こともあります。"
+  },
+  {
+    category: "膝の水・原因",
+    question: "痛みが全くないのに、膝に大量の水がタプタプにたまっているということは医学的にあり得ない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "痛みの感じ方には個人差があり、本人はそこまで痛がらなくても、触るとパンパンに水がたまっているケースは存在します。"
+  },
+  {
+    category: "膝の水・ケア",
+    question: "膝に炎症や熱感があるときは、温めるよりもアイシング（冷やすこと）で炎症を鎮めるほうが適している場合が多い。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "熱を持って腫れている急性期の炎症には、アイシングが腫れや痛みを和らげる有効な手段になります。"
+  },
+  {
+    category: "膝の水・ケア",
+    question: "膝に水がたまっているときは、スクワットなどの激しい筋トレを無理して行う方が早く水が引く。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "炎症を起こして水がたまっている状態で強い負荷をかけると逆効果になるため、安静や医師の指示が優先されます。"
+  },
+  {
+    category: "膝の水・ケア",
+    question: "太ももの筋肉（大腿四頭筋など）がしっかり機能していると、膝関節への負担が減り、水の再発を防ぎやすくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "筋肉が関節のサポーターとしてしっかり働くことで、膝への直接的なストレスや摩擦を軽減できます。"
+  },
+  {
+    category: "膝の水・ケア",
+    question: "体重が増加して太ると、歩行時に膝にかかる負担が増えるため、膝の水や痛みのリスクが高まる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "歩行時には体重の数倍の負荷が膝にかかるため、体重管理は膝の健康維持において非常に重要です。"
+  },
+  {
+    category: "膝の水・ケア",
+    question: "サポーターを着用して膝を固定することは、一時的な痛みの軽減や不安定感の補強に役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "適切なサポーターによる圧迫と安定化は、動くときの不安感や痛みを和らげるのに効果的です。"
+  },
+
+  // --- 解剖学・下肢の構造基本（16〜35） ---
+  {
+    category: "解剖学・骨格",
+    question: "大腿骨は、人体の中で最も長く、強靭な管状骨である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "大腿骨は下半身の柱となる人体最大の長骨です。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "膝蓋骨（お皿の骨）は、人体最大の種子骨であり、筋肉の力を効率よく伝える役割がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "膝蓋骨は大腿四頭筋の腱の中に存在し、てこの原理で膝を伸ばす力を効率化します。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "すねの内側を走る太い骨の名前は「腓骨」である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "すねの内側の太い骨は「脛骨」であり、外側の細い骨が「腓骨」です。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "腓骨は体重を直接支えるメインの骨であり、足首の内くるぶしを形成する。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "腓骨は体重を支えるメインではなく、外側を補強する細い骨であり、外くるぶしを形成します。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "前十字靭帯（ACL）は、脛骨が太腿に対して「前方へズレるの」を防ぐ重要な靭帯である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "前十字靭帯は、脛骨が前方に飛び出さないようブレーキをかける重要な役割を持っています。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "後十字靭帯（PCL）は、膝が内側に折れ曲がるのを防ぐ外側の靭帯である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "後十字靭帯は脛骨が後方にズレるのを防ぐものであり、内側を防ぐのは内側側副靭帯です。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "膝の内側にある「内側側副靭帯」は、膝が外側にガクッと曲がるようなストレス（外反ストレス）を防ぐ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "内側側副靭帯は、膝が外側に曲がろうとする力から関節を守っています。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "半月板は、大腿骨と脛骨の間にある三日月形の軟骨組織であり、衝撃を和らげるクッションの役割を持つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "半月板は内外に一つずつあり、衝撃吸収と関節の適合性を高めるクッションです。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "足首の「内くるぶし」を作っているのは腓骨の下端である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "内くるぶしは脛骨の下端（内果）、外くるぶしが腓骨の下端（外果）です。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "成人片足の足根骨（かかとや足首周辺の骨）の数は全部で7個である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "距骨、踵骨、舟状骨、立方骨、3つの楔状骨の合計7個です。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "足根骨の中で最も大きく、かかとを形成している骨を「距骨」という。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "かかとを形成している最大の骨は「踵骨」です（距骨はその上の関節の土台となる骨）。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "距骨には筋肉が直接付着していないという特徴がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "距骨は多くの靭帯や関節面に囲まれていますが、直接付着する筋肉はありません。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "成人片足の足の甲の骨（中足骨）の本数は全部で5本である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "親指側を第1として、小指側の第5まで計5本の中足骨があります。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "足の親指（母趾）には、他の指にあるような「中節骨」が存在しないため、骨の節が少ない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "母趾は基節骨と末節骨の2つのみで構成されており、中節骨はありません。"
+  },
+  {
+    category: "解剖学・骨格",
+    question: "下腿の骨である脛骨と腓骨の間は、「骨間膜」という強固な線維組織で結ばれている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨間膜が両骨をしっかり繋ぎ、筋肉の起始部としても機能しています。"
+  },
+
+  // --- アーチ構造とバイオメカニクス（36〜50） ---
+  {
+    category: "アーチ構造",
+    question: "人間の足には、「内側縦アーチ」「外側縦アーチ」「横アーチ」の3つのアーチが存在する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これら3つのアーチが三点で体重を支え、バネのように衝撃を吸収します。"
+  },
+  {
+    category: "アーチ構造",
+    question: "足のアーチ構造は、ただの形ではなく、歩行時の衝撃吸収や推進力のバネとして極めて重要な役割を持つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "アーチの弾性によって着地衝撃をやわらげ、蹴り出すエネルギーを生み出しています。"
+  },
+  {
+    category: "アーチ構造",
+    question: "扁平足になると、内側縦アーチが低下して足裏全体が地面に近づくため、クッション性が失われやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "アーチがつぶれることで衝撃がダイレクトに伝わり、足や膝の疲労・痛みを引き起こしやすくなります。"
+  },
+  {
+    category: "アーチ構造",
+    question: "ハイアーチ（凹足）の人は、足のアーチが高すぎるため、衝撃吸収性が高く関節に優しいというメリットがある。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "ハイアーチは硬くてクッション性に乏しいため、着地時の衝撃が逃げにくく負担がかかりやすいです。"
+  },
+  {
+    category: "アーチ構造",
+    question: "開張足とは、足の指の付け根の横幅が広がり、横アーチが消失してしまう状態のことである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "横アーチが崩れて中足骨が扇状に広がることで、タコができたり痛みが生じたりします。"
+  },
+  {
+    category: "アーチ構造",
+    question: "外反母趾は、足の親指が外側（小指側）へ「くの字」に曲がってしまう変形である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ヒールの高い靴やアーチの崩れが原因となり、母趾が外側に向かって変形します。"
+  },
+  {
+    category: "アーチ構造",
+    question: "人間の片足にある骨の合計数（種子骨を除く）は、ちょうど26個である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "足根骨7個 ＋ 中足骨5個 ＋ 趾骨14個 ＝ 26個です。"
+  },
+  {
+    category: "アーチ構造",
+    question: "オスグッド病は、太ももの筋肉（大腿四頭筋）の牽引力によって、すねの骨の出っ張り（脛骨粗面）に負担がかかることで起こる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "成長期のスポーツ少年に多く、引っ張られることで脛骨粗面に痛みや隆起が生じます。"
+  },
+  {
+    category: "アーチ構造",
+    question: "歩行の際、かかとから着地して足の外側を通り、親指側に抜ける一連の体重移動を「プロネーション」などの要素が支えている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "足首の回内（プロネーション）は衝撃を和らげるために不可欠な正常な体の動きです。"
+  },
+  {
+    category: "アーチ構造",
+    question: "リスフラン関節は「足首とすねの間」に位置している。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "リスフラン関節は足根骨と中足骨の間にある関節です（足首とすねの間は足関節）。"
+  },
+  {
+    category: "アーチ構造",
+    question: "ショパール関節は、足部を前後に分ける関節であり、足の柔軟性や適応力を生み出す。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "距骨・踵骨と舟状骨・立方骨の間にあるショパール関節は、不整地でも足を安定させる柔軟性を作ります。"
+  },
+  {
+    category: "アーチ構造",
+    question: "大腿四頭筋は、主に「膝を曲げる」働きをする筋肉のグループである。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "大腿四頭筋は太ももの前面にあり、主に「膝を伸ばす」働きをします（曲げるのはハムストリングス）。"
+  },
+  {
+    category: "アーチ構造",
+    question: "太ももの裏側にある筋肉の総称を「ハムストリングス」という。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ハムストリングスは主に膝を曲げたり股関節を後ろに引いたりする働きを持つ重要な筋肉群です。"
+  },
+  {
+    category: "アーチ構造",
+    question: "膝が完全に伸びきった状態では、関節がロックされて安定するため、筋肉の力を抜いて立っていても疲れにくくなる（スクリューホームムーブメントの終点）。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "完全伸展時には回旋を伴ってロックがかかり、直立時のエネルギー消費を抑える仕組みになっています。"
+  },
+  {
+    category: "アーチ構造",
+    question: "人間の関節液は、年を取ると分泌が完全にゼロになり、二度と再生しなくなる。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "関節液は滑膜から常時産生・吸収されており、ゼロになることはありません。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "膝の水・構造解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒後に正解ボタンを点滅させる
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！膝の構造や水の知識がパーフェクトですね！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！素晴らしい解剖学の知識です！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【膝の水・構造解剖学マルバツクイズ道場】で 5問中 " + score + "問正解しました！🦵✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
