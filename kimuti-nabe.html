@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>旨辛キムチ鍋づくりゲーム - 皓一部屋</title>
+    <title>旨辛キムチ鍋キャッチゲーム - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -57,10 +57,10 @@
             margin-bottom: 8px;
             color: #c0392b;
         }
-        /* ゲームステージ（キムチチゲ風スープ背景） */
+        /* ゲームステージ（スープ背景） */
         .game-stage {
             width: 100%;
-            height: 260px;
+            height: 320px;
             background: radial-gradient(circle, #8b0000 0%, #4a0e0e 60%, #2c0808 100%);
             border: 4px solid #d4af37;
             border-radius: 14px;
@@ -68,51 +68,41 @@
             margin: 0 auto 10px;
             overflow: hidden;
             box-shadow: inset 0 4px 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .instruction-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: #fff;
-            font-size: 0.9rem;
-            background: rgba(0,0,0,0.6);
+            font-size: 0.85rem;
+            background: rgba(0,0,0,0.7);
             padding: 8px 12px;
             border-radius: 8px;
             pointer-events: none;
+            width: 80%;
+            z-index: 10;
         }
-        /* 画面下の食材選択ボタンパネル */
-        .ingredient-panel {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            width: 100%;
-            margin-top: 10px;
-            box-sizing: border-box;
-        }
-        .ingredient-btn {
-            background: #fff;
-            border: 2px solid #ddd;
+
+        /* 動き回る食材のスタイル */
+        .moving-ingredient {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             border-radius: 50%;
-            aspect-ratio: 1;
-            padding: 4px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
             cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.1s, border-color 0.1s;
+            transition: transform 0.1s;
         }
-        .ingredient-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .ingredient-btn:active {
-            transform: scale(0.92);
-            border-color: #c0392b;
+        .moving-ingredient:active {
+            transform: scale(1.2);
         }
 
         .game-link-btn {
@@ -148,25 +138,6 @@
         .line-btn { background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; }
         .reserve-btn { background: linear-gradient(135deg, #27ae60, #219653); color: #fff; }
         .hidden { display: none !important; }
-
-        /* 鍋に具材がポチャンと入る時のアニメーション */
-        @keyframes dropIn {
-            0% { transform: scale(0.2) translateY(-50px); opacity: 0; }
-            60% { transform: scale(1.1) translateY(5px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        .dropped-item {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            animation: dropIn 0.3s ease-out forwards;
-        }
     </style>
 </head>
 <body>
@@ -177,44 +148,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>🍲 旨辛キムチ鍋づくり</h1>
-    <p>制限時間内に5つの具材をすべて鍋に入れて最高の一品を完成させよう！</p>
+    <h1>🍲 旨辛キムチ鍋キャッチ！</h1>
+    <p>画面内を動き回る5つの食材をタップしてすべて捕まえよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
         <div style="font-size: 3rem; margin: 10px 0;">🔥🥬</div>
-        <button class="start-btn" onclick="startGame()">調理スタート！</button>
+        <button class="start-btn" onclick="startGame()">キャッチスタート！</button>
     </div>
 
     <!-- プレイ画面 -->
     <div id="game-play-screen" class="hidden">
         <div class="timer-score">
             <div>残り時間: <span id="timer">15</span>秒</div>
-            <div>投入数: <span id="score-count">0</span> / 5</div>
+            <div>捕獲数: <span id="score-count">0</span> / 5</div>
         </div>
         
         <!-- ゲームステージ -->
         <div class="game-stage" id="game-stage">
-            <div class="instruction-text" id="instruction">下のボタンから具材を選んで鍋に入れよう！</div>
-        </div>
-
-        <!-- 食材選択ボタンパネル -->
-        <div class="ingredient-panel">
-            <button class="ingredient-btn" onclick="addIngredient('kimchi', 'kimchi.png')" title="白菜キムチ">
-                <img src="kimchi.png" alt="白菜キムチ">
-            </button>
-            <button class="ingredient-btn" onclick="addIngredient('pork', 'pork.png')" title="豚バラ肉">
-                <img src="pork.png" alt="豚バラ肉">
-            </button>
-            <button class="ingredient-btn" onclick="addIngredient('tofu', 'tofu.png')" title="木綿豆腐">
-                <img src="tofu.png" alt="木綿豆腐">
-            </button>
-            <button class="ingredient-btn" onclick="addIngredient('nira', 'nira.png')" title="ニラ">
-                <img src="nira.png" alt="ニラ">
-            </button>
-            <button class="ingredient-btn" onclick="addIngredient('enoki', 'enoki.png')" title="えのき茸">
-                <img src="enoki.png" alt="えのき茸">
-            </button>
+            <div class="instruction-text" id="instruction">動き回る食材をタップして鍋に入れよう！</div>
         </div>
     </div>
 
@@ -254,15 +206,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
     let timeLeft = 15;
     let isPlaying = false;
-    let addedItems = {};
     let timerInterval = null;
-    let finalCount = 0;
-    let finalIsClear = false;
+    let gameLoopInterval = null;
+    let ingredients = [];
+    let caughtCount = 0;
+
+    const ingredientData = [
+        { type: 'kimchi', img: 'kimchi.png' },
+        { type: 'pork', img: 'pork.png' },
+        { type: 'tofu', img: 'tofu.png' },
+        { type: 'nira', img: 'nira.png' },
+        { type: 'enoki', img: 'enoki.png' }
+    ];
 
     function startGame() {
         isPlaying = true;
         timeLeft = 15;
-        addedItems = {};
+        caughtCount = 0;
+        ingredients = [];
 
         document.getElementById('timer').innerText = timeLeft;
         document.getElementById('score-count').innerText = "0";
@@ -272,10 +233,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-result-screen').classList.add('hidden');
 
         const stageElem = document.getElementById('game-stage');
-        stageElem.innerHTML = '<div class="instruction-text" id="instruction">下のボタンから具材を選んで鍋に入れよう！</div>';
+        stageElem.innerHTML = '<div class="instruction-text" id="instruction">動き回る食材をタップして鍋に入れよう！</div>';
+
+        // 食材を生成してステージに配置
+        const stageWidth = 360;
+        const stageHeight = 320;
+
+        ingredientData.forEach((item, index) => {
+            let el = document.createElement('div');
+            el.className = 'moving-ingredient';
+            el.style.backgroundImage = `url('${item.img}')`;
+
+            let ingObj = {
+                type: item.type,
+                x: Math.random() * (stageWidth - 60),
+                y: Math.random() * (stageHeight - 100) + 40,
+                vx: (Math.random() - 0.5) * 3.5,
+                vy: (Math.random() - 0.5) * 3.5,
+                element: el,
+                caught: false
+            };
+
+            el.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                catchIngredient(ingObj);
+            });
+
+            stageElem.appendChild(el);
+            ingredients.push(ingObj);
+        });
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'kimchi_nabe_game'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'kimchi_catch_game'});
         }
 
         if (timerInterval) clearInterval(timerInterval);
@@ -286,34 +275,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 checkGameResult();
             }
         }, 1000);
+
+        if (gameLoopInterval) cancelAnimationFrame(gameLoopInterval);
+        gameLoop();
     }
 
-    function addIngredient(type, imgName) {
+    function gameLoop() {
         if (!isPlaying) return;
 
-        if (!addedItems[type]) {
-            addedItems[type] = true;
-            let count = Object.keys(addedItems).length;
-            document.getElementById('score-count').innerText = count;
+        const stageWidth = 350;
+        const stageHeight = 310;
 
-            const stageElem = document.getElementById('game-stage');
-            const inst = document.getElementById('instruction');
-            if (inst) inst.style.display = 'none';
+        ingredients.forEach(ing => {
+            if (ing.caught) return;
 
-            let itemDiv = document.createElement('div');
-            itemDiv.className = 'dropped-item';
-            itemDiv.style.backgroundImage = `url('${imgName}')`;
-            
-            let rx = Math.floor(Math.random() * 200) + 40;
-            let ry = Math.floor(Math.random() * 120) + 50;
-            itemDiv.style.left = rx + 'px';
-            itemDiv.style.top = ry + 'px';
-            
-            stageElem.appendChild(itemDiv);
+            ing.x += ing.vx;
+            ing.y += ing.vy;
 
-            if (count >= 5) {
-                setTimeout(checkGameResult, 400);
-            }
+            // 壁に当たったら跳ね返る
+            if (ing.x < 0 || ing.x > stageWidth - 52) ing.vx *= -1;
+            if (ing.y < 30 || ing.y > stageHeight - 52) ing.vy *= -1;
+
+            ing.element.style.left = ing.x + 'px';
+            ing.element.style.top = ing.y + 'px';
+        });
+
+        gameLoopInterval = requestAnimationFrame(gameLoop);
+    }
+
+    function catchIngredient(ing) {
+        if (!isPlaying || ing.caught) return;
+
+        ing.caught = true;
+        ing.element.remove();
+        caughtCount++;
+
+        document.getElementById('score-count').innerText = caughtCount;
+
+        const inst = document.getElementById('instruction');
+        if (inst) inst.style.display = 'none';
+
+        if (caughtCount >= 5) {
+            setTimeout(checkGameResult, 300);
         }
     }
 
@@ -321,29 +324,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (!isPlaying) return;
         isPlaying = false;
         clearInterval(timerInterval);
+        cancelAnimationFrame(gameLoopInterval);
 
-        finalCount = Object.keys(addedItems).length;
-        finalIsClear = (finalCount >= 5);
+        let isClear = (caughtCount >= 5);
 
         document.getElementById('game-play-screen').classList.add('hidden');
         document.getElementById('game-result-screen').classList.remove('hidden');
 
-        let titleText = finalIsClear ? "✨ 絶品キムチ鍋完成！" : "🔥 おしい！タイムアップ！";
+        let titleText = isClear ? "✨ 絶品キムチ鍋完成！" : "🔥 おしい！タイムアップ！";
         document.getElementById('result-title').innerText = titleText;
         
-        let message = finalIsClear 
-            ? 'すべての具材が美味しく煮込まれました！体が温まる最高のキムチ鍋の完成です！' 
-            : `具材が ${finalCount} / 5 個しか入りませんでした。もう一度挑戦して完璧な鍋を作ろう！`;
+        let message = isClear 
+            ? 'すべての食材を素早くキャッチして最高のキムチ鍋が完成しました！' 
+            : `食材が ${caughtCount} / 5 個しか捕まえられませんでした。もう一度挑戦しよう！`;
         
-        document.getElementById('result-message').innerHTML = message + '<br><b>投入した具材： ' + finalCount + ' / 5 種類</b>';
+        document.getElementById('result-message').innerHTML = message + '<br><b>捕獲した食材： ' + caughtCount + ' / 5 種類</b>';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kimchi_nabe_game', 'score': finalCount, 'clear': finalIsClear});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kimchi_catch_game', 'score': caughtCount, 'clear': isClear});
         }
     }
 
     function shareToX() {
-        var shareText = encodeURIComponent('皓一部屋の「旨辛キムチ鍋づくり」でキムチ鍋を作ったよ！結果は ' + (finalIsClear ? '大成功・完全調理！' : finalCount + '個の具材を投入！') + '\nあなたも冬の温活ゲームで遊ぼう！👇');
+        var shareText = encodeURIComponent('皓一部屋の「旨辛キムチ鍋キャッチ」で遊んだよ！結果は ' + (caughtCount >= 5 ? '大成功・完全コンプリート！' : caughtCount + '個の食材をキャッチ！') + '\nあなたも温活ゲームで遊ぼう！👇');
         window.open('https://twitter.com/intent/tweet?text=' + shareText + '&url=' + encodeURIComponent(window.location.href) + '&hashtags=皓一部屋,キムチ鍋,温活', '_blank');
     }
 </script>
