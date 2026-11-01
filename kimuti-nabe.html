@@ -161,12 +161,16 @@
             60% { transform: scale(1.1) translateY(5px); opacity: 1; }
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
-        .dropped-item {
+       .dropped-item {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            background-size: cover;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background-size: contain; /* coverからcontainに変更して画像全体が収まるようにする */
+            background-repeat: no-repeat;
+            background-position: center;
+            /* 丸いマスクを外して、食材の形そのまま綺麗に見せる場合 */
+            border-radius: 8px; 
+            background-color: rgba(255, 255, 255, 0.85); /* うっすら白い背景を敷いて見やすくする */
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
             animation: dropIn 0.3s ease-out forwards;
         }
