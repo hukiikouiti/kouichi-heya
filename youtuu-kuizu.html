@@ -1,1 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>腰痛・構造解剖学マルバツクイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: center;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">腰痛・解剖学マルバツクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
+</div>
+
+<!-- 結果発表用のカード -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- 腰椎・骨格の仕組み（1〜17） ---
+  {
+    category: "腰椎・骨格基礎",
+    question: "人間の背骨のうち、腰の部分にあたる「腰椎（ようつい）」は全部で5個ある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "頸椎7個、胸椎12個、腰椎5個が人間の背骨の基本的な数です。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "腰椎の正常な生理的彎曲（カーブ）は、前側につき出た「前わん（前彎）」である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腰椎は前方にカーブしていることで、上半身の重みや歩行時の衝撃を分散させています。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "椎間板（ついかんばん）の中心には「線維輪」があり、その周りを「髄核」というゼリー状の組織が取り囲んでいる。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "構造が逆です。中心にあるのが水分を多く含む「髄核」で、それを囲んで支えているのが硬い「線維輪」です。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "椎間板は、成人以降になると血管がほとんど通わなくなり、周囲の組織からの栄養滲出に頼っている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "椎間板は血流に乏しいため、負荷の変動による水分の出入り（ポンプ作用）で栄養や老廃物のやり取りを行っています。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "椎間板ヘルニアは、椎間板の線維輪が破れて中の髄核が飛び出し、神経を圧迫することで痛みやしびれを引き起こす。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "飛び出した髄核が脊髄や神経根に触れることで、腰痛や足への放散痛（しびれ）が生じます。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "「脊柱管狭窄症」は、背骨の中の神経が通るトンネル（脊柱管）が加齢や変形によって広がり、神経が圧迫される病気である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "脊柱管が「広がる」のではなく、骨の変形や靭帯の肥厚によって「狭くなる」ことで神経が圧迫されます。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "脊柱管狭窄症の大きな特徴として、歩いているうちに足にしびれや痛みが出て歩けなくなり、少し屈んで休むとまた歩ける「間欠性跛行（かんけつせいはこう）」がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "背中を丸めると神経の圧迫が和らぐため、休むと症状が軽快してまた歩けるようになるのが特徴です。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "腰椎分離症は、スポーツなどで腰のひねりや反らしを繰り返すことにより、腰椎の骨に疲労骨折が起きた状態である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "成長期のスポーツ選手（特に野球、サッカー、体操など）の腰椎の後方に疲労骨折が生じやすいです。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "腰椎すべり症は、腰椎が前後にズレてしまう現象で、分離症が進行して起こる場合もある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨の支持性が低下することで、上の腰椎が下の腰椎に対して前方などへズレて神経を刺激します。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "仙骨（せんこつ）は、骨盤の後ろ側に位置し、背骨の土台となっている楔形（くさびがた）の骨である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "仙骨は左右の寛骨（腸骨など）とともに入り組んだ骨盤を構成し、上半身の体重を両足へ伝えます。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "仙腸関節（せんちょうかんせつ）は、完全に骨同士が癒合して微動だにしない不動関節である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "仙腸関節はわずかに動く（数ミリ程度の微小な可動性を持つ）関節であり、衝撃吸収や骨盤の歪みに関与します。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "「腰仙関節」は、第5腰椎と第1仙骨の間にある関節で、日常の負担やストレスが非常に集中しやすい部位である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腰の最も下部に位置するため、上半身の負荷や前屈・回旋のストレスが強くかかる構造になっています。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "高齢者に多い「圧迫骨折」は、主に背骨の前の部分が潰れるように折れる骨折で、骨粗鬆症が大きな背景にある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨がもろくなることで、尻もちをついたり日常の軽い動作でも背骨（胸椎や腰椎）が潰れてしまいます。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "背骨の関節を後ろ側で繋いでいる「椎間関節（ついかんかんせつ）」は、腰を後ろに反らす動き（伸展）で強い圧迫を受ける。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腰を反らすと椎間関節同士が噛み合い、負荷が増すため、関節性の腰痛の原因になりやすいです。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "背骨のまわりにある「棘上靭帯」や「黄色靭帯」などの背面の靭帯は、腰を反らすときに緊張する。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "背面の靭帯は腰を「前に曲げる（屈曲）」ときに引き伸ばされて緊張します（反らすときは緩みます）。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "「尾骨（びこつ）」は脊柱の最下部にあり、脊髄神経が内部を通っているため下半身の運動を支配している。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "尾骨は退化した椎骨の集まりであり、内部に脊髄神経は通っていません。"
+  },
+  {
+    category: "腰椎・骨格基礎",
+    question: "人間の背骨は、直立二足歩行を行うことで地面からの反発力や重力を効率よく受け止める独自の進化を遂げた。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "S字カーブや椎間板のクッション性により、二足歩行の衝撃から脳や内閣を守る構造になっています。"
+  },
+
+  // --- 腰まわりの筋肉とインナーユニット（18〜34） ---
+  {
+    category: "筋肉・インナーユニット",
+    question: "「腸腰筋（ちょうようきん）」は、大腰筋と腸骨筋の総称であり、主に足を前に上げる（屈曲）働きをする。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "お腹の深部から太ももの骨の内側にかけて付く腸腰筋は、歩行や姿勢保持に不可欠な深層筋です。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「大腰筋」は腰の骨（腰椎）から太ももの骨までつながっているため、硬くなると腰を引っ張って反り腰や腰痛の原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "座りっぱなしで大腰筋が縮こまると、骨盤が前傾して腰に大きな負担をかけます。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「腹横筋（ふくおうきん）」は、お腹の一番深いところにあるインナーマッスルで、コルセットのように腹圧を高める。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腹横筋が収縮して腹圧を上げることで、内側から腰椎や背骨をガッチリ支えることができます。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「多裂筋（たれつきん）」は、背骨の一個一個をまたぐように走る極めて小さな筋肉で、腰の安定性に深く関与する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "脊柱の深部で微細な調整を行い、腰椎の安定性を保つ非常に重要な抗重力筋です。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「インナーユニット」とは、横隔膜・腹横筋・多裂筋・骨盤底筋群の4つの筋肉で構成され、天然のコルセットとして働く。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これらが連動して働くことで腹圧が高まり、腰椎が安定して負担が軽減されます。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「腰方形筋（ようほうけいきん）」は、肋骨と骨盤の間を結ぶ筋肉で、主に腰を横に曲げる（側屈）や体を支える働きをする。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "左右どちらかの腰方形筋が緊張すると、腰の片側に強いコリや痛み、骨盤の引き上げが生じます。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「脊柱起立筋群」は、背骨の背中側を縦に走る大きな筋肉の束で、主に体を前に倒す（前屈）ときに強く収縮する。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "脊柱起立筋群は主に体を「後ろに反らす（伸展）」または「前屈から起き上がるときのブレーキ」として働きます。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "お尻の筋肉である「大臀筋」がしっかり機能していると、歩行時に骨盤が安定し、腰への負担が和らぐ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "大臀筋は股関節を後ろに伸ばす強力な筋肉であり、下半身から腰を守る要となります。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "お尻の奥にある「梨状筋（りじょうきん）」が硬くなって緊張すると、その下を通る坐骨神経を圧迫し、お尻や足にしびれを引き起こすことがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これがいわゆる「梨状筋症候群」と呼ばれる、坐骨神経痛の代表的な原因の一つです。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "太ももの裏側にある「ハムストリングス」が硬いと、前屈するときに骨盤の動きが制限され、その代わりとして腰の骨が無理に曲がって腰痛を誘発する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨盤の後傾や硬さが腰椎に直接ストレスを与えるため、ハムストリングスの柔軟性は腰痛予防に重要です。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "腹直筋（いわゆるシックスパック）を鍛えることだけが、腰痛予防において最も効果的で十分な対策である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "表面の腹直筋だけでなく、深層の腹横筋や多裂筋、骨盤底筋群など体幹全体のバランスが重要です。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「広背筋」は腰の筋膜（胸腰筋膜）を介して反対側の臀筋（お尻の筋肉）と連動し、歩行時の安定性を生み出している。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "アナトミートレインなどの筋膜ネットワーク（バック・ファンクショナル・ライン）で背中と逆側の足が繋がっています。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「中臀筋（ちゅうでんきん）」は骨盤の横にあり、歩くときに片足立ちとなった骨盤がグラつかないように水平に保つ働きをする。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "中臀筋が弱いと歩行時に骨盤が横に落ち込む（トレンデレンブルグ歩行）ようになり、腰まわりに負担がかかります。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "腹斜筋（内腹斜筋・外腹斜筋）は、体幹を回旋（ねじり）させたり側屈させたりする働きを持つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "お腹の横側にある腹斜筋群は、くびれを作るだけでなく、体幹の回旋や安定に大きく寄与しています。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "「胸腰筋膜（きょうようきんまく）」は、腰背部を覆う強固な筋膜であり、上半身と下半身の力を伝える中継地点となる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "背中や腰の多くの筋肉がこの胸腰筋膜に付着しており、体幹の張力を生み出す重要な組織です。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "横隔膜は呼吸のための筋肉であり、腰の安定性やインナーユニットとしての機能には全く関与していない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "横隔膜は天井として腹圧を高めるインナーユニットの一部であり、呼吸と体幹安定の両方を担っています。"
+  },
+  {
+    category: "筋肉・インナーユニット",
+    question: "骨盤底筋群が緩むと、腹圧を十分に高めることが難しくなり、体幹の安定性が低下して腰痛の遠因になることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "底面を支える骨盤底筋群も体幹の腹圧コントロールに欠かせない重要な筋肉です。"
+  },
+
+  // --- 腰痛のメカニズム・姿勢・生活習慣（35〜50） ---
+  {
+    category: "腰痛・生活習慣",
+    question: "イスに座っている姿勢は、立っている姿勢に比べて、腰の椎間板にかかる負担が約1.4倍ほど大きくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "座位は立位に比べて椎間板内圧が高くなりやすく、長時間のデスクワークが腰に負担をかける理由の一つです。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "物を持ち上げるときに、膝を曲げずに腰だけを曲げて持ち上げる姿勢は、腰椎や椎間板に巨大なテコの負荷をかけるため非常に危険である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "いわゆる「ギックリ腰」を誘発しやすい典型的な不良動作です。物を持ち上げるときは必ず膝を曲げ、体に近づけて持つのが基本です。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "急性腰痛症（いわゆるギックリ腰）が起きた直後の急性期は、患部を温めてマッサージで激しくほぐすのが最も効果的である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "急性期に温めたり強く揉んだりすると炎症が強くなって逆効果です。まずは安静や冷却（アイシング）が基本となります。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "ストレスや不安感などの精神的・心理的要因が、脳の痛みのコントロール回路に影響を与え、慢性的な腰痛を長引かせる原因になることは医学的に認められている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "近年の研究で、脳の報酬系や痛みの抑制系、ストレスが慢性腰痛（心理社会的因子）に深く関わっていることが解明されています。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "慢性的な腰痛において、いつまでも絶対安静にしてベッドで寝続けている方が、かえって回復が早くなることが多い。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "近年のガイドラインでは、痛みが許す範囲で早期から普段通りの活動や軽い運動を行った方が回復が早いとされています。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "肥満による体重増加や大きなお腹は、骨盤を前に引っ張り（前傾させ）、腰椎の反りを強めるため腰痛のリスクを高める。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "重心が前に移動するため、それを支えるために腰の筋肉や椎間関節に慢性的なストレスがかかります。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "「非特異的腰痛」とは、レントゲンやMRIなどの画像検査を行っても、神経圧迫や骨折などの明確な原因が特定できない腰痛のことである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腰痛全体の約85%以上がこの「非特異的腰痛（筋肉の疲労や筋膜、関節の微細な不調など）」に分類されます。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "「レッドフラッグ（危険信号）」と呼ばれる、急激な足のまひ、尿が出にくい（排尿障害）、発熱などを伴う腰痛は、内臓疾患や重篤な脊髄病変の可能性があるため、速やかに医療機関を受診すべきである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これらは緊急性の高い重大な疾患（腫瘍や感染、馬尾症候群など）のサインであるため、直ちに医師の診断が必要です。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "マットレスが柔らかすぎて体が沈み込みすぎる寝具は、背骨の自然なカーブが崩れるため、腰痛持ちの人にとって必ずしも良いとは言えない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "沈み込みすぎると寝返りが打ちにくくなり、腰の筋肉が緊張したまま朝を迎える原因になります。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "適度な有酸素運動（ウォーキングなど）は、背中や腰の血流を促し、腰痛の予防や改善に有効である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "歩行によるリズミカルな筋肉の収縮が血流を高め、痛みの物質の排出や組織の栄養補給を助けます。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "冷えや低体温は、血管を収縮させて筋肉や筋膜の柔軟性を奪うため、腰痛を引き起こす引き金になりやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "冬場や冷房による冷えは、血行不良と筋緊張を招き、ギックリ腰などを引き起こす大きな要因になります。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "靴の踵（かかと）がすり減っていたり、クッション性のない硬い靴を履いていたりすることは、衝撃が直接腰に伝わるため腰痛に関係している。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "足元からの衝撃吸収がうまくいかないと、その上にある膝や腰にダイレクトに負担が蓄積します。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "水分不足は、椎間板や筋膜の水分含有量を低下させ、組織の滑走性やクッション性を損なうため腰痛のリスクになり得る。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "筋肉や椎間板、筋膜の多くは水分で構成されているため、水分補給不足はコリや痛みの悪化につながります。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "デスクワーク中にこまめに姿勢を変えたり、定期的に立ち上がってストレッチをすることは、腰の負担軽減に何の効果もない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "同一姿勢による血流の滞りや筋肉の硬直を防ぐため、こまめな姿勢変更やストレッチは非常に効果的です。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "「ドローイン」と呼ばれる、おへそを引っ込めながら腹部を薄く保つ呼吸法は、インナーユニットを活性化させて腰を安定させるのに役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "腹横筋などのインナーマッスルを安全に刺激し、天然のコルセット機能を高める代表的なエクササイズです。"
+  },
+  {
+    category: "腰痛・生活習慣",
+    question: "人間の腰痛は一度発症すると完治することは不可能であり、一生付き合っていくしかない病気である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "適切な運動、姿勢の改善、生活習慣の見直しによって、腰痛の予防や症状の大幅な改善は十分に可能です。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "腰痛・解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒後に正解ボタンを点滅させる
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！腰痛や解剖学の知識がパーフェクトですね！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！素晴らしい解剖学の知識です！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【腰痛・解剖学マルバツクイズ道場】で 5問中 " + score + "問正解しました！🧍‍♂️✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
