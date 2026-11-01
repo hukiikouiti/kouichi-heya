@@ -128,20 +128,20 @@
             box-sizing: border-box;
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
-        .game-link-btn {
-            display: block;
+       .game-stage {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 0.9rem;
-            box-sizing: border-box;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-            cursor: pointer;
-            border: none;
-            -webkit-tap-highlight-color: transparent;
+            height: 260px;
+            /* 美味しそうなキムチチゲのスープをイメージした温かみのあるグラデーション */
+            background: radial-gradient(circle, #8b0000 0%, #4a0e0e 60%, #2c0808 100%);
+            border: 4px solid #d4af37; /* 縁を少し豪華なゴールド・ブラウン系に */
+            border-radius: 14px;
+            position: relative;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .start-btn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
