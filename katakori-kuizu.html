@@ -1,1 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>肩こり・筋膜リリース解剖学マルバツクイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: center;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">肩こり・解剖学マルバツクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="game.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">🎮 ゲームに戻る</a>
+</div>
+
+<!-- 結果発表用のカード -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- 肩こりの筋肉・構造（1〜17） ---
+  {
+    category: "肩こり・筋肉基礎",
+    question: "肩こりの主な原因筋とされる「僧帽筋」は、首から背中にかけて広がる大きなひし形の筋肉である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "僧帽筋は上部・中部・下部に分かれ、首や肩甲骨を支える肩こりの中心的な筋肉です。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「肩甲挙筋」は、肩甲骨を上方に引き上げる働きがあり、デスクワークで凝りやすい筋肉の一つである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "首の後ろから肩甲骨の内側につく肩甲挙筋は、パソコン作業などで緊張しやすくコリの原因になります。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「菱形筋（りょうけいきん）」は、肩甲骨を外側に広げる（胸を丸める）働きをする筋肉である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "菱形筋は肩甲骨を「背骨側に引き寄せる（内側へ寄せる）」働きをします。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "首の横にある「胸鎖乳突筋」が硬くなると、首の回旋だけでなく頭痛や目の疲れを引き起こす原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "胸鎖乳突筋は首を横に曲げたり回したりするだけでなく、緊張すると頭痛や眼精疲労を誘発します。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「板状筋（頭板状筋・頸板状筋）」は、首を前に曲げる（うなずく）ためのメインの筋肉である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "板状筋は首の後ろ側にあり、主に「首を後ろに反らす・横に倒す・回す」働きをします。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "鎖骨の下を通る「大胸筋」や「小胸筋」が硬くなって縮むと、肩が前に巻き込む「巻き肩」の原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "胸側の筋肉が硬くなると肩が前方に引っ張られ、背中側の筋肉が引き伸ばされて肩こりを悪化させます。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「前鋸筋」は肋骨の側面にある筋肉で、肩甲骨を胸郭にしっかりと密着させる重要な役割を持つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "前鋸筋がしっかり働くことで肩甲骨が安定し、スムーズな腕の動きや肩こり予防につながります。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "首の深層にある「後頭下筋群」は、長時間のスマホ操作などで緊張しやすく、目の奥の重だるさに関係する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "後頭下筋群は頭の微調整や眼球運動と連動しているため、スマホ首で凝り固まると眼精疲労の原因になります。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「肩甲下筋」は肩甲骨の裏側（肋骨側）にあり、肩関節を内側にねじる（内旋）働きをする。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "インナーマッスル（回旋筋腱板）の一つで、肩甲骨の前面と上腕骨をつないでいます。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「棘上筋」は、腕を体の横から真上に高く上げるすべての動作において主動筋として働く。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "棘上筋は腕を外側に上げる最初の動き（約15〜30度）を主にサポートします。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「棘下筋」や「小円筋」は、主に肩を外側にねじる（外旋）働きを持つインナーマッスルである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "肩甲骨の後面から上腕骨の外側につき、肩の安定性と外旋動作を担っています。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「広背筋」は骨盤や腰椎から腕の付け根までつながる人体最大の面積を持つ筋肉で、肩こりには一切影響しない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "広背筋が硬くなると肩甲骨の動きが制限され、間接的に肩こりや背中の張りに関与します。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「大円筋」は肩甲骨の下角から上腕骨に付着し、腕を後ろや内側に引く働きをする。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "脇の下の後ろ側を形成する筋肉で、広背筋と似たような働きで腕を動かします。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「斜角筋群（前・中・後斜角筋）」の間には腕神経叢や鎖骨下動脈が通っており、ここが硬くなると腕のしびれが起きることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "斜角筋の過緊張は胸郭出口症候群を引き起こし、肩こりだけでなく腕や手のしびれの原因になります。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "「肩甲舌骨筋」などの首の細かな筋肉は、首の深部にあり肩こりとは無縁である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "首の筋膜のバランスや舌骨の動きに関わっており、全体的な首の緊張やこりに影響を与えます。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "人間の頭の重さは、成人で約4〜6kg（ボーリング球程度）もあり、うつむくほど首や肩の筋肉への負担が何倍にも跳ね上がる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "頭が前に傾く角度が大きくなるほど、首の筋肉にかかる負荷は2倍、3倍と急増します。"
+  },
+  {
+    category: "肩こり・筋肉基礎",
+    question: "筋肉が持続的に収縮し続けると、血流が低下して酸素や栄養が不足し、疲労物質が溜まってコリや痛みが発生する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "これが肩こりの典型的なメカニズムであり、血行不良と筋緊張の悪循環が痛みを引き起こします。"
+  },
+
+  // --- 筋膜リリース・メカニズム（18〜34） ---
+  {
+    category: "筋膜・解剖学",
+    question: "「筋膜（ファシア）」は、筋肉だけでなく、血管、神経、内臓などを全身くまなく包み込む立体的なネットワーク構造である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "筋膜は「第2の骨格」とも呼ばれ、全身をウエットスーツのように切れ目なく包んでいます。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "筋膜は水分が不足して乾燥すると滑りが悪くなり、癒着（よしみ）を起こしてコリや柔軟性低下の原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ヒアルロン酸などの水分が潤滑油の役割を失うと、筋膜同士が滑らなくなり動きが制限されます。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "筋膜リリースを行う際は、筋肉を完全にリラックスさせ、持続的な圧迫や摩擦を加えることで滑走性を回復させる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "適切な圧と方向への刺激を与えることで、硬くなった筋膜の水分と弾力性が戻ります。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「スーパーフィシャル・バック・ライン（SBL）」は、足の裏から頭のてっぺんまで背面全体を繋ぐ筋膜のラインである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "足底腱膜からふくらはぎ、ハムストリングス、脊柱起立筋を通り頭部まで繋がる最大のラインです。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「スーパーフィシャル・フロント・ライン（SFL）」は、体の背面を支えるラインであり、前屈動作に関与する。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "SFLは体の「前面（お腹や太ももの前など）」を走るラインです。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「ラテラル・ライン（側面ライン）」は、体の横側を走り、左右のバランスや側屈の動きをコントロールしている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "足の外側から体側面を通り頭部へ抜けるラインで、体の横方向の安定性を保ちます。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「スパイラル・ライン」は、体を回旋（ねじり）させる動作や、歩行時の回旋バランスを支えるらせん状の筋膜ラインである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "全身をらせん状に巡ることで、体幹の回旋や立位のバランス保持に大きく貢献しています。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「ディープ・フロント・ライン（DFL）」は、体の最も深い中心を通り、コアの安定や呼吸機能に深く関わっている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "インナーマッスルや横隔膜、骨盤底筋群を含み、体幹の深部を支える最も重要なラインです。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "筋膜は非常に硬い組織であるため、一度癒着すると物理的・化学的に元の状態に戻ることは絶対にない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "適切なストレッチや施術、水分補給、運動によって筋膜の柔軟性や滑走性は回復します。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "トリガーポイント（痛みの引き金点）は、筋肉の中にできる硬結（コリのしこり）であり、離れた場所に痛みを放散させることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "肩のトリガーポイントが原因で、頭痛や腕の放散痛を引き起こすことは臨床上よく見られます。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "長時間の同一姿勢は、筋膜内の血流を滞らせ、老廃物を蓄積させてコリを悪化させる最大の要因の一つである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "筋肉がポンプの役割を果たさなくなるため、同じ姿勢を続けると疲労物質が溜まりやすくなります。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "「上肢線（アーム・ライン）」は、肩こりや腕の疲れ、手のしびれなどに関係する腕を通る筋膜のネットワークである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "胸や背中から腕、指先へとつながるアーム・ラインの緊張は、肩や首のコリに直結します。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "ストレートネックになると、首の後ろ側の筋膜や筋肉が常に引き伸ばされて緊張するため、慢性的な肩こりを引き起こす。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "頭の重さを支えるために首の後ろの筋肉が常にフル稼働するため、コリや痛みが慢性化します。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "水分を十分に摂取することは、筋膜の潤滑性を保ち、コリや疲労物質を流す上でほとんど意味がない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "筋膜の主成分や組織液の大部分は水分であり、水分補給は筋膜の柔軟性維持に不可欠です。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "肩こり解消のために肩を揉むだけでなく、背中や骨盤、足裏などの離れた部位の筋膜を緩めることが効果的な場合が多い。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "筋膜は全身で繋がっているため、遠隔的なアプローチが頑固な肩こり改善の近道になります。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "自律神経の乱れ（交感神経の優位状態）が続くと、血管が収縮して筋肉や筋膜が緊張し、肩こりが悪化しやすくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ストレスや緊張による自律神経の乱れは、筋緊張を高めて血行不良を引き起こす大きな要因です。"
+  },
+  {
+    category: "筋膜・解剖学",
+    question: "軽い有酸素運動や肩甲骨を大きく動かすストレッチは、血流を促し、筋膜の滑走性を高めるのに非常に有効である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "適度な運動によるポンプ作用が、凝り固まった組織に栄養と酸素を送り届けてくれます。"
+  },
+
+  // --- 首・肩・神経・姿勢の知識（35〜50） ---
+  {
+    category: "姿勢・神経",
+    question: "「胸郭出口症候群」は、首や胸の筋肉の緊張などにより、腕へ向かう神経や血管が圧迫される疾患である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "つり革につかまる時の腕のだるさや、手のしびれ、肩こりを伴うことが多いです。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "パソコン作業などで画面に顔を突き出す姿勢（ヘッド・フォワード・ポスチャー）は、首の負担を激増させる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "頭が前に出るほど、首を支える背面の筋肉や靭帯には多大な負荷がかかり続けます。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "肩こりが原因で緊張型頭痛が引き起こされることは、医学的に見て非常に稀である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "肩や首の筋肉の過緊張による緊張型頭痛は、肩こりに伴う最も一般的な頭痛の一つです。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "「副神経（第11脳神経）」は、僧帽筋や胸鎖乳突筋を支配しているため、首や肩の動きに深く関わっている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "副神経の働きによって、僧帽筋や胸鎖乳突筋の運動機能がコントロールされています。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "首の骨（頸椎）は全部で7個あり、生理的な前わん（前側のカーブ）を描いているのが正常な状態である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "頸椎は緩やかな前わんによって、頭の重さや衝撃をバネのように分散する構造になっています。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "「腕神経叢」は、頸椎の間から出て腕のほうへ伸びる神経の束であり、首の筋肉のコリの影響を受けやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "首の筋肉（斜角筋など）の間を通るため、筋肉が硬くなると神経が刺激されることがあります。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "肩こりを放置すると、肩甲骨の可動域が狭くなり、呼吸が浅くなったり代謝が低下したりすることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "肩甲骨周りの筋肉が固まると胸郭が広がりにくくなり、呼吸が浅くなって全身の疲労感につながります。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "冷暖房による冷えは、血管を収縮させて血行不良を招くため、夏場でも冷房による肩こりは起こりやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "夏の冷えによる血流悪化は、冬場と同様に肩こりや首の痛みの大きな原因になります。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "人間の背骨は、首から腰にかけてすべてまっすぐな直線のほうが、構造上最も負担がかからない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "背骨はS字カーブを描くことで、重力や歩行時の衝撃をうまく吸収・分散する構造になっています。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "「肩こりは日本特有の病名（文化依存症候群的側面）であり、海外では『首や背中の痛み（Neck/Back pain）』として扱われることが多い。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "英語圏には「Stiff shoulder」という直訳はありますが、医学的・一般的な表現としては首や背中の痛みとして扱われます。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "目の使いすぎによる眼精疲労は、目のピントを調節する毛様体筋の疲れだけでなく、首や肩の筋肉の緊張とも連動している。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "目は後頭下筋群や首の神経と密接につながっているため、眼精疲労と肩こりはセットで起きやすいです。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "猫背になると、背中側の筋肉（僧帽筋など）は常に縮こまって短縮している状態である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "猫背になると背中側の筋肉は「引き伸ばされて（緊張して）」頭を支えているため、常に引っ張られて疲労します。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "入浴などで体を芯から温めることは、血管を広げて血流を促し、肩こりの緩和に高い効果を発揮する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "温熱効果により血流が改善され、筋肉に溜まった疲労物質や老廃物がスムーズに排出されます。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "「肩を回すとゴリゴリと音がする現象」は、骨同士が直接激しく削れ合っている音なので、痛みがなくても放置してはならない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "多くの場合、関節包内の気泡や、腱と骨が擦れる音であり、痛みがなければ直ちに問題視する必要はありません。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "睡眠不足や不規則な生活習慣は、筋肉の疲労回復を妨げ、慢性的な肩こりから抜け出せなくする要因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "睡眠中に分泌される成長ホルモンなどが組織の修復を行うため、質の良い睡眠はコリ解消の基本です。"
+  },
+  {
+    category: "姿勢・神経",
+    question: "正しい姿勢を維持するには、お腹や背中のインナーマッスル（体幹）を適度に働かせるバランス感覚が大切である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨格を内側から支える体幹の安定性があってこそ、首や肩に余計な力が入らない楽な姿勢が保てます。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "肩こり・解剖学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒後に正解ボタンを点滅させる
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！肩こりや解剖学の知識がパーフェクトですね！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！素晴らしい解剖学の知識です！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【肩こり・解剖学マルバツクイズ道場】で 5問中 " + score + "問正解しました！💆‍♂️✨\n#皓一部屋 #解剖学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
