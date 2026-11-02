@@ -170,7 +170,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <!-- 結果画面 -->
+   <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
         <h2 id="result-title" style="color: #c0392b; font-size: 1.1rem; margin-bottom: 8px;">✨ 鍋完成！</h2>
         
@@ -190,18 +190,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 3：Xで結果をシェア -->
         <button onclick="shareToX()" class="game-link-btn share-btn">𝕏 で結果をシェアする</button>
 
-        <!-- ナビゲーションボタン群 -->
-        <div style="display: flex; gap: 6px; width: 100%; margin-top: 10px;">
-            <button onclick="startGame()" style="flex: 1; padding: 10px 4px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem;">
-                もう一度あそぶ
-            </button>
-            <a href="game.html" style="flex: 1; display: block; padding: 10px 4px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; line-height: 1.4; box-sizing: border-box;">
-                🎮 ゲーム選択に戻る
-            </a>
+        <!-- ボタンを格納するエリア（右側のゲームと同じ2段横並び配列） -->
+        <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 10px; box-sizing: border-box;">
+
+            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="startGame()" style="flex: 1; padding: 10px 4px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; box-sizing: border-box;">
+                    もう一度あそぶ
+                </button>
+                <a href="kuizu.html" style="flex: 1; display: block; padding: 10px 4px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    クイズ選択に戻る
+                </a>
+            </div>
+
+            <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="game.html" style="flex: 1; display: block; padding: 10px 4px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🎮 ゲーム選択に戻る
+                </a>
+                <a href="index.html" style="flex: 1; display: block; padding: 10px 4px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+
         </div>
-        <a href="index.html" style="display: block; margin-top: 8px; color: #3498db; font-size: 0.8rem; text-decoration: none;">🏠 トップに戻る</a>
     </div>
-</div>
 
 <script>
     let timeLeft = 15;
