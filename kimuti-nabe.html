@@ -170,7 +170,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-   <!-- 結果画面 -->
+    <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
         <h2 id="result-title" style="color: #c0392b; font-size: 1.1rem; margin-bottom: 8px;">✨ 鍋完成！</h2>
         
@@ -190,7 +190,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- 3：Xで結果をシェア -->
         <button onclick="shareToX()" class="game-link-btn share-btn">𝕏 で結果をシェアする</button>
 
-        <!-- ボタンを格納するエリア（右側のゲームと同じ2段横並び配列） -->
+        <!-- ボタンを格納するエリア（他ゲームと完全に同じ2段横並び配列） -->
         <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 10px; box-sizing: border-box;">
 
             <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
@@ -215,6 +215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         </div>
     </div>
+</div>
 
 <script>
     let timeLeft = 15;
@@ -248,7 +249,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const stageElem = document.getElementById('game-stage');
         stageElem.innerHTML = '<div class="instruction-text" id="instruction">動き回る食材をタップして鍋に入れよう！</div>';
 
-        // 食材を生成してステージに配置
         const stageWidth = 360;
         const stageHeight = 320;
 
@@ -305,7 +305,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             ing.x += ing.vx;
             ing.y += ing.vy;
 
-            // 壁に当たったら跳ね返る
             if (ing.x < 0 || ing.x > stageWidth - 52) ing.vx *= -1;
             if (ing.y < 30 || ing.y > stageHeight - 52) ing.vy *= -1;
 
