@@ -50,6 +50,7 @@ body {
   border: none;
   -webkit-tap-highlight-color: transparent;
 }
+.hidden { display: none !important; }
 .quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
 .question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
 .question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
@@ -73,7 +74,7 @@ body {
 .correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
 .incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
-/* 5秒後に正解ボタンを光らせるアニメーション */
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
 @keyframes superFlash {
   0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
   50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
@@ -678,7 +679,7 @@ const allQuestions = [
   },
   {
     category: "エクソソーム編・応用と未来",
-    question: "将来的に、患者自身の細胞から取り出したエクソソームに抗がん剤や遺伝子を搭載して体内に戻す治療法が期待されているが、その最大のメリットはどれ？",
+    question: "将来的に、患者自身の細胞から取り出したエクソソームにがん細胞や遺伝子を搭載して体内に戻す治療法が期待されているが、その最大のメリットはどれ？",
     options: ["自分の細胞由来であるため、免疫拒絶反応や副作用が極めて少ないオーダーメイド治療ができること", "費用が1円もかからないこと", "治療が一瞬で終わること", "特にメリットはない"],
     answer: 0,
     explanation: "自己由来のキャリアーを使うことで、免疫系の攻撃を受けにくく安全性の高いDDS治療が可能になると期待されています。"
@@ -770,7 +771,7 @@ const allQuestions = [
   {
     category: "エクソソーム編・応用と未来",
     question: "こうした最先端の細胞生物学やナノマシンの知識を、自分のライフワークや発信活動、サロンのコンセプトに織り交ぜることの真の価値とは？",
-    options: ["単なるリラクゼーションを超えて、生命の神秘と科学のロマンを深く味わえる唯一無二の深い体験を届けられること", "特に価値はない", "自慢するため", "テストのため"],
+    options: ["単なるリラクゼーションを超えて、生命の神秘と科学のロマンを深く味わえる唯一無二の深い体験を届けられること", "特に価値はない", "自慢するため", "テストのための知識"],
     answer: 0,
     explanation: "ミクロな世界の美しい仕組みを知ることは、ご自身の活動や発信に圧倒的な深みと独自性をもたらしてくれます。"
   }
