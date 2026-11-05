@@ -1,1 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格心臓解剖生理学・心臓雑学クイズ道場（100問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">心臓解剖生理学クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="index.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">メニューに戻る</a>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- ボタンを格納するエリア -->
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並びにする場合 -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // ジャンル1：心臓の解剖・構造（25問）
+  {
+    category: "解剖・構造",
+    question: "人間の心臓の部屋は全部でいくつに分かれているか？",
+    options: ["2つ（1心房1心室）", "3つ（2心房1心室）", "4つ（2心房2心室）", "6つ（3心房3心室）"],
+    answer: 2,
+    explanation: "人間の心臓は、右心房・右心室・左心房・左心室の合計4つの部屋（2心房2心室）で構成されています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の中で、全身から戻ってきた血液を最初に受け取る部屋はどれ？",
+    options: ["左心房", "右心房", "左心室", "右心室"],
+    answer: 1,
+    explanation: "全身を巡ってきた酸素の少ない血液は、大静脈を通って右心房に流れ込みます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "肺で酸素を受け取った血液が、全身へ送り出される直前に戻ってくる部屋はどれ？",
+    options: ["右心房", "右心室", "左心房", "左心室"],
+    answer: 2,
+    explanation: "肺から戻ってきた綺麗な血液は、肺静脈を通って左心房に流れ込みます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "全身に向かって強力な圧力で血液を送り出すため、心臓の中で最も筋肉の壁（心筋）が分厚い部屋はどれ？",
+    options: ["右心房", "右心室", "左心房", "左心室"],
+    answer: 3,
+    explanation: "左心室は全身（頭から足の先まで）に血液を送り出すポンプの役割を持つため、非常に分厚い筋肉でできています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "右心房と右心室の間にある、血液の逆流を防ぐ弁の名称はどれ？",
+    options: ["僧帽弁（二尖弁）", "三尖弁", "大動脈弁", "肺動脈弁"],
+    answer: 1,
+    explanation: "右側の房室弁は3つのひらひらがある「三尖弁」、左側の房室弁は2つの「僧帽弁（二尖弁）」と呼ばれます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "左心房と左心室の間にある弁の名称として正しいものはどれ？",
+    options: ["三尖弁", "僧帽弁（二尖弁）", "肺動脈弁", "大動脈弁"],
+    answer: 1,
+    explanation: "左心房と左心室の間にあるのは僧帽弁（別名：二尖弁）です。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓から肺へ血液を送り出す出口にある弁の名称はどれ？",
+    options: ["大動脈弁", "肺動脈弁", "三尖弁", "僧帽弁"],
+    answer: 1,
+    explanation: "右心室から肺動脈へ血液が流れ出る部分にあるのが肺動脈弁です。"
+  },
+  {
+    category: "解剖・構造",
+    question: "左心室から全身の大動脈へ血液が飛び出す出口にある弁の名称はどれ？",
+    options: ["肺動脈弁", "三尖弁", "大動脈弁", "房室弁"],
+    answer: 2,
+    explanation: "左心室から大動脈へと送り出される時に通過するのが大動脈弁です。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓自身に栄養や酸素を届ける専用の血管の総称はどれ？",
+    options: ["頸動脈", "冠動脈", "門脈", "肺静脈"],
+    answer: 1,
+    explanation: "心臓は大量の血液をポンプしていますが、その中を通る血からは直接栄養をもらえず、「冠動脈」から酸素と栄養を得ています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "冠動脈が詰まることで心筋に血液が届かなくなり、壊死してしまう疾患の通称はどれ？",
+    options: ["脳梗塞", "心筋梗塞", "狭心症", "不整脈"],
+    answer: 1,
+    explanation: "冠動脈が完全に閉塞すると心筋梗塞を引き起こし、命に関わる重大な状態になります。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の外側を包み込み、摩擦を防ぐ二重の袋状の膜の名称はどれ？",
+    options: ["胸膜", "心膜（心外膜）", "腹膜", "骨膜"],
+    answer: 1,
+    explanation: "心臓は「心膜」という滑らかな膜の袋に包まれており、拍動時の摩擦や過剰な拡張を防いでいます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "大人の心臓の大きさ（握りこぶし程度）と、おおよその重さの組み合わせとして正しいものはどれ？",
+    options: ["約50g", "約200〜300g", "約1.5kg", "約3kg"],
+    answer: 1,
+    explanation: "大人の心臓の重さは約200〜300g程度で、握りこぶしくらいの大きさです。"
+  },
+  {
+    category: "解剖・構造",
+    question: "胎児の心臓にある、左右の心房を繋いでいて誕生後に自然とふさがる穴の名称はどれ？",
+    options: ["ファタール孔", "卵円孔（らんえんこう）", "ボタロー管", "心室中隔"],
+    answer: 1,
+    explanation: "胎児期は肺呼吸をしていないため、卵円孔を通じて血液が直接行き来しています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "左右の心室を完全に隔てている壁の名称はどれ？",
+    options: ["心房中隔", "心室中隔", "弁膜", "心内膜"],
+    answer: 1,
+    explanation: "心室中隔によって、右心室の静脈血と左心室の動脈血が混ざらないようになっています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の筋肉組織（心筋）の最大の特徴として正しいものはどれ？",
+    options: ["自分の意思で自由に動かせる（随意筋）", "一生休まず拍動し続けるために特殊な横紋を持ち、細胞同士が電気的・機械的に連結している", "骨に直接付着している", "一度傷つくと完全に再生する"],
+    answer: 1,
+    explanation: "心筋は不随意筋でありながら骨格筋に似た横紋を持ち、介在板によって細胞同士が強く結合しています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓のバルブ（弁）が逆流しないように、下から引っ張っているパラシュートの紐のような組織の名称はどれ？",
+    options: ["腱索（けんさく）", "靭帯", "毛細血管", "神経線維"],
+    answer: 0,
+    explanation: "腱索と乳頭筋が連動することで、心室が強く収縮したときに弁が裏返る（逆流する）のを防ぎます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の内側を覆っている滑らかな一層の細胞膜の名称はどれ？",
+    options: ["心外膜", "心内膜", "心筋層", "胸膜"],
+    answer: 1,
+    explanation: "心内膜は心臓の内部を覆い、血液がスムーズに流れるように接触面を滑らかに保ちます。"
+  },
+  {
+    category: "解剖・構造",
+    question: "哺乳類や鳥類と比べて、カエルなどの両生類の心臓の部屋の数はいくつ？",
+    options: ["2つ", "3つ（2心房1心室）", "4つ", "5つ"],
+    answer: 1,
+    explanation: "両生類は心房が2つ、心室が1つの合計3つの部屋を持っています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "魚類の心臓の部屋の数はいくつ？",
+    options: ["1つ", "2つ（1心房1心室）", "3つ", "4つ"],
+    answer: 1,
+    explanation: "魚類の心臓は1心房1心室のシンプルな2つの部屋で構成されています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "地球上で最大の動物であるシロナガスクジラの心臓の重さは、おおよそどれくらいか？",
+    options: ["約10kg", "約50kg", "約400〜600kg", "約3トン"],
+    answer: 2,
+    explanation: "シロナガスクジラの心臓は乗用車ほどの大きさがあり、重さは400〜600kgにも達します。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の位置として正しい説明はどれ？",
+    options: ["胸の中央よりやや右側、肺に挟まれた位置", "胸の中央よりやや左側、横隔膜の上方（縦隔）", "お腹の胃の真裏", "首の付け根のすぐ下"],
+    answer: 1,
+    explanation: "心臓は胸腔の中央（やや左寄り）の「縦隔」というスペースに位置しています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の筋肉（心筋）に栄養を送る冠動脈が通っている表面の溝の名称はどれ？",
+    options: ["中心溝", "冠状溝（かんじょうこう）および室間溝", "脳溝", "椎間孔"],
+    answer: 1,
+    explanation: "心臓の表面にある冠状溝や室間溝に沿って、主要な血管や神経が走っています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "成人の安静時における1分間の心拍数の正常な目安はどれ？",
+    options: ["約30〜40回", "約60〜100回", "約120〜140回", "約200回以上"],
+    answer: 1,
+    explanation: "通常の成人では、安静時の心拍数は1分間に60〜100回程度です。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓が1回の拍動で左心室から送り出す血液の量（一回拍出量）の健康な成人の平均は約どれくらいか？",
+    options: ["約10ml", "約60〜80ml", "約500ml", "約2リットル"],
+    answer: 1,
+    explanation: "安静時、大人の心臓は1回あたり約60〜80mlの血液を送り出しています。"
+  },
+  {
+    category: "解剖・構造",
+    question: "心臓の筋肉が収縮する時期の医学的な名称はどれ？",
+    options: ["拡張期（ダイアストール）", "収縮期（シストール）", "静止期", "不応期"],
+    answer: 1,
+    explanation: "心臓が縮んで血液を押し出す時期を収縮期、膨らんで血液をためる時期を拡張期と呼びます。"
+  },
+
+  // ジャンル2：心臓の電気生理学・刺激伝導系（25問）
+  {
+    category: "電気生理学",
+    question: "心臓が脳からの神経指令なしに自らリズムを生み出している発信源の名前は何ですか?",
+    options: ["房室結節", "洞結節（どうけっせつ）", "プルキンエ繊維", "迷走神経"],
+    answer: 1,
+    explanation: "右心房にある「洞結節」が天然のペースメーカーとして自動的に電気信号を作り出しています。"
+  },
+  {
+    category: "電気生理学",
+    question: "洞結節が自ら電気を発生させる際、安静時にじわじわと細胞内に侵入して電位を上げるチャネル（通路）の名称はどれ？",
+    options: ["ファニーチャネル（HCNチャネル）", "ナトリウムポンプのみ", "水チャネル", "クロライドチャネル"],
+    answer: 0,
+    explanation: "ファニーチャネルを通じてナトリウムイオン等がじわじわ侵入し、自動的に電位を上昇させます。"
+  },
+  {
+    category: "電気生理学",
+    question: "洞結節で生まれた電気信号が最初に伝わり、心房全体を収縮させる中継地点の名称はどれ？",
+    options: ["房室結節（ぼうしけっせつ）", "ヒス束", "左脚・右脚", "プルキンエ繊維"],
+    answer: 0,
+    explanation: "洞結節の次は房室結節に電気が伝わり、わずかに時間を置いてから心室へ電気を送ります。"
+  },
+  {
+    category: "電気生理学",
+    question: "房室結節から送られた電気信号を、心室の底部へ一気に伝える太い伝導路の名称はどれ？",
+    options: ["ヒス束", "洞結節", "冠状静脈", "心膜"],
+    answer: 0,
+    explanation: "ヒス束を通った電気は左右の脚に分かれて心室全体に駆け下ります。"
+  },
+  {
+    category: "電気生理学",
+    question: "心室の最先端まで電気を網の目のように行き渡らせ、心室全体を同時に力強く収縮させる最終配線の名称はどれ？",
+    options: ["プルキンエ繊維", "洞結節", "迷走神経", "交感神経"],
+    answer: 0,
+    explanation: "プルキンエ繊維が一瞬で心室全体に電気をいきわたらせ、効率的なポンプ収縮を起こします。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の筋肉（心筋）の収縮を引き起こすために、興奮のあとに細胞内へドッと流れ込んで収縮力を生み出す主要なイオンは何ですか?",
+    options: ["カルシウムイオン", "鉄イオン", "マグネシウムイオンのみ", "銅イオン"],
+    answer: 0,
+    explanation: "カルシウムイオンが細胞内に流入することで、筋フィラメントが滑走して心筋がギュッと収縮します。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の電気的活動を体の表面から記録した検査の名称はどれ？",
+    options: ["脳波検査", "心電図検査（ECG / EKG）", "筋電図検査", "超音波検査"],
+    answer: 1,
+    explanation: "心電図は心臓の電気的活動の波形（P波・QRS波・T波）をグラフ化する検査です。"
+  },
+  {
+    category: "電気生理学",
+    question: "心電図の波形の中で、心房が収縮するときの電気的変化を示す最初の波の名称はどれ？",
+    options: ["P波", "QRS波", "T波", "U波"],
+    answer: 0,
+    explanation: "P波は心房の脱分極（電気的興奮）を表しています。"
+  },
+  {
+    category: "電気生理学",
+    question: "心電図の中で、心室が大きく収縮する際の鋭い波の組み合わせの名称はどれ？",
+    options: ["P波", "QRS波", "T波", "ST部分"],
+    answer: 1,
+    explanation: "QRS波は心室の大きな筋肉が一斉に興奮・収縮する電気信号を示します。"
+  },
+  {
+    category: "電気生理学",
+    question: "心電図の中で、心室が次の拍動に向けて電気的にリセット（再分極）されるときの波の名称はどれ？",
+    options: ["P波", "QRS波", "T波", "PR間隔"],
+    answer: 2,
+    explanation: "T波は心室の再分極（元の静止状態に戻る過程）を表します。"
+  },
+  {
+    category: "電気生理学",
+    question: "自律神経のうち、心拍数を速くし、心臓の収縮力を高めるアクセルとして働く神経はどれ？",
+    options: ["副交感神経（迷走神経）", "交感神経", "運動神経", "感覚神経"],
+    answer: 1,
+    explanation: "交感神経が優位になると心拍数が上がり、ポンプ機能が強化されます。"
+  },
+  {
+    category: "電気生理学",
+    question: "自律神経のうち、心拍数を落ち着かせてリラックス状態を作るブレーキとして働く神経はどれ？",
+    options: ["交感神経", "副交感神経（迷走神経）", "体性神経", "脊髄神経"],
+    answer: 1,
+    explanation: "迷走神経を中心とする副交感神経は、心拍数をスローダウンさせるブレーキの役割をします。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓が一生働き続けても疲弊しない理由として、1回の拍動の合間に必ず挟んでいるものはどれ？",
+    options: ["数分間の睡眠", "わずかな休息時間（拡張期のリラックス）", "完全に停止する時間", "乳酸の大量分解"],
+    answer: 1,
+    explanation: "心臓は1日のうち半分以上の時間を「拡張期の休息」にあてることで、疲労を蓄積せずに動き続けます。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の拍動リズムがバラバラになったり異常をきたす総称の名称はどれ？",
+    options: ["不整脈", "高血圧", "動脈硬化", "貧血"],
+    answer: 0,
+    explanation: "不整脈には脈が速くなる頻脈、遅くなる徐脈、リズムが乱れるものなど様々なタイプがあります。"
+    },
+  {
+    category: "電気生理学",
+    question: "心臓のなかに生まれつき、あるいは後天的に電気の「ショート回路（回旋回路）」ができることで突然脈が異常に速くなる現象の名称はどれ？",
+    options: ["リエントリー（回旋）", "カルシウムブロック", "弁膜閉鎖", "心不全"],
+    answer: 0,
+    explanation: "電気信号が同じ場所をぐるぐると回り続ける「リエントリー」が起こると発作性頻拍などが生じます。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓が突然停止した際や致命的な不整脈（心室細動など）のときに、電気ショックを与えて正常なリズムに戻す医療機器の名称はどれ？",
+    options: ["ペースメーカー", "AED（自動体外式除細動器）", "人工心肺", "血圧計"],
+    answer: 1,
+    explanation: "AEDは心室細動などで痙攣している心臓に電気ショックを与え、一度リセットして正常な拍動を取り戻させます。"
+  },
+  {
+    category: "電気生理学",
+    question: "洞結節の働きが弱くなり、極端に脈が遅くなってしまう病気に対して体内に埋め込まれる医療機器の名称はどれ？",
+    options: ["ペースメーカー", "人工弁", "ステント", "カテーテル"],
+    answer: 0,
+    explanation: "ペースメーカーは電気刺激を定期的に送り、心臓の正しいリズムを人工的に維持します。"
+  },
+  {
+    category: "電気生理学",
+    question: "心筋細胞の細胞膜をまたいだイオンの移動において、細胞内から外へ移動して電気を「リセット」する主役のイオンはどれ？",
+    options: ["カリウムイオン", "鉄イオン", "金イオン", "炭酸イオン"],
+    answer: 0,
+    explanation: "興奮が終わったあとにカリウムイオンが細胞外へ流出することで、細胞内は再びマイナスにリセットされます。"
+  },
+  {
+    category: "電気生理学",
+    question: "心筋が一度電気的な刺激を受け取ると、しばらくの間はどんな強い刺激を与えても次の興奮が起きない期間の名称はどれ？",
+    options: ["絶対不応期（ぜったいふおうき）", "活動期", "収縮休止期", "リラックス期"],
+    answer: 0,
+    explanation: "絶対不応期があるおかげで、心臓が痙攣状態（テタニー）にならず、リズミカルにポンプ収縮を繰り返すことができます。"
+  },
+  {
+    category: "電気生理学",
+    question: "アドレナリンやノルアドレナリンなどのホルモンが心臓に作用すると、細胞内へ流入するどのイオンが増えて心拍数と収縮力が高まるか？",
+    options: ["カルシウムイオン", "ナトリウムイオンのみ", "鉛イオン", "ケイ素"],
+    answer: 0,
+    explanation: "交感神経の刺激やホルモンによってカルシウムチャネルが開きやすくなり、カルシウムが大量に流入して心臓のパワーが上がります。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の電気信号が心房から心室へ伝わる途中で時間がかかる理由として正しいものはどれ？",
+    options: ["配線が長いから", "心房の血液を完全に心室へ送り出すための「時間差（遅延）」を作るため", "電気が途中で漏れているから", "特に意味はない"],
+    answer: 1,
+    explanation: "房室結節があえて電気を少し足踏みさせることで、心房が縮んだあとに心室が縮むという理想的な時間差が生まれます。"
+  },
+  {
+    category: "電気生理学",
+    question: "スポーツ選手（持久系アスリート）などでよく見られる、安静時の心拍数が通常の成人より低い状態の名称はどれ？",
+    options: ["スポーツ心臓（洞性徐脈）", "頻脈発作", "心筋肥大症", "不整脈発作"],
+    answer: 0,
+    explanation: "鍛えられた心臓は1回あたりの拍出量が大きいため、少ない心拍数でも全身へ十分な血液を送ることができます。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の電気の通り道が途中で途切れてしまう障害の総称はどれ？",
+    options: ["房室ブロック（脚ブロック）", "弁膜症", "高血圧", "動脈硬化"],
+    answer: 0,
+    explanation: "刺激伝導系の一部がダメージを受けると、電気がうまく伝わらない「ブロック」現象が起きます。"
+  },
+  {
+    category: "電気生理学",
+    question: "迷走神経（副交感神経）が強く刺激されたときに起きる生理現象として正しいものはどれ？",
+    options: ["心拍数が急激に増加し血圧が跳ね上がる", "心拍数が減少し、血管が広がって血圧や脈が下がる", "心臓が完全に停止して二度と動かない", "体温が急上昇する"],
+    answer: 1,
+    explanation: "迷走神経が働くと心臓のブレーキがかかり、心拍数が低下します。"
+  },
+  {
+    category: "電気生理学",
+    question: "心臓の筋肉（心筋細胞）同士を電気信号が秒速でスムーズに通り抜けるために、細胞のつなぎ目に存在する特殊な構造の名称はどれ？",
+    options: ["ギャップ結合（すきま結合）を含む介在板", "骨の接合部", "コラーゲンロープ", "脂肪の壁"],
+    answer: 0,
+    explanation: "介在板のなかのギャップ結合を通じて、イオンや電気が隣の細胞へダイレクトに伝わり、心臓全体が一体となって収縮します。"
+  },
+
+  // ジャンル3：血圧・薬理・循環のメカニズム（25問）
+  {
+    category: "血圧・薬理",
+    question: "高血圧の治療などで使われる「アムロジン（アムロジピン）」などのカルシウム拮抗薬が血圧を下げる主な仕組みはどれ？",
+    options: ["カルシウムの細胞内流入をブロックし、血管の筋肉を緩めて広げる", "心臓の形を小さく変形させる", "血管の水分をすべて尿として排泄する", "血液をドロドロにする"],
+    answer: 0,
+    explanation: "カルシウム拮抗薬は血管平滑筋の細胞に入るカルシウムを阻害し、血管を拡げて血圧を下げます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "首が非常に長いキリンが、高い頭部まで血液をしっかりと送り届けるために維持している驚異的な適応はどれ？",
+    options: ["人間の約3倍近くの超高血圧", "人間の半分以下の低血圧", "心臓が2つある構造", "全身にポンプを散りばめている"],
+    answer: 0,
+    explanation: "キリンは脳へ血液を届けるため、最高血圧が300mmHg近い超高血圧を維持できるように進化しています。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "成人における心臓が1日に全身へ送り出すおおよその血液量はどれに相当しますか?",
+    options: ["お風呂の浴槽約1杯分", "ドラム缶約2,000本分（約7,000〜8,000リットル）", "ペットボトル10本分", "プール1杯分"],
+    answer: 1,
+    explanation: "心臓は休むことなく1日にドラム缶約2,000本分もの血液をポンプし続けています。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "「足は第二の心臓」と言われる理由として最も適切なものはどれ？",
+    options: ["足の裏に小さな心臓が埋め込まれているから", "ふくらはぎの筋肉が収縮・弛緩することで、下半身の静脈血を重力に逆らって心臓へ押し戻すポンプの役割をするから", "足の血圧が全身で一番高いから", "足の骨が心臓と同じ形をしているから"],
+    answer: 1,
+    explanation: "ふくらはぎの筋肉のポンプ作用が、重力で下がった血液を心臓へ押し戻す強力な補助となっています。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血管の壁（特に中膜）を構成し、収縮や拡張をコントロールしている主な筋肉の名称はどれ？",
+    options: ["骨格筋", "平滑筋", "心筋", "随意筋"],
+    answer: 1,
+    explanation: "血管の壁は平滑筋でできており、自律神経やホルモンの指令で太さを変えています。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血圧を測定したときの上の血圧（収縮期血圧）が意味しているタイミングはどれ？",
+    options: ["心臓が広がってリラックスしているときの圧力", "心臓がギュッと収縮して血液を勢いよく押し出した瞬間の圧力", "血液が肺を通過しているときの圧力", "脈が一番遅くなっているときの圧力"],
+    answer: 1,
+    explanation: "収縮期血圧（最高血圧）は、心臓が収縮して血管に強い圧力がかかる瞬間の数値です。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血圧を測定したときの下の血圧（拡張期血圧）が意味しているタイミングはどれ？",
+    options: ["心臓が収縮した瞬間", "心臓が拡張して血液をため直しているときの血管内の圧力（最低血圧）", "血管が完全に詰まったときの圧力", "心臓が完全に停止したときの圧力"],
+    answer: 1,
+    explanation: "拡張期血圧（最低血圧）は、心臓が広がって休んでいるときでも血管内に残っている基礎的な圧力です。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血管が硬くなって弾力性が失われることで起きる、動脈硬化の主な弊害として正しくないものはどれ？",
+    options: ["血管がしなやかに衝撃を吸収できなくなる", "血圧が上がやすくなる", "血管が詰まったり破れやすくなる", "血管がゴムのように伸び縮みして若い状態に戻る"],
+    answer: 3,
+    explanation: "動脈硬化は血管の柔軟性を奪い、高血圧や血管障害のリスクを高めます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "体内の余分な塩分（ナトリウム）と水分を尿として排泄し、血液のボリュームを減らすことで血圧を下げる代表的な降圧薬のグループはどれ？",
+    options: ["利尿薬", "カルシウム拮抗薬", "強心薬", "睡眠薬"],
+    answer: 0,
+    explanation: "利尿薬は体内の水分や塩分を排泄し、血管内の水圧（血液量）を下げて血圧を低下させます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血管を収縮させるホルモン（アンジオテンシンII）の働きをブロックすることで、血圧を下げるお薬のグループはどれ？",
+    options: ["ARB（アンジオテンシン受容体拮抗薬）やACE阻害薬", "カルシウム", "ビタミンC", "ブドウ糖液"],
+    answer: 0,
+    explanation: "ARBやACE阻害薬は、血圧を上げるホルモンのルートを遮断して血管をリラックスさせます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "心臓の過剰なドキドキや収縮力を抑えるために、アドレナリンの受容体にフタをするお薬のグループはどれ？",
+    options: ["β遮断薬（ベータブロッカー）", "カルシウム拮抗薬", "利尿薬", "消炎鎮痛薬"],
+    answer: 0,
+    explanation: "β遮断薬は交感神経の働きを和らげ、心拍数を落ち着かせて心臓の負担を軽減します。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "全身の血管網のなかで、酸素や栄養の受け渡し（ガス交換や物質交換）が実際に行われる最も細い血管の名称はどれ？",
+    options: ["大動脈", "大静脈", "毛細血管", "冠動脈"],
+    answer: 2,
+    explanation: "毛細血管は非常に薄い壁を持ち、組織の隅々まで酸素や栄養を届け、老廃物を回収します。"
+  },
+  {
+    category: "血流・循環",
+    question: "静脈の中に数多く存在し、血液が重力で下方に逆戻りしてしまうのを防いでいる構造の名称はどれ？",
+    options: ["静脈弁（逆流防止弁）", "動脈の筋肉", "毛細血管のフィルター", "心膜のヒダ"],
+    answer: 0,
+    explanation: "静脈には一定間隔で「静脈弁」があり、筋肉のポンプで押し上げられた血液が下に落ちないように支えています。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "心臓が1回に送り出す血液の量と、1分間の心拍数を掛け合わせた値の医学的な名称はどれ？",
+    options: ["心拍出量（しんぱくしゅつりょう）", "肺活量", "血圧値", "脈圧"],
+    answer: 0,
+    explanation: "心拍出量＝1回拍出量×心拍数であり、1分間に心臓が全身へ送り出す総血液量を示します。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "急に立ち上がったときに重力で血液が下半身に集まり、脳への血流が一時的に減ってクラッと立ちくらみが起きてしまう現象の名称はどれ？",
+    options: ["起立性低血圧（直立性低血圧）", "高血圧発作", "心筋梗塞", "不整脈"],
+    answer: 0,
+    explanation: "自律神経が血圧の低下に素早く対応しきれないと、起立性低血圧が生じます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血液の液体成分であり、栄養やホルモン、老廃物を溶かして運ぶ主成分の名称はどれ？",
+    options: ["血漿（けっしょう）", "赤血球", "白血球", "血小板"],
+    answer: 0,
+    explanation: "血漿は血液の約55%を占める液体成分で、成分の大部分は水分とタンパク質です。"
+  },
+  {
+    category: "血流・循環",
+    question: "血液の成分のうち、肺から受け取った酸素を全身の細胞に運ぶ役割を持つ赤い細胞の名称はどれ？",
+    options: ["白血球", "血小板", "赤血球（ヘモグロビン含有）", "リンパ球"],
+    answer: 2,
+    explanation: "赤血球に含まれるヘモグロビンが酸素と結びつき、全身へ酸素を運びます。"
+  },
+  {
+    category: "血流・循環",
+    question: "血管が傷ついたときに集まって固まり、出血を止める役割を持つ血液成分の名称はどれ？",
+    options: ["赤血球", "血小板（けっしょうばん）", "白血球", "血漿"],
+    answer: 1,
+    explanation: "血小板は止血（コアギュレーション）において最初に集まって傷口を塞ぐパッチの役割をします。"
+  },
+  {
+    category: "血流・循環",
+    question: "体内に細菌やウイルスが侵入したときに、免疫反応として攻撃・退治してくれる血液細胞の総称はどれ？",
+    options: ["赤血球", "白血球（好中球やリンパ球など）", "血小板", "血漿蛋白"],
+    answer: 1,
+    explanation: "白血球は免疫システムを担い、外敵から体を守る防御の要です。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "「体循環」のルートとして正しい組み合わせはどれ？",
+    options: ["左心室 → 全身 → 右心房", "右心室 → 肺 → 左心房", "右心房 → 左心室 → 肺", "全身 → 肺 → 心臓"],
+    answer: 0,
+    explanation: "体循環は、左心室から綺麗は血液が全身へ送り出され、組織を巡って右心房に戻ってくる経路です。"
+    },
+  {
+    category: "血圧・薬理",
+    question: "「肺循環（小循環）」のルートとして正しい組み合わせはどれ？",
+    options: ["左心室から全身へ", "右心室 → 肺（ガス交換） → 左心房", "右心房から全身へ", "肺から直接脳へ"],
+    answer: 1,
+    explanation: "肺循環は、右心室から肺動脈を通って肺へ送られ、酸素を得て左心房に戻る経路です。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "私たちが食事で摂った栄養素や水分が小腸から吸収されたあと、心臓へ戻る前に一度立ち寄る大きな内臓の名称はどれ？",
+    options: ["腎臓", "肝臓（門脈を経由）", "脾臓", "肺"],
+    answer: 1,
+    explanation: "小腸からの栄養は門脈という血管を通って一度肝臓に入り、解毒や代謝を受けてから心臓・全身へと向かいます。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血液中の老廃物をろ過して尿を作り、体内の水分量や血圧のバランスを調整する非常に重要な臓器の名称はどれ？",
+    options: ["心臓", "腎臓（じんぞう）", "胃", "胆嚢"],
+    answer: 1,
+    explanation: "腎臓は血流量の約25%を受け取り、血圧コントロールや体液の恒常性を保つ司令塔の一つです。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "血圧が慢性的に高すぎる状態（高血圧）を長年放置したときに、最もリスクが高まる致命的な合併症の組み合わせとして正しいものはどれ？",
+    options: ["視力が良くなる", "脳卒中（脳出血・脳梗塞）や心筋梗塞、腎不全", "骨が異常に硬くなる", "筋肉が急激に発達する"],
+    answer: 1,
+    explanation: "高血圧は「サイレントキラー」と呼ばれ、血管に常に負担をかけることで脳や心臓、腎臓の重大な疾患を引き起こします。"
+  },
+  {
+    category: "血圧・薬理",
+    question: "リラクゼーションや入浴によって副交感神経が優位になり、血管がフワッと広がったときに血圧や心拍数に起きる一般的な変化はどれ？",
+    options: ["血圧も心拍数も穏やかに下がり、心臓の負担が軽くなる", "血圧が限界まで跳ね上がる", "心臓が停止する", "変化は一切起きない"],
+    answer: 0,
+    explanation: "リラックスすると血管平滑筋が緩み、血圧が下がることで心臓や全身の緊張がしっかりと解放されます。"
+  },
+
+  // ジャンル4：心臓雑学・進化・歴史・豆知識（25問）
+  {
+    category: "雑学・進化",
+    question: "人間が一生（約80年）の間に、心臓が休むことなく拍動し続ける総回数の目安はおよそどれくらいか？",
+    options: ["約100万回", "約1億回", "約30億回", "約1,000億回"],
+    answer: 2,
+    explanation: "人間の一生では、心臓はおよそ30億回もの拍動を休むことなく刻み続けます。"
+  },
+  {
+    category: "雑学・進化",
+    question: "もし心臓が血液を押し出す圧力を血管の代わりに外へ向けて噴き出させた場合、血流は約何メートルの高さ（ビル何階相当）まで飛び上がると言われているか？",
+    options: ["約1メートル", "約10メートル（ビル3階相当）", "約100メートル", "約1キロメートル"],
+    answer: 1,
+    explanation: "心臓の持つ圧力は非常に強力で、もし体外に噴き出せば約10メートルの高さ（ビル3階建て）まで届くほどの勢いがあります。"
+  },
+  {
+    category: "雑学・進化",
+    question: "昆虫などの多くの無脊椎動物が持つ心臓の大きな特徴として正しいものはどれ？",
+    options: ["人間よりも部屋の数が多くて複雑", "「管状心臓」と呼ばれるチューブ状の構造で、体腔内に血液（血リンパ）を直接ドバッと流している", "完全に四つの部屋に分かれている", "心臓が足の先にある"],
+    answer: 1,
+    explanation: "昆虫類は閉鎖血管系ではなく、背中を走る管状の心臓で血リンパをポンプしています。"
+  },
+  {
+    category: "雑学・進化",
+    question: "ミミズなどの環形動物が持つ心臓（厳密には擬似心臓・大動脈弓）の面白い特徴はどれ？",
+    options: ["心臓が1つだけ胸にある", "心臓が複数（5対など）存在し、体を巡る血管をいくつもの輪で押し出している", "心臓が存在しない", "肺呼吸をしている"],
+    answer: 1,
+    explanation: "ミミズには複数の「疑似心臓（大動脈弓）」があり、全身の血液循環をリズミカルに支えています。"
+  },
+  {
+    category: "雑学・進化",
+    question: "タコやイカなどの頭足類が持つ心臓の数として驚くべき事実はどれ？",
+    options: ["心臓が全部で3つある（1つの主心臓と2つのエラ心臓）", "心臓が全くない", "心臓が10個ある", "心臓が頭の中にある"],
+    answer: 0,
+    explanation: "タコには全身に送るメインの心臓が1つと、エラへ血液を送るための「エラ心臓」が2つ、合計3つの心臓があります。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓を体から完全に取り外しても、しばらくの間は単体でドクドクと動き続けることができる最大の理由は何ですか？",
+    options: ["脳からの無線電波を受け取っているから", "心臓自体に独自の発電所（洞結節）と配線（刺激伝導系）が備わっているから", "魔法のエネルギーで動いているから", "筋肉に記憶が残っているだけですぐ止まるから"],
+    answer: 1,
+    explanation: "心臓は自律的な発電システム（洞結節）を持っているため、十分な酸素と栄養さえあれば体外でも自ら拍動し続けられます。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓の拍動音（「ドク・ドキ」または「トゥ・タ」）の正体として、医学的に正しい音の発生源はどれ？",
+    options: ["心臓の筋肉同士がこすれ合う音", "血液が心臓の中を流れる摩擦音", "心臓の弁がピタッと閉まるときの音（房室弁や動脈弁の閉鎖音）", "肺が膨らむときの音"],
+    answer: 2,
+    explanation: "私たちが聞く「ドク・ドキ」という音は、主に弁膜がパチンと閉まる瞬間の振動音です。"
+  },
+  {
+    category: "雑学・進化",
+    question: "古代のエジプト文明において、ミイラを作るときに「体から取り出して大切に壺に保存した臓器」はどれ？（逆に脳は捨てられていた）",
+    options: ["脳", "心臓", "小腸", "腎臓"],
+    answer: 1,
+    explanation: "古代エジプトでは心臓こそが感情や知性の宿る最も重要な場所とされ、ミイラ作成時も心臓だけは体内に残すか大切に保管されました。"
+  },
+  {
+    category: "雑学・進化",
+    question: "17世紀に、血液が血管を通って全身を巡っているという「血液循環説」を世界で初めて科学的に証明したイギリスの医師は誰？",
+    options: ["ヒポクラテス", "ウィリアム・ハーベイ", "ルイ・パスツール", "フレミング"],
+    answer: 1,
+    explanation: "ウィリアム・ハーベイが1628年に著作を発表し、血液が心臓を起点に循環していることを証明しました。"
+  },
+  {
+    category: "雑学・進化",
+    question: "世界で初めて人間の心臓移植手術を成功させた南アフリカの外科医は誰？",
+    options: ["クリスチャン・バーナード", "マイケル・ドベーキー", "フレデリック・バンティング", "エドワード・ジェンナー"],
+    answer: 0,
+    explanation: "1967年にクリスチャン・バーナード医師が世界初のヒト心臓移植手術を成功させました。"
+  },
+  {
+    category: "雑学・進化",
+    question: "人間の胎児が母親のお腹の中で成長する際、心臓が一番最初に鼓動を始める時期の目安はどれ？",
+    options: ["受精して数時間以内", "妊娠約4週頃（受精後約3週間）", "生まれる直前", "生後1ヶ月経ってから"],
+    answer: 1,
+    explanation: "胎児の心臓は非常に早い段階（妊娠4週前後）から小さな鼓動を打ち始めます。"
+  },
+  {
+    category: "雑学・進化",
+    question: "「笑うこと（ユーモアや笑顔）」が心臓や血管の健康に良いとされている科学的な理由として適切なものはどれ？",
+    options: ["血管が破裂して新しくなるから", "笑うことで血流が改善し、血管を広げる一酸化窒素（NO）が分泌され、ストレスホルモンが減るから", "カロリーがすべて消滅するから", "心臓の部屋が1つ増えるから"],
+    answer: 1,
+    explanation: "笑顔や笑いは血管の機能を高め、血圧を安定させる素晴らしいリラクゼーション効果があります。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓の筋肉（心筋細胞）は、人間の成長とともにどのような変化をするか？",
+    options: ["骨のように何度も新しく細胞分裂して数が増え続ける", "生まれてから幼児期以降、心筋細胞の数はほとんど増えず、1つひとつの細胞が肥大（大きくなる）することで心臓が成長する", "年齢とともにどんどん小さくなって消えていく", "20歳で完全に消失する"],
+    answer: 1,
+    explanation: "心筋細胞は基本的に分裂能力が非常に低く、個々の細胞が大きく肥大することで成長や負荷への適応を行います。"
+  },
+  {
+    category: "雑学・進化",
+    question: "クジラやアザラシなどの潜水性哺乳類が、深く海に潜るときに心臓や血流で行っている驚異的な適応メカニズムはどれ？",
+    options: ["全身の血流を止めずに加速させる", "ダイビング反射により、心拍数を極端に落とし、酸素を脳や心臓などの重要臓器に優先的に回す", "肺から大量の空気を吹き出す", "心臓をエラに変える"],
+    answer: 1,
+    explanation: "ダイビング反射によって心拍数が劇的に低下し、限られた酸素を効率よく脳と心臓に温存します。"
+  },
+  {
+    category: "雑学・進化",
+    question: "鳥類が空を飛ぶために、人間などの哺乳類と比べて心臓が持っている優れた特徴はどれ？",
+    options: ["心臓が体に対して非常に大きく、拍動数がものすごく速くてパワフル", "心臓が2個ある", "冷血である", "空中で心臓が止まる"],
+    answer: 0,
+    explanation: "鳥類は激しい飛行に必要な大量の酸素を供給するため、哺乳類よりも大きな比率の心臓と高速な心拍数を持っています。"
+  },
+  {
+    category: "雑学・進化",
+    question: "「失恋したときや強い精神的ストレスを受けたとき」に、本当に心臓の左心室の一部が一時的に膨らんで心筋梗塞のような症状を起こす疾患の名称はどれ？",
+    options: ["ブロークンハート症候群（たこつぼ心筋症）", "ガラスの心臓病", "完全心室停止", "心房破裂"],
+    answer: 0,
+    explanation: "激しいストレスにより左心室の先がタコ壺のように膨らむ「たこつぼ心筋症」は、別名ブロークンハート症候群と呼ばれます。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心音に「サー、シャー」という雑音（心雑音）が聞こえる主な原因として最も一般的なものはどれ？",
+    options: ["心臓が高速回転している音", "弁の閉じ方が不完全で、血液が逆流したり狭い隙間を勢いよく通り抜けて渦を巻いている音", "血管が鳴っている音", "胃の消化音"],
+    answer: 1,
+    explanation: "心雑音は、弁の閉鎖不全や狭窄によって血液がスムーズに流れず、渦（乱流）を巻くことで発生します。"
+  },
+  {
+    category: "雑学・進化",
+    question: "「皓一部屋」のようなリラクゼーションやボディケアで、体の緊張をほぐし深いリラックス状態に導くことが、心臓にとって最高の休息になる理由として正しいものはどれ？",
+    options: ["心臓を強制的にマッサージしているから", "交分神経の緊張が解け、副交感神経が優位になって心拍数や血圧が落ち着き、心臓のポンプ負荷が軽くなるから", "心臓の血をすべて入れ替えるから", "特に意味はない"],
+    answer: 1,
+    explanation: "リラクゼーションによる自律神経の整えは、日頃休む間もなく働く心臓や血管のシステムを優しく労わります。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓の拍動を調節する「洞結節」のなかで、実際に電気の自発的リズムを作り出している細胞の正式な名称はどれ？",
+    options: ["ペースメーカー細胞（P細胞）", "骨髄細胞", "表皮細胞", "赤血球"],
+    answer: 0,
+    explanation: "洞結節内にある「P細胞（ペースメーカー細胞）」が自発的な電気興奮を次々と生み出しています。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓と血管を合わせた「循環器系」の血管をすべて一本の線にして繋いだ場合、地球を何周できると言われているか？",
+    options: ["約0.1周", "約2〜2.5周（約10万キロメートル以上）", "約100周", "約1,000周"],
+    answer: 1,
+    explanation: "人間の血管の総延長は、大人一人あたりなんと約10万キロメートル（地球を約2.5周できる長さ）にも及びます。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓に関する雑学クイズや健康情報を楽しみながら学ぶことが、私たちの健康維持に良いプラスの心理的影響をもたらす最大の理由はどれ？",
+    options: ["難しい言葉で脳が疲れて眠れるから", "自分の体の仕組みや神秘を知ることで、日頃のセルフケアや健康への意識が楽しく高まり、生活習慣がポジティブに変わるから", "特に何も変わらない", "運動したことと同じになるから"],
+    answer: 1,
+    explanation: "体のメカニズムを知る楽しさは、日々のボディケアや健康維持への最高のモチベーションにつながります。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓の筋肉（心筋）にエネルギー（ATP）を供給するために、最も好まれて使われている燃料（エネルギー源）は何ですか？",
+    options: ["脂肪酸（および糖や乳酸など）", "プラスチック", "アルコールのみ", "鉄分"],
+    answer: 0,
+    explanation: "心筋は絶えず動き続けるため、効率の良いエネルギー源として主に脂肪酸を好んで燃焼させています。"
+  },
+  {
+    category: "雑学・進化",
+    question: "宇宙空間（無重力環境）に長期間滞在すると、宇宙飛行士の心臓にどのような変化が起きることが知られているか？",
+    options: ["心臓が2倍に大きくなる", "重力で下半身に血液が集まらないため、心臓への負担が減って一時的に心臓や血液の量が縮小・萎縮する傾向がある", "心臓が完全に止まる", "脈が毎分300回になる"],
+    answer: 1,
+    explanation: "無重力では重力による血流の偏りがなくなるため、心臓が「それほど強いポンプ力はいらない」と判断して適応（縮小）します。"
+  },
+  {
+    category: "雑学・進化",
+    question: "心臓の健康を長く保つために、毎日の生活で最も推奨されるシンプルで強力な習慣の組み合わせはどれ？",
+    options: ["全く動かずに1日中寝ること", "適度な有酸素運動、バランスの良い食事、良質な睡眠、そして定期的なリラクゼーションとストレスケア", "塩分を過剰に摂ること", "病院の薬だけに頼ること"],
+    answer: 1,
+    explanation: "適度な運動や食事、睡眠、そして心身を緩めるリラクゼーションのバランスが心血管系の健康を守る基本です。"
+  },
+  {
+    category: "雑学・進化",
+    question: "「皓一部屋」の解剖学的クイズやボディワークを通じて、体の仕組みを深く知ることで得られる最大の喜びは何ですか？",
+    options: ["誰にも負けない医師になれること", "自分の体の素晴らしさや精巧なメカニズムに感動し、毎日をより軽やかに健やかに過ごせるようになること", "手術ができるようになること", "特に何もない"],
+    answer: 1,
+    explanation: "体の仕組みを知ることは、自分自身を深く愛し、大切に労わる最高のきっかけになります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "心臓解剖生理学クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！素晴らしい心臓の解剖生理学の知識です！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！かなりの心臓雑学マスターですね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【心臓解剖生理学・心臓雑学クイズ道場】（100問版）で 5問中 " + score + "問正解しました！🫀✨\n#皓一部屋 #心臓クイズ #解剖学");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
