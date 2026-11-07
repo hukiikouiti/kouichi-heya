@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>キノコ抜き道場 - 皓一部屋</title>
+    <title>松茸抜き道場 - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -57,11 +57,11 @@
             margin-bottom: 12px;
             color: #8b5a2b;
         }
-        /* ゲームステージ：茶色系 */
+        /* ゲームステージ：松茸の雰囲気（秋の山・大地をイメージした深めのブラウン） */
         .game-stage {
             width: 100%;
             height: 280px;
-            background: linear-gradient(135deg, #795548 0%, #5d4037 100%);
+            background: linear-gradient(135deg, #6d4c41 0%, #4e342e 100%);
             border: 3px solid #3e2723;
             border-radius: 16px;
             position: relative;
@@ -69,25 +69,51 @@
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
         }
-        /* 生えてくるキノコ */
-        .kinoko-item {
+        /* 生えてくる松茸画像アイテム */
+        .matsutake-item {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             background: #ffffff;
-            border: 3px solid #d7ccc8;
+            border: 2px solid #d7ccc8;
             border-radius: 50%;
-            font-size: 2.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             transition: transform 0.1s ease;
+            overflow: hidden;
+            padding: 4px;
+            box-sizing: border-box;
         }
-        .kinoko-item:active {
+        .matsutake-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .matsutake-item:active {
             transform: scale(0.85);
         }
+        
+        /* スポッ！の吹き出しアニメーション */
+        @keyframes popUpText {
+            0% { opacity: 1; transform: translate(-50%, 0) scale(0.8); }
+            100% { opacity: 0; transform: translate(-50%, -45px) scale(1.3); }
+        }
+        .pop-popup {
+            position: absolute;
+            color: #ffeb3b;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-shadow: 2px 2px 0 #d32f2f, -2px -2px 0 #d32f2f, 2px -2px 0 #d32f2f, -2px 2px 0 #d32f2f;
+            pointer-events: none;
+            animation: popUpText 0.4s ease-out forwards;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
         .btn {
             display: inline-block;
             width: 100%;
@@ -134,12 +160,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>🍄 キノコ抜き道場</h1>
-    <p>制限時間20秒！生えてくる椎茸を素早くスポスポ収穫しまくれ！</p>
+    <h1>🌲 松茸抜き道場</h1>
+    <p>制限時間20秒！生えてくる高級松茸を素早くスポスポ収穫しまくれ！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
-        <div style="font-size: 3.5rem; margin: 15px 0;">🍄✨</div>
+        <div style="font-size: 3.5rem; margin: 15px 0;"><img src="松茸.png" alt="松茸" style="width: 80px; height: 80px; object-fit: contain; vertical-align: middle;"> ✨</div>
         <button class="btn start-btn" onclick="startGame()">道場に入門する！</button>
     </div>
 
@@ -151,7 +177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         
         <div class="game-stage" id="game-stage"></div>
-        <p style="font-size:0.8rem; color:#888;">ひょっこり生えてくるキノコをタップ！</p>
+        <p style="font-size:0.8rem; color:#ccc;">ひょっこり生えてくる松茸をタップ！</p>
     </div>
 
     <!-- 結果画面 -->
@@ -203,6 +229,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     let timerInterval = null;
     let spawnerInterval = null;
     let isPlaying = false;
+    let audioCtx = null;
+
+    // タップ時のタイマー音（ポコッ・スポッという軽い効果音）を生成する関数
+    function playPopSound() {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            // 高い音から低い音へピッチを急降下させて「スポッ」感を出す
+            osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
+
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        } catch (e) {
+            // 音声再生がブロックされた場合などのエラー対策
+        }
+    }
 
     function startGame() {
         if (isPlaying) {
@@ -224,7 +281,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         clearItems();
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'kinoko_game'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'matsutake_game'});
         }
 
         timerInterval = setInterval(() => {
@@ -236,45 +293,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.getElementById('timer').innerText = timeLeft.toFixed(1);
         }, 100);
 
-        spawnerInterval = setInterval(spawnKinoko, 600);
+        spawnerInterval = setInterval(spawnMatsutake, 600);
     }
 
-    function spawnKinoko() {
+    function spawnMatsutake() {
         if (!isPlaying) return;
         const stage = document.getElementById('game-stage');
         
-        const kinoko = document.createElement('div');
-        kinoko.className = 'kinoko-item';
-        kinoko.innerHTML = '🍄';
+        const item = document.createElement('div');
+        item.className = 'matsutake-item';
+        
+        const img = document.createElement('img');
+        img.src = '松茸.png';
+        img.alt = '松茸';
+        item.appendChild(img);
 
-        const maxX = stage.clientWidth - 60;
-        const maxY = stage.clientHeight - 60;
+        const maxX = stage.clientWidth - 65;
+        const maxY = stage.clientHeight - 65;
         const randomX = Math.floor(Math.random() * Math.max(0, maxX));
         const randomY = Math.floor(Math.random() * Math.max(0, maxY));
 
-        kinoko.style.left = randomX + 'px';
-        kinoko.style.top = randomY + 'px';
+        item.style.left = randomX + 'px';
+        item.style.top = randomY + 'px';
 
         const disappearTimer = setTimeout(() => {
-            if (kinoko.parentNode) {
-                kinoko.remove();
+            if (item.parentNode) {
+                item.remove();
             }
         }, 1200);
 
-        kinoko.onmousedown = kinoko.ontouchstart = (e) => {
+        item.onmousedown = item.ontouchstart = (e) => {
             e.preventDefault();
             if (!isPlaying) return;
 
             clearTimeout(disappearTimer);
             score++;
+            
+            // 効果音を鳴らす
+            playPopSound();
+            
+            // バイブレーション
             if (navigator.vibrate) navigator.vibrate(30);
 
+            // 「スポッ！」の吹き出しを表示
+            const pop = document.createElement('div');
+            pop.className = 'pop-popup';
+            pop.innerText = 'スポッ！';
+            pop.style.left = (randomX + 32) + 'px';
+            pop.style.top = (randomY + 10) + 'px';
+            stage.appendChild(pop);
+            setTimeout(() => pop.remove(), 400);
+
             document.getElementById('score-count').innerText = score;
-            kinoko.remove();
+            item.remove();
         };
 
-    // 修正: ここが閉じられていなかった部分を補完
-        stage.appendChild(kinoko);
+        stage.appendChild(item);
     }
 
     function clearItems() {
@@ -298,22 +372,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         let judge = "";
         if (score >= 35) {
-            judge = "【伝説の椎茸マスター大名人】";
+            judge = "【伝説の松茸マスター大名人】";
         } else if (score >= 25) {
-            judge = "【キノコ狩り上級者】";
+            judge = "【高級松茸ハンター】";
         } else if (score >= 15) {
-            judge = "【見習いシイタケ収穫人】";
+            judge = "【見習いキノコ収穫人】";
         } else {
-            judge = "【原木を見守る人】";
+            judge = "【赤松を見守る人】";
         }
 
-        document.getElementById('result-message').innerHTML = '<div style="font-size:2rem; margin:5px 0;">🍄🏆</div>収穫数： <b>' + score + ' 本</b><br><span style="font-size:0.85rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>キノコ抜き道場での修行完了！';
+        document.getElementById('result-message').innerHTML = '<div style="font-size:2rem; margin:5px 0;">🌲🏆</div>収穫数： <b>' + score + ' 本</b><br><span style="font-size:0.85rem; color:#8b5a2b; font-weight:bold;">' + judge + '</span><br><br>松茸抜き道場での修行完了！';
 
-        var text = encodeURIComponent('キノコ抜き道場で ' + score + '本 の椎茸を収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも道場に入門する？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/kinoko.html') + '&hashtags=皓一部屋,キノコ抜き道場,健康エンタメ,名古屋マッサージ';
+        var text = encodeURIComponent('松茸抜き道場で ' + score + '本 の高級松茸を収穫しました！\n称号：' + judge + '\n\nスポスポ抜ける爽快感、あなたも道場に入門する？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/kinoko.html') + '&hashtags=皓一部屋,松茸抜き道場,健康エンタメ,名古屋マッサージ';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'kinoko_game', 'score': score});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'matsutake_game', 'score': score});
         }
     }
 </script>
