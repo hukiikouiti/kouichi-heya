@@ -106,7 +106,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     position: absolute;
     width: 55px;
     height: 55px;
-    font-size: 2.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,6 +113,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     transform: translate(-50%, -50%);
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     -webkit-tap-highlight-color: transparent;
+  }
+  .falling-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .effect-text {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    animation: floatUp 0.3s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+    100% { opacity: 0; transform: translate(-50%, -100%) scale(1.2); }
   }
 </style>
 </head>
@@ -126,7 +142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="screen" id="start-screen">
   <h1>🌰 秋の栗拾いゲーム</h1>
-  <p>空から降ってくる「栗（🌰）」をタップして集めよう！<br>「葉っぱ（🍃）」をタップするとミスになるので注意！</p>
+  <p>空から降ってくる「栗（🌰）」を集めよう！<br>「毬栗」や「ウニ」をタップすると減点になるので注意！</p>
   <div style="font-size: 3rem; margin: 10px 0;">🌰</div>
   <button id="start-btn" class="btn">ゲームスタート！</button>
   <br>
@@ -155,11 +171,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
 
   <!-- ボタンを格納するエリア -->
-<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
 
     <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
     <div style="display: flex; gap: 8px; width: 100%;">
-        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+        <button onclick="restartGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
             もう一度あそぶ
         </button>
         <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
@@ -167,9 +183,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
     </div>
 
-    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並びにする場合 -->
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
     <div style="display: flex; gap: 8px; width: 100%;">
-        <!-- ゲーム選択のページ（例: ミニゲーム一覧など）へのリンク -->
         <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
             🎮 ゲーム選択に戻る
         </a>
@@ -178,7 +193,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
     </div>
 
+  </div>
 </div>
+
 <script>
 let score = 0;
 let timeLeft = 20;
@@ -219,9 +236,14 @@ function startGame() {
   }, 1000);
 
   if (spawnerId) clearInterval(spawnerId);
+  // リズムよくアイテムを生成するスポーン間隔
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
-  }, 550);
+  }, 500);
+}
+
+function restartGame() {
+  startGame();
 }
 
 function spawnItem() {
@@ -229,9 +251,33 @@ function spawnItem() {
   const item = document.createElement('div');
   item.className = 'falling-item';
 
-  const isChestnut = Math.random() < 0.75;
-  item.innerText = isChestnut ? '🌰' : '🍃';
-  item.dataset.type = isChestnut ? 'chestnut' : 'leaf';
+  // 確率設定：栗 (65%)、毬栗 (20%)、ウニ (15%)
+  const rand = Math.random();
+  let type = 'chestnut';
+  let fileName = '栗.png';
+  let points = 1;
+
+  if (rand < 0.65) {
+    type = 'chestnut';
+    fileName = '栗.png';
+    points = 1;
+  } else if (rand < 0.85) {
+    type = 'burr'; // 毬栗
+    fileName = '毬栗.png';
+    points = -1;
+  } else {
+    type = 'urchin'; // ウニ
+    fileName = 'ウニ.png';
+    points = -1;
+  }
+
+  item.dataset.type = type;
+  item.dataset.points = points;
+
+  const img = document.createElement('img');
+  img.src = fileName;
+  img.alt = type;
+  item.appendChild(img);
 
   const containerWidth = container.clientWidth;
   const randomX = Math.random() * (containerWidth - 60) + 30;
@@ -241,7 +287,10 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  const fallSpeed = Math.random() * 2.0 + 2.5;
+  // 種類ごとに落下スピード（リズムの緩急）を変える
+  let fallSpeed = Math.random() * 1.5 + 2.2;
+  if (type === 'burr') fallSpeed += 0.5; // 毬栗は少し速い
+  if (type === 'urchin') fallSpeed += 0.8; // ウニはさらにトリッキーに速い
 
   const fallInterval = setInterval(() => {
     if (!gameActive) {
@@ -269,15 +318,19 @@ function spawnItem() {
       navigator.vibrate(40);
     }
 
-    if (item.dataset.type === 'chestnut') {
-      score += 1;
-      item.innerText = '✨';
-      setTimeout(() => item.remove(), 100);
-    } else {
-      score = Math.max(0, score - 2);
-      item.innerText = '❌';
-      setTimeout(() => item.remove(), 100);
-    }
+    const p = parseInt(item.dataset.points);
+    score = Math.max(0, score + p);
+
+    // タップ時のエフェクト表示
+    const fx = document.createElement('div');
+    fx.className = 'effect-text';
+    fx.style.left = item.style.left;
+    fx.style.top = item.style.top;
+    fx.style.color = p > 0 ? '#27ae60' : '#e74c3c';
+    fx.innerText = p > 0 ? '+1' : '-1';
+    container.appendChild(fx);
+
+    item.remove();
     document.getElementById('score-text').innerText = "スコア: " + score + "個";
   });
 }
@@ -293,25 +346,25 @@ function endGame() {
   let judge = "";
   let comment = "";
 
-  if (score >= 30) {
+  if (score >= 25) {
     judge = "【伝説の人間栗拾いマスター】";
-    comment = "「素晴らしい反射神経と集中力ですね！葉っぱを巧みにかわし、次々と栗を収穫する手際はもはや職人芸の域です！」";
-  } else if (score >= 20) {
+    comment = "「素晴らしい反射神経と集中力ですね！イガグリやウニを巧みにかわし、次々と栗を収穫する手際はもはや職人芸の域です！」";
+  } else if (score >= 15) {
     judge = "【秋の味覚ハンター】";
     comment = "「見事な収穫量です！秋の恵みをしっかりキャッチできていますね。日頃のフットワークの軽さが活かされています！」";
-  } else if (score >= 10) {
+  } else if (score >= 8) {
     judge = "【見習い栗拾い職人】";
-    comment = "「まずまずの収穫ですね！葉っぱに少し惑わされてしまいましたが、ここからさらに集中力を高めていきましょう。」";
+    comment = "「まずまずの収穫ですね！危険なトゲトゲに少し惑わされてしまいましたが、ここからさらに集中力を高めていきましょう。」";
   } else {
     judge = "【のんびり秋の散策者】";
-    comment = "「おや、少し葉っぱをたくさん拾ってしまったようですね……！焦らず落ち着いて栗だけを狙うのがコツですよ。」";
+    comment = "「おや、トゲのあるトラップをたくさん踏んでしまったようですね……！焦らず落ち着いて栗だけを狙うのがコツですよ。」";
   }
 
   document.getElementById('result-message').innerHTML = '獲得した栗： <b>' + score + ' 個</b><br><span style="color:#d35400; font-weight:bold;">称号：' + judge + '</span><br><br><b>🌰 星野青龍の総評：</b><br>' + comment;
 }
 
 function shareToX() {
-  const text = encodeURIComponent("【秋の栗拾いゲーム】で栗を " + score + "個拾いました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
+  const text = encodeURIComponent("【秋の栗拾いゲーム】でスコア " + score + " を獲得しました！🌰✨\n#皓一部屋 #リフレッシュゲーム");
   window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
 }
 </script>
