@@ -123,6 +123,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    /* 白いフチや四角い背景をきれいに馴染ませる処理 */
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
   }
   .effect-text {
     position: absolute;
@@ -204,8 +206,8 @@ let rhythmId = null;
 let gameActive = false;
 let audioCtx = null;
 
-// Web Audio APIによる確実な効果音合成（「ゲット」の高音ピコッ、「いた」の低音ブーッ）
-function playSynthSound(type) {
+// 青山龍星風ボイス・効果音合成システム（Web Audio API）
+function playVoiceSound(type) {
   try {
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -217,30 +219,30 @@ function playSynthSound(type) {
     const gain = audioCtx.createGain();
 
     if (type === 'get') {
-      // ゲット音：明るい高音のピコッ
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.15);
-    } else {
-      // いた音：低めのブーッ（ダメージ音）
+      // ゲット音：渋めのイケボ風に二段階で上がる電子サイン波
       osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-      osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.2);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(220, audioCtx.currentTime);       // A3
+      osc.frequency.setValueAtTime(330, audioCtx.currentTime + 0.08); // E4
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
       osc.start();
       osc.stop(audioCtx.currentTime + 0.2);
+    } else {
+      // いた音（ダメージ）：低く響くブーッという警告音
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(130, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(65, audioCtx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.25);
     }
     osc.connect(gain);
     gain.connect(audioCtx.destination);
   } catch (e) {}
 }
 
-// BGM（電子のリズム音）
+// 電子のリズム音（BGM）
 function playRhythmBeat() {
   if (!gameActive) return;
   try {
@@ -254,10 +256,10 @@ function playRhythmBeat() {
     const gain = audioCtx.createGain();
     
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(330, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(165, audioCtx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
 
-    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
 
     osc.connect(gain);
@@ -395,11 +397,11 @@ function spawnItem() {
     const p = parseInt(item.dataset.points);
     score = Math.max(0, score + p);
 
-    // 効果音の再生
+    // 音声の再生
     if (p > 0) {
-      playSynthSound('get');
+      playVoiceSound('ゲット');
     } else {
-      playSynthSound('ita');
+      playVoiceSound('いた');
     }
 
     const fx = document.createElement('div');
