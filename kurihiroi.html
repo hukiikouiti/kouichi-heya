@@ -111,13 +111,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     justify-content: center;
     cursor: pointer;
     transform: translate(-50%, -50%);
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     -webkit-tap-highlight-color: transparent;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
   .falling-item img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
   .effect-text {
     position: absolute;
@@ -161,19 +166,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>🌰 採掘結果と総評</h1>
   <div id="result-message" style="font-size: 0.95rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #fff8f0; padding: 12px; border-radius: 10px; border-left: 5px solid #d35400;"></div>
 
-  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <!-- 1列目：LINEお友達追加 -->
   <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
 
-  <!-- 2列目：予約する（太ボタン） -->
+  <!-- 2列目：予約する -->
   <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
 
   <!-- 3列目：Xで結果をシェア -->
   <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
 
-  <!-- ボタンを格納するエリア -->
   <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
-
-    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
     <div style="display: flex; gap: 8px; width: 100%;">
         <button onclick="restartGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
             もう一度あそぶ
@@ -182,8 +184,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             クイズ選択に戻る
         </a>
     </div>
-
-    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
     <div style="display: flex; gap: 8px; width: 100%;">
         <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
             🎮 ゲーム選択に戻る
@@ -192,13 +192,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             🏠 トップに戻る
         </a>
     </div>
-
   </div>
 </div>
-
-<!-- 音声ファイル要素 -->
-<audio id="get-sound" src="ゲット.wav" preload="auto"></audio>
-<audio id="ita-sound" src="いた.wav" preload="auto"></audio>
 
 <script>
 let score = 0;
@@ -209,19 +204,43 @@ let rhythmId = null;
 let gameActive = false;
 let audioCtx = null;
 
-// 音声再生ヘルパー（連続再生できるようにクローンして再生）
-function playAudio(id) {
-  const audioEl = document.getElementById(id);
-  if (audioEl) {
-    const clone = audioEl.cloneNode();
-    clone.volume = 0.8;
-    clone.play().catch(err => {
-      // 自動再生制限対策など
-    });
-  }
+// Web Audio APIによる確実な効果音合成（「ゲット」の高音ピコッ、「いた」の低音ブーッ）
+function playSynthSound(type) {
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    if (type === 'get') {
+      // ゲット音：明るい高音のピコッ
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15);
+    } else {
+      // いた音：低めのブーッ（ダメージ音）
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    }
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+  } catch (e) {}
 }
 
-// 電子のリズム音（BGM）を奏でるWeb Audio APIシンセ
+// BGM（電子のリズム音）
 function playRhythmBeat() {
   if (!gameActive) return;
   try {
@@ -234,13 +253,11 @@ function playRhythmBeat() {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     
-    // ピコピコした電子音の波形
     osc.type = 'triangle';
-    // 軽いリズム感が出るようにランダムまたは交互に音程を変える
-    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(330, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(165, audioCtx.currentTime + 0.08);
 
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
 
     osc.connect(gain);
@@ -248,9 +265,7 @@ function playRhythmBeat() {
 
     osc.start();
     osc.stop(audioCtx.currentTime + 0.08);
-  } catch (e) {
-    // AudioContext未初期化エラーなどをガード
-  }
+  } catch (e) {}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -278,7 +293,6 @@ function startGame() {
   const container = document.getElementById('game-canvas-container');
   container.innerHTML = '';
 
-  // AudioContextの有効化
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
@@ -298,11 +312,10 @@ function startGame() {
     if (gameActive) spawnItem();
   }, 500);
 
-  // 電子のリズム音（テンポよく刻むBGM）
   if (rhythmId) clearInterval(rhythmId);
   rhythmId = setInterval(() => {
     if (gameActive) playRhythmBeat();
-  }, 250); // 4分音符・8分音符のようなリズム
+  }, 250);
 }
 
 function restartGame() {
@@ -314,7 +327,6 @@ function spawnItem() {
   const item = document.createElement('div');
   item.className = 'falling-item';
 
-  // 確率設定：栗 (60%)、毬栗 (20%)、ウニ (20%)
   const rand = Math.random();
   let type = 'chestnut';
   let fileName = '栗.png';
@@ -325,11 +337,11 @@ function spawnItem() {
     fileName = '栗.png';
     points = 1;
   } else if (rand < 0.80) {
-    type = 'burr'; // 毬栗
+    type = 'burr';
     fileName = '毬栗.png';
     points = -1;
   } else {
-    type = 'urchin'; // ウニ
+    type = 'urchin';
     fileName = 'ウニ.png';
     points = -1;
   }
@@ -383,14 +395,13 @@ function spawnItem() {
     const p = parseInt(item.dataset.points);
     score = Math.max(0, score + p);
 
-    // 音声の切り替え：栗なら「ゲット.wav」、毬栗・ウニなら「いた.wav」
+    // 効果音の再生
     if (p > 0) {
-      playAudio('get-sound');
+      playSynthSound('get');
     } else {
-      playAudio('ita-sound');
+      playSynthSound('ita');
     }
 
-    // タップ時のエフェクト表示
     const fx = document.createElement('div');
     fx.className = 'effect-text';
     fx.style.left = item.style.left;
