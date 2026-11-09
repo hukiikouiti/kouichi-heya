@@ -196,12 +196,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+<!-- 音声ファイル要素 -->
+<audio id="get-sound" src="ゲット.wav" preload="auto"></audio>
+<audio id="ita-sound" src="いた.wav" preload="auto"></audio>
+
 <script>
 let score = 0;
 let timeLeft = 20;
 let timerId = null;
 let spawnerId = null;
+let rhythmId = null;
 let gameActive = false;
+let audioCtx = null;
+
+// 音声再生ヘルパー（連続再生できるようにクローンして再生）
+function playAudio(id) {
+  const audioEl = document.getElementById(id);
+  if (audioEl) {
+    const clone = audioEl.cloneNode();
+    clone.volume = 0.8;
+    clone.play().catch(err => {
+      // 自動再生制限対策など
+    });
+  }
+}
+
+// 電子のリズム音（BGM）を奏でるWeb Audio APIシンセ
+function playRhythmBeat() {
+  if (!gameActive) return;
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    
+    // ピコピコした電子音の波形
+    osc.type = 'triangle';
+    // 軽いリズム感が出るようにランダムまたは交互に音程を変える
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.08);
+  } catch (e) {
+    // AudioContext未初期化エラーなどをガード
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const startBtn = document.getElementById('start-btn');
@@ -228,6 +278,14 @@ function startGame() {
   const container = document.getElementById('game-canvas-container');
   container.innerHTML = '';
 
+  // AudioContextの有効化
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
   if (timerId) clearInterval(timerId);
   timerId = setInterval(() => {
     timeLeft--;
@@ -236,10 +294,15 @@ function startGame() {
   }, 1000);
 
   if (spawnerId) clearInterval(spawnerId);
-  // リズムよくアイテムを生成するスポーン間隔
   spawnerId = setInterval(() => {
     if (gameActive) spawnItem();
   }, 500);
+
+  // 電子のリズム音（テンポよく刻むBGM）
+  if (rhythmId) clearInterval(rhythmId);
+  rhythmId = setInterval(() => {
+    if (gameActive) playRhythmBeat();
+  }, 250); // 4分音符・8分音符のようなリズム
 }
 
 function restartGame() {
@@ -287,10 +350,9 @@ function spawnItem() {
   container.appendChild(item);
 
   let currentTop = -30;
-  // 種類ごとに落下スピード（リズムの緩急）を変える
   let fallSpeed = Math.random() * 1.5 + 2.2;
-  if (type === 'burr') fallSpeed += 0.5; // 毬栗は少し速い
-  if (type === 'urchin') fallSpeed += 0.8; // ウニはさらにトリッキーに速い
+  if (type === 'burr') fallSpeed += 0.5;
+  if (type === 'urchin') fallSpeed += 0.8;
 
   const fallInterval = setInterval(() => {
     if (!gameActive) {
@@ -321,6 +383,13 @@ function spawnItem() {
     const p = parseInt(item.dataset.points);
     score = Math.max(0, score + p);
 
+    // 音声の切り替え：栗なら「ゲット.wav」、毬栗・ウニなら「いた.wav」
+    if (p > 0) {
+      playAudio('get-sound');
+    } else {
+      playAudio('ita-sound');
+    }
+
     // タップ時のエフェクト表示
     const fx = document.createElement('div');
     fx.className = 'effect-text';
@@ -339,6 +408,7 @@ function endGame() {
   gameActive = false;
   clearInterval(timerId);
   clearInterval(spawnerId);
+  clearInterval(rhythmId);
 
   document.getElementById('game-screen').classList.add('hidden');
   document.getElementById('result-screen').classList.remove('hidden');
