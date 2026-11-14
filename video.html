@@ -29,8 +29,8 @@
 
         .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; text-align: center; }
 
-        /* ▼ アンカーリンクで飛んだ際に見出しが隠れないように上の余白を確保 ▼ */
-        #video, .section-target { scroll-margin-top: 40px; }
+        /* ▼ アンカーリンクで飛んだ際に見出しが隠れないように上の余白（スクロールマージン）をしっかりと確保 ▼ */
+        #video-section, #faq-section, #voice-section, #concept, #qualification, .section-target { scroll-margin-top: 100px; }
 
         .note-title-blue { color: #2b70c9; font-size: 32px; font-weight: bold; text-align: center; margin: 30px 0 15px 0; line-height: 1.3; }
         .direct-video-box { max-width: 100%; width: 500px; margin: 0 auto 25px auto; text-align: center; }
@@ -131,8 +131,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="container">
 
-    <div class="section">
-        <h2 id="video" class="section-title-large" style="color: #eb0e0e; font-size: 36px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術の流れ動画</h2>
+    <!-- ▼ 各セクションに正しいID（video-section, voice-section 等）を付与しました ▼ -->
+    <div class="section" id="video-section">
+        <h2 class="section-title-large" style="color: #eb0e0e; font-size: 36px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術の流れ動画</h2>
 
         <!-- 動画1 -->
         <div class="direct-video-box">
@@ -187,7 +188,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     </div>
 
-    <div style="margin: 30px auto; max-width: 600px; padding: 0 10px;">
+    <!-- ▼ お客様の声セクション（id="voice-section" を追加） ▼ -->
+    <div class="section" id="voice-section">
+        <h2 style="font-size: 28px; color: #4a3b32; border-bottom: 2px solid #7a6b60; padding-bottom: 8px; margin-bottom: 20px;">お客様から寄せられたご感想・口コミ</h2>
+        <p style="color: #666; font-size: 16px;">（ここに口コミの内容が続きます）</p>
+    </div>
+
+    <div style="margin: 30px auto; max-width: 600px; padding: 0 10px;" id="faq-section">
       <details style="cursor: pointer; border: 1px solid #ffccd5; border-radius: 12px; padding: 18px; background-color: #fff5f6;">
         <summary style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e53935; padding-bottom: 10px; list-style: none;">
           <span style="font-size: 24px; font-weight: bold; color: #e53935;">
@@ -212,7 +219,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </details>
     </div>
 
-    <div style="max-width: 600px; margin: 40px auto 20px auto; padding: 20px 15px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+    <div style="max-width: 600px; margin: 40px auto 20px auto; padding: 20px 15px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;" id="concept">
       <p style="font-size: 16px; font-weight: bold; color: #4a3b32; margin: 0 0 8px 0;">＼ 30秒で完了！応援をお願いします ／</p>
       <p style="font-size: 14px; color: #666; margin-bottom: 15px; line-height: 1.6;">SNSの「いいね！」を押す感覚で、Googleの星評価をポチッと押していただけると励みになります⭐</p>
 
