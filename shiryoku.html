@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+    <!-- End Google Tag Manager -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランドルト環 視力反射20秒バトル - 皓一部屋</title>
+    <link rel="icon" href="KF (1).png" type="image/png">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #111827;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .game-card {
+            background: #1f2937;
+            border: 2px solid #60a5fa;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 420px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: #93c5fd;
+        }
+        p {
+            font-size: 0.85rem;
+            color: #d1d5db;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .timer-score {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 8px;
+            color: #f39800;
+        }
+        
+        /* ランドルト環を表示するステージ */
+        .ring-display {
+            width: 110px;
+            height: 110px;
+            margin: 10px auto 15px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .landolt-c {
+            width: 66px;
+            height: 66px;
+            background: #111827;
+            border-radius: 50%;
+            position: relative;
+        }
+        .cut-out {
+            position: absolute;
+            background: #ffffff;
+        }
+
+        /* 8方向ボタンパッド */
+        .pad-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 15px auto;
+        }
+        .dir-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            border: 2px solid #93c5fd;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background 0.1s;
+        }
+        .dir-btn:active { transform: scale(0.85); background: #2563eb; }
+
+        .btn-up { top: 0; left: 90px; }
+        .btn-upleft { top: 20px; left: 12px; }
+        .btn-left { top: 90px; left: 0; }
+        .btn-downleft { bottom: 20px; left: 12px; }
+        .btn-down { bottom: 0; left: 90px; }
+        .btn-downright { bottom: 20px; right: 12px; }
+        .btn-right { top: 90px; right: 0; }
+        .btn-upright { top: 20px; right: 12px; }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .start-btn {
+            background: linear-gradient(180deg, #f39800 0%, #e67200 100%);
+            color: #ffffff;
+        }
+        .game-link-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="game-card">
+    <h1>👀 ランドルト環 反射バトル</h1>
+    <p>制限時間20秒！切れ込みの方向を瞬時に見極めてボタンを押しまくれ！</p>
+
+    <!-- スタート画面 -->
+    <div id="game-start-screen">
+        <div style="font-size: 3rem; margin: 15px 0;">🎯✨</div>
+        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+    </div>
+
+    <!-- プレイ画面 -->
+    <div id="game-play-screen" class="hidden">
+        <div class="timer-score">
+            <div>残り時間: <span id="timer">20.0</span>秒</div>
+            <div>スコア: <span id="score-count">0</span>回</div>
+        </div>
+        
+        <!-- ランドルト環 -->
+        <div class="ring-display" id="ringDisplay">
+            <div class="landolt-c" id="landoltC"></div>
+        </div>
+
+        <div id="message" style="font-size: 0.9rem; color: #93c5fd; margin-bottom: 5px; min-height: 1.4em;">
+            切れ込みの方向はどこ？
+        </div>
+
+        <!-- 8方向ボタン -->
+        <div class="pad-container">
+            <button class="dir-btn btn-up" onclick="checkAnswer('up')">⬆️上</button>
+            <button class="dir-btn btn-upleft" onclick="checkAnswer('upleft')">↖️</button>
+            <button class="dir-btn btn-left" onclick="checkAnswer('left')">⬅️左</button>
+            <button class="dir-btn btn-downleft" onclick="checkAnswer('downleft')">↙️</button>
+            <button class="dir-btn btn-down" onclick="checkAnswer('down')">⬇️下</button>
+            <button class="dir-btn btn-downright" onclick="checkAnswer('downright')">↘️</button>
+            <button class="dir-btn btn-right" onclick="checkAnswer('right')">➡️右</button>
+            <button class="dir-btn btn-upright" onclick="checkAnswer('upright')">↗️</button>
+        </div>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="game-result-screen" class="hidden">
+        <h2 style="color: #93c5fd; font-size: 1.2rem; margin-top:0;">⏰ タイムアップ！</h2>
+        
+        <!-- 結果メッセージ -->
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #d1d5db; line-height: 1.6; text-align: left; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border-left: 5px solid #60a5fa;"></div>
+
+        <!-- LINEお友達追加 -->
+        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+        <!-- 予約する -->
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #f39800, #e67200); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+        <!-- Xで結果シェア -->
+        <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</a>
+
+        <!-- 各種ボタンエリア -->
+        <div style="display: flex; gap: 8px; width: 100%; margin-top: 15px;">
+            <button onclick="startGame()" style="flex: 1; padding: 11px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem;">
+                もう一度あそぶ
+            </button>
+            <a href="index.html" style="flex: 1; display: block; padding: 11px 5px; background: #7a6b60; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; line-height: 1.4;">
+                🏠 トップに戻る
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const directions = ['up', 'upright', 'right', 'downright', 'down', 'downleft', 'left', 'upleft'];
+    const dirNames = {
+        'up': '上', 'upright': '右上', 'right': '右', 'downright': '右下',
+        'down': '下', 'downleft': '左下', 'left': '左', 'upleft': '左上'
+    };
+
+    let currentDir = 'up';
+    let score = 0;
+    let timeLeft = 20.0;
+    let timerInterval = null;
+    let metronomeInterval = null;
+    let isPlaying = false;
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    // メトロノーム音
+    function playMetronomeSound() {
+        try {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        } catch (e) {}
+    }
+
+    // 正解音
+    function playCorrectSound() {
+        try {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+        } catch (e) {}
+    }
+
+    // 不正解音
+    function playWrongSound() {
+        try {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(110, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        } catch (e) {}
+    }
+
+    function setRandomDirection() {
+        currentDir = directions[Math.floor(Math.random() * directions.length)];
+        const cInner = document.getElementById('landoltC');
+        cInner.innerHTML = '';
+        
+        let cut = document.createElement('div');
+        cut.className = 'cut-out';
+        
+        switch(currentDir) {
+            case 'up':
+                cut.style.width = '22px'; cut.style.height = '18px';
+                cut.style.top = '-3px'; cut.style.left = '22px';
+                break;
+            case 'down':
+                cut.style.width = '22px'; cut.style.height = '18px';
+                cut.style.bottom = '-3px'; cut.style.left = '22px';
+                break;
+            case 'left':
+                cut.style.width = '18px'; cut.style.height = '22px';
+                cut.style.top = '22px'; cut.style.left = '-3px';
+                break;
+            case 'right':
+                cut.style.width = '18px'; cut.style.height = '22px';
+                cut.style.top = '22px'; cut.style.right = '-3px';
+                break;
+            case 'upright':
+                cut.style.width = '20px'; cut.style.height = '20px';
+                cut.style.top = '2px'; cut.style.right = '2px';
+                break;
+            case 'upleft':
+                cut.style.width = '20px'; cut.style.height = '20px';
+                cut.style.top = '2px'; cut.style.left = '2px';
+                break;
+            case 'downright':
+                cut.style.width = '20px'; cut.style.height = '20px';
+                cut.style.bottom = '2px'; cut.style.right = '2px';
+                break;
+            case 'downleft':
+                cut.style.width = '20px'; cut.style.height = '20px';
+                cut.style.bottom = '2px'; cut.style.left = '2px';
+                break;
+        }
+        cInner.appendChild(cut);
+    }
+
+    function startGame() {
+        initAudio();
+        if (isPlaying) {
+            clearInterval(timerInterval);
+            clearInterval(metronomeInterval);
+            isPlaying = false;
+        }
+
+        isPlaying = true;
+        score = 0;
+        timeLeft = 20.0;
+        document.getElementById('timer').innerText = '20.0';
+        document.getElementById('score-count').innerText = score;
+
+        document.getElementById('game-start-screen').classList.add('hidden');
+        document.getElementById('game-play-screen').classList.remove('hidden');
+        document.getElementById('game-result-screen').classList.add('hidden');
+
+        setRandomDirection();
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'landolt_game'});
+        }
+
+        timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                endGame();
+            }
+            document.getElementById('timer').innerText = timeLeft.toFixed(1);
+        }, 100);
+
+        metronomeInterval = setInterval(() => {
+            playMetronomeSound();
+        }, 600);
+    }
+
+    function checkAnswer(selectedDir) {
+        if (!isPlaying) return;
+
+        if (selectedDir === currentDir) {
+            score++;
+            document.getElementById('score-count').innerText = score;
+            playCorrectSound();
+            document.getElementById('message').innerText = "⭕ 正解！";
+            setRandomDirection();
+        } else {
+            playWrongSound();
+            document.getElementById('message').innerText = `❌ 惜しい！（正解: ${dirNames[currentDir]}）`;
+            setRandomDirection();
+        }
+    }
+
+    function endGame() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(timerInterval);
+        clearInterval(metronomeInterval);
+
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        document.getElementById('game-play-screen').classList.add('hidden');
+        document.getElementById('game-result-screen').classList.remove('hidden');
+
+        let judge = "";
+        if (score >= 30) {
+            judge = "【視力神・スーパーアイ】";
+        } else if (score >= 20) {
+            judge = "【動体視力ハンター】";
+        } else if (score >= 10) {
+            judge = "【健康アイセラピスト】";
+        } else {
+            judge = "【まずは眼鏡をクリーニング】";
+        }
+
+        document.getElementById('result-message').innerHTML = '👁️‍🗨️ 正解数： <b>' + score + ' 回</b><br><span style="color:#60a5fa; font-weight:bold;">' + judge + '</span><br><br>20秒反射バトル終了！';
+
+        var text = encodeURIComponent('ランドルト環反射バトルで ' + score + '回 正解しました！\n称号：' + judge + '\n\nあなたの動体視力はいくつ？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/landolt.html') + '&hashtags=皓一部屋,ランドルト環,動体視力,名古屋マッサージ';
+
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'landolt_game', 'score': score});
+        }
+    }
+</script>
+
+</body>
+</html>
