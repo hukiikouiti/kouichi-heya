@@ -11,13 +11,13 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ランドルト環 視力反射20秒バトル - 皓一部屋</title>
+    <title>ランドルト環 反射バトル - 皓一部屋</title>
     <link rel="icon" href="KF (1).png" type="image/png">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #111827;
-            color: #ffffff;
+            background-color: #f7f9fc;
+            color: #333;
             text-align: center;
             margin: 0;
             padding: 15px 10px;
@@ -31,23 +31,22 @@
             -webkit-user-select: none;
         }
         .game-card {
-            background: #1f2937;
-            border: 2px solid #60a5fa;
+            background: #ffffff;
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             max-width: 420px;
             width: 100%;
             box-sizing: border-box;
         }
         h1 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 6px;
-            color: #93c5fd;
+            color: #2c3e50;
         }
         p {
             font-size: 0.85rem;
-            color: #d1d5db;
+            color: #666;
             margin-top: 0;
             margin-bottom: 12px;
         }
@@ -56,11 +55,11 @@
             justify-content: space-around;
             font-size: 0.95rem;
             font-weight: bold;
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.05);
+            margin-bottom: 12px;
+            color: #27ae60;
+            background: #e8f8f5;
             padding: 10px;
-            border-radius: 8px;
-            color: #f39800;
+            border-radius: 10px;
         }
         
         /* ランドルト環を表示するステージ */
@@ -68,24 +67,24 @@
             width: 110px;
             height: 110px;
             margin: 10px auto 15px;
-            background: #ffffff;
+            background: #2c3e50;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
         .landolt-c {
             width: 66px;
             height: 66px;
-            background: #111827;
+            background: #ffffff;
             border-radius: 50%;
             position: relative;
         }
         .cut-out {
             position: absolute;
-            background: #ffffff;
+            background: #2c3e50;
         }
 
         /* 8方向ボタンパッド */
@@ -99,9 +98,9 @@
             position: absolute;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, #27ae60, #1e8449);
             color: #fff;
-            border: 2px solid #93c5fd;
+            border: 2px solid #a3e4d7;
             border-radius: 50%;
             font-size: 1rem;
             font-weight: bold;
@@ -109,10 +108,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
             transition: transform 0.1s, background 0.1s;
         }
-        .dir-btn:active { transform: scale(0.85); background: #2563eb; }
+        .dir-btn:active { transform: scale(0.85); background: #145a32; }
 
         .btn-up { top: 0; left: 90px; }
         .btn-upleft { top: 20px; left: 12px; }
@@ -134,10 +133,10 @@
             cursor: pointer;
             font-size: 1rem;
             box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .start-btn {
-            background: linear-gradient(180deg, #f39800 0%, #e67200 100%);
+            background: linear-gradient(135deg, #27ae60, #1e8449);
             color: #ffffff;
         }
         .game-link-btn {
@@ -150,13 +149,20 @@
             text-decoration: none;
             font-size: 0.95rem;
             box-sizing: border-box;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
             cursor: pointer;
             border: none;
             text-align: center;
         }
         .hidden {
             display: none !important;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #3498db;
+            font-size: 0.85rem;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -175,6 +181,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-start-screen">
         <div style="font-size: 3rem; margin: 15px 0;">🎯✨</div>
         <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
+        <br>
+        <a href="game.html" class="back-link">🎮 ゲーム選択に戻る</a>
     </div>
 
     <!-- プレイ画面 -->
@@ -189,7 +197,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="landolt-c" id="landoltC"></div>
         </div>
 
-        <div id="message" style="font-size: 0.9rem; color: #93c5fd; margin-bottom: 5px; min-height: 1.4em;">
+        <div id="message" style="font-size: 0.9rem; color: #27ae60; font-weight: bold; margin-bottom: 5px; min-height: 1.4em;">
             切れ込みの方向はどこ？
         </div>
 
@@ -208,28 +216,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 style="color: #93c5fd; font-size: 1.2rem; margin-top:0;">⏰ タイムアップ！</h2>
+        <h2 style="color: #27ae60; font-size: 1.2rem; margin-top:0;">✨ 修行終了！</h2>
         
         <!-- 結果メッセージ -->
-        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #d1d5db; line-height: 1.6; text-align: left; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border-left: 5px solid #60a5fa;"></div>
+        <div id="result-message" style="font-size: 0.9rem; margin: 10px 0 15px 0; color: #333; line-height: 1.6; text-align: left; background: #e8f8f5; padding: 12px; border-radius: 10px; border-left: 5px solid #27ae60;"></div>
 
         <!-- LINEお友達追加 -->
         <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
 
         <!-- 予約する -->
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #f39800, #e67200); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
 
         <!-- Xで結果シェア -->
         <a id="share-link" href="#" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: #000; color: #fff;">𝕏 で結果をシェアする</a>
 
-        <!-- 各種ボタンエリア -->
-        <div style="display: flex; gap: 8px; width: 100%; margin-top: 15px;">
-            <button onclick="startGame()" style="flex: 1; padding: 11px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem;">
-                もう一度あそぶ
-            </button>
-            <a href="index.html" style="flex: 1; display: block; padding: 11px 5px; background: #7a6b60; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; line-height: 1.4;">
-                🏠 トップに戻る
-            </a>
+        <!-- ボタン格納エリア（4つのボタンを松茸抜き道場と完全に同じ配置に） -->
+        <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px; box-sizing: border-box;">
+
+            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」 -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button onclick="startGame()" style="flex: 1; padding: 11px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; box-sizing: border-box;">
+                    もう一度あそぶ
+                </button>
+                <a href="kuizu.html" style="flex: 1; display: block; padding: 11px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    クイズ選択に戻る
+                </a>
+            </div>
+
+            <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」 -->
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <a href="game.html" style="flex: 1; display: block; padding: 11px 5px; background: #e67200; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🎮 ゲーム選択に戻る
+                </a>
+                <a href="index.html" style="flex: 1; display: block; padding: 11px 5px; background: #7a6b60; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+                    🏠 トップに戻る
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
@@ -377,7 +400,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         setRandomDirection();
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'landolt_game'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'shiryoku_game'});
         }
 
         timerInterval = setInterval(() => {
@@ -431,16 +454,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         } else if (score >= 10) {
             judge = "【健康アイセラピスト】";
         } else {
-            judge = "【まずは眼鏡をクリーニング】";
+            judge = "【まずは目を休めましょう】";
         }
 
-        document.getElementById('result-message').innerHTML = '👁️‍🗨️ 正解数： <b>' + score + ' 回</b><br><span style="color:#60a5fa; font-weight:bold;">' + judge + '</span><br><br>20秒反射バトル終了！';
+        document.getElementById('result-message').innerHTML = '👁️‍🗨️ 正解数： <b>' + score + ' 回</b><br><span style="color:#27ae60; font-weight:bold;">' + judge + '</span><br><br>20秒反射バトル終了！';
 
         var text = encodeURIComponent('ランドルト環反射バトルで ' + score + '回 正解しました！\n称号：' + judge + '\n\nあなたの動体視力はいくつ？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/landolt.html') + '&hashtags=皓一部屋,ランドルト環,動体視力,名古屋マッサージ';
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/shiryoku.html') + '&hashtags=皓一部屋,ランドルト環,動体視力,名古屋マッサージ';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'landolt_game', 'score': score});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'shiryoku_game', 'score': score});
         }
     }
 </script>
