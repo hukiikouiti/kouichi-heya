@@ -29,8 +29,8 @@
         .menu-list a:hover { background-color: #eee; }
         .menu-list a.active { background-color: #7a6b60; color: #fff; border-color: #7a6b60; }
 
-        /* 各セクションにアンカーで飛んだ際の上の余白確保用 */
-        .section-target { scroll-margin-top: 110px; }
+        /* ▼ 各セクションにジャンプした際に見出しや上が隠れないよう、上部にたっぷり余裕を空ける設定 ▼ */
+        .section-target { scroll-margin-top: 160px; }
 
         .voice-card { background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
         .voice-card h3 { margin: 0 0 10px 0; font-size: 16px; color: #e53935; border-bottom: 2px solid #ffccd5; padding-bottom: 5px; }
@@ -63,7 +63,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="profile.html">プロフィール</a></li>  
             <li><a href="price.html">ご利用ガイド&料金</a></li>
 
-            <!-- ▼ 他のページからでもこのページの各場所に飛べるように voice.html を付与したメニュー ▼ -->
+            <!-- ▼ 初めての方へ アコーディオンメニュー ▼ -->
             <li style="position: relative; display: inline-block;">
               <details style="background-color: #fff5f6; border: 1px solid #ffccd5; border-radius: 5px; padding: 0;">
                 <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #e53935; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -80,7 +80,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </details>
             </li>
             
-            <!-- ▼ アコーディオン型：20秒リフレッシュゲーム道場 -->
+            <!-- ▼ アコーディオン型：20秒リフレッシュゲーム道場 ▼ -->
             <li style="position: relative; display: inline-block;">
               <details style="background-color: #fff3e0; border: 1px solid #ff9800; border-radius: 5px; padding: 0;">
                 <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #e65100; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -110,7 +110,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </details>
             </li>
 
-            <!-- ▼ アコーディオン型：解剖学・栄養代謝クイズ道場 -->
+            <!-- ▼ アコーディオン型：解剖学・栄養代謝クイズ道場 ▼ -->
             <li style="position: relative; display: inline-block;">
               <details style="background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 5px; padding: 0;">
                 <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #2e7d32; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -141,21 +141,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- ▼ 初めての方へ（コンセプト）セクション -->
     <div id="concept" class="section-target" style="margin-top: 20px;">
-        <div class="section">
+        <div class="section" style="background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #e0e0e0;">
           <div style="margin: 20px auto;">
-            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">隠れ家・出張ケアのこだわり</h2>
+            <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">隠れ家・出張ケアのこだわり</h2>
             <p style="text-align: center; margin-bottom: 15px;">
-                「皓一部屋」は、忙しい日々を送るお客様のために、ご宿泊先のホテルやお部屋でゆったりとお寛ぎいただける完全出張型のリラクゼーションサービスです。
+                「皓一部屋」は, 忙しい日々を送るお客様のために, ご宿泊先のホテルやお部屋でゆったりとお寛ぎいただける完全出張型のリラクゼーションサービスです。
             </p>
             <p style="text-align: center;">
-                周りの目を一切気にすることなく、プライベートな空間で心身ともに深くリフレッシュしていただける時間を提供いたします。
+                周りの目を一切気にすることなく, プライベートな空間で心身ともに深くリフレッシュしていただける時間を提供いたします。
             </p>
         </div>
 
-        <div class="section" style="margin-top: 30px;">
+        <div style="margin-top: 30px;">
             <div style="margin: 20px auto;">
-            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">安心・安全への取り組み</h2>
-            <ul class="safety-list" style="line-height: 1.8; color: #555;">
+            <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">安心・安全への取り組み</h2>
+            <ul style="line-height: 1.8; color: #555;">
                 <li>丁寧なカウンセリングで一人ひとりに合わせた施術を提供</li>
                 <li>明朗会計（後からの不当な追加料金は一切ありません）</li>
                 <li>衛生管理・身だしなみの徹底</li>
@@ -165,13 +165,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+    </div>
 
     <!-- ▼ 保有資格セクション -->
     <div id="qualification" class="section-target" style="margin-top: 40px;">
-        <div class="section">
+        <div class="section" style="background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #e0e0e0;">
             <div style="text-align: center; margin: 20px auto 25px;">
                 <p style="font-size: 18px; color: #eb0e0e; font-weight: bold; margin-bottom: 10px;">
-                    学び続ける姿勢が、お客様の安心に。当社の保有資格
+                    学び続ける姿勢が, お客様の安心に。当社の保有資格
                 </p>
             </div>
 
@@ -192,7 +193,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         <!-- note記事埋め込み -->
         <div style="margin: 40px auto 20px;">
-            <div class="note-title-blue" style="font-weight: bold; text-align: center; margin-bottom: 10px; color: #2196f3;">note（ノート）の人気記事</div>
+            <div style="font-weight: bold; text-align: center; margin-bottom: 10px; color: #2196f3; font-size: 32px;">note（ノート）の人気記事</div>
             <div style="width: 100%; max-width: 500px; margin: 20px auto;">
                 <iframe class="note-embed" src="https://note.com/embed/notes/n597737e27479" loading="lazy" style="border: 0; display: block; width: 100%; max-width: 100%; height: 400px; padding: 0; margin: 0 auto; background: #FFFFFF; border-radius: 8px;"></iframe>
                 <script async src="https://note.com/scripts/embed.js" charset="utf-8"></script>
@@ -202,8 +203,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- ▼ 動画案内セクション -->
     <div id="video-section" class="section-target" style="margin-top: 40px;">
-        <div class="section">
-             <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術・サロン紹介動画</h2>
+        <div class="section" style="background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #e0e0e0;">
+             <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術・サロン紹介動画</h2>
             <p style="text-align: center; margin-bottom: 15px; font-size: 14px; color: #666;">
                 サロンの雰囲気や施術の様子を動画（約50秒）でご覧いただけます。
             </p>
@@ -212,11 +213,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
 
-        <div style="margin: 40px auto 20px;">
-            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術の流れ動画</h2>
+        <div class="section" style="background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #e0e0e0; margin-top: 30px;">
+            <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術の流れ動画</h2>
 
             <!-- 動画1 -->
-            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+            <div style="margin-bottom: 20px; text-align: center;">
                 <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
                     <source src="ご予約やお問い合わせこちらから (1).mp4" type="video/mp4">
                     お使いのブラウザは動画再生に対応していません。
@@ -224,7 +225,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <!-- 動画2 -->
-            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+            <div style="margin-bottom: 20px; text-align: center;">
                 <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
                     <source src="review.1.mp4" type="video/mp4">
                     お使いのブラウザは動画再生に対応していません。
@@ -232,7 +233,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <!-- 動画3 -->
-            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+            <div style="margin-bottom: 20px; text-align: center;">
                 <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
                     <source src="review.2.mp4" type="video/mp4">
                     お使いのブラウザは動画再生に対応していません。
@@ -241,7 +242,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
            
             <div style="margin: 40px auto 20px;">
-                <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">リフレッシュ（イメージ図）</h2>
+                <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">リフレッシュ（イメージ図）</h2>
                 <div style="max-width: 100%; width: 500px; margin: 0 auto; text-align: center;">
                 <a href="リフレッシュイメージ図.png" target="_blank">
                     <img src="リフレッシュイメージ図.png" alt="名古屋 ゲイマッサージ皓一部屋 施術後のリフレッシュ・疲労回復イメージ図" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer;">
@@ -250,7 +251,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div style="margin: 40px auto 20px;">
-                <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">アハ動画</h2>
+                <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">アハ動画</h2>
                 <div style="max-width: 100%; width: 500px; margin: 0 auto; text-align: center;">
                     <!-- 動画4 -->
                     <video controls playsinline preload="none" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
@@ -264,8 +265,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- ▼ よくある質問セクション -->
     <div id="faq-section" class="section-target" style="margin-top: 40px;">
-        <div class="header" style="background: transparent; border: none; padding: 10px 0;">
-          <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">よくある質問（FAQ）</h2>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0;">よくある質問（FAQ）</h2>
         </div>
 
         <details class="faq-item">
@@ -352,7 +353,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- ▼ お客様の声セクション -->
     <div id="voice-section" class="section-target" style="margin-top: 40px;">
-        <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">お客様から寄せられたご感想・口コミ</h2>
+        <h2 style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">お客様から寄せられたご感想・口コミ</h2>
 
         <!-- 口コミ 1 -->
         <div class="voice-card">
@@ -437,25 +438,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">今すぐ予約</a>
     </div>
 </div>
-
-<!-- ▼ ジャンプ位置のズレを完璧に防ぐ自動調整プログラム ▼ -->
-<script>
-    window.addEventListener("DOMContentLoaded", function() {
-        if (window.location.hash) {
-            setTimeout(function() {
-                var targetElement = document.querySelector(window.location.hash);
-                if (targetElement) {
-                    var headerHeight = 110; // 上部の余白の高さ（px）
-                    var elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                    window.scrollTo({
-                        top: elementPosition - headerHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 100);
-        }
-    });
-</script>
 
 </body>
 </html>
