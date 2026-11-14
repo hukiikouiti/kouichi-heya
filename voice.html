@@ -11,42 +11,41 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初めての方へ・動画・お客様の声｜【皓一部屋】名古屋 ゲイマッサージ</title>
+    <title>初めての方へ（総合案内）＆お客様の声｜【皓一部屋】名古屋 ゲイマッサージ</title>
+    <meta name="description" content="名古屋の出張メンズリラクゼーション「皓一部屋」のご利用ガイド、お客様の声、よくある質問、動画案内などをまとめた総合ページです。">
+    
     <link rel="icon" href="KF (1).png" type="image/png">
-    <meta name="description" content="名古屋エリア対応の出張メンズリラクゼーション【皓一部屋】の初めての方へ、保有資格、動画、よくある質問、お客様の声の総合案内ページです。">
 
     <style>
         html { scroll-behavior: smooth; }
-        
         body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #fcfbfa; }
-        .header { background-color: #ffffff; text-align: center; padding: 30px 20px 20px; border-bottom: 1px solid #eaeaea; }
-        .container { width: 100%; max-width: 900px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .header { background-color: #ffffff; text-align: center; padding: 30px 20px; border-bottom: 1px solid #eaeaea; }
+        .header h1 { margin: 0; font-size: 24px; color: #e53935; letter-spacing: 1px; text-decoration: underline wavy #ff8a80; text-underline-offset: 8px; }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; box-sizing: border-box; }
         
-        .menu-list { margin: 15px 0; }
-        .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0; margin: 0; align-items: center; }
-        .menu-list a { text-decoration: none; color: #333; font-weight: bold; padding: 8px 12px; border: 1px solid #ccc; border-radius: 5px; display: block; background-color: #f9f9f9; font-size: 14px; }
+        .menu-list { margin: 20px 0; }
+        .menu-list ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; padding: 0; margin: 0; align-items: center; }
+        .menu-list a { text-decoration: none; color: #333; font-weight: bold; padding: 6px 10px; border: 1px solid #ccc; border-radius: 5px; display: block; background-color: #f9f9f9; font-size: 13px; }
         .menu-list a:hover { background-color: #eee; }
         .menu-list a.active { background-color: #7a6b60; color: #fff; border-color: #7a6b60; }
 
-        .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; }
-        .section h3 { margin: 0 0 15px 0; font-size: 20px; color: #4a3b32; border-left: 4px solid #c2b2a2; padding-left: 10px; }
+        /* 各セクションにアンカーで飛んだ際の上の余白確保用 */
+        .section-target { scroll-margin-top: 110px; }
 
-        .note-title-blue { color: #2b70c9; font-size: 32px; font-weight: bold; text-align: center; margin: 30px 0 15px 0; line-height: 1.3; }
-        .direct-video-box { max-width: 100%; width: 500px; margin: 0 auto 25px auto; text-align: center; }
-        .direct-video-box video { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .voice-card { background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .voice-card h3 { margin: 0 0 10px 0; font-size: 16px; color: #e53935; border-bottom: 2px solid #ffccd5; padding-bottom: 5px; }
+        .voice-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid #eee; margin-bottom: 12px; cursor: pointer; }
+        .voice-text { font-size: 15px; color: #444; background: #fff8f8; padding: 12px; border-radius: 6px; line-height: 1.7; }
 
+        .faq-item { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px; padding: 15px; }
+        .faq-q { font-weight: bold; color: #4a3b32; cursor: pointer; font-size: 16px; }
+        .faq-a { margin-top: 10px; font-size: 14px; color: #555; line-height: 1.6; }
+
+        .back-to-top { background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; }
         @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; margin: 0 auto; transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; }
-        .btn-contact { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #06c755 0%, #05a044 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #03732f, 0 8px 15px rgba(0,0,0,0.2); box-sizing: border-box; margin: 0 auto; transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; }
-
-        @media screen and (max-width: 768px) {
-            body, p, span, li:not(.menu-list li), td, div:not(.menu-list div):not(.menu-list details *) { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
-            .section-title-large { font-size: 30px !important; }
-            .note-title-blue { font-size: 26px !important; }
-        }
-
-        .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; }
-        .footer { text-align: center; padding: 20px; background-color: #ffffff; border-top: 1px solid #eaeaea; font-size: 14px; margin-top: 30px; }
+        
+        @keyframes blink-anime { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .blink-target { animation: blink-anime 1.2s infinite; }
     </style>
 </head>
 <body>
@@ -57,210 +56,390 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+<!-- 共通ナビゲーション -->
 <div class="header">
-    <h1 style="margin: 0 0 10px 0; font-size: 26px; color: #eb0e0e; font-weight: bold;">初めての方へ・総合案内ページ</h1>
-   <nav class="menu-list">
-  <ul>
-    <li><a href="index.html">トップ</a></li>
-    <li><a href="profile.html">プロフィール</a></li>  
-    <li><a href="price.html">ご利用ガイド&料金</a></li>
-    <li><a href="voice.html" class="active">初めての方へ</a></li>
-    
-    <!-- ▼ アコーディオン型：20秒リフレッシュゲーム道場 -->
-    <li style="position: relative; display: inline-block;">
-      <details style="background-color: #fff3e0; border: 1px solid #ff9800; border-radius: 5px; padding: 0;">
-        <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #e65100; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
-          🎮 20秒リフレッシュゲーム ▼
-        </summary>
-        <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #ff9800; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 240px; text-align: left; display: flex; flex-direction: column; gap: 6px;">
-          <div style="font-size: 11px; font-weight: bold; color: #e65100; border-bottom: 1px solid #ffe0b2; padding-bottom: 4px; margin-bottom: 2px;">⚡ 体感型リフレッシュ道場</div>
-          <a href="kinoko.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍄 キノコ抜き道場</a>
-          <a href="gohan.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍚 血糖値爆上げタイムアタック</a>
-          <a href="rinpa-nagashi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🦵 ふくらはぎリンパ流しゲーム</a>
-          <a href="wakametaberu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🥗 ワカメサラダを食べる男</a>
-          <a href="sneeze.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🤧 くしゃみ限界突破ゲーム</a>
-          <a href="manjaro.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">💉 マンジャロ注射＆食欲コントロール大作戦</a>
-          <a href="yubi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">✋ 指の名前記憶ボイスゲーム</a>
-          <a href="mosquito.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🦟 モスキート退治コース</a>
-          <a href="refresh.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🧘‍♂️ ゲーム・リフレッシュ道場</a>
-          <a href="korin.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🧠 コリンの神経衰弱</a>
-          <a href="hemogurobin.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🩺 HbA1c改善大作戦</a>
-          <a href="tap.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">💆‍♂️ 連打でほぐすコース</a>
-          <a href="rhythm.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">✨ リズムで整えるコース</a>
-          <a href="sanso-game.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">⚡ 活性酸素20秒バトル道場</a>
-          <a href="kurihiroi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🌰 秋の栗拾いゲーム</a>
-          <a href="maze.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🏃‍♂️ デトックス迷路</a>
-          <a href="kimuti-nabe.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍲 旨辛キムチ鍋づくりゲーム</a>
-          <a href="nagoya-game.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🏯 名古屋めし防衛ゲーム</a>
-        </div>
-      </details>
-    </li>
+    <h1>初めての方へ（総合案内）</h1>
+    <p style="font-size: 14px; color: #666; margin-top: 10px;">当サロンのコンセプト、資格、動画、よくある質問、口コミのご案内</p>
+    <nav class="menu-list">
+        <ul>
+            <li><a href="index.html">トップ</a></li>
+            <li><a href="profile.html">プロフィール</a></li>  
+            <li><a href="price.html">ご利用ガイド&料金</a></li>
 
-    <!-- ▼ アコーディオン型：解剖学・栄養代謝クイズ道場 -->
-    <li style="position: relative; display: inline-block;">
-      <details style="background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 5px; padding: 0;">
-        <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #2e7d32; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
-          🧠 解剖学クイズ道場 ▼
-        </summary>
-        <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #4caf50; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 240px; text-align: left; display: flex; flex-direction: column; gap: 6px;">
-          <a href="hiza-mizu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">⭕✕ 膝の水・構造解剖学マルバツクイズ道場</a>
-          <a href="katakori-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">💆‍♂️ 肩こり・筋膜リリース解剖学クイズ</a>
-          <a href="youtuu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧍‍♂️ 腰痛・構造解剖学マルバツクイズ</a>
-          <a href="shinzou-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🫀 心臓解剖生理学クイズ道場</a>
-          <a href="kashinohone-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🦴 下肢の骨クイズ道場</a>
-          <a href="ashi-quiz.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🦶🏼 足と膝の構造クイズ</a>
-          <a href="te-quiz.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🖐️ 手の構造クイズ道場</a>
-          <a href="zn.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧬 亜鉛・栄養代謝クイズ</a>
-          <a href="tanpakushitu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🥩 タンパク質・アミノ酸代謝クイズ</a>
-          <a href="kisotaisya-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔥 基礎代謝・エネルギー代謝クイズ</a>
-          <a href="kinesin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔬 キネシン＆エクソソームクイズ</a>
-          <a href="korin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧠 脳内ネットワーク・コリンクイズ</a>
-          <a href="kuri-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🌰 栗の栄養代謝クイズ</a>
-        </div>
-      </details>
-    </li>
-  </ul>
-</nav>
+            <!-- ▼ 1つにまとめた「初めての方へ」アコーディオンメニュー ▼ -->
+            <li style="position: relative; display: inline-block;">
+              <details style="background-color: #fff5f6; border: 1px solid #ffccd5; border-radius: 5px; padding: 0;">
+                <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #e53935; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
+                  👏 初めての方へ ▼
+                </summary>
+                <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #ffccd5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 220px; text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                  <div style="font-size: 11px; font-weight: bold; color: #e53935; border-bottom: 1px solid #ffccd5; padding-bottom: 4px; margin-bottom: 2px;">📌 ご案内メニュー</div>
+                  <a href="#concept" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fff8f8;">💡 初めての方へ（コンセプト）</a>
+                  <a href="#qualification" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fff8f8;">📜 保有資格</a>
+                  <a href="#video-section" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fff8f8;">🎬 動画案内</a>
+                  <a href="#faq-section" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fff8f8;">❓ よくある質問</a>
+                  <a href="#voice-section" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fff8f8;">⭐ 口コミのご案内</a>
+                </div>
+              </details>
+            </li>
+            
+            <!-- ▼ アコーディオン型：20秒リフレッシュゲーム道場 -->
+            <li style="position: relative; display: inline-block;">
+              <details style="background-color: #fff3e0; border: 1px solid #ff9800; border-radius: 5px; padding: 0;">
+                <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #e65100; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
+                  🎮 20秒リフレッシュゲーム ▼
+                </summary>
+                <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #ff9800; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 240px; text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                  <div style="font-size: 11px; font-weight: bold; color: #e65100; border-bottom: 1px solid #ffe0b2; padding-bottom: 4px; margin-bottom: 2px;">⚡ 体感型リフレッシュ道場</div>
+                  <a href="kinoko.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍄 キノコ抜き道場</a>
+                  <a href="gohan.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍚 血糖値爆上げタイムアタック</a>
+                  <a href="rinpa-nagashi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🦵 ふくらはぎリンパ流しゲーム</a>
+                  <a href="wakametaberu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🥗 ワカメサラダを食べる男</a>
+                  <a href="sneeze.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🤧 くしゃみ限界突破ゲーム</a>
+                  <a href="manjaro.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">💉 マンジャロ注射＆食欲コントロール大作戦</a>
+                  <a href="yubi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">✋ 指の名前記憶ボイスゲーム</a>
+                  <a href="mosquito.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🦟 モスキート退治コース</a>
+                  <a href="refresh.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🧘‍♂️ ゲーム・リフレッシュ道場</a>
+                  <a href="korin.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🧠 コリンの神経衰弱</a>
+                  <a href="hemogurobin.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🩺 HbA1c改善大作戦</a>
+                  <a href="tap.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">💆‍♂️ 連打でほぐすコース</a>
+                  <a href="rhythm.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">✨ リズムで整えるコース</a>
+                  <a href="sanso-game.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">⚡ 活性酸素20秒バトル道場</a>
+                  <a href="kurihiroi.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🌰 秋の栗拾いゲーム</a>
+                  <a href="maze.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🏃‍♂️ デトックス迷路</a>
+                  <a href="kimuti-nabe.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🍲 旨辛キムチ鍋づくりゲーム</a>
+                  <a href="nagoya-game.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #fffaf0;">🏯 名古屋めし防衛ゲーム</a>
+                </div>
+              </details>
+            </li>
+
+            <!-- ▼ アコーディオン型：解剖学・栄養代謝クイズ道場 -->
+            <li style="position: relative; display: inline-block;">
+              <details style="background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 5px; padding: 0;">
+                <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #2e7d32; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
+                  🧠 解剖学クイズ道場 ▼
+                </summary>
+                <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #4caf50; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 240px; text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                     <a href="hiza-mizu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">⭕✕ 膝の水・構造解剖学マルバツクイズ道場</a>
+                  <a href="katakori-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">💆‍♂️ 肩こり・筋膜リリース解剖学クイズ</a>
+                  <a href="youtuu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧍‍♂️ 腰痛・構造解剖学マルバツクイズ</a>
+                  <a href="shinzou-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🫀 心臓解剖生理学クイズ道場</a>
+                  <a href="kashinohone-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🦴 下肢の骨クイズ道場</a>
+                  <a href="ashi-quiz.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🦶🏼 足と膝の構造クイズ</a>
+                  <a href="te-quiz.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🖐️ 手の構造クイズ道場</a>
+                  <a href="zn.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧬 亜鉛・栄養代謝クイズ</a>
+                  <a href="tanpakushitu-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🥩 タンパク質・アミノ酸代謝クイズ</a>
+                  <a href="kisotaisya-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔥 基礎代謝・エネルギー代謝クイズ</a>
+                  <a href="kinesin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔬 キネシン＆エクソソームクイズ</a>
+                  <a href="korin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧠 脳内ネットワーク・コリンクイズ</a>
+                  <a href="kuri-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🌰 栗の栄養代謝クイズ</a>
+                </div>
+              </details>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <div class="container">
 
-    <!-- ▼ ① 初めての方へ（コンセプト）セクション ▼ -->
-    <div class="section" id="concept">
-        <h3>💡 初めての方へ（コンセプト）</h3>
-        <p>名古屋・栄・金山エリアを中心に、日曜限定・1日2名様限定で出張メンズリラクゼーションを行っております。</p>
-        <p>「日頃の仕事の疲れをしっかり癒やしたい」「周りを気にせずリラックスしたい」そんな男性のための安心できるプライベートな空間をご提供いたします。</p>
+    <!-- ▼ 初めての方へ（コンセプト）セクション -->
+    <div id="concept" class="section-target" style="margin-top: 20px;">
+        <div class="section">
+          <div style="margin: 20px auto;">
+            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">隠れ家・出張ケアのこだわり</h2>
+            <p style="text-align: center; margin-bottom: 15px;">
+                「皓一部屋」は、忙しい日々を送るお客様のために、ご宿泊先のホテルやお部屋でゆったりとお寛ぎいただける完全出張型のリラクゼーションサービスです。
+            </p>
+            <p style="text-align: center;">
+                周りの目を一切気にすることなく、プライベートな空間で心身ともに深くリフレッシュしていただける時間を提供いたします。
+            </p>
+        </div>
+
+        <div class="section" style="margin-top: 30px;">
+            <div style="margin: 20px auto;">
+            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">安心・安全への取り組み</h2>
+            <ul class="safety-list" style="line-height: 1.8; color: #555;">
+                <li>丁寧なカウンセリングで一人ひとりに合わせた施術を提供</li>
+                <li>明朗会計（後からの不当な追加料金は一切ありません）</li>
+                <li>衛生管理・身だしなみの徹底</li>
+                <li>ディプロマ取得済みのセラピストによる安心の施術</li>
+                <li>事前準備は一切不要（タオルやオイル等はすべて持参いたします）</li>
+            </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- ▼ ② 保有資格セクション ▼ -->
-    <div class="section" id="qualification">
-        <h3>📜 保有資格のご案内</h3>
-        <p>ボディケア、リフレクソロジー、 relaxation に関する民間資格を保有しております。解剖学や筋肉の仕組みに基づいた丁寧なオールハンド施術で、コリや疲れを根本からほぐします。</p>
+    <!-- ▼ 保有資格セクション -->
+    <div id="qualification" class="section-target" style="margin-top: 40px;">
+        <div class="section">
+            <div style="text-align: center; margin: 20px auto 25px;">
+                <p style="font-size: 18px; color: #eb0e0e; font-weight: bold; margin-bottom: 10px;">
+                    学び続ける姿勢が、お客様の安心に。当社の保有資格
+                </p>
+            </div>
+
+            <div style="text-align: center; margin: 30px auto; padding: 0 10px;">
+                <a href="資格 (新).png" target="_blank">
+                    <img src="資格 (新).png" alt="名古屋 ゲイマッサージ皓一部屋 整体師・カルサイネイザン・リフレクソロジー保有資格ディプロマ一覧" loading="lazy" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                </a>
+            </div>
+
+            <div style="max-width: 650px; margin: 35px auto; padding: 0 15px; text-align: center; line-height: 1.8;">
+                 <p style="font-size: 18px; color: #eb0e0e; font-weight: bold; margin-bottom: 10px;">【保有資格・修了課程】</p>
+                <p>・リラクゼーションセラピスト（国際ホリスティックセラピー協会認定）</p>
+                <p>・カルサイネイザン（タイの伝統的な専門技術修了）</p>
+                <p>・リフレクソロジー（国際ホリスティックセラピー協会認定）</p>
+                <p>・整体師（国際ホリスティックセラピー協会認定）</p>
+            </div>
+        </div>
+        
+        <!-- note記事埋め込み -->
+        <div style="margin: 40px auto 20px;">
+            <div class="note-title-blue" style="font-weight: bold; text-align: center; margin-bottom: 10px; color: #2196f3;">note（ノート）の人気記事</div>
+            <div style="width: 100%; max-width: 500px; margin: 20px auto;">
+                <iframe class="note-embed" src="https://note.com/embed/notes/n597737e27479" loading="lazy" style="border: 0; display: block; width: 100%; max-width: 100%; height: 400px; padding: 0; margin: 0 auto; background: #FFFFFF; border-radius: 8px;"></iframe>
+                <script async src="https://note.com/scripts/embed.js" charset="utf-8"></script>
+            </div>
+        </div>
     </div>
 
-    <!-- ▼ ③ 動画案内セクション ▼ -->
-    <div class="section" id="video-section">
-        <h3 style="border-left: 4px solid #e53935; color: #e53935;">🎬 施術の流れ・動画案内</h3>
-        
-        <div class="direct-video-box">
-            <video controls playsinline preload="none">
-                <source src="ご予約やお問い合わせこちらから (1).mp4" type="video/mp4">
-                お使いのブラウザは動画再生に対応していません。
-            </video>
-        </div>
-
-        <div class="direct-video-box">
-            <video controls playsinline preload="none">
-                <source src="review.1.mp4" type="video/mp4">
-                お使いのブラウザは動画再生に対応していません。
-            </video>
-        </div>
-
-        <div class="direct-video-box">
-            <video controls playsinline preload="none">
-                <source src="review.2.mp4" type="video/mp4">
-                お使いのブラウザは動画再生に対応していません。
-            </video>
-        </div>
-        
-        <div style="margin: 30px auto 20px; text-align: center;">
-            <h4 style="font-size: 22px; color: #eb0e0e; margin-bottom: 10px;">リフレッシュ（イメージ図）</h4>
-            <a href="リフレッシュイメージ図.png" target="_blank">
-                <img src="リフレッシュイメージ図.png" alt="名古屋 ゲイマッサージ皓一部屋 リフレッシュイメージ図" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer;">
-            </a>
-        </div>
-
-        <div style="text-align: center; margin: 30px 0;">
-            <div style="margin-bottom: 15px;">
-                <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="btn-reserve">今すぐ予約する</a>
-            </div>
-            <div>
-                <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" class="btn-contact">お問合せ●ご相談●質問はこちらから</a>
+    <!-- ▼ 動画案内セクション -->
+    <div id="video-section" class="section-target" style="margin-top: 40px;">
+        <div class="section">
+             <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術・サロン紹介動画</h2>
+            <p style="text-align: center; margin-bottom: 15px; font-size: 14px; color: #666;">
+                サロンの雰囲気や施術の様子を動画（約50秒）でご覧いただけます。
+            </p>
+            <div style="max-width: 340px; width: 100%; margin: 0 auto; aspect-ratio: 9 / 16;">
+                <iframe src="https://www.youtube.com/embed/bWseI86Vhmo" title="【名古屋・出張リラクゼーション】皓一部屋 施術・サロン紹介動画" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></iframe>
             </div>
         </div>
 
-        <div style="margin: 30px auto 20px; text-align: center;">
-            <h4 style="font-size: 22px; color: #eb0e0e; margin-bottom: 10px;">アハ動画</h4>
-            <div style="max-width: 100%; width: 500px; margin: 0 auto;">
-                <video controls playsinline preload="none" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                    <source src="AHA.mp4" type="video/mp4">
+        <div style="margin: 40px auto 20px;">
+            <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">施術の流れ動画</h2>
+
+            <!-- 動画1 -->
+            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+                <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
+                    <source src="ご予約やお問い合わせこちらから (1).mp4" type="video/mp4">
                     お使いのブラウザは動画再生に対応していません。
                 </video>
             </div>
+
+            <!-- 動画2 -->
+            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+                <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
+                    <source src="review.1.mp4" type="video/mp4">
+                    お使いのブラウザは動画再生に対応していません。
+                </video>
+            </div>
+
+            <!-- 動画3 -->
+            <div class="direct-video-box" style="margin-bottom: 20px; text-align: center;">
+                <video controls playsinline preload="none" style="width: 100%; max-width: 500px; border-radius: 8px;">
+                    <source src="review.2.mp4" type="video/mp4">
+                    お使いのブラウザは動画再生に対応していません。
+                </video>
+            </div>
+            
+           
+            <div style="margin: 40px auto 20px;">
+                <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">リフレッシュ（イメージ図）</h2>
+                <div style="max-width: 100%; width: 500px; margin: 0 auto; text-align: center;">
+                <a href="リフレッシュイメージ図.png" target="_blank">
+                    <img src="リフレッシュイメージ図.png" alt="名古屋 ゲイマッサージ皓一部屋 施術後のリフレッシュ・疲労回復イメージ図" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer;">
+                </a>
+               </div>
+            </div>
+
+            <div style="margin: 40px auto 20px;">
+                <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;">アハ動画</h2>
+                <div style="max-width: 100%; width: 500px; margin: 0 auto; text-align: center;">
+                    <!-- 動画4 -->
+                    <video controls playsinline preload="none" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                        <source src="AHA.mp4" type="video/mp4">
+                        お使いのブラウザは動画再生に対応していません。
+                    </video>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ▼ ④ よくある質問セクション ▼ -->
-    <div class="section" id="faq-section">
-        <h3>❓ よくある質問</h3>
-        <details style="margin-bottom: 12px; cursor: pointer;">
-            <summary style="font-weight: bold; color: #e53935; padding: 6px 0;">Q. 初めてでも利用できますか？</summary>
-            <p style="margin: 5px 0 15px 15px; font-size: 15px; color: #555;">はい、初めての方も大歓迎です。丁寧にご案内いたしますのでご安心ください。</p>
-        </details>
-        <details style="margin-bottom: 12px; cursor: pointer;">
-            <summary style="font-weight: bold; color: #e53935; padding: 6px 0;">Q. 出張エリアはどこまで対応していますか？</summary>
-            <p style="margin: 5px 0 15px 15px; font-size: 15px; color: #555;">名古屋市（栄・伏見・丸の内・金山・上前津など）の周辺エリアに対応しております。</p>
-        </details>
-        <details style="margin-bottom: 12px; cursor: pointer;">
-            <summary style="font-weight: bold; color: #e53935; padding: 6px 0;">Q. 予約方法はどのようにすればいいですか？</summary>
-            <p style="margin: 5px 0 15px 15px; font-size: 15px; color: #555;">Googleカレンダーのリンクよりご予約いただけます。</p>
-        </details>
-    </div>
+    <!-- ▼ よくある質問セクション -->
+    <div id="faq-section" class="section-target" style="margin-top: 40px;">
+        <div class="header" style="background: transparent; border: none; padding: 10px 0;">
+          <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">よくある質問（FAQ）</h2>
+        </div>
 
-    <!-- ▼ ⑤ お客様の声（口コミ）セクション ▼ -->
-    <div class="section" id="voice-section">
-        <h3>⭐ お客様から寄せられたご感想・口コミ</h3>
-        <p style="margin-bottom: 15px; color: #666;">当サロンをご利用いただいたお客様からの温かいお声です。</p>
+        <details class="faq-item">
+            <summary class="faq-q">Q1. 初めてでも利用できますか？</summary>
+            <div class="faq-a">A. はい、初めての方も歓迎です。無理な勧誘はせず、ご希望を確認してから進めます。ご不安な点は予約前にフォームからご質問ください。</div>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q">Q2. 女性やカップルも利用できますか？</summary>
+            <div class="faq-a">A. 当店は男性専用です。女性・カップルの方はご利用いただけません。</div>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q">Q3. 出張エリアはどこまで対応していますか？</summary>
+            <div class="faq-a">
+                <p style="margin: 0 0 10px 0;">A. 名古屋・栄・伏見・丸の内・金山・上前津エリアを中心に、錦・大須・名駅南のビジネスホテル・ご自宅へ出張対応しています。その他名古屋市内・近郊エリアについても気軽にご相談ください。</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="https://www.google.com/maps/@35.165,136.895,13z" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 320px; background: #333333; color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 12px 0; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        🗺️ Googleマップで出張範囲を確認 ➔
+                    </a>
+                </div>
+            </div>
+        </details>
+
+       <details class="faq-item">
+            <summary class="faq-q">Q4. 当日予約はできますか？</summary>
+            <div class="faq-a">
+                <p style="margin: 0 0 10px 0;">A. 日曜日の当日予約は基本的に受け付けていません。前日までのご予約をお願いします。空き状況やお問い合わせは以下のボタンよりご確認ください。</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px;">
+                    <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; flex: 1; min-width: 140px; max-width: 200px; background: #333333; color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; padding: 10px 0; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        Googleカレンダーで予約 ➔
+                    </a>
+                    <a href="https://forms.gle/vdpciPEqmU3n63Hp7" target="_blank" rel="noopener noreferrer" style="display: inline-block; flex: 1; min-width: 140px; max-width: 200px; background: #333333; color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; padding: 10px 0; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        お問い合わせフォーム ➔
+                    </a>
+                </div>
+            </div>
+        </details>
+
+       <details class="faq-item">
+            <summary class="faq-q">Q5. 予約方法は何ですか？</summary>
+            <div class="faq-a">
+                <p style="margin: 0 0 10px 0;">A. 電話番号の公開はしていません。以下のGoogleカレンダーよりご予約をお願いいたします。</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 320px; background: #333333; color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 12px 0; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        Googleカレンダーで予約 ➔
+                    </a>
+                </div>
+            </div>
+        </details>
         
-        <!-- 口コミ例1 -->
-        <div style="background: #fdfbfb; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-            <p style="font-weight: bold; margin: 0 0 5px 0; color: #4a3b32;">松本様（男性）</p>
-            <p style="font-size: 14px; color: #777; margin: 0 0 10px 0;">日頃のストレスがすっと軽くなりました。丁寧な施術で大満足です！</p>
-        </div>
+        <details class="faq-item">
+            <summary class="faq-q">Q6. 料金はいくらですか？支払方法は何がありますか？時間はどのくらいですか？</summary>
+            <div class="faq-a">
+                <p style="margin: 0 0 10px 0;">A. コースと時間により異なります。最新の料金は公式サイトまたはお問い合わせ時にご案内します。ご希望の時間をお知らせください。</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="price.html" style="display: inline-block; width: 100%; max-width: 320px; background: #333333; color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 12px 0; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        ご利用ガイド・料金表を見る ➔
+                    </a>
+                </div>
+            </div>
+        </details>
 
-        <!-- 口コミ投稿・応援への誘導ボックス -->
-        <div style="margin-top: 25px; text-align: center; background: #fff5f6; border: 1px solid #ffccd5; border-radius: 12px; padding: 20px;">
-            <p style="font-size: 16px; font-weight: bold; color: #e53935; margin: 0 0 8px 0;">＼ 30秒で完了！応援をお願いします ／</p>
-            <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Googleの星評価をポチッと押していただけると大変励みになります⭐</p>
-            <a href="https://g.page/r/CXqvApozgSbMEAI/review" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 480px; background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: #ffffff; padding: 15px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 12px rgba(255, 65, 108, 0.35);">
-                ❤️ 応援の「いいね！」（星をポチッと押すだけ）
+        <details class="faq-item">
+            <summary class="faq-q">Q7. 施術内容はどこまでですか？</summary>
+            <div class="faq-a">A. 男性専用の出張リラクゼーションです。ご希望は事前にご相談ください。当店で対応できない内容はお断りする場合があります。</div>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q">Q8. 顔出しや個人情報は必要ですか？匿名でも大丈夫ですか？</summary>
+            <div class="faq-a">A. 顔出しは不要です。予約時は最低限『名前（仮名可）』の連絡先（メルアド）とご希望日時が必須です。電話番号の公開はしていません。</div>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q">Q9. 部屋に呼ぶ場合、近所にバレませんか？</summary>
+            <div class="faq-a">A. お客様のプライバシー保護・秘密厳守を徹底しております。私服でお伺いするなど目立たないよう最大限配慮いたしますので、初めての方や既婚者の方も安心してご利用いただけます。</div>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q">Q10. キャンセルや時間変更はできますか？</summary>
+            <div class="faq-a">A. 可能です。できるだけ早めにご連絡ください。直前のキャンセルは次回受付をお断りする場合があります。</div>
+        </details>
+    </div>
+
+    <!-- ▼ お客様の声セクション -->
+    <div id="voice-section" class="section-target" style="margin-top: 40px;">
+        <h2 class="section-title-large" style="color: #eb0e0e; font-size: 28px; font-weight: bold; margin: 10px 0 20px 0; text-align: center;">お客様から寄せられたご感想・口コミ</h2>
+
+        <!-- 口コミ 1 -->
+        <div class="voice-card">
+            <h3>松本肇 様からのご感想</h3>
+            <a href="kutikomi1.png" target="_blank">
+                <img src="kutikomi1.png" alt="名古屋・名駅 メンズカルサイネイザン皓一部屋 松本肇様からの口コミ評判" class="voice-img" loading="lazy">
             </a>
+            <div class="voice-text">
+                「何と素晴らしい体験なのだろう。<br>
+                日ごろのストレスのイライラも施術をして貰っている内に、何時しか和んで来たよ。<br>
+                誰にも口に出せ無い様な行為何でも叶えてくれて、絶頂を感じたよ。<br>
+                次の予約もして、必ず来るよ。ア〜良かった。最高だよ！！」
+            </div>
+        </div>
+
+        <!-- 口コミ 2 -->
+        <div class="voice-card">
+            <h3>K G 様からのご感想（★5つの評価）</h3>
+            <a href="kutikomi2.png" target="_blank">
+                <img src="kutikomi2.png" alt="名古屋 ゲイマッサージ皓一部屋 KG様からの口コミ・手頃な料金と凄いテクニック" class="voice-img" loading="lazy">
+            </a>
+            <div class="voice-text">
+                手頃な料金<br>
+                <strong>「凄いテクニックでした！」</strong>
+            </div>
+        </div>
+
+        <!-- 口コミ 3 -->
+        <div class="voice-card">
+            <h3>小坂雅博 様からのご感想（★5つの評価）</h3>
+            <a href="kutikomi3.png" target="_blank">
+                <img src="kutikomi3.png" alt="名古屋 出張メンズリラクゼーション皓一部屋 小坂雅博様からの口コミ・お得な料金" class="voice-img" loading="lazy">
+            </a>
+            <div class="voice-text">
+                <strong>「お得な料金」</strong>
+            </div>
         </div>
     </div>
 
+    <!-- 応援のお願い・初めての方へのメッセージエリア -->
+    <div style="max-width: 600px; margin: 35px auto 20px auto; padding: 20px 15px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+        <h3 style="font-size: 20px; font-weight: bold; color: #4a3b32; margin: 0 0 10px 0;">【お客様へのお願い】</h3>
+        <p style="font-size: 15px; line-height: 1.7; color: #555; margin-bottom: 15px;">
+            当サロンをご利用いただきありがとうございます！<br>
+            今後のサービス向上と励みのため、Googleでのクチコミ評価にご協力いただけると大変嬉しいです。<br>
+            <strong style="color: #e53935; font-size: 16px;">文章なしの「星だけの評価」でも大歓迎です（30秒で完了します）。</strong><br>
+            施術を受けられた感想やお気づきの点がございましたら、ぜひ一言ご評価をお願いいたします。
+        </p>
+
+        <div style="max-width: 100%; width: 500px; margin: 0 auto 15px auto;">
+          <video controls playsinline preload="metadata" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+            <source src="review.mp4.mp4" type="video/mp4">
+            お使いのブラウザは動画再生に対応していません。
+          </video>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <a href="https://g.page/r/CXqvApozgSbMEAI/review" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 480px; background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: #ffffff; padding: 16px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 17px; box-shadow: 0 4px 12px rgba(255, 65, 108, 0.35), 0 4px 0 #d32f2f; transition: all 0.2s ease; box-sizing: border-box;">
+            ❤️ 応援の「いいね！」（星をポチッと押すだけ⭐）
+          </a>
+          <p style="font-size: 12px; color: #777; margin-top: 8px; font-weight: normal;">
+            ※文章の入力は一切不要です（30秒で完了します）
+          </p>
+        </div>
+    </div>
+
+    <!-- 予約ボタン導線 -->
+    <div style="text-align: center; margin: 35px 0;">
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300; animation: flash 1.5s infinite;">
+            今すぐ予約する
+        </a>
+    </div>
+
 </div>
 
-<div class="footer">
-    <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
-</div>
-
+<!-- 画面右下の固定ボタンセット -->
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
-    <a href="#top" class="back-to-top" style="position: static; margin: 0;">▲ トップへ</a>
+    <a href="#top" class="back-to-top">▲ トップへ</a>
     <div style="display: flex; gap: 6px; align-items: center;">
-        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">LINE</a>
-        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">問合せ</a>
-        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); animation: flash 1.5s infinite;">今すぐ予約</a>
+        <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">LINE</a>
+        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">問合せ</a>
+        <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif; animation: flash 1.5s infinite;">今すぐ予約</a>
     </div>
 </div>
-
-<!-- ▼ ジャンプ位置のズレを完璧に防ぐ自動調整プログラム ▼ -->
-<script>
-    window.addEventListener("DOMContentLoaded", function() {
-        if (window.location.hash) {
-            setTimeout(function() {
-                var targetElement = document.querySelector(window.location.hash);
-                if (targetElement) {
-                    var headerHeight = 110; // 上部の余白の高さ（px）
-                    var elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                    window.scrollTo({
-                        top: elementPosition - headerHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 100);
-        }
-    });
-</script>
 
 </body>
 </html>
