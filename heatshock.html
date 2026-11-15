@@ -1,1 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ヒートショック・血管リスク解剖学マルバツクイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: center;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">ヒートショック・血管リスク解剖学マルバツクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+</div>
+
+<!-- 結果発表用のカード -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- ヒートショックの基礎・メカニズム（1〜17） ---
+  {
+    category: "ヒートショック基礎",
+    question: "ヒートショックとは、急激な温度変化によって血圧が大きく変動し、心臓や血管に負担がかかる現象のことである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "温かい部屋から冷え切った脱衣所・浴室へ移動した際の急激な温度差が、血圧の乱高下を引き起こします。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "ヒートショックによる健康被害として最も危険視されているのは、脳卒中や心筋梗塞などの血管事故である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "急激な血圧変動により、脳梗塞、脳出血、心筋梗塞などを引き起こすリスクが跳ね上がります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "冬場の入浴時に血圧が一番急上昇するのは、熱いお湯に入った瞬間ではなく、冷え切った脱衣所に裸で立った瞬間である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "寒さによる血管収縮で血圧がまず急上昇し、その後に温かいお湯に入って急降下するため、血圧の乱高下が負担になります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "人間の血管は、寒さにさらされて体温が奪われそうになると、体温を逃がさないために拡張する。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "寒冷刺激を受けると、血管は収縮して血流を体の中心に集め、熱が逃げるのを防ごうとします。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "ヒートショックは浴室だけでなく、冬場の冷え切ったトイレや廊下など、家の中の他の場所でも起こりうる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "リビングと廊下・トイレの激しい温度差も血圧を急変させる要因となるため注意が必要です。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "高齢者であれば誰でもリスクがあるが、高血圧や糖尿病、脂質異常症などの持病がある人は特に注意が必要である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "血管の柔軟性が低下していたり動脈硬化が進んでいたりする人は、血圧の急変動に対する耐性が低くなります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "若い世代や健康な人であれば、冬場にどれだけ急激な温度差にさらされてもヒートショックが起きることは絶対にない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "高齢者に多い傾向はありますが、極端な疲労や生活習慣、入浴時の飲酒などがあれば若い世代でもリスクはゼロではありません。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "冬の入浴中に意識を失って沈んでしまう事故の背景には、血圧急降下による脳貧血（一過性脳虚血）が関わっていることが多い。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "湯船で血管が急激に拡張して血圧が下がると、脳への血流が一時的に減少し、失神や溺水につながります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "日本の冬場における入浴中の急死者数は、交通事故の年間死亡者数よりも少ない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "入浴中の急死者数は年間で数千人にのぼり、交通事故の死亡者数を大きく上回ると推計されています。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "飲酒した直後の入浴は、血管が拡張した状態で急な寒暖差や血圧変動を招くため、ヒートショックのリスクを大きく高める。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "アルコールによる血圧低下や判断力の低下も重なり、入浴時の事故リスクが非常に高まります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "シャワーだけで済ませる入浴スタイルであれば、湯船に浸からないためヒートショックの危険性は一切ない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "シャワーのみであっても、冷え切った脱衣所での更衣や浴室の寒暖差があればリスクは存在します。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "浴室の窓や換気扇を開けっぱなしにすると、脱衣所や浴室全体の温度が下がりやすくなり、ヒートショックの条件が揃いやすくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "冬場の冷気が常に流れ込む環境は、急激な温度差を生み出す原因になります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "熱いお湯（42℃以上）を好む入浴習慣は、血管や心臓に急激な負担をかけるため避けたほうが望ましい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "熱すぎるお湯は交感神経を刺激して急激な血圧上昇を招くため、38〜40℃程度のぬるめが推奨されます。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "人間の体温調節を担っているのは、意志とは無関係に働く「自律神経（交感神経と副交感神経）」の働きである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "気温の変化に応じて血管を収縮・拡張させたり発汗させたりするのは自律神経の重要な役割です。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "交感神経が優位になると血管が収縮し、心拍数や血圧が上昇する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "寒さを感じたときや緊張したときは交感神経が優位になり、血圧が上がります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "副交感神経が優位になると血管が拡張し、リラックスして血圧や心拍数が低下する。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "お風呂で温まると副交感神経が優位になり、血管が広がって血圧が下がります。"
+  },
+  {
+    category: "ヒートショック基礎",
+    question: "ヒートショックを防ぐためには、家の中の温度差をできるだけ小さくする「環境づくり」が極めて有効である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "脱衣所や浴室の暖房などを活用し、急激な温度変化を作らないことが最大の予防策です。"
+  },
+
+  // --- 血管・循環器の解剖生理学（18〜34） ---
+  {
+    category: "血管生理学",
+    question: "人体の中で心臓から送り出された血液を全身の末梢へ運ぶ血管を「静脈」という。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "心臓から送り出すのは「動脈」であり、心臓に戻る血管が「静脈」です。"
+  },
+  {
+    category: "血管生理学",
+    question: "動脈の壁は、血圧の急激な変化や心臓の拍出圧に耐えるために、厚い平滑筋や弾性繊維でできている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "動脈は高い圧力に耐えて血液を送り出すため、血管壁が厚く弾力性に富んでいます。"
+  },
+  {
+    category: "血管生理学",
+    question: "動脈硬化が進んで血管が硬くなると、血圧の変動をしなやかに吸収できなくなり、血圧が上がりやすくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "柔軟性が失われると血管内の圧力が高くなりやすく、心血管疾患のリスクが増大します。"
+  },
+  {
+    category: "血管生理学",
+    question: "人間の血管をすべて一本につなぎ合わせると、地球を何周もできるほどの長さがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "毛細血管を含めると、成人では約10万キロ（地球を約2.5周〜数周分）に及ぶと言われています。"
+  },
+  {
+    category: "血管生理学",
+    question: "毛細血管の壁は非常に薄く、酸素や栄養素、老廃物の交換がここで行われる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "一層の内皮細胞でできており、組織との間で物質のやり取りをスムーズに行います。"
+  },
+  {
+    category: "血管生理学",
+    question: "静脈には血液の逆流を防ぐための「弁」が存在するが、動脈には基本的に弁はない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "重力に逆らって心臓へ血液を戻す静脈には逆流防止の弁がありますが、高圧の動脈には不要です。"
+  },
+  {
+    category: "血管生理学",
+    question: "血圧を測る際上の数値（収縮期血圧）は、心臓が縮んで血液を押し出したときの最大圧力である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "心臓収縮時の血圧が最高血圧（上の血圧）として測定されます。"
+  },
+  {
+    category: "血管生理学",
+    question: "血圧の下の数値（拡張期血圧）は、心臓が広がって血液をためているときの圧力である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "心臓が拡張して休んでいるときの最低血圧を示しています。"
+  },
+  {
+    category: "血管生理学",
+    question: "冬場に血圧が高くなりやすいのは、寒さによって交感神経が刺激され、末梢血管が収縮するためである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "冬期に血圧が上昇するのは、寒冷刺激による血管収縮が主なメカニズムです。"
+  },
+  {
+    category: "血管生理学",
+    question: "脱水状態になると血液の水分が減ってドロドロになり、血栓（血の塊）が詰まりやすくなるリスクが高まる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "入浴中や就寝中には発汗で水分が失われるため、血流悪化や血栓のリスクが高まります。"
+  },
+  {
+    category: "血管生理学",
+    question: "脳の血管が詰まる病気を「脳出血」、血管が破れる病気を「脳梗塞」と呼ぶ。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "正反対で、詰まるのが脳梗塞、破れるのが脳出血（またはくも膜下出血）です。"
+  },
+  {
+    category: "血管生理学",
+    question: "心臓自体の筋肉に酸素や栄養を送り届けている血管を「冠状動脈（冠動脈）」という。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "心臓を取り巻く冠状動脈が詰まると、心筋梗塞を引き起こします。"
+  },
+  {
+    category: "血管生理学",
+    question: "高血圧が長期間続いても、血管や内臓に負担がかかることはなく、自覚症状がなくても特に放置して問題ない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "「沈黙の殺人者（サイレントキラー）」と呼ばれ、気づかないうちに血管をボロボロにして大病を誘発します。"
+  },
+  {
+    category: "血管生理学",
+    question: "適度な有酸素運動は、血管をしなやかに保ち、一酸化窒素（NO）の産生を促して血流を改善する効果がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "運動による血流の増加は血管内皮機能を高め、血管の健康維持に寄与します。"
+  },
+  {
+    category: "血管生理学",
+    question: "喫煙は血管を一時的に拡張させ、血流をサラサラにするため、血管の健康にとって非常にプラスの習慣である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "タバコに含まれるニコチンは血管を収縮させ、動脈硬化を急速に進行させる最大の要因の一つです。"
+  },
+  {
+    category: "血管生理学",
+    question: "塩分の過剰摂取は、血液中の水分量を増やして血管壁への圧力を高めるため、高血圧の大きな原因になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ナトリウムの摂りすぎは体内に水分を保持しようとする働きを高め、血圧を上昇させます。"
+  },
+  {
+    category: "血管生理学",
+    question: "睡眠不足や強いストレスは、自律神経のバランスを崩して交感神経を優位にし、持続的な血圧上昇を招く。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "慢性的なストレスや疲労は心血管系に常に緊張状態を強いることになります。"
+  },
+
+  // --- 予防策・生活習慣の知恵（35〜50） ---
+  {
+    category: "予防と対策",
+    question: "ヒートショックを防ぐため、入浴前に脱衣所や浴室を小型暖房機などで温めておくことは非常に効果的である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "空間の温度差をなくすことで、裸になった瞬間の急激な血管収縮を防ぐことができます。"
+  },
+  {
+    category: "予防と対策",
+    question: "浴室に暖房がない場合は、浴槽のフタを少し開けておいたり、シャワーの湯気（お湯）を高い位置から出して浴室全体を温めておくと良い。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "手軽にできる予備暖房の工夫として、湯気やシャワーを活用する方法は非常に有効です。"
+  },
+  {
+    category: "予防と対策",
+    question: "お湯の温度設定は、熱めが好きであっても42℃以上に設定するのがヒートショック対策としては最も安全である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "42℃以上は交感神経や心臓に大きな負担をかけるため、38〜40℃のぬるめが安全です。"
+  },
+  {
+    category: "予防と対策",
+    question: "入浴時間は長ければ長いほど身体の芯まで温まるため、30分以上ゆっくり浸かるのがベストである。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "長湯はのぼせや脱水、血圧低下のリスクを高めるため、お湯に浸かる時間は10分程度を目安にするのが安心です。"
+  },
+  {
+    category: "予防と対策",
+    question: "入浴前と入浴後には、コップ1杯程度の水分（水など）を補給することが脱水予防に大切である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "入浴中の発汗による血液のドロドロ化（脱水）を防ぐため、前後の水分補給は基本の習慣です。"
+  },
+  {
+    category: "予防と対策",
+    question: "浴槽から立ち上がるときは、急にスッと立ち上がらず、ゆっくりと時間をかけて立ち上がることで立ちくらみを防げる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "急な体位変換は血圧低下によるめまい（脳貧血）を誘発しやすいため、慎重な動作が求められます。"
+  },
+  {
+    category: "予防と対策",
+    question: "家族と同居している場合は、お風呂に入る前に「今からお風呂に入るね」と声をかけ合い、気にかけてもらうことが事故防止につながる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "万が一の異変があった際に早く気づいてもらえる環境づくりは、命を守る上で極めて重要です。"
+  },
+  {
+    category: "予防と対策",
+    question: "一人暮らしの場合、長風呂をしていないか、浴室から物音がしなくなったときに家族や周囲が確認する手段はないため対策は諦めるしかない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "入浴前に家族や知人に連絡を入れる、タイマーをかけておく、見守りサービスを活用するなど工夫の余地はあります。"
+  },
+  {
+    category: "予防と対策",
+    question: "浴槽のフチにまたがるときや出入りするときは、手すりや浴槽台を利用して安全に動作を安定させることが望ましい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "滑りやすい浴室での転倒や、急な力みによる血圧上昇を防ぐために手すりや滑り止めは有効です。"
+  },
+  {
+    category: "予防と対策",
+    question: "夕食直後や、アルコールが入った状態ですぐに入浴するのは、血圧の変動が激しくなるため避けるべきである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食後は消化のために血液が胃腸に集まり、飲酒時は血圧が下がるため、その状態での入浴は危険です。"
+  },
+  {
+    category: "予防と対策",
+    question: "日頃から定期的なウォーキングなどの運動習慣を持つことは、血管をしなやかに保ち血圧コントロールに役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "継続的な運動は血管内皮機能を改善し、総合的な血管リスクの低減につながります。"
+  },
+  {
+    category: "予防と対策",
+    question: "冬場に外出する際も、マフラーや手袋、帽子などで首元や手足をしっかり防寒することは、急激な血管収縮を防ぐのに役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "屋外での急な寒暖差や冷えも血圧を上げる原因になるため、外出時の防寒もヒートショック予防に通じます。"
+  },
+  {
+    category: "予防と対策",
+    question: "健康診断などで高血圧や血管の数値に指摘を受けた場合は、放置せず日々の血圧測定や医師への相談を行うことが重要である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "自身の血管の状態や血圧の傾向を普段から把握しておくことが、重大な事故を未然に防ぐ第一歩です。"
+  },
+  {
+    category: "予防と対策",
+    question: "「自分はまだ若いから大丈夫」「今まで平気だったから平気」という過信が、冬場の入浴事故の発見を遅らせる要因の一つになる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "油断や過信をせず、寒暖差に対する正しい知識と備えを持つことがすべての世代にとって大切です。"
+  },
+  {
+    category: "予防と対策",
+    question: "ヒートショック対策は、本格的な真冬の寒さが到来してから慌てて始めるよりも、秋の終わりや初冬の時期から意識して準備しておくほうが効果的である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "気温が急に下がり始める時期から生活習慣や環境を整えておくことで、安全に冬を迎えることができます。"
+  },
+  {
+    category: "予防と対策",
+    question: "解剖学や体の仕組みを正しく理解し、生活環境をちょっと工夫するだけで、冬の血管リスクやヒートショックの危険性は大きく減らすことができる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "体のメカニズムを知り、適切な対策（温める、ぬるめ、水分補給、声かけ）を実践することが命を守る最良の盾となります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "ヒートショック・血管リスククイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒後に正解ボタンを点滅させる
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！ヒートショックや血管リスクの知識が完璧ですね！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！素晴らしい健康・解剖学の知識です！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して冬の血管リスクへの備えを深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【ヒートショック・血管リスク解剖学マルバツクイズ道場】で 5問中 " + score + "問正解しました！♨️🛡️\n#皓一部屋 #ヒートショック予防 #健康解剖学");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
