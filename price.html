@@ -4,7 +4,7 @@
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    j=d.createElement(s),dl=l!='dataLayer'?'&l!='l':'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
     <!-- End Google Tag Manager -->
@@ -89,6 +89,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </details>
             </li>
     
+    <!-- ▼ 20秒リフレッシュゲーム（position: absolute と position: relative を統一） ▼ -->
     <li style="position: relative; display: inline-block;">
       <details style="background-color: #fff3e0; border: 1px solid #ff9800; border-radius: 5px; padding: 0;">
         <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #e65100; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -119,6 +120,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </details>
     </li>
 
+    <!-- ▼ 解剖学クイズ道場（position: absolute と position: relative を統一） ▼ -->
     <li style="position: relative; display: inline-block;">
       <details style="background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 5px; padding: 0;">
         <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #2e7d32; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -139,6 +141,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <a href="kinesin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔬 キネシン＆エクソソームクイズ</a>
               <a href="korin-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧠 脳内ネットワーク・コリンクイズ</a>
               <a href="kuri-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🌰 栗の栄養代謝クイズ</a>
+        </div>
       </details>
     </li>
   </ul>
@@ -270,7 +273,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="font-size: 14px; color: #666; margin-bottom: 15px; line-height: 1.6;">SNSの「いいね！」を押す感覚で、Googleの星評価をポチッと押していただけると励みになります⭐</p>
 
       <a href="https://g.page/r/CXqvApozgSbMEAI/review" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: 100%; max-width: 480px; background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: #ffffff; padding: 15px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 12px rgba(255, 65, 108, 0.35), 0 4px 0 #d32f2f; transition: all 0.2s ease; box-sizing: border-box;">
-        ❤️ 応援の「いいね！」（星をポチッと押すだけ）
+        ❤️ 応援のガチャ（星をポチッと押すだけ）
       </a>
       <p style="font-size: 12px; color: #888; margin-top: 10px; margin-bottom: 0;">※文章の入力は一切不要です（星だけの評価で大歓迎です）</p>
     </div>
@@ -298,7 +301,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-<!-- ▼ 修正：閉じタグまでしっかり記述したモーダルHTML ▼ -->
 <div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
         <span class="modal-close" onclick="forceCloseModal()">&times;</span>
@@ -349,7 +351,6 @@ function openCourseModal(courseType) {
     } else if (courseType === 'c90') {
         title.innerText = '90分コース（初回105分 / おすすめ）';
         price.innerText = '13,000円（税込）';
-        desc.json = '';
         desc.innerHTML = 'コリをしっかり解しながらゆっくりリラックスしたい方に最適なコースです。<br>全身のお疲れ部位を中心に重点的なケアを行います。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
     } else if (courseType === 'c120') {
         title.innerText = '120分コース（初回135分 / 1番人気）';
