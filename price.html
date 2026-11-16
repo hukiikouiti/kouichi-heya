@@ -73,7 +73,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="profile.html">プロフィール</a></li>  
             <li><a href="price.html" class="active">ご利用ガイド&料金</a></li>
 
-            <!-- ▼ voice.htmlの各場所へ正しく飛ぶように修正したアコーディオンメニュー ▼ -->
             <li style="position: relative; display: inline-block;">
               <details style="background-color: #fff5f6; border: 1px solid #ffccd5; border-radius: 5px; padding: 0;">
                 <summary style="cursor: pointer; padding: 6px 10px; font-weight: bold; color: #e53935; font-size: 13px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -90,7 +89,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </details>
             </li>
     
-    <!-- ▼ アコーディオン型：20秒リフレッシュゲーム道場 -->
     <li style="position: relative; display: inline-block;">
       <details style="background-color: #fff3e0; border: 1px solid #ff9800; border-radius: 5px; padding: 0;">
         <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #e65100; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -121,7 +119,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </details>
     </li>
 
-    <!-- ▼ アコーディオン型：解剖学・栄養代謝クイズ道場 -->
     <li style="position: relative; display: inline-block;">
       <details style="background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 5px; padding: 0;">
         <summary style="cursor: pointer; padding: 8px 12px; font-weight: bold; color: #2e7d32; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 4px; user-select: none;">
@@ -301,6 +298,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
+<!-- ▼ 修正：閉じタグまでしっかり記述したモーダルHTML ▼ -->
 <div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
         <span class="modal-close" onclick="forceCloseModal()">&times;</span>
@@ -337,6 +335,7 @@ function toggleReserveBtn() {
         btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else { btn.style.display = 'none'; }
 }
+
 function openCourseModal(courseType) {
     var overlay = document.getElementById('modalOverlay');
     var title = document.getElementById('modalTitle');
@@ -350,8 +349,41 @@ function openCourseModal(courseType) {
     } else if (courseType === 'c90') {
         title.innerText = '90分コース（初回105分 / おすすめ）';
         price.innerText = '13,000円（税込）';
+        desc.json = '';
         desc.innerHTML = 'コリをしっかり解しながらゆっくりリラックスしたい方に最適なコースです。<br>全身のお疲れ部位を中心に重点的なケアを行います。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
     } else if (courseType === 'c120') {
         title.innerText = '120分コース（初回135分 / 1番人気）';
         price.innerText = '15,000円（税込）';
-        desc.innerHTML = '深いコリまでしっかりアプローチするフルサポートコースです。<br>全身をすみずみまでじっくり解し、極上の癒やしを提供いたします。<br><br><strong style="color:#f39800;">【初回特典】お
+        desc.innerHTML = '深いコリまでしっかりアプローチするフルサポートコースです。<br>全身をすみずみまでじっくり解し、極上の癒やしを提供いたします。<br><br><strong style="color:#f39800;">【初回特典】お身体の状態を把握するため＋15分無料サービス！</strong>';
+    }
+
+    overlay.style.display = 'flex';
+}
+
+function closeModal(event) {
+    if (event.target.id === 'modalOverlay') {
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
+}
+
+function forceCloseModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+
+function openMediaModal(modalId, soundId) {
+    document.getElementById(modalId).style.display = 'flex';
+    var sound = document.getElementById(soundId);
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(function(e) { console.log("音声再生エラー:", e); });
+    }
+}
+
+function closeAllMediaModals() {
+    document.getElementById('pay-modal').style.display = 'none';
+    document.getElementById('clock-modal').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
