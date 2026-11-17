@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HbA1c 改善大作戦 - 皓一部屋</title>
+    <title>糖質オフ・バランス大作戦 - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -41,7 +41,7 @@
         h1 {
             font-size: 1.1rem;
             margin-bottom: 6px;
-            color: #c73650;
+            color: #27ae60;
         }
         p {
             font-size: 0.85rem;
@@ -55,14 +55,14 @@
             font-size: 0.95rem;
             font-weight: bold;
             margin-bottom: 12px;
-            color: #c73650;
+            color: #27ae60;
         }
         /* ゲームステージ（落下型） */
         .game-stage {
             width: 100%;
             height: 280px;
-            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
-            border: 3px solid #c73650;
+            background: linear-gradient(135deg, #e8f8f5 0%, #d1f2eb 100%);
+            border: 3px solid #27ae60;
             border-radius: 16px;
             position: relative;
             margin: 0 auto 15px;
@@ -95,7 +95,7 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
         .start-btn {
-            background-color: #c73650;
+            background-color: #27ae60;
             color: #fff;
             border-radius: 30px;
         }
@@ -127,8 +127,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>🩺 HbA1c 改善大作戦</h1>
-    <p>制限時間20秒！上から落ちてくる野菜や肉をキャッチしてHbA1cを5.5%まで下げよう！</p>
+    <h1>🥗 糖質オフ・バランス大作戦</h1>
+    <p>制限時間20秒！上から落ちてくる野菜や肉をキャッチしてバランス値を5.5%まで下げよう！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
@@ -140,18 +140,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="game-play-screen" class="hidden">
         <div class="timer-score">
             <div>残り時間: <span id="timer">20.0</span>秒</div>
-            <div>HbA1c: <span id="hba1c-val">7.2</span>%</div>
+            <div>バランス値: <span id="balance-val">7.2</span>%</div>
         </div>
         
         <div class="game-stage" id="game-stage"></div>
         <p style="font-size:0.8rem; color:#888;">落ちてくる野菜（🥦）や肉（🥩）をタップしてキャッチ！</p>
     </div>
 
-    <!-- 結果画面（お医者さん・専門家の診断コメント付き） -->
+    <!-- 結果画面（コーチのアドバイス付き） -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #c73650; font-size: 1.2rem;">👨‍⚕️ 医師の定期健診コメント</h2>
+        <h2 id="result-title" style="color: #27ae60; font-size: 1.2rem;">💡 コンディショニング結果</h2>
         
-        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #fff3f5; padding: 12px; border-radius: 10px; border-left: 5px solid #c73650;"></div>
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #e8f8f5; padding: 12px; border-radius: 10px; border-left: 5px solid #27ae60;"></div>
 
         <!-- 1列目：LINEお友達追加 -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
@@ -165,9 +165,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- ボタンを格納するエリア -->
         <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
 
-            <!-- 1段目：「もう一度あそぶ」＆・「クイズ選択に戻る」 -->
+            <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」 -->
             <div style="display: flex; gap: 8px; width: 100%;">
-                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #27ae60; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
                     もう一度あそぶ
                 </button>
                 <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
@@ -187,10 +187,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         </div>
     </div>
+    
+    <!-- フッタークレジット表記 -->
+    <div style="margin-top: 20px; font-size: 0.75rem; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
+        © 2026 皓一部屋. All Rights Reserved.
+    </div>
 </div>
 
 <script>
-    let currentHbA1c = 7.2;
+    let currentBalance = 7.2;
     let timeLeft = 20.0;
     let timerInterval = null;
     let spawnerInterval = null;
@@ -204,10 +209,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
         
         isPlaying = true;
-        currentHbA1c = 7.2;
+        currentBalance = 7.2;
         timeLeft = 20.0;
         document.getElementById('timer').innerText = '20.0';
-        document.getElementById('hba1c-val').innerText = currentHbA1c.toFixed(1);
+        document.getElementById('balance-val').innerText = currentBalance.toFixed(1);
 
         document.getElementById('game-start-screen').classList.add('hidden');
         document.getElementById('game-play-screen').classList.remove('hidden');
@@ -216,7 +221,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         clearItems();
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'hba1c_game'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'diet_balance_game'});
         }
 
         timerInterval = setInterval(() => {
@@ -283,17 +288,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             clearInterval(fallInterval);
 
             if (item.dataset.type === 'veg' || item.dataset.type === 'meat') {
-                currentHbA1c = Math.max(5.5, currentHbA1c - 0.1);
+                currentBalance = Math.max(5.5, currentBalance - 0.1);
                 if (navigator.vibrate) navigator.vibrate(30);
             } else {
-                currentHbA1c = Math.min(9.0, currentHbA1c + 0.2);
+                currentBalance = Math.min(9.0, currentBalance + 0.2);
                 if (navigator.vibrate) navigator.vibrate(50);
             }
 
-            document.getElementById('hba1c-val').innerText = currentHbA1c.toFixed(1);
+            document.getElementById('balance-val').innerText = currentBalance.toFixed(1);
             item.remove();
 
-            if (currentHbA1c <= 5.5) {
+            if (currentBalance <= 5.5) {
                 endGame();
             }
         };
@@ -321,26 +326,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-result-screen').classList.remove('hidden');
 
         let judge = "";
-        let doctorComment = "";
+        let coachComment = "";
 
-        if (currentHbA1c <= 5.5) {
-            judge = "【理想の数値達成！ヘモグロビンマスター】";
-            doctorComment = "「素晴らしい数値ですね！完璧な食事管理とセルフケアの賜物です。この調子で身体のメンテナンスを続けていきましょう！」";
-        } else if (currentHbA1c <= 6.2) {
-            judge = "【改善傾向あり！健康優良生】";
-            doctorComment = "「良い傾向が見られますね。あともう一歩で理想の領域です。日頃のストレッチや食習慣の意識をさらに高めていきましょう。」";
+        if (currentBalance <= 5.5) {
+            judge = "【理想のバランス達成！コンディショニングマスター】";
+            coachComment = "「素晴らしいスコアですね！日頃の食事意識とボディケアの相乗効果がバッチリ出ています。この軽やかな調子を維持していきましょう！」";
+        } else if (currentBalance <= 6.2) {
+            judge = "【順調なコンディション維持！健康優良生】";
+            coachComment = "「良い傾向が見られますね。あともう一歩で理想のバランス領域です。日頃のストレッチや生活リズムの意識をさらに高めていきましょう。」";
         } else {
-            judge = "【甘い誘惑に負けた生活習慣】";
-            doctorComment = "「おや、少し数値が高めに出ていますね……！ 甘いものの食べ過ぎには注意が必要です。しっかり身体をほぐして代謝を上げていきましょう！」";
+            judge = "【甘い誘惑に負けたスッキリ不足】";
+            coachComment = "「おや、少し甘いものに偏ってしまいましたね……！ バランスの良い食事と、しっかり身体をほぐして代謝を上げるケアを取り入れていきましょう！」";
         }
 
-        document.getElementById('result-message').innerHTML = '<b>最終HbA1c： ' + currentHbA1c.toFixed(1) + ' %</b><br><span style="color:#c73650; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
+        document.getElementById('result-message').innerHTML = '<b>最終バランス値： ' + currentBalance.toFixed(1) + ' %</b><br><span style="color:#27ae60; font-weight:bold;">' + judge + '</span><br><br><b>💡 コーチからのアドバイス：</b><br>' + coachComment;
 
-        var text = encodeURIComponent('HbA1c改善大作戦で最終数値 ' + currentHbA1c.toFixed(1) + '% を達成しました！\n称号：' + judge + '\n\n健康管理のエンタメゲーム、あなたも挑戦してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/hemogurobin.html') + '&hashtags=皓一部屋,HbA1c,健康エンタメ,名古屋マッサージ';
+        var text = encodeURIComponent('糖質オフ・バランス大作戦で最終値 ' + currentBalance.toFixed(1) + '% を達成しました！\n称号：' + judge + '\n\n健康ボディメイクゲーム、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/hemogurobin.html') + '&hashtags=皓一部屋,糖質オフ,健康エンタメ,名古屋マッサージ';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'hba1c_game', 'score': currentHbA1c});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'diet_balance_game', 'score': currentBalance});
         }
     }
 </script>
