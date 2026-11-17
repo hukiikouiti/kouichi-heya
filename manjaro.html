@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マンジャロ注射ゲーム - 皓一部屋</title>
+    <title>ヘルシーボディ大作戦 - 皓一部屋</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -41,7 +41,7 @@
         h1 {
             font-size: 1.1rem;
             margin-bottom: 6px;
-            color: #2980b9;
+            color: #27ae60;
         }
         p {
             font-size: 0.85rem;
@@ -55,14 +55,14 @@
             font-size: 0.95rem;
             font-weight: bold;
             margin-bottom: 12px;
-            color: #2980b9;
+            color: #27ae60;
         }
         /* ゲームステージ（落下型） */
         .game-stage {
             width: 100%;
             height: 280px;
-            background: linear-gradient(135deg, #ebf5fb 0%, #d4e6f1 100%);
-            border: 3px solid #2980b9;
+            background: linear-gradient(135deg, #e8f8f5 0%, #d1f2eb 100%);
+            border: 3px solid #27ae60;
             border-radius: 16px;
             position: relative;
             margin: 0 auto 15px;
@@ -95,7 +95,7 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
         .start-btn {
-            background-color: #2980b9;
+            background-color: #27ae60;
             color: #fff;
             border-radius: 30px;
         }
@@ -127,13 +127,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="game-card">
-    <h1>💉 マンジャロ注射＆食欲コントロール大作戦</h1>
-    <p>制限時間20秒！体重100kgからスタート！マンジャロ（💉）と野菜（🥦）で体重を落とし、スイーツ（🍩）を避けまくれ！</p>
+    <h1>🥗 ダイエットがんばる大作戦</h1>
+    <p>制限時間20秒！体重100kgからスタート！野菜（🥦）やヘルシーなお肉（🥩）をキャッチして体重を落とし、スイーツ（🍩）を避けまくれ！</p>
 
     <!-- スタート画面 -->
     <div id="game-start-screen">
-        <div style="font-size: 3.5rem; margin: 15px 0;">💉🥦</div>
-        <button class="btn start-btn" onclick="startGame()">治療スタート！</button>
+        <div style="font-size: 3.5rem; margin: 15px 0;">🥦🥩</div>
+        <button class="btn start-btn" onclick="startGame()">ゲームスタート！</button>
     </div>
 
     <!-- プレイ画面 -->
@@ -144,14 +144,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         
         <div class="game-stage" id="game-stage"></div>
-        <p style="font-size:0.8rem; color:#888;">マンジャロ（💉）と野菜（🥦）で体重ダウン！甘いもの（🍩）は＋1kg増えるぞ！</p>
+        <p style="font-size:0.8rem; color:#888;">野菜（🥦）や肉（🥩）で体重ダウン！甘いもの（🍩）は＋1kg増えるぞ！</p>
     </div>
 
     <!-- 結果画面 -->
     <div id="game-result-screen" class="hidden">
-        <h2 id="result-title" style="color: #2980b9; font-size: 1.2rem;">👨‍⚕️ 減量外来 医師の診断</h2>
+        <h2 id="result-title" style="color: #27ae60; font-size: 1.2rem;">💪 ダイエット結果発表</h2>
         
-        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #ebf5fb; padding: 12px; border-radius: 10px; border-left: 5px solid #2980b9;"></div>
+        <div id="result-message" style="font-size: 0.9rem; margin: 15px 0; color: #333; line-height: 1.6; text-align: left; background: #e8f8f5; padding: 12px; border-radius: 10px; border-left: 5px solid #27ae60;"></div>
 
         <!-- 1列目：LINEお友達追加 -->
         <a href="https://lin.ee/7Lb96Ev" target="_blank" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
@@ -165,7 +165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- ボタンを格納するエリア -->
         <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px;">
             <div style="display: flex; gap: 8px; width: 100%;">
-                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem;">
+                <button onclick="startGame()" style="flex: 1; padding: 12px 5px; background: #27ae60; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem;">
                     もう一度あそぶ
                 </button>
                 <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; line-height: 1.4;">
@@ -181,6 +181,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </a>
             </div>
         </div>
+    </div>
+    
+    <!-- フッタークレジット表記 -->
+    <div style="margin-top: 20px; font-size: 0.75rem; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
+        © 2026 皓一部屋. All Rights Reserved.
     </div>
 </div>
 
@@ -211,7 +216,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         clearItems();
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_start', 'game_name': 'manjaro_game'});
+            window.dataLayer.push({'event': 'game_start', 'game_name': 'diet_game'});
         }
 
         timerInterval = setInterval(() => {
@@ -236,11 +241,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const rand = Math.random();
         let itemType = 'veg';
         if (rand < 0.35) {
-            item.innerHTML = '💉'; // マンジャロ
-            itemType = 'manjaro';
-        } else if (rand < 0.7) {
             item.innerHTML = '🥦'; // 野菜
             itemType = 'veg';
+        } else if (rand < 0.7) {
+            item.innerHTML = '🥩'; // お肉
+            itemType = 'meat';
         } else {
             item.innerHTML = '🍩'; // スイーツ（誘惑）
             itemType = 'sweet';
@@ -277,11 +282,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             clearInterval(fallInterval);
 
-            if (item.dataset.type === 'manjaro') {
-                currentWeight = Math.max(70.0, currentWeight - 1.5); // マンジャロの効果で大幅減量
-                if (navigator.vibrate) navigator.vibrate(40);
-            } else if (item.dataset.type === 'veg') {
-                currentWeight = Math.max(70.0, currentWeight - 0.5);
+            if (item.dataset.type === 'veg') {
+                currentWeight = Math.max(70.0, currentWeight - 1.2); // 野菜でしっかり減量
+                if (navigator.vibrate) navigator.vibrate(30);
+            } else if (item.dataset.type === 'meat') {
+                currentWeight = Math.max(70.0, currentWeight - 0.6); // お肉も美味しく食べて減量
                 if (navigator.vibrate) navigator.vibrate(20);
             } else {
                 currentWeight = Math.min(120.0, currentWeight + 1.0); // スイーツは体重増
@@ -315,27 +320,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('game-result-screen').classList.remove('hidden');
 
         let judge = "";
-        let doctorComment = "";
+        let comment = "";
         let diff = 100.0 - currentWeight;
 
         if (diff >= 15.0) {
-            judge = "【マンジャロマスター・驚異の激ヤセ達成！】";
-            doctorComment = "「100kgからここまで落とすとは見事な食欲コントロールです！マンジャロの効果と日頃のケアが完璧に噛み合いましたね！」";
+            judge = "【ダイエットマスター・驚異のシェイプアップ達成！】";
+            comment = "「100kgからここまで落とすとは素晴らしい食生活のコントロールです！日頃のボディケアと運動の成果がバッチリ出ていますね！」";
         } else if (diff >= 7.0) {
             judge = "【順調な大幅ダイエット成功者！】";
-            doctorComment = "「素晴らしい成果です！100kgの大台からしっかり減量できましたね。この調子で理想の体型を維持していきましょう。」";
+            comment = "「素晴らしい成果です！100kgの大台からしっかりと減量できましたね。この調子で軽やかな身体をキープしていきましょう。」";
         } else {
             judge = "【スイーツの誘惑に負けた100kg台】";
-            doctorComment = "「おや、甘いものに手が伸びてしまい100kgからあまり減りませんでしたね……！ しっかり身体をほぐして代謝を上げていきましょう！」";
+            comment = "「おや、甘いものに手が伸びてしまい100kgからあまり減りませんでしたね……！ しっかり身体をほぐして代謝を上げていきましょう！」";
         }
 
-        document.getElementById('result-message').innerHTML = '<b>最終体重： ' + currentWeight.toFixed(1) + ' kg （変動: -' + diff.toFixed(1) + 'kg）</b><br><span style="color:#2980b9; font-weight:bold;">' + judge + '</span><br><br><b>👨‍⚕️ 担当医からのコメント：</b><br>' + doctorComment;
+        document.getElementById('result-message').innerHTML = '<b>最終体重： ' + currentWeight.toFixed(1) + ' kg （変動: -' + diff.toFixed(1) + 'kg）</b><br><span style="color:#27ae60; font-weight:bold;">' + judge + '</span><br><br><b>💡 コーチからのアドバイス：</b><br>' + comment;
 
-        var text = encodeURIComponent('マンジャロ注射ゲームで100kgから最終体重 ' + currentWeight.toFixed(1) + 'kg になりました！\n称号：' + judge + '\n\n健康エンタメゲーム、あなたも挑戦してみる？👇');
-        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/manjaro.html') + '&hashtags=皓一部屋,マンジャロ,ダイエット,名古屋マッサージ';
+        var text = encodeURIComponent('ダイエットがんばる大作戦で100kgから最終体重 ' + currentWeight.toFixed(1) + 'kg になりました！\n称号：' + judge + '\n\nヘルシーエンタメゲーム、あなたも挑戦してみる？👇');
+        document.getElementById('share-link').href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('https://hukiikouiti.github.io/kouichi-heya/diet.html') + '&hashtags=皓一部屋,ダイエット,名古屋マッサージ';
 
         if (window.dataLayer) {
-            window.dataLayer.push({'event': 'game_finish', 'game_name': 'manjaro_game', 'score': currentWeight});
+            window.dataLayer.push({'event': 'game_finish', 'game_name': 'diet_game', 'score': currentWeight});
         }
     }
 </script>
