@@ -1,1 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格糖化・酸化クイズ道場（50問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+.disclaimer-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-top: 14px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">糖化・酸化クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+  <p class="disclaimer-note">※本クイズは生化学・栄養学・生理学に関する一般的な知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- ボタンを格納するエリア -->
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+  </div>
+
+  <p class="disclaimer-note">※本クイズは一般的な健康・生化学知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<script>
+const fixedOptions = ["糖化", "酸化", "両方", "どちらでもない"];
+
+const allQuestions = [
+  // 1〜15：糖化・AGEsの基本と特徴（15問）
+  {
+    category: "糖化・AGEs",
+    question: "体内で余分な糖とタンパク質（または脂質・核酸）が結びつき、加熱や時間を経て「AGEs（終末糖化産物）」へと変化していく反応はどれですか？",
+    answer: 0,
+    explanation: "糖化は、余分な糖とタンパク質などが結合して変性し、最終的にAGEs（終末糖化産物）を生成する反応です。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "一般的に「体のコゲ」と例えられることが多い生化学的反応はどれですか？",
+    answer: 0,
+    explanation: "糖化は、料理で食材に焼き色や焦げ目がつくメイラード反応と同じ仕組みが体内で起こるため、「体のコゲ」と表現されることがあります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "タンパク質同士が糖化によって架橋（クロスリンク）されることで、コラーゲン線維や血管壁・組織の柔軟性や弾力性が低下し硬くなりやすい反応はどれですか？",
+    answer: 0,
+    explanation: "糖化が進むとタンパク質同士が結びついて硬くなり、皮膚や血管、筋・結合組織のしなやかさに影響を与える要因となります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "パンを焼いたときのきつね色の焼き色や、肉を高温で焼いたときの香ばしい焼き色と関係が深い反応はどれですか？",
+    answer: 0,
+    explanation: "食品の調理で見られるメイラード反応は、糖とアミノ酸・タンパク質が反応する糖化の一種です。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "食後の急激な血糖値上昇（血糖値スパイク）や、糖質の過剰摂取が続くことで進行しやすくなる反応はどれですか？",
+    answer: 0,
+    explanation: "血液中に余分な糖が多い状態が続くと、タンパク質と結びつく機会が増え、糖化が進みやすくなります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "一度生成されたAGEs（終末糖化産物）は、体内で分解・排泄されにくく蓄積しやすい性質を持つとされているのはどちらの反応の産物ですか？",
+    answer: 0,
+    explanation: "AGEsは代謝・分解されにくく、加齢や食生活の影響を受けながら体内に蓄積しやすい特徴があります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "揚げ物や直火焼き、高温の油調理など、高い温度で調理された食品に多く含まれやすい「AGEs」と関わる反応はどれですか？",
+    answer: 0,
+    explanation: "高温調理によって食品中の糖とタンパク質が反応し、AGEsが多く作られやすくなります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "「茹でる・蒸す」といった調理法は、焼く・揚げるといった高温調理と比べて食品中のAGEs生成を抑えやすいとされますが、この指標と関わる反応はどれですか？",
+    answer: 0,
+    explanation: "水分を介した比較的低温の調理（茹でる・蒸す）は、高温の乾熱調理よりもAGEsの増加を抑えやすいとされています。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "皮膚の真皮にあるコラーゲンが糖化することで、肌のハリや透明感の低下、黄ぐすみなどと関連して語られる反応はどれですか？",
+    answer: 0,
+    explanation: "コラーゲンの糖化は、弾力性の低下や色調の変化（くすみなど）に関わる要因の一つとしてよく知られています。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "血糖コントロールの指標として健康診断などで用いられる「HbA1c（ヘモグロビンエーワンシー）」は、ヘモグロビンにブドウ糖が結合した状態を指しますが、この仕組みに近い反応はどれですか？",
+    answer: 0,
+    explanation: "HbA1cは血液中のヘモグロビンにグルコースが非酵素的に結合する糖化反応の指標として測定されます。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "食後に野菜や食物繊維を先に食べる「ベジファースト」や、糖の吸収を穏やかにする工夫が意識される主な背景として当てはまるのはどれですか？",
+    answer: 0,
+    explanation: "食後血糖値の急上昇を抑えることは、余分な糖による糖化の進行を抑える観点からも意識されます。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "「糖化ストレス」という言葉でまとめられる、糖化とそれに伴う組織への負担を指す概念はどれですか？",
+    answer: 0,
+    explanation: "糖化ストレスは、体内の糖化反応や生成されたAGEsによって生じる生体への負荷を表す用語として使われます。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "「メイラード反応」という化学反応の仕組みと深く関係しているのはどれですか？",
+    answer: 0,
+    explanation: "還元糖とアミノ基を持つ化合物（アミノ酸・タンパク質・ペプチドなど）が反応するメイラード反応は糖化の代表的な反応です。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "血管の壁を構成するタンパク質が糖化することで、血管のしなやかさが損なわれやすくなる反応はどれですか？",
+    answer: 0,
+    explanation: "血管壁のコラーゲンやエラスチンなどのタンパク質が糖化すると、柔軟性の低下につながる一因となります。"
+  },
+  {
+    category: "糖化・AGEs",
+    question: "「AGEs（終末糖化産物）」の生成・蓄積のプロセスそのものを指す反応はどれですか？",
+    answer: 0,
+    explanation: "AGEsは糖化反応の最終段階で生じる物質群であり、その一連の反応を糖化と呼びます。"
+  },
+
+  // 16〜30：酸化・活性酸素の基本と特徴（15問）
+  {
+    category: "酸化・活性酸素",
+    question: "物質が電子を奪われる化学反応であり、生体内では活性酸素などによって細胞や脂質・タンパク質が影響を受ける反応はどれですか？",
+    answer: 1,
+    explanation: "化学的には電子を失う反応が「酸化」であり、生体内では活性酸素種（ROS）などによる酸化ストレスが知られています。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "一般的に「体のサビ」と例えられることが多い生化学的反応はどれですか？",
+    answer: 1,
+    explanation: "鉄が錆びる現象と同じく、体内の細胞や脂質・タンパク質が活性酸素などの影響を受けることを「体のサビ」と表現することがあります。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "リンゴを切って空気にさらしておくと切り口が茶色く変色する現象や、油が古くなって変質する現象と関係が深い反応はどれですか？",
+    answer: 1,
+    explanation: "切ったリンゴの褐変（ポリフェノール酸化酵素の関与など）や油脂の変質は、酸化に関わる身近な現象です。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "呼吸によって取り込んだ酸素の一部が変化して生じる「活性酸素」と深く関わり、過剰になると細胞へ負担をかける反応はどれですか？",
+    answer: 1,
+    explanation: "エネルギー産生や免疫などにも関わる活性酸素ですが、過剰になると生体成分を酸化させるストレス要因になります。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "LDLコレステロールが変性して「酸化LDL」となり、動脈硬化の進行に関わるプロセスと直接結びつく反応はどれですか？",
+    answer: 1,
+    explanation: "LDLコレステロールが酸化されることで酸化LDLが生じ、血管内での変化に関与することが知られています。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "激しい運動による呼吸量の増加、強い紫外線、喫煙、精神的ストレスなどが要因となって生じやすくなる生体内の反応はどれですか？",
+    answer: 1,
+    explanation: "紫外線や喫煙、強いストレス、激しい運動などは、活性酸素の産生を高め酸化ストレスにつながる要因となります。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "ビタミンC、ビタミンE、β-カロテン、ポリフェノールなどの「抗酸化物質」が働きかけて抑えようとする反応はどれですか？",
+    answer: 1,
+    explanation: "抗酸化物質は、過剰な活性酸素の働きを抑えたり電子を供与したりすることで、酸化の進行を和らげる役割を持ちます。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "体内に本来備わっている「SOD（スーパーオキシドディスムターゼ）」「カタラーゼ」「グルタチオンペルオキシダーゼ」などの抗酸化酵素が関わる反応はどれですか？",
+    answer: 1,
+    explanation: "これらは活性酸素を分解・無害化する生体内の抗酸化防御システムを構成する酵素群です。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "細胞膜を構成する不飽和脂肪酸が活性酸素と反応して「過酸化脂質」へと変化する現象はどれですか？",
+    answer: 1,
+    explanation: "脂質の酸化（脂質過酸化）によって過酸化脂質が生成されると、細胞膜の機能や構造に影響を与えることがあります。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "紫外線（特にUV-Aなど）を浴びることで皮膚の細胞内に活性酸素が発生し、肌ダメージの一因となる反応はどれですか？",
+    answer: 1,
+    explanation: "紫外線曝露は皮膚で活性酸素を発生させ、細胞やコラーゲン・脂質への酸化ストレスを引き起こします。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "「酸化ストレス」という言葉で表現される、酸化反応と抗酸化力のバランスが崩れた状態と深く関わるのはどれですか？",
+    answer: 1,
+    explanation: "酸化ストレスは、酸化を促す要因が抗酸化防御を上回った状態を指す生化学・医学用語です。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "ミトコンドリアでATP（エネルギー）を作り出す過程で、ごく一部が漏れ出て活性酸素が生じる現象と関連する反応はどれですか？",
+    answer: 1,
+    explanation: "ミトコンドリアの電子伝達系でのエネルギー産生に伴い、一部の電子が酸素に渡ることで活性酸素が生じます。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "白血球（好中球やマクロファージ）が細菌や異物を攻撃・排除する際に活性酸素を利用する仕組みと関係する反応はどれですか？",
+    answer: 1,
+    explanation: "免疫細胞は殺菌防御の一環として活性酸素を活用しますが、過剰になると周囲の組織にも酸化的な影響を与えます。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "食用油を長期間保存したり高い温度で繰り返し使ったりしたときに進む、油の劣化の主な反応はどれですか？",
+    answer: 1,
+    explanation: "油脂の劣化（酸敗・変質）は、酸素や光・熱の影響による酸化反応が主な要因の一つです。"
+  },
+  {
+    category: "酸化・活性酸素",
+    question: "「還元」と対になる化学反応であり、電子の授受という観点から定義される反応はどれですか？",
+    answer: 1,
+    explanation: "化学において「酸化」は電子を失う反応、「還元」は電子を得る反応であり、両者は同時に起こります。"
+  },
+
+  // 31〜42：両方（糖化・酸化の共通点・相互作用・エイジングとの関わり）（12問）
+  {
+    category: "両方・相互作用",
+    question: "加齢や生活習慣の乱れと結びつき、肌のハリや弾力、血管の健康、全身のエイジングケアの文脈でセットで語られることが多いものはどれですか？",
+    answer: 2,
+    explanation: "糖化（コゲ）と酸化（サビ）はどちらも加齢や生活習慣と深く関わり、エイジングケアや健康管理で併せて語られることが多い反応です。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "生体内で過剰に進行すると、細胞や組織にダメージを与え、生活習慣病や老化に関わるリスク要因の一つとして注目される反応はどれですか？",
+    answer: 2,
+    explanation: "糖化も酸化も、適切なバランスや抑制が保たれている間は問題になりにくいものの、過剰な状態が続くと健康リスクに関わります。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "体内で生成される過程において、酸化反応と糖化反応が互いに影響を及ぼし合いながら進む（「グリコキシデーション」などとも呼ばれる）側面を持つのはどれですか？",
+    answer: 2,
+    explanation: "糖化の進行過程では活性酸素が生じることがあり、逆に酸化ストレスが糖化反応を促進する相互作用も知られています。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "野菜・果物・海藻類・豆類などをバランスよく取り入れた食生活や、十分な睡眠・適度な運動習慣が、進行を抑えるうえで基本とされる反応はどれですか？",
+    answer: 2,
+    explanation: "バランスの良い食事や十分な睡眠、適度な運動といった生活習慣の整え方は、糖化・酸化の双方を抑える基本となります。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "コラーゲンなどの構造タンパク質に変性を起こし、組織の硬さや弾力性の低下に関わる要因として挙げられる反応はどれですか？",
+    answer: 2,
+    explanation: "糖化による架橋形成だけでなく、酸化ストレスによるタンパク質修飾も、組織の弾力性や機能低下に関わります。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "喫煙習慣によって体内に有害物質やフリーラジカルが取り込まれることで、進行が促されやすい反応はどれですか？",
+    answer: 2,
+    explanation: "喫煙は強い酸化ストレスをもたらすだけでなく、血中AGEsの上昇など糖化とも関連することが指摘されています。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "過剰な飲酒や甘いものの摂りすぎ、睡眠不足が重なる生活習慣によって、負担が増えやすい反応はどれですか？",
+    answer: 2,
+    explanation: "糖質の過剰摂取や睡眠不足、過度なアルコール摂取などは、代謝の乱れを通じて糖化・酸化の両方に影響します。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "健康診断の数値や日々のコンディション管理において、「まったくゼロにすればよい」という単純なものではない生体反応はどれですか？",
+    answer: 2,
+    explanation: "生体内の化学反応や代謝プロセスは生命維持に不可欠な側面も持つため、過剰な進行や蓄積を抑えるバランスが重要です。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "血管の内皮機能や血管壁のコンディションに影響を与え、将来の血管トラブルのリスク要因として語られる反応はどれですか？",
+    answer: 2,
+    explanation: "酸化ストレスによる一酸化窒素（NO）の低下や血管壁の変化、糖化による血管弾力性の低下は、いずれも血管の健康に関わります。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "「アンチエイジング」や「インナーケア」のテーマにおいて、日常の食事や生活リズムの見直しとセットで解説されることが多い反応はどれですか？",
+    answer: 2,
+    explanation: "美容や健康の維持を語る際、酸化対策と糖化対策は「サビとコゲのケア」としてよく並べて扱われます。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "体内のタンパク質が本来の立体構造や機能を損なう要因として関わり得る反応はどれですか？",
+    answer: 2,
+    explanation: "糖化による糖鎖付加・架橋や、活性酸素によるアミノ酸側鎖の酸化は、いずれもタンパク質の構造や機能に影響を与えます。"
+  },
+  {
+    category: "両方・相互作用",
+    question: "日常生活のなかで「食べすぎ・飲みすぎ・寝不足・ストレス」を溜め込まないことが、ケアの基本となる反応はどれですか？",
+    answer: 2,
+    explanation: "過食や睡眠不足、ストレスの蓄積は、糖化と酸化のどちらにとっても不利な環境を作りやすくなります。"
+  },
+
+  // 43〜50：どちらでもない（混同しやすい別の生体現象・栄養指標・用語）（8問）
+  {
+    category: "どちらでもない",
+    question: "核酸（DNAやRNA）の分解過程で作られ、体内で尿酸へと代謝される成分を指す言葉はどれですか？",
+    answer: 3,
+    explanation: "それは「プリン体」の説明です。糖化や酸化とは異なる代謝・成分の概念です。"
+  },
+  {
+    category: "どちらでもない",
+    question: "細胞膜の構成成分やステロイドホルモンの材料となり、血液検査でLDLやHDLとして測定される脂質の一種はどれですか？",
+    answer: 3,
+    explanation: "それは「コレステロール」の説明です。糖化や酸化そのものではありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "摂取したエネルギーが消費エネルギーを上回ったときに肝臓や脂肪組織に中性脂肪として蓄えられる、純粋な「エネルギー貯蔵」の仕組みはどれですか？",
+    answer: 3,
+    explanation: "余剰エネルギーが中性脂肪として蓄えられる仕組みはエネルギー代謝・脂質蓄積であり、糖化や酸化とは異なります。"
+  },
+  {
+    category: "どちらでもない",
+    question: "筋肉の繊維がトレーニングなどの負荷によって微細な損傷を受け、修復・適応することで太く強くなる「筋肥大」のプロセスはどれですか？",
+    answer: 3,
+    explanation: "筋肥大は機械的刺激や筋タンパク質合成の亢進による適応現象であり、糖化や酸化とは別の生理現象です。"
+  },
+  {
+    category: "どちらでもない",
+    question: "体温が上がったときに、皮膚の表面から汗が蒸発する際の気化熱によって体温を下げる「発汗による体温調節」はどれですか？",
+    answer: 3,
+    explanation: "発汗による気化熱の放散は体温調節機能であり、糖化や酸化とは異なります。"
+  },
+  {
+    category: "どちらでもない",
+    question: "食べたものが胃液や消化酵素によって分解され、小腸の絨毛から吸収されて血液中へ取り込まれる「消化・吸収」そのものはどれですか？",
+    answer: 3,
+    explanation: "消化・吸収は食物を小さな分子に分解して体内へ取り込む過程であり、糖化や酸化とは別のプロセスです。"
+  },
+  {
+    category: "どちらでもない",
+    question: "睡眠中に脳内の老廃物や代謝産物のクリアランスに関わるとされる「グリンパティックシステム」の働きはどれですか？",
+    answer: 3,
+    explanation: "グリンパティックシステムは脳脊髄液と間質液の循環に関わる仕組みであり、糖化や酸化ではありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "傷口から出血したときに、血小板の凝集や凝固因子の働きによって血液を固めて止血する「血液凝固」の仕組みはどれですか？",
+    answer: 3,
+    explanation: "血液凝固は止血のための生体防御反応であり、糖化や酸化とは異なります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "糖化・酸化クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  fixedOptions.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！糖化と酸化の仕組みをバッチリ押さえています！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！サビとコゲの違いがしっかり整理できていますね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格糖化・酸化クイズ道場】（50問版）で 5問中 " + score + "問正解しました！✨\n#皓一部屋 #糖化 #酸化 #生化学クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
