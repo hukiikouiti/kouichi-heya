@@ -1,1 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格プリン体・プリンクイズ道場（50問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+.disclaimer-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-top: 14px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">プリン体・プリンクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+  <p class="disclaimer-note">※本クイズは生化学・栄養学・食文化に関する一般的な知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- ボタンを格納するエリア -->
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+  </div>
+
+  <p class="disclaimer-note">※本クイズは一般的な健康・栄養・食文化知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<script>
+const fixedOptions = ["プリン体", "プリン", "両方", "どちらでもない"];
+
+const allQuestions = [
+  // 1〜15：プリン体（生化学・栄養学）（15問）
+  {
+    category: "プリン体・代謝",
+    question: "DNAやRNAなどの核酸の構成成分としてすべての生物の細胞に存在し、体内で代謝されると「尿酸」になる生化学的成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体は核酸（DNA・RNA）やATPなどの構成要素に関わる物質群であり、肝臓などで代謝された最終産物が尿酸になります。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン体0（ゼロ）」や「プリン体カット」といった表示が飲料や食品のパッケージで見られる際、主に指している対象はどれですか？",
+    answer: 0,
+    explanation: "表示で話題になるのは、尿酸の元となる生化学的成分の「プリン体」です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "鶏レバー、牛レバー、白子、干し椎茸、干物などに比較的多く含まれ、日々の食生活で摂取量やバランスが意識される成分はどれですか？",
+    answer: 0,
+    explanation: "レバーや白子、魚介の干物などにはプリン体が多く含まれるため、食べすぎに気をつける栄養成分として知られます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "血液検査で測定される「尿酸値」の元となる物質として、栄養学や代謝の文脈で語られるのはどれですか？",
+    answer: 0,
+    explanation: "プリン体が分解・代謝される過程で尿酸が作られるため、尿酸値と関連づけて語られます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "細胞の新陳代謝やエネルギー通貨であるATP（アデノシン三リン酸）などの生体分子の構造と深く関わる成分はどれですか？",
+    answer: 0,
+    explanation: "ATPやDNA・RNAにはプリン骨格を持つ成分が含まれており、生命活動に不可欠な分子構造に関わっています。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン骨格」と呼ばれる環状構造を持つ有機化合物の総称として、生化学・薬学・栄養学で扱われるのはどれですか？",
+    answer: 0,
+    explanation: "化学構造としての「プリン（purine）」を骨格に持つ物質群がプリン体と呼ばれます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "体内で作られる量（内因性・代謝ターンオーバー）と、食事から摂る量（外因性）の両方から供給される物質はどれですか？",
+    answer: 0,
+    explanation: "プリン体は食品から摂取されるだけでなく、体内の細胞代謝や核酸の分解によっても日々生じています。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "痛風や高尿酸血症の話題と結びついて、栄養指導や健康情報でよく登場する成分はどれですか？",
+    answer: 0,
+    explanation: "尿酸値の上昇と関連する食事成分として、プリン体は健康情報で頻繁に取り上げられます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン体を摂りすぎると尿酸が増えやすくなる」という文脈で使われる言葉はどれですか？",
+    answer: 0,
+    explanation: "尿酸の産生に関わる栄養成分としての文脈では「プリン体」を指します。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "味覚として「甘い・香ばしい」といったスイーツの風味を表す言葉ではなく、生体内の代謝物質を指す言葉はどれですか？",
+    answer: 0,
+    explanation: "スイーツのデザートを指すのではなく、生化学・栄養学上の成分を指す場合は「プリン体」です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "細胞の核に含まれる遺伝物質の分解産物と関連し、腎臓などからの尿酸排泄バランスとも関わる成分はどれですか？",
+    answer: 0,
+    explanation: "核酸（DNA・RNA）の分解や細胞の turnover と関連して生じるのはプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン体」という名称は、甘いお菓子ではなく化学構造の「プリン」に由来しているとされるのはどちらの言葉ですか？",
+    answer: 0,
+    explanation: "ドイツの化学者エミール・フィッシャーが命名した化学物質「プリン（purine）」に由来するのがプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "食事からの摂取だけでなく、激しい運動や絶食などによるATP分解・代謝変動とも関わり得る生体成分はどれですか？",
+    answer: 0,
+    explanation: "ATPの分解や代謝の変動と関わるのは、生化学的成分であるプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「尿酸の原料になる物質」として健康診断後の生活改善メモに書かれやすい言葉はどれですか？",
+    answer: 0,
+    explanation: "尿酸の元となる成分としての意味では「プリン体」が該当します。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "動物性食品だけでなく植物性食品（豆類やきのこ類・野菜類など）にも含まれることが知られ、量や食品群ごとの違いが語られる生体成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体は動植物を問わず広く生物の細胞に含まれる成分です。"
+  },
+
+  // 16〜30：プリン（洋菓子・デザート）（15問）
+  {
+    category: "プリン・スイーツ",
+    question: "卵・牛乳・砂糖などを混ぜて型に流し、蒸し焼きや加熱で固め、カラメルソースを添えることが多い洋菓子はどれですか？",
+    answer: 1,
+    explanation: "卵と牛乳、砂糖をベースに作られる定番のデザートは「プリン（カスタードプリン）」です。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "砂糖を焦がして作るほろ苦い「カラメルソース」と組み合わせて食べられることが多いスイーツはどれですか？",
+    answer: 1,
+    explanation: "カラメルソースをかけるデザートとして代表的なのがプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "「固めプリン」や「なめらかプリン」のように、食感の違いがカフェやコンビニスイーツで人気を集めている食べ物はどれですか？",
+    answer: 1,
+    explanation: "卵の比率や加熱方法によって「固め」「なめらか」などの食感の違いが楽しまれるのはプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "英語の「pudding」に由来し、日本では主にカスタードプディングを指すことが多いスイーツはどれですか？",
+    answer: 1,
+    explanation: "英語のプディング（pudding）から転じて、日本で親しまれている甘いデザートがプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "お子様ランチのプレートに添えられていたり、喫茶店の定番メニューとして親しまれたりするデザートはどれですか？",
+    answer: 1,
+    explanation: "喫茶店やお子様ランチの定番デザートといえばプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "卵黄や全卵に含まれる卵白の熱凝固作用（タンパク質が熱で固まる性質）を利用して形を作るデザートはどれですか？",
+    answer: 1,
+    explanation: "卵のタンパク質が加熱によって固まる性質を活かして作られるのがカスタードプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "「プリンアラモード」というデザート名にそのまま使われている主役のお菓子はどれですか？",
+    answer: 1,
+    explanation: "フルーツや生クリームと組み合わされる「プリンアラモード」の主役はプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "バニラビーンズやバニラエッセンスを加えて甘い香りを引き立てることが多い、冷やして食べるデザートはどれですか？",
+    answer: 1,
+    explanation: "バニラの甘い香りとひんやり冷やした食感が楽しめるスイーツはプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "お皿にひっくり返して盛り付けたとき、プルンと揺れる動きが楽しめることが多い洋菓子はどれですか？",
+    answer: 1,
+    explanation: "型から出して揺れる動きも楽しいデザートといえばプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "栄養学の代謝物質ではなく、おやつ・デザートとして糖質や脂質・エネルギー量（kcal）が話題になる食べ物はどれですか？",
+    answer: 1,
+    explanation: "おやつとしてカロリーや糖質が話題になるのは、スイーツのプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "かぼちゃや抹茶、チョコレート、紅茶など、さまざまなフレーバーにアレンジされて販売されることが多い洋菓子はどれですか？",
+    answer: 1,
+    explanation: "かぼちゃプリンや抹茶プリンなど、多様な味にアレンジされるのはデザートのプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "スペインの「フラン（Flan）」やフランスの「クレーム・カラメル」と近いルーツを持つデザートはどれですか？",
+    answer: 1,
+    explanation: "クレーム・カラメルやフランと近い系譜にあるスイーツがプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "食後のデザートとしてスプーンですくって食べることが多い甘いお菓子はどれですか？",
+    answer: 1,
+    explanation: "スプーンですくって食べる甘いデザートはプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "「焼きプリン」と「蒸しプリン」という作り方による呼び分けがされることが多いお菓子はどれですか？",
+    answer: 1,
+    explanation: "オーブンで焼くか、蒸して作るかで食感や見た目が異なるのはプリンです。"
+  },
+  {
+    category: "プリン・スイーツ",
+    question: "明治〜昭和期にかけて日本国内で家庭や洋食店を通じて広まった、卵と牛乳の甘いデザートはどれですか？",
+    answer: 1,
+    explanation: "日本国内で洋菓子・デザートとして広く親しまれてきたのはプリンです。"
+  },
+
+  // 31〜40：両方（プリン体・プリンの両方に当てはまる点、または両方を含む要素）（10問）
+  {
+    category: "両方・共通点",
+    question: "日本語のカタカナ表記の冒頭が「プリン〜」で始まり、日常会話やダジャレ・言葉遊びでよく対比される2つの言葉はどれですか？",
+    answer: 2,
+    explanation: "「プリン体」と「プリン」は表記や音の響きが似ているため、混同されたり言葉遊びのネタになったりする両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "原材料である卵や牛乳などに含まれる成分をきっかけとして、栄養学上の「プリン体」とスイーツの「プリン」の両方と接点を持ち得るものはどれですか？",
+    answer: 2,
+    explanation: "卵や牛乳などの食品成分は、栄養学上のプリン体とも関係し、同時にスイーツのプリンを作る材料にもなります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "健康を意識する人が「甘いプリンを食べる」とき、スイーツとしてのカロリー・糖質と、食材由来の微量成分の両方に関心が向く可能性があるのはどれですか？",
+    answer: 2,
+    explanation: "おやつとしてのプリンと、そこに含まれる栄養・代謝成分の両面から語られることがあります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "「プリン」という文字列を先頭に含むキーワードとして、検索やクイズの選択肢に並んでいる言葉はどれですか？",
+    answer: 2,
+    explanation: "「プリン体」も「プリン」も、「プリン」という文字列を含む言葉です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "食生活や健康管理の話題の中で、うっかり言い間違えたり混同したりしやすい組み合わせはどれですか？",
+    answer: 2,
+    explanation: "「プリン体」と「プリン」は響きが似ているため、会話の中で混同されやすい組み合わせです。"
+  },
+  {
+    category: "両方・共通点",
+    question: "食品や飲食のシーンと結びついて語られることがある言葉として、当てはまるものはどれですか？",
+    answer: 2,
+    explanation: "プリン体は食品に含まれる成分として、プリンはデザート食品として、いずれも食と関わりがあります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "「摂りすぎ」や「食べすぎ」が健康やコンディション管理の文脈で意識され得る対象はどれですか？",
+    answer: 2,
+    explanation: "プリン体の過剰摂取も、甘いプリンの食べすぎも、生活習慣や体調管理の文脈で意識されることがあります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "カタカナで表記される外来語・学術用語由来の言葉として並んでいるものはどれですか？",
+    answer: 2,
+    explanation: "「プリン体」も「プリン」も、カタカナで表記される言葉です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "日常の雑学クイズや健康クイズのネタとして、知識の整理に役立つ組み合わせはどれですか？",
+    answer: 2,
+    explanation: "音の似た言葉を正確に区別して覚えることは、クイズや知識整理の面白さにつながります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "体内で消化・吸収・代謝などの生体プロセスの対象となり得る物質・食品に関わる言葉はどれですか？",
+    answer: 2,
+    explanation: "プリン体は代謝されて尿酸になり、プリンは食品として消化・吸収・エネルギー代謝の対象になります。"
+  },
+
+  // 41〜50：どちらでもない（混同しやすい別の栄養成分・食品・生体現象）（10問）
+  {
+    category: "どちらでもない",
+    question: "細胞膜の構成成分やステロイドホルモンの材料となり、血液検査でLDLやHDLとして測定される脂質の一種はどれですか？",
+    answer: 3,
+    explanation: "それは「コレステロール」の説明です。プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "余分な糖とタンパク質が結びつき、加熱や時間を経て「AGEs（終末糖化産物）」へと変化する反応はどれですか？",
+    answer: 3,
+    explanation: "それは「糖化」の説明です。プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "物質が電子を奪われる化学反応であり、生体内では活性酸素などによって細胞や脂質が影響を受ける反応はどれですか？",
+    answer: 3,
+    explanation: "それは「酸化」の説明です。プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "小麦粉・卵・砂糖・バターなどを使って焼き上げ、デコレーションケーキの土台などにも使われる焼き菓子はどれですか？",
+    answer: 3,
+    explanation: "それは「スポンジケーキ（またはケーキ類）」の説明であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "筋肉の繊維がトレーニングなどの負荷によって微細な損傷を受け、修復・適応することで太く強くなる「筋肥大」のプロセスはどれですか？",
+    answer: 3,
+    explanation: "それは「筋肥大」という生理現象であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "膵臓のランゲルハンス島β細胞から分泌され、血液中のブドウ糖を細胞に取り込ませる働きを持つホルモンはどれですか？",
+    answer: 3,
+    explanation: "それは「インスリン」の説明であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "小豆を砂糖と水で煮詰めて作る、和菓子のあんこやぜんざいなどに使われる伝統的な和食材はどれですか？",
+    answer: 3,
+    explanation: "それは「小豆（あずき・あんこ）」の説明であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "睡眠中に脳内の老廃物や代謝産物のクリアランスに関わるとされる「グリンパティックシステム」の働きはどれですか？",
+    answer: 3,
+    explanation: "それは「グリンパティックシステム」の説明であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "タンパク質の構成単位となる分子であり、筋肉や酵素・ホルモンなどの材料となる栄養素はどれですか？",
+    answer: 3,
+    explanation: "それは「アミノ酸」の説明であり、プリン体でもプリンでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "体温が上がったときに、皮膚の表面から汗が蒸発する際の気化熱によって体温を下げる「発汗による体温調節」はどれですか？",
+    answer: 3,
+    explanation: "それは「発汗による体温調節」であり、プリン体でもプリンでもありません。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "プリン体・プリンクイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  fixedOptions.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！プリン体とプリンの違いを完璧に見分けられました！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！代謝とスイーツ、しっかり整理できていますね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格プリン体・プリンクイズ道場】（50問版）で 5問中 " + score + "問正解しました！🍮✨\n#皓一部屋 #プリン体 #プリン #クイズ道場");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
