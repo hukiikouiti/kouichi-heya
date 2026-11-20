@@ -1,1 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格プリン体・コレステロールクイズ道場（50問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+.disclaimer-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-top: 14px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">プリン体・コレステロールクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+  <p class="disclaimer-note">※本クイズは生化学・栄養学・健康リテラシーに関する一般的な知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- ボタンを格納するエリア -->
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+  </div>
+
+  <p class="disclaimer-note">※本クイズは一般的な健康・栄養・代謝知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<script>
+const fixedOptions = ["プリン体", "コレステロール", "両方", "どちらでもない"];
+
+const allQuestions = [
+  // 1〜15：プリン体（15問）
+  {
+    category: "プリン体・代謝",
+    question: "DNAやRNAなどの核酸の構成成分としてすべての生物の細胞に存在し、体内で代謝された最終産物が「尿酸」になる成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体は核酸（DNA・RNA）やATPなどの構成要素に関わる物質群であり、肝臓などで代謝された最終産物が尿酸になります。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "血液検査の「尿酸値」や「高尿酸血症・痛風」のリスク管理と結びついて、食事や生活習慣で意識される成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体が分解・代謝される過程で尿酸が生成されるため、尿酸値管理の文脈でよく話題になります。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン体0（ゼロ）」や「プリン体カット」といった表示が飲料や食品のパッケージで見られる際、対象となっている成分はどれですか？",
+    answer: 0,
+    explanation: "パッケージ表示で話題になるのは、尿酸の元となる生化学的成分の「プリン体」です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "鶏レバー、牛レバー、白子、干し椎茸、干物などに比較的多く含まれ、過剰摂取が尿酸値と関連づけて語られる成分はどれですか？",
+    answer: 0,
+    explanation: "レバーや白子、魚介の干物などにはプリン体が比較的多く含まれるため、量や頻度が意識されます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "細胞の新陳代謝やエネルギー通貨であるATP（アデノシン三リン酸）などの生体分子の構造と関わる成分はどれですか？",
+    answer: 0,
+    explanation: "ATPやDNA・RNAにはプリン骨格を持つ成分が含まれており、細胞内のエネルギーや核酸代謝と関わっています。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「プリン骨格」と呼ばれる環状構造を持つ有機化合物の総称として、生化学や栄養学で扱われるのはどれですか？",
+    answer: 0,
+    explanation: "化学構造の「プリン（purine）」を骨格に持つ物質群がプリン体と呼ばれます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "脂質の一種ではなく、核酸やATPの分解・代謝を経て尿酸へと変換される物質はどれですか？",
+    answer: 0,
+    explanation: "コレステロールは脂質の一種ですが、プリン体は核酸やATPの代謝産物として尿酸につながる成分です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "体内で作られる量（内因性・代謝ターンオーバー）と、食事から摂る量（外因性）の両方から供給される生体成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体は食品から摂取されるだけでなく、体内の細胞代謝や核酸の分解によっても日々生じています。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "激しい運動や絶食などによるATPの分解・代謝変動とも関わり得る生体成分はどれですか？",
+    answer: 0,
+    explanation: "ATPの分解が進むとプリン体由来の代謝産物が増え、尿酸値に影響することがあります。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "「尿酸の原料になる物質」として健康診断後の生活習慣メモに書かれやすい成分はどれですか？",
+    answer: 0,
+    explanation: "体内で尿酸へと代謝される元となる成分はプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "細胞の核に含まれる遺伝物質の分解産物と関連し、腎臓などからの尿酸排泄バランスとも関わる成分はどれですか？",
+    answer: 0,
+    explanation: "核酸（DNA・RNA）の分解や細胞の入れ替わりと関連して生じるのはプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "ドイツの化学者エミール・フィッシャーが命名した化学物質「プリン（purine）」に由来する名称を持つ成分はどれですか？",
+    answer: 0,
+    explanation: "化学構造の「プリン（purine）」に由来する生化学的成分がプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "動物性食品だけでなく、きのこ類や豆類、野菜類などにも含まれることが知られ、食品群ごとの違いが語られる生体成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体はすべての生物の細胞に存在するため、動物性・植物性を問わずさまざまな食品に含まれます。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "血液検査で「LDLコレステロール」や「HDLコレステロール」ではなく、「尿酸」の数値と直接結びつく成分はどれですか？",
+    answer: 0,
+    explanation: "LDLやHDLはコレステロールの運搬に関わる指標であり、尿酸の元になるのはプリン体です。"
+  },
+  {
+    category: "プリン体・代謝",
+    question: "プリン骨格を持つヌクレオチドや核酸の代謝経路を経て生成される最終産物が尿酸となる成分はどれですか？",
+    answer: 0,
+    explanation: "プリン体（プリンヌクレオチドなど）の代謝の最終段階として尿酸が作られます。"
+  },
+
+  // 16〜30：コレステロール（15問）
+  {
+    category: "コレステロール・脂質",
+    question: "細胞膜の流動性や構造を保つ材料となり、ステロイドホルモンや胆汁酸の原料にもなる脂質の一種はどれですか？",
+    answer: 1,
+    explanation: "コレステロールは細胞膜の構成成分であり、胆汁酸やステロイドホルモン（性ホルモンや副腎皮質ホルモンなど）の材料になります。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "血液中では水に溶けにくいためリポタンパク質として運ばれ、LDLやHDLなどの言葉と結びつく成分はどれですか？",
+    answer: 1,
+    explanation: "血液中でリポタンパク質によって運ばれ、LDLやHDLと関連づけて語られるのはコレステロールです。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "植物性食品そのものには原則としてほとんど含まれず、卵黄、レバー、魚卵などの動物性食品に多く含まれる成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールは主に動物性食品に含まれ、植物性食品そのものには基本的に含まれません（植物ステロールとは区別されます）。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "肝臓で合成される胆汁酸の材料となり、脂質の消化・吸収を助ける働きと深く関わる成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールから作られる胆汁酸は、小腸で脂肪の乳化・吸収を助ける重要な役割を担っています。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "尿酸の直接の原料になる成分ではなく、脂質代謝や動脈硬化リスクの文脈で語られることが多い成分はどれですか？",
+    answer: 1,
+    explanation: "尿酸の元になるのはプリン体であり、コレステロールは脂質の一種として血管や代謝の文脈で語られます。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "テストステロンやエストロゲン、コルチゾールといったステロイドホルモンの合成の出発物質となる成分はどれですか？",
+    answer: 1,
+    explanation: "ステロイドホルモンはすべてコレステロールを骨格・原料として合成されます。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "健康診断の血液検査で「LDLコレステロール」「HDLコレステロール」「総コレステロール」として測定される対象はどれですか？",
+    answer: 1,
+    explanation: "健診項目としておなじみのLDL・HDL・総コレステロールは、いずれもコレステロールに関する指標です。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "体内のコレステロールの多くは肝臓などで合成され、食事からの摂取量が増えると体内合成が調整される仕組みを持つ成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールは体内で合成される割合が大きく、摂取量に応じて体内での合成バランスが調整されます。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "「悪玉」「善玉」といった俗称で呼ばれることがあるリポタンパク質と関連し、血管の健康管理で意識される成分はどれですか？",
+    answer: 1,
+    explanation: "LDLやHDLと結びついて血管のコンディション管理で話題になるのはコレステロールです。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "糖質やタンパク質ではなく、生化学的に「ステロール（脂質の一種）」に分類される成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールはステロール類に属する脂質の一種です。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "「プリン体0」の飲料とは別の文脈で、食品成分表や健康情報において脂質・血中脂質との関わりが語られる成分はどれですか？",
+    answer: 1,
+    explanation: "「プリン体0」はプリン体の話であり、血中脂質や細胞膜の材料として語られるのはコレステロールです。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "皮膚で紫外線を受けてビタミンDが合成される過程でも、前駆体・代謝経路と関わる脂質成分はどれですか？",
+    answer: 1,
+    explanation: "ビタミンDの生成経路とも関連するステロール系の脂質成分がコレステロールです。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "過剰な状態が続くと血管壁への脂質沈着などと関連し、生活習慣病予防の観点から注目される成分はどれですか？",
+    answer: 1,
+    explanation: "血中コレステロールのバランスが崩れると、動脈硬化などの生活習慣病リスクと関連することがあります。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "「尿酸値」ではなく「血中脂質」のバランスと結びつけて語られることが多い栄養・生体成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールは中性脂肪などと並ぶ血中脂質の代表的な成分です。"
+  },
+  {
+    category: "コレステロール・脂質",
+    question: "細胞膜の硬さや柔軟性を調整し、細胞が正常に機能するための土台となっている脂質成分はどれですか？",
+    answer: 1,
+    explanation: "コレステロールは細胞膜に入り込むことで、膜の流動性や安定性を保つ働きをしています。"
+  },
+
+  // 31〜40：両方（プリン体・コレステロールの両方に当てはまる点）（10問）
+  {
+    category: "両方・共通点",
+    question: "「摂りすぎれば体に悪いだけの不要な物質」ではなく、本来の生理機能においては欠かせない役割を持つ点はどちらに当てはまりますか？",
+    answer: 2,
+    explanation: "プリン体もコレステロールも、体内で必要な役割を担っており、過不足のバランスが重要な成分の両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "体内での合成（代謝・生合成）と食事からの摂取の両方と関わり、日々の食生活や生活習慣の影響を受ける成分はどれですか？",
+    answer: 2,
+    explanation: "プリン体もコレステロールも、体内で作られる分と食事から入る分の双方が関わる成分の両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "レバーなどの食材と結びつけて栄養学や食事管理の話題に登場することがある成分はどれですか？",
+    answer: 2,
+    explanation: "レバーはプリン体もコレステロールも比較的多く含む食材として知られ、両方と関わりがあります。"
+  },
+  {
+    category: "両方・共通点",
+    question: "過剰な状態が続くと、生活習慣病や体調不良のリスク要因として健康管理で意識されることがある成分はどれですか？",
+    answer: 2,
+    explanation: "プリン体の過剰は高尿酸血症・痛風リスクに、コレステロールの過剰（バランス乱れ）は脂質異常や動脈硬化リスクに関わる両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "健康診断の結果や日々の食事の選び方を見直すきっかけになりやすい成分はどれですか？",
+    answer: 2,
+    explanation: "尿酸値や血中脂質など、健診結果や食習慣の見直しでよく登場する成分の両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "生化学・栄養学の領域で扱われ、体内の代謝や生理機能と深く結びついている成分はどれですか？",
+    answer: 2,
+    explanation: "プリン体もコレステロールも、生化学・栄養学で重要な役割を持つ生体成分の両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "「極端にゼロにすればよい」という単純なものではなく、適度なバランスが大切とされる成分はどれですか？",
+    answer: 2,
+    explanation: "生体機能の維持に必要であるため、どちらも「ゼロにすればよい」ではなく適切なバランスが大切です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "食品の摂取量だけでなく、運動習慣や食生活全体のバランスと組み合わせて語られることが多い成分はどれですか？",
+    answer: 2,
+    explanation: "どちらも食事だけでなく、運動や生活習慣全体とのバランスで語られることが多い成分の両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "カタカナ表記の一般名詞・生化学用語として、健康情報記事やクイズのテーマになりやすい成分はどれですか？",
+    answer: 2,
+    explanation: "「プリン体」も「コレステロール」も、カタカナで表記され健康クイズの定番テーマになる両方です。"
+  },
+  {
+    category: "両方・共通点",
+    question: "体内の代謝経路に関わり、数値や状態の把握がセルフケアの目安になり得る成分はどれですか？",
+    answer: 2,
+    explanation: "どちらも体内の代謝と深く関わり、体調や健診数値の目安として意識される両方です。"
+  },
+
+  // 41〜50：どちらでもない（混同しやすい別の栄養素・食品・生体現象）（10問）
+  {
+    category: "どちらでもない",
+    question: "卵・牛乳・砂糖などを混ぜて加熱で固め、カラメルソースを添えることが多いスイーツ・洋菓子はどれですか？",
+    answer: 3,
+    explanation: "それはデザートの「プリン」の説明です。プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "余分な糖とタンパク質が結びつき、加熱や時間を経て「AGEs（終末糖化産物）」へと変化する反応はどれですか？",
+    answer: 3,
+    explanation: "それは「糖化」という反応の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "膵臓のランゲルハンス島β細胞から分泌され、血液中のブドウ糖を細胞に取り込ませる働きを持つホルモンはどれですか？",
+    answer: 3,
+    explanation: "それは「インスリン」の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "タンパク質の構成単位となる分子であり、筋肉や酵素・ホルモンなどの材料となる栄養素はどれですか？",
+    answer: 3,
+    explanation: "それは「アミノ酸」の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "1gあたり約4kcalのエネルギーを生み出し、脳や筋肉の重要なエネルギー源となる「糖質」はどれですか？",
+    answer: 3,
+    explanation: "それは「糖質」の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "筋肉の繊維がトレーニングなどの負荷によって刺激を受け、修復・適応することで太く強くなる「筋肥大」のプロセスはどれですか？",
+    answer: 3,
+    explanation: "それは「筋肥大」という生理現象であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "睡眠中に脳内の老廃物や代謝産物のクリアランスに関わるとされる「グリンパティックシステム」の働きはどれですか？",
+    answer: 3,
+    explanation: "それは「グリンパティックシステム」の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "体温が上がったときに、皮膚の表面から汗が蒸発する際の気化熱によって体温を下げる「発汗による体温調節」はどれですか？",
+    answer: 3,
+    explanation: "それは「発汗による体温調節」であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "物質が電子を奪われる化学反応であり、生体内では活性酸素などによって細胞や脂質が影響を受ける反応はどれですか？",
+    answer: 3,
+    explanation: "それは「酸化」の説明であり、プリン体でもコレステロールでもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "血液検査の基準値として「空腹時血糖値」や「HbA1c」で直接測定・評価される指標はどれですか？",
+    answer: 3,
+    explanation: "それは血糖関連の指標であり、プリン体でもコレステロールでもありません。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "プリン体・コレステロールクイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  fixedOptions.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！プリン体とコレステロールの違いを完璧に見分けられました！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！代謝と脂質の知識、しっかり整理できていますね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格プリン体・コレステロールクイズ道場】（50問版）で 5問中 " + score + "問正解しました！🧬✨\n#皓一部屋 #プリン体 #コレステロール #クイズ道場");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
