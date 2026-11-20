@@ -1,1 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>血糖値マルバツクイズ道場 | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #2980b9; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: center;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #27ae60; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+.disclaimer-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-top: 14px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- クイズ出題用のメインカード -->
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">血糖値マルバツクイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+  <p class="disclaimer-note">※本クイズは血糖値や日常の食・生活習慣に関する一般的な知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<!-- 結果発表用のカード（LINE・予約・Xシェア・各種戻るボタンのコンバージョン動線） -->
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- LINEお友達追加 -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff;">🟢 LINEお友達追加</a>
+
+  <!-- 予約する -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; border: none; cursor: pointer;">𝕏 で結果をシェアする</button>
+
+  <!-- 各種ナビゲーションボタン -->
+  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px;">
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+  // --- 1〜15：血糖値の基礎・体の仕組み ---
+  {
+    category: "血糖値・基礎",
+    question: "「血糖値」とは、血液中に含まれるブドウ糖（グルコース）の濃度のことである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "血糖値は血液中のブドウ糖の量を示す指標で、脳や筋肉などのエネルギー源として使われます。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "健康な人の血液中には、ブドウ糖はまったく含まれておらず、食事をしたときだけ一時的に現れる。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "ブドウ糖は体の大切なエネルギー源なので、空腹時でも一定の範囲内で血液中に存在しています。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "食事をして糖質が消化・吸収されると、血液中のブドウ糖が増えて血糖値は上がりやすくなる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ご飯やパン、麺類、甘いものなどの糖質が分解されて吸収されると、食後に血糖値が上昇します。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "血糖値が下がりすぎると、ふらつきや冷や汗、強い空腹感などのサインが出ることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "脳はブドウ糖を主なエネルギー源としているため、血糖値が低すぎると不調のサインが出やすくなります。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "「空腹時血糖値」とは、一定時間食事をとらない状態で測る血糖値のことである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食事の影響がないときのベースの状態を見るために、空腹時血糖値が測られます。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "「食後血糖値」は、通常、食事を始めてから1〜2時間ほどでピークを迎えやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食べたものの消化・吸収のスピードにもよりますが、食後1〜2時間前後がひとつの目安になります。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "血糖値は1日のうちでまったく変動せず、朝も昼も夜も常にピタッと一定である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "食事や運動、睡眠、ストレスなどによって1日のなかでも上下に変動しています。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "糖質だけでなく、肉や魚、卵などのタンパク質や脂質も、体のエネルギーや代謝と深く関わっている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食事全体のバランスや消化スピードが、食後の血糖値の動きにも影響します。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "「血糖値が高い＝必ず甘いお菓子を毎日たくさん食べている」と決めつけることはできない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "甘いお菓子だけでなく、主食の量や食べ方、運動量、生活リズムなどさまざまな要素が関わります。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "健康診断で「血糖値」と一緒に「HbA1c（ヘモグロビンエーワンシー）」が調べられることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "HbA1cは過去1〜2か月ほどの平均的な血糖状態を知る目安としてよく使われます。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "HbA1cは「その日さっき食べたもの」の血糖値だけをピンポイントで表す数値である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "HbA1cは1回きりの食後数値ではなく、数週間〜1〜2か月ほどの全体の傾向を反映する指標です。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "脳は体の中でも特にエネルギーを消費する器官であり、ブドウ糖と密接な関係がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "脳はブドウ糖を重要なエネルギー源としているため、血糖の変動が集中力や眠気と結びつくことがあります。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "血糖値は「高ければ高いほど元気が出てパフォーマンスが上がる」というものではない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "高すぎても低すぎても体にとっては負担になりやすく、ほどよい範囲に収まっていることが大切です。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "「血糖値スパイク」とは、食後に血糖値が急上昇したあと、比較的短い時間で急降下する動きを指す言葉としてよく使われる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食後の急な上がり下がりが繰り返されると、眠気やだるさなどの体感につながりやすいと言われます。"
+  },
+  {
+    category: "血糖値・基礎",
+    question: "血糖値は「血液中の塩分の濃さ」を表す言葉である。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "血糖値は塩分ではなく「糖（ブドウ糖）」の濃さを表す言葉です。"
+  },
+
+  // --- 16〜30：食べ方・飲み物・食事の工夫 ---
+  {
+    category: "食事・食べ方",
+    question: "野菜やきのこ、海藻などの食物繊維を含むおかずを先に食べると、食後の血糖値の上昇がゆるやかになりやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食物繊維が消化・吸収のスピードを穏やかにする働きを助けるため、食べる順番の工夫としてよく知られています。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "菓子パンや白米、ジュースなどを空腹時に一気に食べると、血糖値が上がりやすくなる傾向がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "糖質が吸収されやすい形で素早く入ると、血糖値が急上昇しやすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "「よく噛んでゆっくり食べる」ことは、食べすぎを防いだり食後の血糖値の動きを穏やかにしたりする工夫につながる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "噛む回数を増やして食事時間をとることで、満腹感を得やすくなり急激な食べすぎを抑えやすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "砂糖がたっぷり入った清涼飲料水は、噛まずに飲めるため糖が吸収されやすい特徴がある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "液体で糖分をとると胃腸での通過・吸収が速くなりやすく、血糖値が上がりやすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "「ゼロカロリー」や「糖類ゼロ」と書かれた飲み物なら、何リットル飲んでも生活習慣に一切影響しない。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "糖類ゼロなどの表示があっても、飲みすぎや甘い味覚への慣れなど、日々の習慣全体で見ることが大切です。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "朝食を抜いて昼にドカ食いすると、昼食後に血糖値が大きく変動しやすくなることがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "空腹時間が長すぎたあとにまとめて食べると、食後の上がり方が大きくなりやすい傾向があります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "おにぎりだけ、菓子パンだけ、ラーメンだけといった「単品食べ」は、栄養バランスが偏りやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "主食単品だと糖質に偏りやすいため、野菜やタンパク質のおかずを添える工夫が役立ちます。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "同じお米でも、白米より玄米や雑穀米の方が食物繊維が含まれている。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "精製度が低い穀物や雑穀・玄米には食物繊維が多く含まれており、噛み応えも出やすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "食後に甘いスイーツを食べるときは、食事とセットにしたり量を控えめにしたりする工夫もよく挙げられる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "空腹のピークに甘いものだけを単体でとるより、量やタイミングを工夫する考え方があります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "「腹八分目」を意識することは、余分なエネルギーや糖質のとりすぎを防ぐシンプルな工夫になる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "満腹になるまで食べ切らない習慣は、食べすぎや胃腸への負担を減らすうえで基本になります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "果物にはビタミンや食物繊維が含まれる一方、糖分（果糖やブドウ糖など）も含まれるため、食べすぎには注意が必要である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "「体に良さそうだから」と一度にたくさん食べると、糖の摂取量が増えやすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "夜遅い時間に食事をとってすぐ寝る生活が続くと、翌朝の体調や血糖リズムに響きやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "就寝直前の食事は消化や代謝のリズムと重なりやすく、夜の生活習慣を見直すポイントになります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "温かい汁物やスープを食事の最初に少しとることは、落ち着いて食べ始めるきっかけになる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "温かいスープで一息ついてから食べ始めると、早食いを防ぎやすくなります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "食事の栄養バランスを整えることは、血糖値の安定だけでなく日々の元気や体調管理にもつながる。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "主食・主菜・副菜の組み合わせを意識することは、健やかな食習慣の土台になります。"
+  },
+  {
+    category: "食事・食べ方",
+    question: "「糖質を完全にゼロにしないと、血糖値はずっと高いまま」というのは誤解である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "極端なゼロ制限をしなくても、量や食べる順番、運動などを組み合わせることで調整しやすくなります。"
+  },
+
+  // --- 31〜42：運動・筋肉・生活習慣 ---
+  {
+    category: "運動・生活",
+    question: "筋肉を動かすことは、血液中のブドウ糖をエネルギーとして利用するうえでプラスに働く。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "骨格筋はブドウ糖を多く使う組織のひとつなので、日常的に体を動かすことは大切です。"
+  },
+  {
+    category: "運動・生活",
+    question: "食後に10〜15分ほどの軽い散歩や足踏みをするのは、気分転換にもなり取り入れやすい工夫である。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "激しい運動でなくても、食後に少し体を動かしてリフレッシュする習慣は続けやすいです。"
+  },
+  {
+    category: "運動・生活",
+    question: "1日中ずっと座りっぱなしで過ごす時間が長いと、体を動かす機会が減りやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "デスクワーク中心の日でも、途中で立ち上がったり歩いたりする時間を少し入れるのがおすすめです。"
+  },
+  {
+    category: "運動・生活",
+    question: "睡眠不足が続くと、食欲のバランスや日中の眠気、代謝リズムなどに影響が出やすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "しっかり眠ることは、自律神経やホルモンバランス、日々のコンディションを整える基本です。"
+  },
+  {
+    category: "運動・生活",
+    question: "強いストレスが続いているときも、体の反応を通して血糖や食欲のバランスに影響することがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "ストレスがかかると体の緊張状態が続き、食事の偏りや代謝の乱れにつながる場合があります。"
+  },
+  {
+    category: "運動・生活",
+    question: "運動は「ジムに通って1時間ハードにやらないと全く意味がない」わけではない。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "階段を使う、少し早歩きする、ストレッチをするなど、日常の小さな動きの積み重ねも大切です。"
+  },
+  {
+    category: "運動・生活",
+    question: "太ももやお尻など、体の大きな筋肉を動かすエクササイズは全身の活動量を増やしやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "下半身には大きな筋肉が集まっているため、ウォーキングやスクワットなどは効率よく体を動かせます。"
+  },
+  {
+    category: "運動・生活",
+    question: "お酒（アルコール）は、飲み方やおつまみの選び方によっても食後の数値や体調に影響することがある。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "お酒そのものに含まれる糖質や、一緒につまむ料理の量・油分なども合わせて気をつけたいポイントです。"
+  },
+  {
+    category: "運動・生活",
+    question: "水分をこまめにとることは、体調を整える基本習慣のひとつである。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "喉が渇く前に水やお茶などでこまめに水分をとることは、日々のコンディション維持に役立ちます。"
+  },
+  {
+    category: "運動・生活",
+    question: "生活リズムを極端に崩さず、起きる時間や食事の時間を大きくずらさない工夫も役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "体内時計や生活リズムが整っていると、食欲や睡眠、日中の活動もしやすくなります。"
+  },
+  {
+    category: "運動・生活",
+    question: "「完璧にできない日はすべて失敗」と考えるより、できることから気楽に続ける方が長続きしやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "無理な我慢や完璧主義よりも、自分が続けやすいペースを見つけることが大切です。"
+  },
+  {
+    category: "運動・生活",
+    question: "食後にすぐ横になる習慣ばかりだと、体を動かす機会が減りやすい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食後すぐにゴロゴロするクセがある場合は、少し座って休んだり軽く歩いたりする工夫もあります。"
+  },
+
+  // --- 43〜50：よくある勘違い・豆知識 ---
+  {
+    category: "勘違い・豆知識",
+    question: "「甘いものを食べなければ、野菜やご飯をどれだけ食べても血糖値は一切上がらない」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "甘いお菓子だけでなく、ご飯やパン、麺類などの炭水化物も消化されて糖になるため、量によって上がります。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「やせている人（見た目が細い人）は、血糖値が高くならない」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "見た目だけで判断することはできず、食生活や筋肉量、体質などによって数値は人それぞれです。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「健康診断で血糖値が少し高めでも、痛みや自覚症状がなければずっと放っておいてよい」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "血糖値の変化は自覚症状が出にくいことも多いため、数値が出たときは生活習慣を見直すきっかけにするのが大切です。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「果物は自然のものだから、夜にいくら食べても血糖値に影響しない」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "果物にも糖分が含まれるため、量や食べる時間帯によっては血糖値に影響します。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「食後に強い眠気を感じるとき、食事の量や内容・食べるスピードが関わっているケースがある」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "食事の量や糖質のとり方、早食いなどが食後の眠気やだるさと結びつくことがあります。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「血糖値を気にするなら、水分は一切とらない方がよい」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "水分を控える必要はなく、甘い飲み物を避けて水やお茶などをこまめにとることが大切です。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "「1日1食にして極端に食事回数を減らせば、必ず誰でも健康的に整う」というのは正しい。",
+    options: ["〇", "✕"],
+    answer: 1,
+    explanation: "食事回数を減らしすぎると、かえってドカ食いや空腹感の反動につながることもあります。"
+  },
+  {
+    category: "勘違い・豆知識",
+    question: "血糖値に関する知識は、日々の食事選びや歩く習慣を見直すヒントとして役立つ。",
+    options: ["〇", "✕"],
+    answer: 0,
+    explanation: "「なぜ上がりやすいのか」「どう工夫すると穏やかになりやすいか」を知ると、日々の選択がしやすくなります。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  if (hintTimer) clearTimeout(hintTimer);
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "血糖値マルバツクイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  q.options.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒後に正解ボタンを点滅させる
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  if (hintTimer) clearTimeout(hintTimer);
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！血糖値の基礎知識がバッチリですね！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！日常の食習慣や仕組みをしっかり押さえられていますね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して、気楽に知識を深めていきましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+
+  if (window.dataLayer) {
+      window.dataLayer.push({'event': 'quiz_finish', 'score': score});
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【血糖値マルバツクイズ道場】で 5問中 " + score + "問正解しました！⭕✕✨\n#皓一部屋 #血糖値クイズ");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
