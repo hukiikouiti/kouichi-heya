@@ -1,1 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJH9D2DZ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>本格血糖値・ケトン体クイズ道場（50問版） | 皓一部屋</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+.quiz-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.game-link-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-btn-style {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  color: #fff;
+}
+.hidden { display: none !important; }
+.quiz-title { font-size: 1.1rem; color: #27ae60; margin-top: 0; font-weight: bold; }
+.question-count { font-weight: bold; color: #666; font-size: 0.85rem; }
+.question-text { font-size: 1rem; font-weight: bold; text-align: left; margin: 15px 0; line-height: 1.5; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f1f3f5;
+  color: #333;
+  text-align: left;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.choice-btn:hover { background: #e4e7eb; }
+.correct { background: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; font-weight: bold; }
+.incorrect { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
+/* 5秒後に正解ボタンを激しく光らせるアニメーション */
+@keyframes superFlash {
+  0% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+  50% { background-color: #fef08a !important; color: #854d0e !important; border-color: #eab308 !important; transform: scale(1.04); box-shadow: 0 0 15px #eab308; }
+  100% { background-color: #f1f3f5; color: #333; border-color: #dcdde1; transform: scale(1); box-shadow: none; }
+}
+.choice-btn.hint-flash {
+  animation: superFlash 0.5s infinite !important;
+}
+
+.explanation-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 8px; font-size: 0.85rem; text-align: left; line-height: 1.5; }
+.next-btn { background: #3498db; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
+.disclaimer-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-top: 14px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJH9D2DZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="quiz-card" id="quiz-container">
+  <div id="category-title" class="quiz-title">血糖値・ケトン体クイズ</div>
+  <div id="question-count" class="question-count">第 1 問 / 全 5 問</div>
+  <div id="question-text" class="question-text"></div>
+  <div id="choices-container"></div>
+  <div id="explanation-container" class="hidden explanation-box"></div>
+  <button id="next-btn" class="hidden next-btn" onclick="nextQuestion()">次の問題へ</button>
+  <a href="kuizu.html" class="game-link-btn" style="background: #95a5a6; color: #fff; margin-top: 15px; text-decoration: none;">クイズ選択に戻る</a>
+  <p class="disclaimer-note">※本クイズは生化学・栄養学・エネルギー代謝に関する一般的な知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<div class="quiz-card hidden" id="result-container" style="text-align: center;">
+  <h2 style="color: #2c3e50; font-size: 1.2rem;">クイズ結果発表</h2>
+  <p id="score-text" style="font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #e67e22;"></p>
+
+  <!-- 1列目：LINEお友達追加（太ボタン） -->
+  <a href="https://lin.ee/7Lb96Ev" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #06c755, #05b34c); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">🟢 LINEお友達追加</a>
+
+  <!-- 2列目：予約する（太ボタン） -->
+  <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="game-link-btn" style="background: linear-gradient(135deg, #27ae60, #219653); color: #fff; display: block; width: 100%; padding: 16px 20px; margin-bottom: 12px; box-sizing: border-box; text-decoration: none; font-size: 1rem;">📅 予約する（空き状況確認・ご予約）</a>
+
+  <!-- 3列目：Xで結果をシェア -->
+  <button onclick="shareToX()" class="game-link-btn" style="background: #000; color: #fff; display: block; width: 100%; padding: 14px 20px; margin-bottom: 12px; box-sizing: border-box; cursor: pointer; font-size: 0.95rem;">𝕏 で結果をシェアする</button>
+
+  <!-- ボタンを格納するエリア -->
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- 1段目：「もう一度あそぶ」＆「クイズ選択に戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <button onclick="restartQuiz()" style="flex: 1; padding: 12px 5px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-sizing: border-box;">
+            もう一度あそぶ
+        </button>
+        <a href="kuizu.html" style="flex: 1; display: block; padding: 12px 5px; background: #7f8c8d; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            クイズ選択に戻る
+        </a>
+    </div>
+
+    <!-- 2段目：「ゲーム選択に戻る」＆「トップに戻る」を横並び -->
+    <div style="display: flex; gap: 8px; width: 100%;">
+        <a href="game.html" style="flex: 1; display: block; padding: 12px 5px; background: #e67e22; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🎮 ゲーム選択に戻る
+        </a>
+        <a href="index.html" style="flex: 1; display: block; padding: 12px 5px; background: #95a5a6; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; box-sizing: border-box; line-height: 1.4;">
+            🏠 トップに戻る
+        </a>
+    </div>
+
+  </div>
+
+  <p class="disclaimer-note">※本クイズは一般的な健康・栄養・代謝知識の学習を目的としたものであり、医療上の診断・治療・予防を目的としたものではありません。</p>
+</div>
+
+<script>
+const fixedOptions = ["血糖値", "ケトン体", "両方", "どちらでもない"];
+
+const allQuestions = [
+  // 1〜15：血糖値（15問）
+  {
+    category: "血糖値・糖代謝",
+    question: "血液中に含まれるブドウ糖（グルコース）の濃度を示す指標であり、食事や運動、ホルモンによって変動するのはどれですか？",
+    answer: 0,
+    explanation: "血糖値とは血液中のグルコース濃度のことです。糖質の摂取やインスリンなどのホルモン作用によって変化します。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "食後に糖質を摂ると上昇し、膵臓から分泌される「インスリン」の働きによって細胞へ取り込まれることで下がっていくのはどれですか？",
+    answer: 0,
+    explanation: "食後に上がった血糖値は、インスリンの働きによってブドウ糖が筋肉や脂肪などの細胞に取り込まれることで低下します。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "糖質を多く含む食事を急に摂ったときなどに一時的に大きく上がり、その後の反動で眠気やだるさとも関連づけて語られやすいのはどれですか？",
+    answer: 0,
+    explanation: "いわゆる「血糖値スパイク」などの文脈で、食後の急上昇と変動が話題になるのは血糖値です。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "健康診断の血液検査で「空腹時〇〇」として測定されたり、過去1〜2か月の平均的なコントロール状態を表すHbA1cと深く関わったりするのはどれですか？",
+    answer: 0,
+    explanation: "空腹時血糖値やHbA1cは、血液中のブドウ糖（血糖値）の状態を評価するための代表的な指標です。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "脳や赤血球などが即座に利用しやすいエネルギー源である「ブドウ糖（グルコース）」が血中にどれくらいあるかを示すのはどれですか？",
+    answer: 0,
+    explanation: "グルコースは細胞内の解糖系などを通じてエネルギー産生に使われ、その血中濃度が血糖値です。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "インスリンと反対の方向に働くグルカゴンやアドレナリンなどのホルモンによって、肝臓のグリコーゲン分解などが促されると上昇するのはどれですか？",
+    answer: 0,
+    explanation: "グルカゴンやアドレナリンなどは血糖値を上げる方向に働くホルモンとして知られています。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "「低GI食品」や「食物繊維を先に食べる（ベジファースト）」といった食べ方の工夫で、急上昇を抑える対象としてよく語られるのはどれですか？",
+    answer: 0,
+    explanation: "食事の順番や低GI食品の選択は、主に食後の血糖値の急上昇を抑える目的で意識されます。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "脂肪細胞や肝臓で脂肪酸が分解されて作られる物質ではなく、血中のグルコース濃度そのものを指す言葉はどれですか？",
+    answer: 0,
+    explanation: "脂肪酸の分解から作られるのはケトン体であり、血中のグルコース濃度を指すのが血糖値です。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "長時間食事をとらない空腹時や、激しい運動を続けた際に下がりすぎると、めまいや冷や汗、集中力低下などのサインと関わり得るのはどれですか？",
+    answer: 0,
+    explanation: "血糖値が大きく低下すると、脳のエネルギー供給が不安定になり体調不良につながる場合があります。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "「mg/dL（ミリグラム・パー・デシリットル）」などの単位で血液検査の数値として表されることが多いのはどれですか？",
+    answer: 0,
+    explanation: "血糖値は一般的に血液1デシリットルあたりのミリグラム数（mg/dL）で示されます。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "余分な状態が長く続くと、血管内皮への負担やタンパク質との結びつきによる「糖化（AGEs生成）」とも関わりやすいのはどれですか？",
+    answer: 0,
+    explanation: "高めの血糖状態が続くと、余分な糖がタンパク質と結びつく糖化反応が進みやすくなります。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "骨格筋が収縮するときにも、インスリンを介する経路に加えて糖の取り込みが促され、低下しやすくなるのはどれですか？",
+    answer: 0,
+    explanation: "筋肉を動かすことでグルコースの取り込みが促され、血糖値の調整に役立ちます。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "「血糖値」という言葉の漢字がそのまま示す通り、「血」の中の「糖（グルコース）」の量・濃度に関わるものはどれですか？",
+    answer: 0,
+    explanation: "文字通り、血液中の糖（グルコース）のレベルを示すのが血糖値です。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "糖質制限（ローカーボ）の話題において、「食後の急上昇を抑えたい」と注目される対象はどれですか？",
+    answer: 0,
+    explanation: "糖質摂取量を控えることで、食後の血糖値の上昇幅を穏やかにする目的が語られます。"
+  },
+  {
+    category: "血糖値・糖代謝",
+    question: "肝臓に蓄えられたグリコーゲンが分解されて血液中に放出されることで、一定範囲に保たれるのはどれですか？",
+    answer: 0,
+    explanation: "空腹時には肝グリコーゲンの分解などによってグルコースが供給され、血糖値が維持されます。"
+  },
+
+  // 16〜30：ケトン体（15問）
+  {
+    category: "ケトン体・脂質代謝",
+    question: "糖質が不足した状態や絶食・糖質制限などの際に、肝臓で脂肪酸が分解（β酸化）されて作られる物質の総称はどれですか？",
+    answer: 1,
+    explanation: "体内の糖質利用が減ったとき、肝臓で脂肪酸の分解が進み、アセト酢酸・β-ヒドロキシ酪酸・アセトンなどのケトン体が生成されます。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "アセト酢酸、β-ヒドロキシ酪酸、アセトンの3つをまとめて指す代謝産物はどれですか？",
+    answer: 1,
+    explanation: "生体内で作られる代表的なケトン体は、アセト酢酸・β-ヒドロキシ酪酸・アセトンの3種類です。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "ブドウ糖の代わりに、脳や心臓、骨格筋などの組織でエネルギー源として利用されることがある物質はどれですか？",
+    answer: 1,
+    explanation: "ケトン体は血液関門を通過できるため、糖質が乏しい状況では脳などの代替エネルギー源として使われます。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "「ケトーシス」や「ケトジェニック」といった栄養・代謝の文脈で、体内で作られる量や血中濃度が話題になるのはどれですか？",
+    answer: 1,
+    explanation: "糖質を抑えた食事法などで脂質代謝が優位になると、ケトン体の産生が高まりケトーシスの状態と関連づけて語られます。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "血液中のグルコース濃度そのものではなく、脂肪酸の分解産物として肝臓で作られる物質はどれですか？",
+    answer: 1,
+    explanation: "血糖値はグルコース濃度であり、ケトン体は脂肪酸の分解から作られる代謝産物です。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "長時間の空腹や断食（ファスティング）のとき、体脂肪の分解が進む過程で増えやすい物質はどれですか？",
+    answer: 1,
+    explanation: "空腹時間が長くなると糖質由来のエネルギーが減り、脂肪分解とともにケトン体が作られやすくなります。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "ミトコンドリア内でアセチルCoAへと変換されたあと、TCA回路（クエン酸回路）に入ってATP産生に利用され得るのはどれですか？",
+    answer: 1,
+    explanation: "末梢組織に取り込まれたケトン体は再びアセチルCoAに戻され、TCA回路を経てエネルギー産生に使われます。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "極端な糖質不足やインスリン作用の著しい不足などが重なると、血液が酸性に傾く「ケトアシドーシス」と関わり得るのはどれですか？",
+    answer: 1,
+    explanation: "ケトン体は酸性物質であるため、過剰に蓄積すると血液のpHバランスが崩れるケトアシドーシスの要因となります。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "中鎖脂肪酸（MCTオイルなど）を摂取した際にも、肝臓での代謝経路を通じて生成が促されやすい物質はどれですか？",
+    answer: 1,
+    explanation: "中鎖脂肪酸は肝臓へ速やかに運ばれて分解されやすく、ケトン体の産生と関連づけて語られます。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "「糖質をほとんど摂らないときのバックアップ燃料」として栄養学で説明されることが多い物質はどれですか？",
+    answer: 1,
+    explanation: "糖質由来のグルコースが限られる状況で、体脂肪由来のエネルギーとして働くのがケトン体です。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "3種類のうち「アセトン」は呼気や尿中に排泄されることもあり、独特の甘酸っぱい匂いと結びつくことがあるのはどれですか？",
+    answer: 1,
+    explanation: "ケトン体の一種であるアセトンは揮発性があり、呼気や尿に現れることがあります。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "血液中のブドウ糖の数値そのものではなく、脂質代謝の副産物・代替エネルギーとして扱われるのはどれですか？",
+    answer: 1,
+    explanation: "脂質由来の代謝産物としてエネルギー利用されるのはケトン体です。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "糖質をたっぷり摂ってインスリンが多く分泌されている状態では、一般的に産生が抑えられやすい物質はどれですか？",
+    answer: 1,
+    explanation: "インスリン分泌が高まると脂肪分解やケトン体産生は抑えられやすくなります。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "「血糖値」ではなく「血中ケトン体」や「尿中ケトン体」として測定・確認される対象はどれですか？",
+    answer: 1,
+    explanation: "ケトン体は血液や尿の検査項目として測定されることがあります。"
+  },
+  {
+    category: "ケトン体・脂質代謝",
+    question: "エネルギー代謝の切り替え（糖質利用モードから脂質・ケトン体利用モードへのシフト）の鍵となる物質はどれですか？",
+    answer: 1,
+    explanation: "エネルギー基質の切り替えにおいて中心的な役割を果たす代謝物質がケトン体です。"
+  },
+
+  // 31〜40：両方（血糖値・ケトン体の両方に当てはまる点）（10問）
+  {
+    category: "両方・エネルギー代謝",
+    question: "血液中に存在し、細胞のエネルギー代謝やコンディション管理と深く関わる要素はどれですか？",
+    answer: 2,
+    explanation: "血糖値（血中グルコース）もケトン体も、血液を介して運ばれエネルギー代謝と関わる両方です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "食事内容（特に糖質や脂質の量・バランス）によって変動し、食生活の工夫と結びつきやすいのはどれですか？",
+    answer: 2,
+    explanation: "血糖値もケトン体も、食事の糖質・脂質バランスや食べるタイミングによって変化する両方です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "脳のエネルギー供給と関わることがあり、集中力や頭の働き・体調の話題に登場しやすいのはどれですか？",
+    answer: 2,
+    explanation: "脳の主たるエネルギー源であるグルコースの指標が血糖値であり、代替エネルギー源となるのがケトン体です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "「少なすぎても多すぎても極端な状態は注意が必要」であり、バランスの重要性が語られるのはどれですか？",
+    answer: 2,
+    explanation: "血糖値もケトン体も、極端な高値・低値や過剰な蓄積は体調に影響するため、バランスが大切な両方です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "ホルモン（インスリンやグルカゴンなど）の働きや代謝状態の影響を受けるのはどれですか？",
+    answer: 2,
+    explanation: "インスリンなどのホルモンバランスは、グルコース利用とケトン体産生の双方に影響を与えます。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "「肝臓」での代謝プロセスと深く関わっている点はどちらに当てはまりますか？",
+    answer: 2,
+    explanation: "肝臓は血糖値の維持（グリコーゲン分解・糖新生）にも、ケトン体の産生にも深く関わる臓器です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "栄養学や生化学、フィットネス・ダイエットの文脈で頻繁に話題に上るキーワードはどれですか？",
+    answer: 2,
+    explanation: "血糖値もケトン体も、栄養管理や代謝の話題でよく登場するキーワードの両方です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "運動量や活動時間、空腹時間などの生活リズムによって変化し得るのはどれですか？",
+    answer: 2,
+    explanation: "運動や食事間隔などの生活リズムによって、血糖値もケトン体も変動します。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "血液検査やセルフモニタリングの数値として、体調把握の参考になり得るのはどれですか？",
+    answer: 2,
+    explanation: "血糖値も血中ケトン体も、代謝状態を把握するための数値として使われる両方です。"
+  },
+  {
+    category: "両方・エネルギー代謝",
+    question: "体内のエネルギー源・エネルギー代謝の仕組みを理解する上で欠かせない概念はどれですか？",
+    answer: 2,
+    explanation: "糖と脂質のエネルギー代謝を理解する上で、血糖値とケトン体の両方が重要な概念です。"
+  },
+
+  // 41〜50：どちらでもない（混同しやすい別の物質・指標・生体現象）（10問）
+  {
+    category: "どちらでもない",
+    question: "DNAやRNAなどの核酸の構成成分となり、体内で代謝された最終産物が「尿酸」になる生化学的成分はどれですか？",
+    answer: 3,
+    explanation: "それは「プリン体」の説明です。血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "細胞膜の材料やステロイドホルモンの原料となり、血液検査でLDLやHDLとして測定される脂質の一種はどれですか？",
+    answer: 3,
+    explanation: "それは「コレステロール」の説明です。血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "タンパク質の構成単位となる分子であり、筋肉や酵素・ホルモンなどの材料となる栄養素はどれですか？",
+    answer: 3,
+    explanation: "それは「アミノ酸」の説明であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "卵・牛乳・砂糖などを混ぜて加熱で固め、カラメルソースを添えることが多いスイーツ・洋菓子はどれですか？",
+    answer: 3,
+    explanation: "それはデザートの「プリン」の説明であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "筋肉の繊維がトレーニングなどの負荷によって刺激を受け、修復・適応することで太く強くなる「筋肥大」のプロセスはどれですか？",
+    answer: 3,
+    explanation: "それは「筋肥大」という生理現象であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "睡眠中に脳内の老廃物や代謝産物のクリアランスに関わるとされる「グリンパティックシステム」の働きはどれですか？",
+    answer: 3,
+    explanation: "それは「グリンパティックシステム」の説明であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "体温が上がったときに、皮膚の表面から汗が蒸発する際の気化熱によって体温を下げる「発汗による体温調節」はどれですか？",
+    answer: 3,
+    explanation: "それは「発汗による体温調節」であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "物質が電子を奪われる化学反応であり、生体内では活性酸素などによって細胞や脂質が影響を受ける反応はどれですか？",
+    answer: 3,
+    explanation: "それは「酸化」の説明であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "心臓のポンプ機能によって送り出された血液が、血管の壁を押す圧力を示す「血圧（収縮期血圧・拡張期血圧）」はどれですか？",
+    answer: 3,
+    explanation: "それは「血圧」の説明であり、血糖値でもケトン体でもありません。"
+  },
+  {
+    category: "どちらでもない",
+    question: "血液中の中性脂肪（トリグリセリド）の量を示す指標であり、食事の脂質や糖質過多などと関連する成分はどれですか？",
+    answer: 3,
+    explanation: "それは「中性脂肪（トリグリセリド）」の説明であり、血糖値でもケトン体でもありません。"
+  }
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let hintTimer = null;
+
+function startQuiz() {
+  document.getElementById('result-container').classList.add('hidden');
+  document.getElementById('quiz-container').classList.remove('hidden');
+  
+  let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+  currentQuestions = shuffled.slice(0, 5);
+  currentIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+
+  let q = currentQuestions[currentIndex];
+  document.getElementById('category-title').innerText = "血糖値・ケトン体クイズ（" + q.category + "）";
+  document.getElementById('question-count').innerText = "第 " + (currentIndex + 1) + " 問 / 全 5 問";
+  document.getElementById('question-text').innerText = q.question;
+  
+  let choicesContainer = document.getElementById('choices-container');
+  choicesContainer.innerHTML = '';
+  
+  let createdButtons = [];
+  fixedOptions.forEach((opt, index) => {
+    let btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerText = (index + 1) + ". " + opt;
+    btn.onclick = () => selectChoice(index, btn);
+    choicesContainer.appendChild(btn);
+    createdButtons.push(btn);
+  });
+  
+  document.getElementById('explanation-container').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  // 5秒経過後に正解のボタンを黄色く点滅・ハイライトする
+  hintTimer = setTimeout(() => {
+    if (!answered && createdButtons[q.answer]) {
+      createdButtons[q.answer].classList.add('hint-flash');
+    }
+  }, 5000);
+}
+
+function selectChoice(index, clickedBtn) {
+  if (answered) return;
+  answered = true;
+  
+  if (hintTimer) {
+    clearTimeout(hintTimer);
+  }
+  
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('hint-flash'));
+
+  let q = currentQuestions[currentIndex];
+  let choiceButtons = document.querySelectorAll('.choice-btn');
+  
+  if (index === q.answer) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('incorrect');
+    choiceButtons[q.answer].classList.add('correct');
+  }
+  
+  let expBox = document.getElementById('explanation-container');
+  expBox.innerHTML = '<b>【解説】</b><br>' + q.explanation;
+  expBox.classList.remove('hidden');
+  
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < currentQuestions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function showResult() {
+  if (hintTimer) clearTimeout(hintTimer);
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('result-container').classList.remove('hidden');
+  
+  let resultMsg = "5問中 " + score + "問正解でした！";
+  if (score === 5) {
+    resultMsg += "<br>🎉 パーフェクト！血糖値とケトン体の仕組みを完璧に見分けられました！";
+  } else if (score >= 3) {
+    resultMsg += "<br>👍 お見事！糖代謝と脂質代謝のつながり、しっかり整理できていますね！";
+  } else {
+    resultMsg += "<br>💡 もう一度挑戦して知識を深めましょう！";
+  }
+  document.getElementById('score-text').innerHTML = resultMsg;
+}
+
+function shareToX() {
+  let text = encodeURIComponent("【本格血糖値・ケトン体クイズ道場】（50問版）で 5問中 " + score + "問正解しました！🔥🧬\n#皓一部屋 #血糖値 #ケトン体 #クイズ道場");
+  window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + encodeURIComponent(window.location.href), "_blank");
+}
+
+window.onload = function() {
+  startQuiz();
+};
+</script>
+
+</body>
+</html>
