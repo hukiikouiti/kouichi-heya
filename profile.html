@@ -29,11 +29,15 @@
 
         .section { background-color: #ffffff; border-radius: 12px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; width: 100%; box-sizing: border-box; text-align: center; }
 
+        .profile-click-img { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important; box-shadow: 0 4px 10px rgba(0,0,0,0.12); transition: transform 0.2s ease; }
+        .profile-click-img:hover { transform: scale(1.02); }
+        .profile-click-hint { font-size: 13px; color: #888; margin-top: 8px; }
+
         @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         .btn-reserve { display: inline-block; width: 100%; max-width: 550px; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; padding: 16px 0; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2); animation: flash 1.5s infinite; box-sizing: border-box; margin: 0 auto; transition: all 0.2s ease-in-out; font-family: sans-serif; letter-spacing: 0.05em; }
 
         @media screen and (max-width: 768px) {
-            body, p, span, li, td, div { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
+            body, p:not(#photo-audio-modal p), span, li, td, div:not(#photo-audio-modal):not(#photo-audio-modal div) { font-size: 20px !important; font-weight: 600 !important; line-height: 1.8 !important; }
         }
 
         .back-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #ffffff; color: #333333; padding: 6px 12px; border: 1px solid #cccccc; border-radius: 4px; text-decoration: none; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); z-index: 999; }
@@ -111,7 +115,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           🧠 解剖学クイズ道場 ▼
         </summary>
         <div style="position: absolute; top: 105%; left: 0; background: #ffffff; border: 1px solid #4caf50; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 1000; width: 240px; text-align: left; display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; box-sizing: border-box;">
-            　<a href="purintai-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🍮🧬 プリン体・プリンクイズ道場</a>
+             <a href="purintai-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🍮🧬 プリン体・プリンクイズ道場</a>
               <a href="koresutero-ru-purintai.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🧬🧈 プリン体・コレステロールクイズ道場</a>
               <a href="ketuntai-koizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔥🧬 血糖値・ケトン体クイズ道場</a>
               <a href="touka-sanka-kuizu.html" style="display: block; padding: 6px 8px; font-size: 13px; color: #333; text-decoration: none; border-radius: 4px; background: #f1f8e9;">🔥🧬 糖化・酸化クイズ道場</a>
@@ -141,25 +145,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="container">
 
     <div class="section">
+        <!-- 1. 顔写真（音声：13 (44).wav） -->
         <div style="text-align: center; margin: 20px 0;">
             <h3 style="border: none !important; padding-left: 0; font-size: 22px; font-weight: bold; margin-bottom: 15px;">吹井皓一の顔写真紹介</h3>
-            <a href="顔写真 2026-06-06 192907.png" target="_blank">
-                <img src="顔写真 2026-06-06 192907.png" alt="名古屋 ゲイマッサージ皓一部屋 セラピスト吹井皓一の顔写真" class="fade-in-section" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important;">
-            </a>
+            <img src="顔写真 2026-06-06 192907.png"
+                 alt="名古屋 ゲイマッサージ皓一部屋 セラピスト吹井皓一の顔写真"
+                 class="profile-click-img"
+                 loading="lazy"
+                 onclick="openPhotoAudioModal('顔写真 2026-06-06 192907.png', '13 (44).wav', '吹井皓一の顔写真紹介');">
+            <p class="profile-click-hint">タップで拡大＆音声再生 🔊</p>
         </div>
 
+        <!-- 2. リフレクソロジー施術風景（音声：13 (45).wav） -->
         <div style="text-align: center; margin-top: 30px;">
             <h3 style="border: none !important; padding-left: 0; font-size: 22px; font-weight: bold; margin-bottom: 15px;">リフレクソロジー施術風景</h3> 
-            <a href="2026・9/17リフレクソロジ (1).png" target="_blank">
-                <img src="2026・9/17リフレクソロジ (1).png" alt="名古屋 出張メンズリラクゼーション皓一部屋 リフレクソロジー足裏施術風景" class="fade-in-section" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important;">
-            </a>
+            <img src="2026・9/17リフレクソロジ (1).png"
+                 alt="名古屋 出張メンズリラクゼーション皓一部屋 リフレクソロジー足裏施術風景"
+                 class="profile-click-img"
+                 loading="lazy"
+                 onclick="openPhotoAudioModal('2026・9/17リフレクソロジ (1).png', '13 (45).wav', 'リフレクソロジー施術風景');">
+            <p class="profile-click-hint">タップで拡大＆音声再生 🔊</p>
         </div>
 
+        <!-- 3. ホテルの部屋にて（音声：13 (46).wav） -->
         <div style="text-align: center; margin: 20px 0;">
             <h3 style="border: none !important; padding-left: 0; font-size: 22px; font-weight: bold; margin-bottom: 15px;">ホテルの部屋にて</h3>
-            <a href="名称未設定のデザイン (21).png" target="_blank">
-                <img src="名称未設定のデザイン (21).png" alt="名古屋のホテルの部屋" class="fade-in-section" loading="lazy" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius: 8px; cursor: pointer; border: none !important;">
-            </a>
+            <img src="名称未設定のデザイン (21).png"
+                 alt="名古屋のホテルの部屋"
+                 class="profile-click-img"
+                 loading="lazy"
+                 onclick="openPhotoAudioModal('名称未設定のデザイン (21).png', '13 (46).wav', 'ホテルの部屋にて');">
+            <p class="profile-click-hint">タップで拡大＆音声再生 🔊</p>
         </div>
 
         <div style="padding: 0 15px; margin: 30px 0; text-align: center; line-height: 1.8;">
@@ -220,6 +236,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); animation: flash 1.5s infinite;">今すぐ予約</a>
     </div>
 </div>
+
+<!-- 写真拡大＆音声再生ポップアップ -->
+<div id="photo-audio-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.88); z-index: 10000; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box; cursor: pointer;" onclick="closePhotoAudioModal();">
+    <div style="position: relative; max-width: 92vw; max-height: 92vh; text-align: center;" onclick="event.stopPropagation();">
+        <p id="photo-audio-caption" style="color: #ffffff; margin: 0 0 10px 0; font-size: 16px; font-weight: bold;"></p>
+        <img id="photo-audio-img" src="" alt="" style="max-width: 100%; max-height: 70vh; width: auto; height: auto; border-radius: 10px; box-shadow: 0 0 25px rgba(255,255,255,0.25); display: block; margin: 0 auto;">
+        <audio id="photo-audio-player" controls preload="auto" style="margin-top: 12px; max-width: 100%; height: 36px;"></audio>
+        <p style="color: #ffffff; margin-top: 12px; margin-bottom: 0; font-size: 15px; font-weight: bold; cursor: pointer;" onclick="closePhotoAudioModal();">画面外またはここをタップで閉じる ✖</p>
+    </div>
+</div>
+
+<script>
+    function openPhotoAudioModal(imgSrc, audioSrc, captionText) {
+        var modal = document.getElementById('photo-audio-modal');
+        var modalImg = document.getElementById('photo-audio-img');
+        var audioPlayer = document.getElementById('photo-audio-player');
+        var captionEl = document.getElementById('photo-audio-caption');
+
+        if (captionEl) captionEl.textContent = captionText || '';
+        if (modalImg) {
+            modalImg.src = encodeURI(imgSrc);
+            modalImg.alt = captionText || '';
+        }
+        if (modal) modal.style.display = 'flex';
+
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.src = encodeURI(audioSrc);
+            audioPlayer.currentTime = 0;
+            audioPlayer.load();
+            audioPlayer.play().catch(function(e) {
+                console.log('音声再生エラー:', e);
+            });
+        }
+    }
+
+    function closePhotoAudioModal() {
+        var modal = document.getElementById('photo-audio-modal');
+        var audioPlayer = document.getElementById('photo-audio-player');
+
+        if (modal) modal.style.display = 'none';
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+    }
+</script>
 
 </body>
 </html>
