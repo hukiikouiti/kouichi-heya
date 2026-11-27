@@ -52,15 +52,15 @@
         img { max-width: 100%; height: auto; }
         strong, em, .highlight, .color-text { color: #eb0e0e !important; }
 
-        /* ▼ 縦並びCTA・説明文・左右下向き点滅矢印 ▼ */
+        /* ▼ 縦並びCTA・説明文・左右下向き点滅矢印（応援いいねボタンのサイズに統一） ▼ */
         .cta-stack-wrap {
-            max-width: 520px;
+            max-width: 560px;
             margin: 24px auto 8px auto;
             padding: 0 10px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
         }
         .cta-item-block {
             width: 100%;
@@ -94,13 +94,14 @@
         }
         .cta-btn-uniform {
             flex: 1;
-            max-width: 390px;
-            min-height: 54px;
-            padding: 14px 16px;
+            max-width: 480px;
+            width: 100%;
+            min-height: 58px;
+            padding: 16px 20px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 16px !important;
+            font-size: 17px !important;
             line-height: 1.3 !important;
             display: flex;
             align-items: center;
@@ -113,20 +114,20 @@
         .cta-btn-reserve {
             background: linear-gradient(180deg, #f39800 0%, #e67200 100%);
             color: #ffffff !important;
-            box-shadow: 0 5px 0 #b35300, 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(230, 114, 0, 0.35), 0 4px 0 #b35300;
             animation: reserveBlink 1.2s infinite;
         }
         .cta-btn-line {
             background: #06c755;
             color: #ffffff !important;
-            box-shadow: 0 4px 10px rgba(6,199,85,0.3);
+            box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3), 0 4px 0 #049e43;
         }
         .cta-btn-diag-summary {
             list-style: none;
-            background: linear-gradient(135deg, #e53935, #c62828);
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             color: #ffffff !important;
-            border-radius: 14px;
-            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.35);
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.35), 0 4px 0 #d32f2f;
             user-select: none;
         }
         .cta-btn-diag-summary::-webkit-details-marker {
@@ -401,6 +402,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
+  <!-- 電話・SMS連絡先案内 -->
+  <div style="max-width: 600px; margin: 20px auto 10px auto; padding: 16px 15px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center; box-sizing: border-box;">
+    <p style="font-size: 14px; font-weight: bold; color: #4a3b32; margin: 0 0 6px 0;">お電話・SMS（ショートメッセージ）でのご連絡</p>
+    <p style="margin: 0 0 6px 0;"><a href="tel:07076117981" style="font-size: 18px; font-weight: bold; color: #e53935; text-decoration: none;">📞 070-7611-7981</a></p>
+    <p style="font-size: 12px; color: #777; margin: 0; line-height: 1.5;">※施術中はお電話に出られないことがあります。SMSまたはLINEが確実です。</p>
+  </div>
+
     <!-- フッター（コピーライト ＆ クレジット表記） -->
 <div class="footer">
     <p>&copy; 2026 皓一部屋. All Rights Reserved.</p>
@@ -411,7 +419,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#top" class="back-to-top" style="position: static; margin: 0;">▲ トップへ</a>
     <div style="display: flex; gap: 6px; align-items: center;">
         <a href="https://lin.ee/NNtARDE" target="_blank" rel="noopener noreferrer" style="background: #06c755; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">LINE</a>
-        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: #7a6b60; color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center;">問合せ</a>
+        <a href="https://allmylinks.com/hukiikouiti1977" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: #fff; font-size: 12px; font-weight: bold; padding: 12px 10px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(255, 65, 108, 0.35); text-align: center;">問合せ</a>
         <a href="https://calendar.app.google/H6ANVr4xboHacg9K9" target="_blank" rel="noopener noreferrer" class="blink-target" style="display: inline-block; background: linear-gradient(180deg, #f39800 0%, #e67200 100%); color: #ffffff; font-size: 14px; font-weight: bold; text-align: center; padding: 10px 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.3); font-family: sans-serif;">今すぐ予約</a>
     </div>
 </div>
